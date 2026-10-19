@@ -2,7 +2,7 @@
 #EXTVLCOPT:network-caching=1000
 
 # ==========================================
-# CARPETA: LA LIGA (43 canales)
+# CARPETA: LA LIGA
 # ==========================================
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA",⭐️ DAZN LaLiga 496a
 http://100.90.204.66:6878/ace/getstream?id=dda5d2cace9bc4cb0918e62bc50d657d4a10496a
@@ -90,9 +90,13 @@ http://100.90.204.66:6878/ace/getstream?id=7bd9d072b65919352bda907b472961641e6e2
 http://100.90.204.66:6878/ace/getstream?id=22178d72e0f255dedd7e56f9474fea879289a6f1
 #EXTINF:-1 tvg-id="beIN SPORTS XTRA ñ" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/beIN%20SPORTS%20XTRA%20%C3%B1.png" group-title="LA LIGA", beIN SPORTS XTRA HD
 http://100.90.204.66:6878/ace/manifest.m3u8?id=fd869f34346154ca7cd78d46cbf7a6b8671beab5
+#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA",Movistar plus
+http://100.90.204.66:6878/ace/getstream?id=3097d7e7ff0fe414711ee067a841168b6f5671cb
+#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA",Movistar liga
+http://100.90.204.66:6878/ace/getstream?id=31c19ffb3472c289c5bbbbc174449c8ed0d19e38
 
 # ==========================================
-# CARPETA: CHAMPIONS (33 canales)
+# CARPETA: CHAMPIONS
 # ==========================================
 #EXTINF:-1 tvg-id="M+ Liga de Campeones HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",⭐️ M+ Liga de Campeones f370
 http://100.90.204.66:6878/ace/getstream?id=e572a5178ff72eed7d1d751a18b4b3419699f370
@@ -162,7 +166,7 @@ http://100.90.204.66:6878/ace/getstream?id=14bedc2ff054ae16c0fae99cfeb9dcda21ac6
 http://100.90.204.66:6878/ace/getstream?id=f22268a7d4a279feee02243d93a65cca2825c8e1
 
 # ==========================================
-# CARPETA: DAZN (8 canales)
+# CARPETA: DAZN
 # ==========================================
 #EXTINF:-1 tvg-id="DAZN 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%201.png" group-title="DAZN",⭐️ Dazn 1 b151
 http://100.90.204.66:6878/ace/getstream?id=d5b2c6b940cf3df5e8f9dc6f000f0ea23a10b151
@@ -182,7 +186,7 @@ http://100.90.204.66:6878/ace/getstream?id=d1d9ec2361a6ac8edc0b2841866383768cc28
 http://100.90.204.66:6878/ace/getstream?id=7e90956539f4e1318a63f3960e4f75c7c7c5a3b8
 
 # ==========================================
-# CARPETA: HYPERMOTION (10 canales)
+# CARPETA: HYPERMOTION
 # ==========================================
 #EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 56aa
 http://100.90.204.66:6878/ace/getstream?id=2c54a4def58f41fc0d2163450a63f12955b656aa
@@ -206,7 +210,7 @@ http://100.90.204.66:6878/ace/getstream?id=589dfc625c0ddcd9960e40aaf8235ea58705f
 http://100.90.204.66:6878/ace/getstream?id=11ede21d726b3ac051a366960c6e89eec3c807b6
 
 # ==========================================
-# CARPETA: RFEF TV (4 canales)
+# CARPETA: RFEF TV
 # ==========================================
 #EXTINF:-1 tvg-id="RFEF TV" tvg-logo="" group-title="RFEF TV",RFEF TV cc7f
 http://100.90.204.66:6878/ace/getstream?id=3fbc1b7dc316f19b77e7f7cfc775a0af67adcc7f
@@ -218,7 +222,7 @@ http://100.90.204.66:6878/ace/getstream?id=7b742628b9f7e82902bdbc1ff92eba1988875
 http://100.90.204.66:6878/ace/getstream?id=854ff9c607101791346111cd2366a392c3b8c351
 
 # ==========================================
-# CARPETA: F1 (8 canales)
+# CARPETA: F1
 # ==========================================
 #EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",⭐️ DAZN F1 0076
 http://100.90.204.66:6878/ace/getstream?id=b04372b9543d763bd2dbd2a1842d9723fd080076
@@ -238,7 +242,7 @@ http://100.90.204.66:6878/ace/getstream?id=27d11bbeb3026231d52de16b1fac48da7a099
 http://100.90.204.66:6878/ace/getstream?id=d65257bb934b73647374224fd62d836815804be2
 
 # ==========================================
-# CARPETA: MotoGP (6 canales)
+# CARPETA: MotoGP
 # ==========================================
 #EXTINF:-1 tvg-id="DAZN MotoGP" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20MotoGP.png" group-title="MotoGP",DAZN MotoGP 8b36
 http://100.90.204.66:6878/ace/getstream?id=2a05a020dfe97aaa0665bb7551022868b2a88b36
@@ -254,7 +258,7 @@ http://100.90.204.66:6878/ace/getstream?id=20d4b3586bb822c3618cf8fb665a304869c5e
 http://100.90.204.66:6878/ace/getstream?id=e18b79bce27f6ee8eef9a1fc811bb5f80e4b558c
 
 # ==========================================
-# CARPETA: BALONCESTO (6 canales)
+# CARPETA: BALONCESTO
 # ==========================================
 #EXTINF:-1 tvg-id="M+ Baloncesto" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png" group-title="BALONCESTO",M+ Baloncesto cf07
 http://100.90.204.66:6878/ace/getstream?id=6fbd92735502bdebbf1ea58f4298e49759c0cf07
@@ -270,111 +274,35 @@ http://100.90.204.66:6878/ace/getstream?id=853129258a5cb51f27829eddb934e58b45978
 http://100.90.204.66:6878/ace/getstream?id=c8c33b2673efe7f386790c5966643820578f3535
 
 # ==========================================
-# CARPETA: MOVISTAR (46 canales)
+# CARPETA: MOVISTAR
 # ==========================================
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 4ec9
 http://100.90.204.66:6878/ace/getstream?id=67121cbb722b88ce4489717e9a87a26f60184ec9
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS a336
 http://100.90.204.66:6878/ace/getstream?id=d23497596720b47b096ec0f850d6d26a19d1a336
-#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 15bb
-http://100.90.204.66:6878/ace/getstream?id=67121cbb722b88ce4489717e9a87a26f60184ec9
-#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS ab78
-http://100.90.204.66:6878/ace/getstream?id=d23497596720b47b096ec0f850d6d26a19d1a336
-#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 0056
-http://100.90.204.66:6878/ace/getstream?id=dc044c79fcde8ed69ed4c878643b09f09e7ccb72
-#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",Movistar plus
-http://100.90.204.66:6878/ace/getstream?id=dc044c79fcde8ed69ed4c878643b09f09e7ccb72
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",Movistar cine español
-http://100.90.204.66:6878/ace/getstream?id=fe6dead974cebbb7626458a763ff0e2150dffbe0
+http://100.90.204.66:6878/ace/getstream?id=dc044c79fcde8ed69ed4c878643b09f09e7ccb72
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",Movistar estrenos
-http://100.90.204.66:6878/ace/getstream?id=f3a6d058791f0818a3301f9d5eeb60cfb54d905d
+http://100.90.204.66:6878/ace/getstream?id=fe6dead974cebbb7626458a763ff0e2150dffbe0
 #EXTINF:-1 tvg-id="M+ Acción HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Acci%C3%B3n.png" group-title="MOVISTAR",Movistar acción
-http://100.90.204.66:6878/ace/getstream?id=bb78482832c454dfbb932912d65726619f924873
+http://100.90.204.66:6878/ace/getstream?id=f3a6d058791f0818a3301f9d5eeb60cfb54d905d
 #EXTINF:-1 tvg-id="M+ Hits HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Hits.png" group-title="MOVISTAR",Movistar hits
-http://100.90.204.66:6878/ace/getstream?id=6b4acf7cab48967eccea5c3e89b1e945ceab457c
-#EXTINF:-1 tvg-id="AXN Movies HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AXN%20Movies.png" group-title="MOVISTAR",Axn MOVIES
-http://100.90.204.66:6878/ace/getstream?id=e1c2c2a74a3688066526e5ff212e13d2101f44ad
-#EXTINF:-1 tvg-id="" tvg-logo="" group-title="MOVISTAR",Comedy central
-http://100.90.204.66:6878/ace/getstream?id=8269d72f3338c6b4ef7752732adaa9f62d4c09e4
-#EXTINF:-1 tvg-id="" tvg-logo="" group-title="MOVISTAR",AMC
-http://100.90.204.66:6878/ace/getstream?id=bec9f6119618624d5a8b0702816c6bcce1f4f983
-#EXTINF:-1 tvg-id="" tvg-logo="" group-title="MOVISTAR",AXN
 http://100.90.204.66:6878/ace/getstream?id=bb78482832c454dfbb932912d65726619f924873
+#EXTINF:-1 tvg-id="AXN Movies HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AXN%20Movies.png" group-title="MOVISTAR",Axn MOVIES
+http://100.90.204.66:6878/ace/getstream?id=6b4acf7cab48967eccea5c3e89b1e945ceab457c
+#EXTINF:-1 tvg-id="" tvg-logo="" group-title="MOVISTAR",Comedy central
+http://100.90.204.66:6878/ace/getstream?id=e1c2c2a74a3688066526e5ff212e13d2101f44ad
+#EXTINF:-1 tvg-id="" tvg-logo="" group-title="MOVISTAR",AMC
+http://100.90.204.66:6878/ace/getstream?id=8269d72f3338c6b4ef7752732adaa9f62d4c09e4
+#EXTINF:-1 tvg-id="" tvg-logo="" group-title="MOVISTAR",AXN
+http://100.90.204.66:6878/ace/getstream?id=bec9f6119618624d5a8b0702816c6bcce1f4f983
 #EXTINF:-1 tvg-id="" tvg-logo="" group-title="MOVISTAR",Eventos
-http://100.90.204.66:6878/ace/getstream?id=5437f76710c6cf7769e4a101ee52a6f4d4b39745
+http://100.90.204.66:6878/ace/getstream?id=bb78482832c454dfbb932912d65726619f924873
 #EXTINF:-1 tvg-id="" tvg-logo="" group-title="MOVISTAR",HDR
-http://100.90.204.66:6878/ace/getstream?id=acb510858f34c3c6fd5f79395b031abd6885c2b3
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 1
-http://100.90.204.66:6878/ace/getstream?id=373b2ff67490d1ed560a33156b34686923159874
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 2
-http://100.90.204.66:6878/ace/getstream?id=14bedc2ff054ae16c0fae99cfeb9dcda21ac68a0
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 3
-http://100.90.204.66:6878/ace/getstream?id=f22268a7d4a279feee02243d93a65cca2825c8e1
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 4
-http://100.90.204.66:6878/ace/getstream?id=d5b2c6b940cf3df5e8f9dc6f000f0ea23a10b151
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 5
-http://100.90.204.66:6878/ace/getstream?id=a116ce3ff95c41c60e987e2b1aa247007f707884
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 6
-http://100.90.204.66:6878/ace/getstream?id=78124d96a1a4601e7910f50e36a16e35efcfb398
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 7
-http://100.90.204.66:6878/ace/getstream?id=b0eabe0fdd02fdd165896236765a9b753a2ff516
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 8
-http://100.90.204.66:6878/ace/getstream?id=d60b8c154828cb990b7bb1570764b215bd979e74
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 9
-http://100.90.204.66:6878/ace/getstream?id=d1d9ec2361a6ac8edc0b2841866383768cc28df9
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 10
-http://100.90.204.66:6878/ace/getstream?id=7e90956539f4e1318a63f3960e4f75c7c7c5a3b8
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 11
-http://100.90.204.66:6878/ace/getstream?id=2c54a4def58f41fc0d2163450a63f12955b656aa
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 12
-http://100.90.204.66:6878/ace/getstream?id=135c420f704d717b8913b2a66b2722fd6b2c127c
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 13
-http://100.90.204.66:6878/ace/getstream?id=4636ed75106cb00e9c70cc2029edf0a4df7ad73f
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 14
-http://100.90.204.66:6878/ace/getstream?id=e4cbd1a425120b1f44b523a55bd1a98c31cad9fe
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 15
-http://100.90.204.66:6878/ace/getstream?id=1f75d92098580443857caa95a719103cb83781b0
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 16
-http://100.90.204.66:6878/ace/getstream?id=a5b9d834ad92bfb80fe01bf89cc20bd68be199fb
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 17
-http://100.90.204.66:6878/ace/getstream?id=7efe62956b1f395161e217df1f438c8bf0d4416b
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 18
-http://100.90.204.66:6878/ace/getstream?id=589dfc625c0ddcd9960e40aaf8235ea58705f784
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 19
-http://100.90.204.66:6878/ace/getstream?id=11ede21d726b3ac051a366960c6e89eec3c807b6
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 20
-http://100.90.204.66:6878/ace/getstream?id=3fbc1b7dc316f19b77e7f7cfc775a0af67adcc7f
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 21
-http://100.90.204.66:6878/ace/getstream?id=177796041773be99b489dd3ce86144f243e7355f
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 22
-http://100.90.204.66:6878/ace/getstream?id=7b742628b9f7e82902bdbc1ff92eba1988875cfc
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 23
-http://100.90.204.66:6878/ace/getstream?id=854ff9c607101791346111cd2366a392c3b8c351
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 24
-http://100.90.204.66:6878/ace/getstream?id=b04372b9543d763bd2dbd2a1842d9723fd080076
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 25
-http://100.90.204.66:6878/ace/getstream?id=ee4646aae30d862e0d9d453998a344a60aaa7cde
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 26
-http://100.90.204.66:6878/ace/getstream?id=20086a76248efe8d5230c15d41c69bae8fa6381c
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 27
-http://100.90.204.66:6878/ace/getstream?id=895d08633bb22c2573281655cf3ca44de476cc73
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 28
-http://100.90.204.66:6878/ace/getstream?id=f8b0eae8fda973cf426311541d1668aa592f0a8c
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 29
-http://100.90.204.66:6878/ace/getstream?id=27d11bbeb3026231d52de16b1fac48da7a099247
-#EXTINF:-1 tvg-id="Movistar Series" tvg-logo="" group-title="MOVISTAR",Movistar Series 30
-http://100.90.204.66:6878/ace/getstream?id=d65257bb934b73647374224fd62d836815804be2
+http://100.90.204.66:6878/ace/getstream?id=5437f76710c6cf7769e4a101ee52a6f4d4b39745
 
 # ==========================================
-# CARPETA: EUROSPORT (2 canales)
-# ==========================================
-#EXTINF:-1 tvg-id="Eurosport 1 HD" tvg-logo="" group-title="EUROSPORT",Eurosport 1
-http://100.90.204.66:6878/ace/getstream?id=2a05a020dfe97aaa0665bb7551022868b2a88b36
-#EXTINF:-1 tvg-id="Eurosport 2 HD" tvg-logo="" group-title="EUROSPORT",Eurosport 2
-http://100.90.204.66:6878/ace/getstream?id=c53bdb3be55d12c5188d25085f1bb16911c15cea
-
-# ==========================================
-# CARPETA: MOVISTAR DEPORTES (8 canales)
+# CARPETA: MOVISTAR DEPORTES
 # ==========================================
 #EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEPORTES",Movistar deportes
 http://100.90.204.66:6878/ace/getstream?id=acb510858f34c3c6fd5f79395b031abd6885c2b3
@@ -384,11 +312,3 @@ http://100.90.204.66:6878/ace/getstream?id=3afe1af18f8ff78e9946856911b00c6747705
 http://100.90.204.66:6878/ace/getstream?id=f863873de9f7b2996dde19a0657dd89835af3007
 #EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEPORTES",Movistar vamos
 http://100.90.204.66:6878/ace/getstream?id=86262568aa72b956b06ac67b1c310a32248a0e98
-#EXTINF:-1 tvg-id="M+ Deportes 3" tvg-logo="" group-title="MOVISTAR DEPORTES",Movistar Deportes 3
-http://100.90.204.66:6878/ace/getstream?id=b18dda520e112e48a33d6d0ae558681b9ecfbb4d
-#EXTINF:-1 tvg-id="M+ Deportes 4" tvg-logo="" group-title="MOVISTAR DEPORTES",Movistar Deportes 4
-http://100.90.204.66:6878/ace/getstream?id=20d4b3586bb822c3618cf8fb665a304869c5e1a5
-#EXTINF:-1 tvg-id="M+ Deportes 5" tvg-logo="" group-title="MOVISTAR DEPORTES",Movistar Deportes 5
-http://100.90.204.66:6878/ace/getstream?id=e18b79bce27f6ee8eef9a1fc811bb5f80e4b558c
-#EXTINF:-1 tvg-id="M+ Deportes 6" tvg-logo="" group-title="MOVISTAR DEPORTES",Movistar Deportes 6
-http://100.90.204.66:6878/ace/getstream?id=6fbd92735502bdebbf1ea58f4298e49759c0cf07
