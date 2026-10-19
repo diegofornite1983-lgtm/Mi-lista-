@@ -384,3 +384,57 @@ http://100.90.204.66:6878/ace/getstream?id=9c079e1bbd01814c107e89187b8c24ba0ac30
 
 #EXTINF:-1 tvg-id="M+ Originales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Originales.png" group-title="MOVISTAR", M+ Originales HD f8bc
 http://100.90.204.66:6878/ace/getstream?id=0364449064d322a1bc
+
+#EXTINF:-1 tvg-id="M+ Originales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Originales.png" group-title="MOVISTAR", M+ Originales HD c1ce
+http://100.90.204.66:6878/ace/getstream?id=383135bfbe2897621f31f90b82f0d463d1efc1ce
+
+#EXTINF:-1 tvg-id="Baby TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Baby%20TV.png" group-title="MOVISTAR", Baby TV 28fb
+http://100.90.204.66:6878/ace/getstream?id=a6f7b11d95311283d58288593a2162a84a6228fb
+
+#EXTINF:-1 tvg-id="AXN Movies" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AXN%20Movies.png" group-title="MOVISTAR", AXN Movies 457c
+http://100.90.204.66:6878/ace/getstream?id=8e78a63bf01524e93081bf584bc520d20d5e457c
+
+#EXTINF:-1 tvg-id="SkyShowtime 1" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/SkyShowtime.png" group-title="MOVISTAR", SkyShowtime 1 8bcf
+http://100.90.204.66:6878/ace/getstream?id=1ca8be3853109a28c31fe980e18451f28b4d8bcf
+
+#EXTINF:-1 tvg-id="M+ Documentales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Documentales.png" group-title="MOVISTAR", M+ Documentales HD 2216
+http://100.90.204.66:6878/ace/getstream?id=4920c822760bfd4b9f291e0a2935272a27612216
+
+#EXTINF:-1 tvg-id="M+ Cine HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Cine.png" group-title="MOVISTAR", M+ Cine HD 31aa
+http://100.90.204.66:6878/ace/getstream?id=f18542bbf062e219fb0a241bb28938743d1a31aa
+
+#EXTINF:-1 tvg-id="M+ Series HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Series.png" group-title="MOVISTAR", M+ Series HD 0041
+http://100.90.204.66:6878/ace/getstream?id=a64115b81a8f334812f84b125d023924fca10041
+
+#EXTINF:-1 tvg-id="M+ Series 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Series.png" group-title="MOVISTAR", M+ Series 2 HD 9b72
+http://100.90.204.66:6878/ace/getstream?id=a74a1209e74d1bf5f284693b49e29a39f1c29b72
+
+#EXTINF:-1 tvg-id="M+ Clasicos" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Clasicos.png" group-title="MOVISTAR", M+ Clasicos 1a5e
+http://100.90.204.66:6878/ace/getstream?id=83c0f2a033100f28246f481c7f0f6229202a1a5e
+
+#EXTINF:-1 tvg-id="M+ Drama" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Drama.png" group-title="MOVISTAR", M+ Drama 44fa
+http://100.90.204.66:6878/ace/getstream?id=12c6a01f9453965b7367852c028a30ef126a44fa
+
+#EXTINF:-1 tvg-id="M+ Suspense" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Suspense.png" group-title="MOVISTAR", M+ Suspense 3e8b
+http://100.90.204.66:6878/ace/getstream?id=96851239c801264853018e6988849b29e0133e8b
+
+#EXTINF:-1 tvg-id="M+ Musica" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Musica.png" group-title="MOVISTAR", M+ Musica 7b12
+http://100.90.204.66:6878/ace/getstream?id=38274a1029b378e9f29a03b218402941031f7b12
+
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEPORTES", M+ Deportes HD 9a11
+http://100.90.204.66:6878/ace/getstream?id=87e14f826352b200b395d3a98711310f9e1a9a11
+
+#EXTINF:-1 tvg-id="M+ Deportes 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes%202.png" group-title="MOVISTAR DEPORTES", M+ Deportes 2 HD 4432
+http://100.90.204.66:6878/ace/getstream?id=3712b847a98d33118a8047c320294eb83e1a4432
+
+#EXTINF:-1 tvg-id="M+ Golf HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf.png" group-title="MOVISTAR DEPORTES", M+ Golf HD 182a
+http://100.90.204.66:6878/ace/getstream?id=12a1f09831e7bb283021fe3a1202882a7182182a
+
+#EXTINF:-1 tvg-id="M+ Golf 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf%202.png" group-title="MOVISTAR DEPORTES", M+ Golf 2 HD 0021
+http://100.90.204.66:6878/ace/getstream?id=019f3778a832f012aa080e729a03978383210021
+
+#EXTINF:-1 tvg-id="Eurosport 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Eurosport%201.png" group-title="EUROSPORT", Eurosport 1 HD 0081
+http://100.90.204.66:6878/ace/getstream?id=191aa8950811eef2a874013ba0281e0129710081
+
+#EXTINF:-1 tvg-id="Eurosport 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Eurosport%202.png" group-title="EUROSPORT", Eurosport 2 HD 9901
+http://100.90.204.66:6878/ace/getstream?id=0021a8f9d38101ef2b8129e71939b4012c829901
