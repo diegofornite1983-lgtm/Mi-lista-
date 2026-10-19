@@ -1,4 +1,4 @@
-#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz" refresh="3600"
+#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,https://raw.githubusercontent.com/davidmuma/EPG_dobleM/master/guiatv.xml" refresh="3600"
 #EXTVLCOPT:network-caching=1000
 
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA",⭐️ DAZN LaLiga 496a
@@ -325,27 +325,6 @@ http://100.90.204.66:6878/ace/getstream?id=1ab443f5b4beb6d586f19e8b25b9f9646cf2a
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 0056
 http://100.90.204.66:6878/ace/getstream?id=fa931cbc87dc9d66fdd30a9644e054b403960056
 
-#EXTINF:-1 tvg-id="M+ Hits HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Hits.png" group-title="MOVISTAR", M+ Hits HD 38f4
-http://100.90.204.66:6878/ace/getstream?id=0bb012ac0e815b413831687a4a9b61777b3338f4
-
-#EXTINF:-1 tvg-id="HBO Max Avances" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/HBO%20Max%20Avances.png" group-title="MOVISTAR", HBO Max Avances 552d
-http://100.90.204.66:6878/ace/getstream?id=039719b35e6987a9b5888a8f4b903b3d31d2552d
-
-#EXTINF:-1 tvg-id="SYFY HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/SyFy.png" group-title="MOVISTAR", SYFY HD 1463
-http://100.90.204.66:6878/ace/getstream?id=0abff11099cfelbb45fac7fd29e996a68a9f1463
-
-#EXTINF:-1 tvg-id="La Sexta HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%20Sexta.png" group-title="MOVISTAR", La Sexta HD 7ecf
-http://100.90.204.66:6878/ace/getstream?id=6fa8e5288e9b91c926134362f7c01320f3eb7ecf
-
-#EXTINF:-1 tvg-id="Disney Junior" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Disney%20Junior.png" group-title="MOVISTAR", Disney Junior 9bed
-http://100.90.204.66:6878/ace/getstream?id=280a92fe6ab989ff95cc744ab3e22b50e7829bed
-
-#EXTINF:-1 tvg-id="M+ Indie HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Indie.png" group-title="MOVISTAR", M+ Indie HD 271f
-http://100.90.204.66:6878/ace/getstream?id=205cf36437bf4e0643398f62f212832d4b8e271f
-
-#EXTINF:-1 tvg-id="M+ Romance" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Romance.png" group-title="MOVISTAR", M+ Romance HD 2d7a
-http://100.90.204.66:6878/ace/getstream?id=c8a8710788e86761c4c702ee5cb7164e2a0e2d7a
-
 #EXTINF:-1 tvg-id="Boing" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Boing.png" group-title="MOVISTAR", BOING Spain a710
 http://100.90.204.66:6878/ace/getstream?id=04dc4964d2bddf41da7da028397ed2a3feeea710
 
@@ -370,6 +349,9 @@ http://100.90.204.66:6878/ace/getstream?id=ea8e71ca4c755812bb753838a31f5357426f2
 #EXTINF:-1 tvg-id="M+ Comedia HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Comedia.png" group-title="MOVISTAR", M+ Comedia HD 740a
 http://100.90.204.66:6878/ace/getstream?id=b5b4cf132f1c655ed2f0aaa759a6012db140740a
 
+#EXTINF:-1 tvg-id="M+ Comedia HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Comedia.png" group-title="MOVISTAR", M+ Comedia HD ffcb
+http://100.90.204.66:6878/ace/getstream?id=e8cd9088fee41413df360e4539c9e7184a63ffcb
+
 #EXTINF:-1 tvg-id="M+ Estrenos HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Estrenos.png" group-title="MOVISTAR", M+ Estrenos HD fbe0
 http://100.90.204.66:6878/ace/getstream?id=fe6dead974cebbb7626458a763ff0e2150dffbe0
 
@@ -383,58 +365,175 @@ http://100.90.204.66:6878/ace/getstream?id=91d38e143c3495dabf3ddf0497af98a227aeb
 http://100.90.204.66:6878/ace/getstream?id=9c079e1bbd01814c107e89187b8c24ba0ac306dd
 
 #EXTINF:-1 tvg-id="M+ Originales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Originales.png" group-title="MOVISTAR", M+ Originales HD f8bc
-http://100.90.204.66:6878/ace/getstream?id=0364449064d322a1bc
+http://100.90.204.66:6878/ace/getstream?id=0364449064d322a1bc0f97d568452053810ef8bc
 
 #EXTINF:-1 tvg-id="M+ Originales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Originales.png" group-title="MOVISTAR", M+ Originales HD c1ce
-http://100.90.204.66:6878/ace/getstream?id=383135bfbe2897621f31f90b82f0d463d1efc1ce
+http://100.90.204.66:6878/ace/getstream?id=60a59a6259b6d4cb5b826e1847cd0af0a7ecc1ce
 
 #EXTINF:-1 tvg-id="Baby TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Baby%20TV.png" group-title="MOVISTAR", Baby TV 28fb
-http://100.90.204.66:6878/ace/getstream?id=a6f7b11d95311283d58288593a2162a84a6228fb
+http://100.90.204.66:6878/ace/getstream?id=d865b49d6ec5844e0bcf8e596ab90a7be8bb28fb
 
-#EXTINF:-1 tvg-id="AXN Movies" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AXN%20Movies.png" group-title="MOVISTAR", AXN Movies 457c
-http://100.90.204.66:6878/ace/getstream?id=8e78a63bf01524e93081bf584bc520d20d5e457c
+#EXTINF:-1 tvg-id="AXN Movies HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AXN%20Movies.png" group-title="MOVISTAR", AXN Movies 457c
+http://100.90.204.66:6878/ace/getstream?id=6b4acf7cab48967eccea5c3e89b1e945ceab457c
 
-#EXTINF:-1 tvg-id="SkyShowtime 1" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/SkyShowtime.png" group-title="MOVISTAR", SkyShowtime 1 8bcf
-http://100.90.204.66:6878/ace/getstream?id=1ca8be3853109a28c31fe980e18451f28b4d8bcf
+#EXTINF:-1 tvg-id="" tvg-logo="" group-title="MOVISTAR", SkyShowtime 1 8bcf
+http://100.90.204.66:6878/ace/getstream?id=d98f8926ec3c7c403cec32530f2ab7725cf88bcf
 
 #EXTINF:-1 tvg-id="M+ Documentales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Documentales.png" group-title="MOVISTAR", M+ Documentales HD 2216
-http://100.90.204.66:6878/ace/getstream?id=4920c822760bfd4b9f291e0a2935272a27612216
+http://100.90.204.66:6878/ace/getstream?id=3c1b00267a398093848ded743cfdb547e2232216
 
-#EXTINF:-1 tvg-id="M+ Cine HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Cine.png" group-title="MOVISTAR", M+ Cine HD 31aa
-http://100.90.204.66:6878/ace/getstream?id=f18542bbf062e219fb0a241bb28938743d1a31aa
+#EXTINF:-1 tvg-id="M+ Drama HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Drama.png" group-title="MOVISTAR", M+ Drama HD ef7e
+http://100.90.204.66:6878/ace/getstream?id=fc469b1e22f9a75bf7079995876955b9b293ef7e
 
-#EXTINF:-1 tvg-id="M+ Series HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Series.png" group-title="MOVISTAR", M+ Series HD 0041
-http://100.90.204.66:6878/ace/getstream?id=a64115b81a8f334812f84b125d023924fca10041
+#EXTINF:-1 tvg-id="M+ Hits HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Hits.png" group-title="MOVISTAR", M+ Hits HD 4873
+http://100.90.204.66:6878/ace/getstream?id=bb78482832c454dfbb932912d65726619f924873
 
-#EXTINF:-1 tvg-id="M+ Series 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Series.png" group-title="MOVISTAR", M+ Series 2 HD 9b72
-http://100.90.204.66:6878/ace/getstream?id=a74a1209e74d1bf5f284693b49e29a39f1c29b72
+#EXTINF:-1 tvg-id="M+ Hits HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Hits.png" group-title="MOVISTAR", M+ Hits HD 38f4
+http://100.90.204.66:6878/ace/getstream?id=0bb012ac0e815b413831687a4a9b61777b3338f4
 
-#EXTINF:-1 tvg-id="M+ Clasicos" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Clasicos.png" group-title="MOVISTAR", M+ Clasicos 1a5e
-http://100.90.204.66:6878/ace/getstream?id=83c0f2a033100f28246f481c7f0f6229202a1a5e
+#EXTINF:-1 tvg-id="HBO Max Avances" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/HBO%20Max%20Avances.png" group-title="MOVISTAR", HBO Max Avances 552d
+http://100.90.204.66:6878/ace/getstream?id=039719b35e6987a9b5888a8f4b903b3d31d2552d
 
-#EXTINF:-1 tvg-id="M+ Drama" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Drama.png" group-title="MOVISTAR", M+ Drama 44fa
-http://100.90.204.66:6878/ace/getstream?id=12c6a01f9453965b7367852c028a30ef126a44fa
+#EXTINF:-1 tvg-id="SYFY HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/SyFy.png" group-title="MOVISTAR", SYFY HD 1463
+http://100.90.204.66:6878/ace/getstream?id=0abff11099cfe1bb45fac7fd29e996a68a9f1463
 
-#EXTINF:-1 tvg-id="M+ Suspense" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Suspense.png" group-title="MOVISTAR", M+ Suspense 3e8b
-http://100.90.204.66:6878/ace/getstream?id=96851239c801264853018e6988849b29e0133e8b
+#EXTINF:-1 tvg-id="La Sexta HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%20Sexta.png" group-title="MOVISTAR", La Sexta HD 7ecf
+http://100.90.204.66:6878/ace/getstream?id=6fa8e5288e9b91c926134362f7c01320f3eb7ecf
 
-#EXTINF:-1 tvg-id="M+ Musica" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Musica.png" group-title="MOVISTAR", M+ Musica 7b12
-http://100.90.204.66:6878/ace/getstream?id=38274a1029b378e9f29a03b218402941031f7b12
+#EXTINF:-1 tvg-id="" tvg-logo="" group-title="MOVISTAR", Disney Junior 9bed
+http://100.90.204.66:6878/ace/getstream?id=280a92fe6ab989ff95cc744ab3e22b50e7829bed
 
-#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEPORTES", M+ Deportes HD 9a11
-http://100.90.204.66:6878/ace/getstream?id=87e14f826352b200b395d3a98711310f9e1a9a11
+#EXTINF:-1 tvg-id="M+ Indie HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Indie.png" group-title="MOVISTAR", M+ Indie HD 271f
+http://100.90.204.66:6878/ace/getstream?id=205cf36437bf4e0643398f62f212832d4b8e271f
 
-#EXTINF:-1 tvg-id="M+ Deportes 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes%202.png" group-title="MOVISTAR DEPORTES", M+ Deportes 2 HD 4432
-http://100.90.204.66:6878/ace/getstream?id=3712b847a98d33118a8047c320294eb83e1a4432
+#EXTINF:-1 tvg-id="M+ Romance" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Romance.png" group-title="MOVISTAR", M+ Romance HD 2d7a
+http://100.90.204.66:6878/ace/getstream?id=c8a8710788e86761c4c702ee5cb7164e2a0e2d7a
 
-#EXTINF:-1 tvg-id="M+ Golf HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf.png" group-title="MOVISTAR DEPORTES", M+ Golf HD 182a
-http://100.90.204.66:6878/ace/getstream?id=12a1f09831e7bb283021fe3a1202882a7182182a
+#EXTINF:-1 tvg-id="M+ Romance" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Romance.png" group-title="MOVISTAR", M+ Romance HD c560
+http://100.90.204.66:6878/ace/getstream?id=c5d339864350949aa5311a7aca52d4573818c560
 
-#EXTINF:-1 tvg-id="M+ Golf 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf%202.png" group-title="MOVISTAR DEPORTES", M+ Golf 2 HD 0021
-http://100.90.204.66:6878/ace/getstream?id=019f3778a832f012aa080e729a03978383210021
+#EXTINF:-1 tvg-id="M+ Romance" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Romance.png" group-title="MOVISTAR", M+ Romance HD 9bc7
+http://100.90.204.66:6878/ace/getstream?id=9ebc9eed6bd8d8a278b7aaab1513dd9ad2299bc7
 
-#EXTINF:-1 tvg-id="Eurosport 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Eurosport%201.png" group-title="EUROSPORT", Eurosport 1 HD 0081
-http://100.90.204.66:6878/ace/getstream?id=191aa8950811eef2a874013ba0281e0129710081
+#EXTINF:-1 tvg-id="M+ Cine Español" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Cine%20Espa%C3%B1ol.png" group-title="MOVISTAR", M+ Cine Español cb72
+http://100.90.204.66:6878/ace/getstream?id=dc044c79fcde8ed69ed4c878643b09f09e7ccb72
 
-#EXTINF:-1 tvg-id="Eurosport 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Eurosport%202.png" group-title="EUROSPORT", Eurosport 2 HD 9901
-http://100.90.204.66:6878/ace/getstream?id=0021a8f9d38101ef2b8129e71939b4012c829901
+#EXTINF:-1 tvg-id="Real Madrid Tv" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Real%20Madrid%20TV.png" group-title="MOVISTAR",Real Madrid Tv 7be7
+http://100.90.204.66:6878/ace/getstream?id=ac353757b626cedc6461d8eb73bfffa15fbb7be7
+
+#EXTINF:-1 tvg-id="Eurosport 1 HD" tvg-logo="https://i.ibb.co/r2Yd7xD/euro1.png" group-title="EUROSPORT",Eurosport 1 a153
+http://100.90.204.66:6878/ace/getstream?id=313213b3b99c0f7437f68c8ea5a7b2b6d7b8a153
+
+#EXTINF:-1 tvg-id="Eurosport 1 HD" tvg-logo="https://i.ibb.co/r2Yd7xD/euro1.png" group-title="EUROSPORT",Eurosport 1 cfe9
+http://100.90.204.66:6878/ace/getstream?id=48a589dbeab3544662fafd79888aada7d834cfe9
+
+#EXTINF:-1 tvg-id="Eurosport 1 HD" tvg-logo="https://i.ibb.co/r2Yd7xD/euro1.png" group-title="EUROSPORT",Eurosport 1 ce1a
+http://100.90.204.66:6878/ace/getstream?id=8522af51ae7189b12effabbb448dcb707195ce1a
+
+#EXTINF:-1 tvg-id="Eurosport 2" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 27e7
+http://100.90.204.66:6878/ace/getstream?id=3ebcfc00921a4a9307dec97e078f8dc12eee27e7
+
+#EXTINF:-1 tvg-id="Eurosport 2" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 8a3a
+http://100.90.204.66:6878/ace/getstream?id=c6180a86440004748e2abe34d6f31eed8a218a3a
+
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEPORTES",M+ Deportes 355d
+http://100.90.204.66:6878/ace/getstream?id=332d8fdeb9c51385230b8c9448e047ccc4a6355d
+
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEPORTES",M+ Deportes b0ab
+http://100.90.204.66:6878/ace/getstream?id=7f8b4f57bf234510d3f607492508d68167d4b0ab
+
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEPORTES",M+ Deportes c2b3
+http://100.90.204.66:6878/ace/getstream?id=acb510858f34c3c6fd5f79395b031abd6885c2b3
+
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEPORTES",M+ Deportes 662f
+http://100.90.204.66:6878/ace/getstream?id=cf5327fe9c962a29dfff3868f4349ff2b0b4662f
+
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEPORTES",M+ Deportes 776d
+http://100.90.204.66:6878/ace/getstream?id=c6a824a81b36f6c3529826477caf2ad94b45776d
+
+#EXTINF:-1 tvg-id="M+ Deportes 2 HD" tvg-logo="https://i.ibb.co/q95fBKV/deportes2.png" group-title="MOVISTAR DEPORTES",⭐️ M+ Deportes 2 52b5
+http://100.90.204.66:6878/ace/getstream?id=3afe1af18f8ff78e9946856911b00c67477052b5
+
+#EXTINF:-1 tvg-id="M+ Deportes 2 HD" tvg-logo="https://i.ibb.co/q95fBKV/deportes2.png" group-title="MOVISTAR DEPORTES",M+ Deportes 2 9eed
+http://100.90.204.66:6878/ace/getstream?id=3ee6a0b0e3cacea68107f61bf398f651d8159eed
+
+#EXTINF:-1 tvg-id="M+ Deportes 2 HD" tvg-logo="https://i.ibb.co/q95fBKV/deportes2.png" group-title="MOVISTAR DEPORTES",M+ Deportes 2 2191
+http://100.90.204.66:6878/ace/getstream?id=8cd8fd69c6755ec452e9e74b33a0d1a653452191
+
+#EXTINF:-1 tvg-id="M+ Deportes 2 HD" tvg-logo="https://i.ibb.co/q95fBKV/deportes2.png" group-title="MOVISTAR DEPORTES",M+ Deportes 2 e0ee
+http://100.90.204.66:6878/ace/getstream?id=3774d8feab016ca766b35ea8488e7514ca30e0ee
+
+#EXTINF:-1 tvg-id="M+ Deportes 2 HD" tvg-logo="https://i.ibb.co/q95fBKV/deportes2.png" group-title="MOVISTAR DEPORTES",M+ Deportes 2 d539
+http://100.90.204.66:6878/ace/getstream?id=fd2aea1aa8fcddebfda1644118c6806230a1d539
+
+#EXTINF:-1 tvg-id="M+ Deportes 3" tvg-logo="https://i.ibb.co/jDg5qWD/deportes3.png" group-title="MOVISTAR DEPORTES",⭐️ M+ Deportes 3 5ed0
+http://100.90.204.66:6878/ace/getstream?id=39fefdecfc953dcf6e7c589739bf486c2e605ed0
+
+#EXTINF:-1 tvg-id="M+ Deportes 3" tvg-logo="https://i.ibb.co/jDg5qWD/deportes3.png" group-title="MOVISTAR DEPORTES",M+ Deportes 3 d810
+http://100.90.204.66:6878/ace/getstream?id=84aed52c5deb78f58595d88250e7a2bd04dfd810
+
+#EXTINF:-1 tvg-id="M+ Deportes 3" tvg-logo="https://i.ibb.co/jDg5qWD/deportes3.png" group-title="MOVISTAR DEPORTES",M+ Deportes 3 6a01
+http://100.90.204.66:6878/ace/getstream?id=f4d9011721fad5098febbe4d7c078a582e176a01
+
+#EXTINF:-1 tvg-id="M+ Deportes 3" tvg-logo="https://i.ibb.co/jDg5qWD/deportes3.png" group-title="MOVISTAR DEPORTES",M+ Deportes 3 11f8
+http://100.90.204.66:6878/ace/getstream?id=d448a45840bfd60678abb2a45dd6044c9c8d11f8
+
+#EXTINF:-1 tvg-id="M+ Deportes 4" tvg-logo="https://i.ibb.co/WDN9NN9/deportes4.png" group-title="MOVISTAR DEPORTES",⭐️ M+ Deportes 4 3869
+http://100.90.204.66:6878/ace/getstream?id=8b5f9d967384afab226dd759e6e9dfaee9993869
+
+#EXTINF:-1 tvg-id="M+ Deportes 4" tvg-logo="https://i.ibb.co/WDN9NN9/deportes4.png" group-title="MOVISTAR DEPORTES",M+ Deportes 4 6258
+http://100.90.204.66:6878/ace/getstream?id=7bede102385c65a545db531af476ef18c31f6258
+
+#EXTINF:-1 tvg-id="M+ Deportes 5" tvg-logo="https://i.ibb.co/WDN9NN9/deportes5.png" group-title="MOVISTAR DEPORTES",⭐️ M+ Deportes 5 7a90
+http://100.90.204.66:6878/ace/getstream?id=3230cdca852a10325222e3c546e499e31d547a90
+
+#EXTINF:-1 tvg-id="M+ Deportes 5" tvg-logo="https://i.ibb.co/WDN9NN9/deportes5.png" group-title="MOVISTAR DEPORTES",M+ Deportes 5 8a93
+http://100.90.204.66:6878/ace/getstream?id=15ec214bb10925dadd16a1716bb2042af6008a93
+
+#EXTINF:-1 tvg-id="M+ Deportes 6" tvg-logo="https://i.ibb.co/WDN9NN9/deportes6.png" group-title="MOVISTAR DEPORTES",⭐️ M+ Deportes 6 0f7c
+http://100.90.204.66:6878/ace/getstream?id=8f982a0d6e3196c12d0034142b65008321150f7c
+
+#EXTINF:-1 tvg-id="M+ Deportes 6" tvg-logo="https://i.ibb.co/WDN9NN9/deportes6.png" group-title="MOVISTAR DEPORTES",M+ Deportes 6 baa6
+http://100.90.204.66:6878/ace/getstream?id=765f6a743bcfde948418aaf0de6e66de6a9fbaa6
+
+#EXTINF:-1 tvg-id="M+ Deportes 7" tvg-logo="https://i.ibb.co/WDN9NN9/deportes7.png" group-title="MOVISTAR DEPORTES",M+ Deportes 7 cbda
+http://100.90.204.66:6878/ace/getstream?id=2d549bbcd898b09c4b736e6e3e83e8e8c19fcbda
+
+#EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEPORTES",M+ Vamos ad16
+http://100.90.204.66:6878/ace/getstream?id=7e4f6eb38e0d5ef52b7f8b96eb80c1d8c87dad16
+
+#EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEPORTES",M+ Vamos 4e49
+http://100.90.204.66:6878/ace/getstream?id=26159ba451167e962f4f9236ab4c7626f7eb4e49
+
+#EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEPORTES",M+ Vamos a6f9
+http://100.90.204.66:6878/ace/getstream?id=6b60251bc893c4e79fdfa37a1f5f6212e73ea6f9
+
+#EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEPORTES",M+ Vamos 67fc
+http://100.90.204.66:6878/ace/getstream?id=ad5ca6e24f87f47a9c3c5bc10c7e8e5af46767fc
+
+#EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEPORTES",M+ Vamos 0e3e
+http://100.90.204.66:6878/ace/getstream?id=7a053fc56fc93f42ec656382408e647055110e3e
+
+#EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEPORTES",M+ Vamos 0e98
+http://100.90.204.66:6878/ace/getstream?id=86262568aa72b956b06ac67b1c310a32248a0e98
+
+#EXTINF:-1 tvg-id="M+ Vamos 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos%202.png" group-title="MOVISTAR DEPORTES",M+ Vamos 2 d879
+http://100.90.204.66:6878/ace/getstream?id=c8c172886e466fbe443433f8e95d201e34edd879
+
+#EXTINF:-1 tvg-id="M+ Vamos 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos%202.png" group-title="MOVISTAR DEPORTES",M+ Vamos 2 307c
+http://100.90.204.66:6878/ace/getstream?id=0cd11c1f51b84ebe9954496b3ef9b6aeccf7307c
+
+#EXTINF:-1 tvg-id="M+ Vamos 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos%202.png" group-title="MOVISTAR DEPORTES",M+ Vamos 2 91a8
+http://100.90.204.66:6878/ace/getstream?id=8cdb6d53f66d73bc8cba8ef850ab7895bcfa91a8
+
+#EXTINF:-1 tvg-id="M+ Vamos 3" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos%203.png" group-title="MOVISTAR DEPORTES",M+ Vamos 3 1f53a
+http://100.90.204.66:6878/ace/getstream?id=837883625d40e1eb5566eefaf74811046491f53a
+
+#EXTINF:-1 tvg-id="M+ Golf HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf.png" group-title="MOVISTAR DEPORTES",⭐️ M+ Golf 9afb
+http://100.90.204.66:6878/ace/getstream?id=872608e734992db636eb79426802cd08f4029afb
+
+#EXTINF:-1 tvg-id="M+ Golf HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf.png" group-title="MOVISTAR DEPORTES",M+ Golf 66eb
+http://100.90.204.66:6878/ace/getstream?id=8121478d3d3e563ad6b98018bc1c0aeb2f6166eb
+
+#EXTINF:-1 tvg-id="M+ Golf 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf%202.png" group-title="MOVISTAR DEPORTES",M+ Golf a714
+http://100.90.204.66:6878/ace/getstream?id=597cca4ef375529aaca0608b43187d99d26ca714
