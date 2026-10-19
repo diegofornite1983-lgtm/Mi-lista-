@@ -307,6 +307,9 @@ http://100.90.204.66:6878/ace/getstream?id=88113ee23295b8930ae328a88a8c1b861b8f2
 #EXTINF:-1 tvg-id="M+ Baloncesto 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png" group-title="BALONCESTO",M+ Baloncesto 2 8344
 http://100.90.204.66:6878/ace/getstream?id=853129258a5cb51f27829eddb934e58b45978344
 
+#EXTINF:-1 tvg-id="DAZN Baloncesto 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20Baloncesto%202.png" group-title="BALONCESTO",M+ Baloncesto 2 3535
+http://100.90.204.66:6878/ace/getstream?id=c8c33b2673efe7f386790c5966643820578f3535
+
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 4ec9
 http://100.90.204.66:6878/ace/getstream?id=67121cbb722b88ce4489717e9a87a26f60184ec9
 
@@ -321,6 +324,27 @@ http://100.90.204.66:6878/ace/getstream?id=1ab443f5b4beb6d586f19e8b25b9f9646cf2a
 
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 0056
 http://100.90.204.66:6878/ace/getstream?id=fa931cbc87dc9d66fdd30a9644e054b403960056
+
+#EXTINF:-1 tvg-id="M+ Hits HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Hits.png" group-title="MOVISTAR", M+ Hits HD 38f4
+http://100.90.204.66:6878/ace/getstream?id=0bb012ac0e815b413831687a4a9b61777b3338f4
+
+#EXTINF:-1 tvg-id="HBO Max Avances" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/HBO%20Max%20Avances.png" group-title="MOVISTAR", HBO Max Avances 552d
+http://100.90.204.66:6878/ace/getstream?id=039719b35e6987a9b5888a8f4b903b3d31d2552d
+
+#EXTINF:-1 tvg-id="SYFY HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/SyFy.png" group-title="MOVISTAR", SYFY HD 1463
+http://100.90.204.66:6878/ace/getstream?id=0abff11099cfelbb45fac7fd29e996a68a9f1463
+
+#EXTINF:-1 tvg-id="La Sexta HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%20Sexta.png" group-title="MOVISTAR", La Sexta HD 7ecf
+http://100.90.204.66:6878/ace/getstream?id=6fa8e5288e9b91c926134362f7c01320f3eb7ecf
+
+#EXTINF:-1 tvg-id="Disney Junior" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Disney%20Junior.png" group-title="MOVISTAR", Disney Junior 9bed
+http://100.90.204.66:6878/ace/getstream?id=280a92fe6ab989ff95cc744ab3e22b50e7829bed
+
+#EXTINF:-1 tvg-id="M+ Indie HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Indie.png" group-title="MOVISTAR", M+ Indie HD 271f
+http://100.90.204.66:6878/ace/getstream?id=205cf36437bf4e0643398f62f212832d4b8e271f
+
+#EXTINF:-1 tvg-id="M+ Romance" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Romance.png" group-title="MOVISTAR", M+ Romance HD 2d7a
+http://100.90.204.66:6878/ace/getstream?id=c8a8710788e86761c4c702ee5cb7164e2a0e2d7a
 
 #EXTINF:-1 tvg-id="Boing" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Boing.png" group-title="MOVISTAR", BOING Spain a710
 http://100.90.204.66:6878/ace/getstream?id=04dc4964d2bddf41da7da028397ed2a3feeea710
