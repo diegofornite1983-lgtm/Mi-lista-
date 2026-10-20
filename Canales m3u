@@ -482,21 +482,6 @@ http://100.90.204.66:6878/ace/getstream?id=8121478d3d3e563ad6b98018bc1c0aeb2f616
 #EXTINF:-1 tvg-id="M+ Golf 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf%202.png" group-title="MOVISTAR DEPORTES",M+ Golf a714
 http://100.90.204.66:6878/ace/getstream?id=597cca4ef375529aaca0608b43187d99d26ca714
 
-# ==========================================
-# CARPETA: BALONCESTO
-# ==========================================
-#EXTINF:-1 tvg-id="M+ Baloncesto" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png" group-title="BALONCESTO",M+ Baloncesto cf07
-http://100.90.204.66:6878/ace/getstream?id=6fbd92735502bdebbf1ea58f4298e49759c0cf07
-#EXTINF:-1 tvg-id="M+ Baloncesto" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png" group-title="BALONCESTO",M+ Baloncesto 9fa5
-http://100.90.204.66:6878/ace/getstream?id=9dd9cd78f0b08097a0ad290606dbbee999709fa5
-#EXTINF:-1 tvg-id="M+ Baloncesto" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png" group-title="BALONCESTO",M+ Baloncesto 1aa0
-http://100.90.204.66:6878/ace/getstream?id=34b91125bd752462f1eca2d8d52f5f40fa761aa0
-#EXTINF:-1 tvg-id="M+ Baloncesto 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png" group-title="BALONCESTO",M+ Baloncesto 2 21f1
-http://100.90.204.66:6878/ace/getstream?id=88113ee23295b8930ae328a88a8c1b861b8f21f1
-#EXTINF:-1 tvg-id="M+ Baloncesto 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png" group-title="BALONCESTO",M+ Baloncesto 2 8344
-http://100.90.204.66:6878/ace/getstream?id=853129258a5cb51f27829eddb934e58b45978344
-#EXTINF:-1 tvg-id="DAZN Baloncesto 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20Baloncesto%202.png" group-title="BALONCESTO",M+ Baloncesto 2 3535
-http://100.90.204.66:6878/ace/getstream?id=c8c33b2673efe7f386790c5966643820578f3535
 
 
 # ==========================================
@@ -528,3 +513,19 @@ http://100.90.204.66:6878/ace/getstream?id=177796041773be99b489dd3ce86144f243e73
 http://100.90.204.66:6878/ace/getstream?id=7b742628b9f7e82902bdbc1ff92eba1988875cfc
 #EXTINF:-1 tvg-id="RFEF TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/RFEF.png" group-title="RFEF TV",RFEF TV c351
 http://100.90.204.66:6878/ace/getstream?id=854ff9c607101791346111cd2366a392c3b8c351
+
+# ==========================================
+# CARPETA: BALONCESTO
+# ==========================================
+#EXTINF:-1 tvg-id="M+ Baloncesto" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png" group-title="BALONCESTO",M+ Baloncesto cf07
+http://100.90.204.66:6878/ace/getstream?id=6fbd92735502bdebbf1ea58f4298e49759c0cf07
+#EXTINF:-1 tvg-id="M+ Baloncesto" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png" group-title="BALONCESTO",M+ Baloncesto 9fa5
+http://100.90.204.66:6878/ace/getstream?id=9dd9cd78f0b08097a0ad290606dbbee999709fa5
+#EXTINF:-1 tvg-id="M+ Baloncesto" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png" group-title="BALONCESTO",M+ Baloncesto 1aa0
+http://100.90.204.66:6878/ace/getstream?id=34b91125bd752462f1eca2d8d52f5f40fa761aa0
+#EXTINF:-1 tvg-id="M+ Baloncesto 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png" group-title="BALONCESTO",M+ Baloncesto 2 21f1
+http://100.90.204.66:6878/ace/getstream?id=88113ee23295b8930ae328a88a8c1b861b8f21f1
+#EXTINF:-1 tvg-id="M+ Baloncesto 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png" group-title="BALONCESTO",M+ Baloncesto 2 8344
+http://100.90.204.66:6878/ace/getstream?id=853129258a5cb51f27829eddb934e58b45978344
+#EXTINF:-1 tvg-id="DAZN Baloncesto 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20Baloncesto%202.png" group-title="BALONCESTO",M+ Baloncesto 2 3535
+http://100.90.204.66:6878/ace/getstream?id=c8c33b2673efe7f386790c5966643820578f3535
