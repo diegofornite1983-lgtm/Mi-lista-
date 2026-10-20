@@ -5,10 +5,10 @@
 # CARPETA: LA LIGA
 # ==========================================
 
-#EXTINF:-1 tvg-id="M+ LaLiga HDR" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%20HDR.png" group-title="LA LIGA",M+ LaLiga HDR 3007
-http://100.90.204.66:6878/ace/getstream?id=f863873de9f7b2996dde19a0657dd89835af3007
 #EXTINF:-1 tvg-id="M+ LaLiga HDR" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%20HDR.png" group-title="LA LIGA",M+ LaLiga HDR (Solo Eventos) f065
 http://100.90.204.66:6878/ace/getstream?id=79c9dbec46dfa7de3acea6e5e05118e17dc0f065
+#EXTINF:-1 tvg-id="M+ LaLiga HDR" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%20HDR.png" group-title="LA LIGA",M+ LaLiga HDR 3007
+http://100.90.204.66:6878/ace/getstream?id=f863873de9f7b2996dde19a0657dd89835af3007
 #EXTINF:-1 tvg-id="M+ LaLiga HDR" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%20HDR.png" group-title="LA LIGA",M+ LaLiga HDR 1c3f
 http://100.90.204.66:6878/ace/getstream?infohash=2e0bfa2b966dab3aa3d3f3b5b6d04014b3ed1c3f
 
