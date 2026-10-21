@@ -1,29 +1,15 @@
 #EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,https://raw.githubusercontent.com/davidmuma/EPG_dobleM/master/guiatv.xml" refresh="3600"
 #EXTVLCOPT:network-caching=1000
 
-# ==========================================
-# ==========================================
-# ==========================================
+
 # ==========================================
 # CARPETA: TDT ESPAÑA
 # ==========================================
-#EXTINF:-1 tvg-id="La1.es" tvg-logo="https://raw.githubusercontent.com/LaQuay/TDTChannels/master/images/tv/la1.png" group-title="TDT ESPAÑA",La 1 HD
-https://rtvelivestream-v8.akamaized.net/v1/master/ce3a8870198031d27f8d6896e001851221b6a152/la1-master/la1-master.m3u8
+# ==========================================
+#EXTM3U url-tvg="https://www.tdtchannels.com/epg/TV.xml.gz"
+#EXTINF:-1 group-title="TDT COMPLETA",Cargar TDTChannels Oficial
+https://www.tdtchannels.com/lists/tv.m3u
 
-#EXTINF:-1 tvg-id="La2.es" tvg-logo="https://raw.githubusercontent.com/LaQuay/TDTChannels/master/images/tv/la2.png" group-title="TDT ESPAÑA",La 2 HD
-https://rtvelivestream-v8.akamaized.net/v1/master/ce3a8870198031d27f8d6896e001851221b6a152/la2-master/la2-master.m3u8
-
-#EXTINF:-1 tvg-id="Antena3.es" tvg-logo="https://raw.githubusercontent.com/LaQuay/TDTChannels/master/images/tv/antena3.png" group-title="TDT ESPAÑA",Antena 3 HD
-https://antena3-hls.atresmedia.com/hls/live/antena3/master.m3u8
-
-#EXTINF:-1 tvg-id="Cuatro.es" tvg-logo="https://raw.githubusercontent.com/LaQuay/TDTChannels/master/images/tv/cuatro.png" group-title="TDT ESPAÑA",Cuatro HD
-https://be-live-hls-cuatro.mediaset.es/live/cuatro.m3u8
-
-#EXTINF:-1 tvg-id="Telecinco.es" tvg-logo="https://raw.githubusercontent.com/LaQuay/TDTChannels/master/images/tv/telecinco.png" group-title="TDT ESPAÑA",Telecinco HD
-https://be-live-hls-telecinco.mediaset.es/live/telecinco.m3u8
-
-#EXTINF:-1 tvg-id="LaSexta.es" tvg-logo="https://raw.githubusercontent.com/LaQuay/TDTChannels/master/images/tv/lasexta.png" group-title="TDT ESPAÑA",La Sexta HD
-https://lasexta-hls.atresmedia.com/hls/live/lasexta/master.m3u8
 
 
 
