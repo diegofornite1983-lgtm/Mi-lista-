@@ -213,6 +213,8 @@ http://100.90.204.66:6878/ace/getstream?id=5437f76710c6cf7769e4a101ee52a6f4d4b39
 # ==========================================
 # CARPETA: CHAMPIONS
 # ==========================================
+#EXTINF:-1 tvg-id="M+ Liga de Campeones HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",M+ Liga de Campeones 36fe
+http://100.90.204.66:6878/ace/getstream?id=91af434b0bb521189286f8cbbab1aed39d7536fe
 #EXTINF:-1 tvg-id="M+ Liga de Campeones HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",⭐️ M+ Liga de Campeones f370
 http://100.90.204.66:6878/ace/getstream?id=e572a5178ff72eed7d1d751a18b4b3419699f370
 #EXTINF:-1 tvg-id="M+ Liga de Campeones HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",M+ Liga de Campeones 7439
@@ -221,8 +223,6 @@ http://100.90.204.66:6878/ace/getstream?id=63e4713e8379f2ebf5e6ed9aa00fbf78ebae7
 http://100.90.204.66:6878/ace/getstream?id=931fd4c24398a24beb9b6ede856ca34339ff2c22
 #EXTINF:-1 tvg-id="M+ Liga de Campeones HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",M+ Liga de Campeones 6920
 http://100.90.204.66:6878/ace/getstream?id=91b2a1fe85f5bb4a6cf9ef6d01cc65883d986920
-#EXTINF:-1 tvg-id="M+ Liga de Campeones HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",M+ Liga de Campeones 36fe
-http://100.90.204.66:6878/ace/getstream?id=91af434b0bb521189286f8cbbab1aed39d7536fe
 #EXTINF:-1 tvg-id="M+ Liga de Campeones HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",M+ Liga de Campeones 1bc9
 http://100.90.204.66:6878/ace/getstream?id=97df5b7824948972d041d8ca2a4d29c90b641bc9
 #EXTINF:-1 tvg-id="M+ Liga de Campeones HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",M+ Liga de Campeones 1f99
