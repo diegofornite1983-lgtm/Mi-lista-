@@ -3,12 +3,21 @@
 
 
 # ==========================================
-# CARPETA: TDT ESPAÑA
 # ==========================================
+# CARPETA: TDT GENERALISTAS (TDTCHANNELS JSON)
 # ==========================================
-#EXTM3U url-tvg="https://www.tdtchannels.com/epg/TV.xml.gz"
-#EXTINF:-1 group-title="TDT COMPLETA",Cargar TDTChannels Oficial
-https://www.tdtchannels.com/lists/tv.m3u
+#EXTINF:-1 tvg-id="La1.TV" tvg-logo="https://graph.facebook.com/la1detve/picture?width=200&height=200" group-title="TDT GENERALISTAS",La 1 HD
+https://rtvelivestream.rtve.es/rtvesec/la1/la1_main_dvr.m3u8
+
+#EXTINF:-1 tvg-id="La2.TV" tvg-logo="https://graph.facebook.com/la2detve/picture?width=200&height=200" group-title="TDT GENERALISTAS",La 2 HD
+https://rtvelivestream.rtve.es/rtvesec/la2/la2_main_dvr.m3u8
+
+#EXTINF:-1 tvg-id="TRECE.TV" tvg-logo="https://graph.facebook.com/TRECEtves/picture?width=200&height=200" group-title="TDT GENERALISTAS",TRECE
+https://play.cdn.enetres.net/091DB7AFBD77442B9BA2F141DCC182F5021/021/playlist.m3u8
+
+#EXTINF:-1 tvg-id="ElToroTV.TV" tvg-logo="https://graph.facebook.com/eltorotv.es/picture?width=200&height=200" group-title="TDT GENERALISTAS",El Toro TV
+https://streaming-1.eltorotv.com/lb0/eltorotv-streaming-web/index.m3u8
+
 
 
 
