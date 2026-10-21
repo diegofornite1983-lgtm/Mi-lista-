@@ -447,11 +447,7 @@ http://100.90.204.66:6878/ace/getstream?id=8121478d3d3e563ad6b98018bc1c0aeb2f616
 #EXTINF:-1 tvg-id="M+ Golf 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf%202.png" group-title="MOVISTAR DEPORTES",M+ Golf a714
 http://100.90.204.66:6878/ace/getstream?id=597cca4ef375529aaca0608b43187d99d26ca714
 
-#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,https://raw.githubusercontent.com/davidmuma/EPG_dobleM/master/guiatv.xml" refresh="3600"
-#EXTVLCOPT:network-caching=1000
 
-# ==========================================
-#EXTM3U
 
 # ==========================================
 # PRIMERA FEDERACIÓN (RFEF)
