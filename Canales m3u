@@ -332,6 +332,8 @@ http://100.90.204.66:6878/ace/getstream?id=2c54a4def58f41fc0d2163450a63f12955b65
 # ==========================================
 # CARPETA: F1
 # ==========================================
+#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",Dazn formula 1 shickat
+http://100.90.204.66:6878/ace/getstream?id=ee4646aae30d862e0d9d453998a344a60aaa7cde
 #EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",DAZN F1 7cde
 http://100.90.204.66:6878/ace/getstream?id=ee4646aae30d862e0d9d453998a344a60aaa7cde
 #EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",DAZN F1 381c
@@ -344,8 +346,6 @@ http://100.90.204.66:6878/ace/getstream?id=f8b0eae8fda973cf426311541d1668aa592f0
 http://100.90.204.66:6878/ace/getstream?id=27d11bbeb3026231d52de16b1fac48da7a099247
 #EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",Dazn formula 1
 http://100.90.204.66:6878/ace/getstream?id=d65257bb934b73647374224fd62d836815804be2
-#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",Dazn formula 1 shickat
-http://100.90.204.66:6878/ace/getstream?id=ee4646aae30d862e0d9d453998a344a60aaa7cde
 #EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",⭐️ DAZN F1 0076
 http://100.90.204.66:6878/ace/getstream?id=b04372b9543d763bd2dbd2a1842d9723fd080076
 
