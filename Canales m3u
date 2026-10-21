@@ -2,16 +2,11 @@
 #EXTVLCOPT:network-caching=1000
 
 # ==========================================
+# ==========================================
 # CARPETA: SERIES 24H
 # ==========================================
-#EXTINF:-1 tvg-id="ANHQV24H" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/default.png" group-title="SERIES 24H",Aquí No Hay Quien Viva 24H (Pluto TV)
-http://service-stitcher.clusters.pluto.tv/v1/stitch/embed/hls/channel/6075b63435adbf0007204b6b/master.m3u8?advertisingId=&appName=web&appVersion=unknown&architecture=&buildVersion=&deviceDNT=0&deviceId=00000000-0000-0000-0000-000000000000&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&manifestService=stitcher&platform=web&sid=00000000-0000-0000-0000-000000000000
-
-#EXTINF:-1 tvg-id="PlutoSeriesComedia" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/default.png" group-title="SERIES 24H",Series Comedia 24H (Pluto TV)
-http://service-stitcher.clusters.pluto.tv/v1/stitch/embed/hls/channel/5f917dbf8c1f9600076bf888/master.m3u8?advertisingId=&appName=web&appVersion=unknown&architecture=&buildVersion=&deviceDNT=0&deviceId=00000000-0000-0000-0000-000000000000&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&manifestService=stitcher&platform=web&sid=00000000-0000-0000-0000-000000000000
-
-#EXTINF:-1 tvg-id="ComediaMadeInSpain" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/default.png" group-title="SERIES 24H",Comedia Made in Spain 24H
-http://service-stitcher.clusters.pluto.tv/v1/stitch/embed/hls/channel/5fa016ab85e6ef0007e0c8ce/master.m3u8?advertisingId=&appName=web&appVersion=unknown&architecture=&buildVersion=&deviceDNT=0&deviceId=00000000-0000-0000-0000-000000000000&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&manifestService=stitcher&platform=web&sid=00000000-0000-0000-0000-000000000000
+#EXTINF:-1 tvg-id="ANHQV24H" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/default.png" group-title="SERIES 24H",Aquí No Hay Quien Viva 24H
+http://service-stitcher.clusters.pluto.tv/v1/stitch/embed/hls/channel/6075b63435adbf0007204b6b/master.m3u8?appName=web&appVersion=unknown&clientRegion=ES&deviceMake=Chrome&deviceType=web&platform=web
 
 
 
