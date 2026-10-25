@@ -218,8 +218,6 @@ http://100.90.204.66:6878/ace/getstream?id=4048be88f84250719e864868e537612f389df
 http://100.90.204.66:6878/ace/getstream?id=cd0188292b6b3876ff66c99bd3d25eab88b41079
 #EXTINF:-1 tvg-id="OneToro HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/OneToro.png" group-title="MOVISTAR",OneToro 6216
 http://100.90.204.66:6878/ace/getstream?id=889db6c87a28fd5b3092333b63bcdddf05d26216
-#EXTINF:-1 tvg-id="M+ Multievento 1" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Multievento%201.png" group-title="MOVISTAR",Eventos 4873
-http://100.90.204.66:6878/ace/getstream?id=bb78482832c454dfbb932912d65726619f924873
 #EXTINF:-1 tvg-id="M+ Multievento 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Multievento%202.png" group-title="MOVISTAR",Eventual shickat f065
 http://100.90.204.66:6878/ace/getstream?id=79c9dbec46dfa7de3acea6e5e05118e17dc0f065
 #EXTINF:-1 tvg-id="M+ LaLiga HDR" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%20HDR.png" group-title="MOVISTAR",Canal HDR 9745
