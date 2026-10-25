@@ -1,38 +1,9 @@
 #EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,https://raw.githubusercontent.com/davidmuma/EPG_dobleM/master/guiatv.xml" refresh="3600"
 #EXTVLCOPT:network-caching=1000
 
-#EXTINF:-1 tvg-id="Antena3.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Antena%203.png" group-title="TDT",Antena 3 HD
-https://atresmediaproduccion-live.akamaized.net/live/antena3/antena3_main.m3u8
-
-#EXTINF:-1 tvg-id="laSexta.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/laSexta.png" group-title="TDT",laSexta HD
-https://atresmediaproduccion-live.akamaized.net/live/lasexta/lasexta_main.m3u8
-
-#EXTINF:-1 tvg-id="Neox.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Neox.png" group-title="TDT",Neox
-https://atresmediaproduccion-live.akamaized.net/live/neox/neox_main.m3u8
-
-#EXTINF:-1 tvg-id="Nova.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Nova.png" group-title="TDT",Nova
-https://atresmediaproduccion-live.akamaized.net/live/nova/nova_main.m3u8
-
-#EXTINF:-1 tvg-id="Mega.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Mega.png" group-title="TDT",Mega
-https://atresmediaproduccion-live.akamaized.net/live/mega/mega_main.m3u8
-
-#EXTINF:-1 tvg-id="Telecinco.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Telecinco.png" group-title="TDT",Telecinco HD
-https://mediaset-live.akamaized.net/hls/live/2039234/telecinco/telecinco_main.m3u8
-
-#EXTINF:-1 tvg-id="Cuatro.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Cuatro.png" group-title="TDT",Cuatro HD
-https://mediaset-live.akamaized.net/hls/live/2039235/cuatro/cuatro_main.m3u8
-
 #EXTINF:-1 tvg-id="FDF.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Factoria%20de%20Ficcion.png" group-title="TDT",FDF
-https://mediaset-live.akamaized.net/hls/live/2039236/fdf/fdf_main.m3u8
+http://100.90.204.66:6878/ace/getstream?id=AQUI_EL_ID_DE_ACESTREAM
 
-#EXTINF:-1 tvg-id="Energy.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Energy.png" group-title="TDT",Energy
-https://mediaset-live.akamaized.net/hls/live/2039237/energy/energy_main.m3u8
-
-#EXTINF:-1 tvg-id="Divinity.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Divinity.png" group-title="TDT",Divinity
-https://mediaset-live.akamaized.net/hls/live/2039238/divinity/divinity_main.m3u8
-
-#EXTINF:-1 tvg-id="Bemad.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Be%20Mad.png" group-title="TDT",Be Mad
-https://mediaset-live.akamaized.net/hls/live/2039239/bemad/bemad_main.m3u8
 
 
 # ==========================================
