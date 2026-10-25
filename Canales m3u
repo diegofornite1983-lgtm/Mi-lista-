@@ -94,7 +94,6 @@ http://100.90.204.66:6878/ace/getstream?id=22178d72e0f255dedd7e56f9474fea879289a
 #EXTINF:-1 tvg-id="beIN SPORTS XTRA ñ" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/beIN%20SPORTS%20XTRA%20%C3%B1.png" group-title="LA LIGA", beIN SPORTS XTRA HD
 http://100.90.204.66:6878/ace/manifest.m3u8?id=fd869f34346154ca7cd78d46cbf7a6b8671beab5
 
-
 # ==========================================
 # CARPETA: MOVISTAR
 # ==========================================
@@ -228,6 +227,21 @@ https://rtvelivestream.rtve.es/rtvesec/clan/clan_main_dvr.m3u8
 http://100.90.204.66:6878/ace/getstream?id=cd0188292b6b3876ff66c99bd3d25eab88b41079
 #EXTINF:-1 tvg-id="OneToro HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/OneToro.png" group-title="MOVISTAR",OneToro 6216
 http://100.90.204.66:6878/ace/getstream?id=889db6c87a28fd5b3092333b63bcdddf05d26216
+
+#EXTINF:-1 tvg-id="La1.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="TDT",La 1 HD
+https://rtvelivestream.rtve.es/rtvesec/la1/la1_main_dvr.m3u8
+
+#EXTINF:-1 tvg-id="La2.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="TDT",La 2 HD
+https://rtvelivestream.rtve.es/rtvesec/la2/la2_main_dvr.m3u8
+
+#EXTINF:-1 tvg-id="TDP.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="TDT",Teledeporte HD
+https://rtvelivestream.rtve.es/rtvesec/tdp/tdp_main_dvr.m3u8
+
+#EXTINF:-1 tvg-id="24Horas.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/24%20Horas.png" group-title="TDT",24h TVE HD
+https://rtvelivestream.rtve.es/rtvesec/24h/24h_main_dvr.m3u8
+
+#EXTINF:-1 tvg-id="Clan.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Disney%20Channel.png" group-title="TDT",Clan TV HD
+https://rtvelivestream.rtve.es/rtvesec/clan/clan_main_dvr.m3u8
 
 
 
