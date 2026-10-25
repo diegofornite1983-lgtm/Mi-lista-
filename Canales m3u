@@ -220,12 +220,14 @@ http://100.90.204.66:6878/ace/getstream?id=cd0188292b6b3876ff66c99bd3d25eab88b41
 http://100.90.204.66:6878/ace/getstream?id=889db6c87a28fd5b3092333b63bcdddf05d26216
 
 
-#EXTINF:-1 tvg-id="La 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 HD
-http://100.90.204.66:6878/ace/getstream?id=9c079e1bbd01814c107e89187b8c24ba0ac306dd
-#EXTINF:-1 tvg-id="La 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="MOVISTAR",La 2 HD
-http://100.90.204.66:6878/ace/getstream?id=ea8e71ca4c755812bb753838a31f5357426f2876
-#EXTINF:-1 tvg-id="Teledeporte HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="MOVISTAR",Teledeporte HD
-http://100.90.204.66:6878/ace/getstream?id=4048be88f84250719e864868e537612f389df48e
+
+#EXTINF:-1 tvg-id="La1.es" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="TDT",La 1 (TDT en abierto)
+https://rtvelivethls.akamaized.net/hls/live/2043697/la1-high/master.m3u8
+#EXTINF:-1 tvg-id="La2.es" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="TDT",La 2 (TDT en abierto)
+https://rtvelivethls.akamaized.net/hls/live/2043709/la2-high/master.m3u8
+#EXTINF:-1 tvg-id="Teledeporte.es" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="TDT",Teledeporte (TDT en abierto)
+https://rtvelivethls.akamaized.net/hls/live/2043710/tdp-high/master.m3u8
+
 
 
 
