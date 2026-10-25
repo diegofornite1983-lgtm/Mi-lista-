@@ -123,6 +123,8 @@ http://100.90.204.66:6878/ace/getstream?id=f3a6d058791f0818a3301f9d5eeb60cfb54d9
 http://100.90.204.66:6878/ace/getstream?id=dc044c79fcde8ed69ed4c878643b09f09e7ccb72
 #EXTINF:-1 tvg-id="M+ Cine Español" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Cine%20Espa%C3%B1ol.png" group-title="MOVISTAR",M+ Cine Español deca
 http://100.90.204.66:6878/ace/getstream?id=f4e37b63fb042d90528585741a39851af543deca
+#EXTINF:-1 tvg-id="M+ Cine Español" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Cine%20Espa%C3%B1ol.png" group-title="MOVISTAR",M+ Cine Español [HD] #3
+http://100.90.204.66:6878/ace/getstream?id=812151e00822387172fb695f526415c45ad8cd1b
 #EXTINF:-1 tvg-id="M+ Comedia HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Comedia.png" group-title="MOVISTAR",M+ Comedia ffcb
 http://100.90.204.66:6878/ace/getstream?id=e8cd9088fee41413df360e4539c9e7184a63ffcb
 #EXTINF:-1 tvg-id="M+ Comedia HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Comedia.png" group-title="MOVISTAR",M+ Comedia 0f12
@@ -135,8 +137,26 @@ http://100.90.204.66:6878/ace/getstream?id=0bb012ac0e815b413831687a4a9b61777b333
 http://100.90.204.66:6878/ace/getstream?id=bb78482832c454dfbb932912d65726619f924873
 #EXTINF:-1 tvg-id="M+ Drama HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Drama.png" group-title="MOVISTAR",M+ Drama ef7e
 http://100.90.204.66:6878/ace/getstream?id=fc469b1e22f9a75bf7079995876955b9b293ef7e
+#EXTINF:-1 tvg-id="M+ Drama HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Drama.png" group-title="MOVISTAR",M+ Drama [HD] #2
+http://100.90.204.66:6878/ace/getstream?id=acc20f3739d9eccd0539f0c62519f35b8750a245
+#EXTINF:-1 tvg-id="M+ Indie HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Indie.png" group-title="MOVISTAR",M+ Indie [HD] #1
+http://100.90.204.66:6878/ace/getstream?id=205cf36437bf4e0643398f62f212832d4b8e271f
+#EXTINF:-1 tvg-id="M+ Indie HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Indie.png" group-title="MOVISTAR",M+ Indie [HD] #2
+http://100.90.204.66:6878/ace/getstream?id=060f90e77ec1f3478ef81b58569c0158b7851af5
+#EXTINF:-1 tvg-id="M+ Romance" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Romance.png" group-title="MOVISTAR",M+ Romance #1
+http://100.90.204.66:6878/ace/getstream?id=9ebc9eed6bd8d8a278b7aaab1513dd9ad2299bc7
+#EXTINF:-1 tvg-id="M+ Romance HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Romance.png" group-title="MOVISTAR",M+ Romance [HD] #2
+http://100.90.204.66:6878/ace/getstream?id=c8a8710788e86761c4c702ee5cb7164e2a0e2d7a
+#EXTINF:-1 tvg-id="M+ Romance HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Romance.png" group-title="MOVISTAR",M+ Romance [HD] #3
+http://100.90.204.66:6878/ace/getstream?id=3e38995391f980d060508c93ab1783cc4d7c42b6
 #EXTINF:-1 tvg-id="M+ Terror HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Terror.png" group-title="MOVISTAR",M+ Terror d3ed
 http://100.90.204.66:6878/ace/getstream?id=b331dcd389eaf6d4af356245cc0a02a3c478d3ed
+#EXTINF:-1 tvg-id="M+ Terror HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Terror.png" group-title="MOVISTAR",M+ Terror #1
+http://100.90.204.66:6878/ace/getstream?id=887ac58d9ede35d19364c1959d9e78a78f288c36
+#EXTINF:-1 tvg-id="M+ Western HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Western.png" group-title="MOVISTAR",M+ Western [HD] #1
+http://100.90.204.66:6878/ace/getstream?id=c5d339864350949aa5311a7aca52d4573818c560
+#EXTINF:-1 tvg-id="M+ Western HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Western.png" group-title="MOVISTAR",M+ Western [HD] #2
+http://100.90.204.66:6878/ace/getstream?id=07473038aa16ed164f5989234fafd303eecf67dc
 #EXTINF:-1 tvg-id="Dark HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Dark.png" group-title="MOVISTAR",Dark HD
 http://100.90.204.66:6878/ace/getstream?id=fd7e013b1827db32af3665d1ef5da7fc0cc6ae5d
 #EXTINF:-1 tvg-id="AXN Movies HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AXN%20Movies.png" group-title="MOVISTAR",AXN Movies 457c
@@ -145,6 +165,8 @@ http://100.90.204.66:6878/ace/getstream?id=6b4acf7cab48967eccea5c3e89b1e945ceab4
 http://100.90.204.66:6878/ace/getstream?id=60a59a6259b6d4cb5b826e1847cd0af0a7ecc1ce
 #EXTINF:-1 tvg-id="M+ Originales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Originales.png" group-title="MOVISTAR",M+ Originales f8bc
 http://100.90.204.66:6878/ace/getstream?id=0364449064d322a1bc0f97d568452053810ef8bc
+#EXTINF:-1 tvg-id="M+ Originales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Originales.png" group-title="MOVISTAR",M+ Originales [HD] #3
+http://100.90.204.66:6878/ace/getstream?id=fcfe83e9b75169730fedf7375127c0190443972e
 #EXTINF:-1 tvg-id="Calle 13 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Calle%2013.png" group-title="MOVISTAR",Calle 13 HD 2fa0
 http://100.90.204.66:6878/ace/getstream?id=296007b6a8c2ea9ceb7d6528f5e5e109c3142fa0
 #EXTINF:-1 tvg-id="Calle 13 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Calle%2013.png" group-title="MOVISTAR",Calle 13 HD b613
@@ -165,6 +187,8 @@ http://100.90.204.66:6878/ace/getstream?id=039719b35e6987a9b5888a8f4b903b3d31d25
 http://100.90.204.66:6878/ace/getstream?id=6317bdcbe852dce829e5c647cce4da04a7dcb7f5
 #EXTINF:-1 tvg-id="M+ Documentales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Documentales.png" group-title="MOVISTAR",M+ Documentales 2216
 http://100.90.204.66:6878/ace/getstream?id=3c1b00267a398093848ded743cfdb547e2232216
+#EXTINF:-1 tvg-id="M+ Documentales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Documentales.png" group-title="MOVISTAR",M+ Documentales [HD] #3
+http://100.90.204.66:6878/ace/getstream?id=a52f0bf0a381275ccbd65988b803fe4e5930bef7
 #EXTINF:-1 tvg-id="Canal Cocina HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Canal%20Cocina.png" group-title="MOVISTAR",Canal Cocina FHD
 http://100.90.204.66:6878/ace/getstream?id=96f092e1fa99062f6da14cae230b877ad3ed849b
 #EXTINF:-1 tvg-id="Caza y Pesca HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Caza%20y%20Pesca.png" group-title="MOVISTAR",Caza y Pesca FHD
@@ -210,6 +234,7 @@ http://100.90.204.66:6878/ace/getstream?id=bb78482832c454dfbb932912d65726619f924
 http://100.90.204.66:6878/ace/getstream?id=79c9dbec46dfa7de3acea6e5e05118e17dc0f065
 #EXTINF:-1 tvg-id="M+ LaLiga HDR" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%20HDR.png" group-title="MOVISTAR",Canal HDR 9745
 http://100.90.204.66:6878/ace/getstream?id=5437f76710c6cf7769e4a101ee52a6f4d4b39745
+
 
 
 # ==========================================
