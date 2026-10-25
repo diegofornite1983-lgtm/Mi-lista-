@@ -2,9 +2,6 @@
 #EXTVLCOPT:network-caching=1000
 
 
-#EXTINF:-1 tvg-id="La1.es" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="TDT",La 1
-https://ztnr.rtve.es/ztnr/1/playlist.m3u8
-
 # ==========================================
 # CARPETA: LA LIGA
 # ==========================================
@@ -206,10 +203,6 @@ http://100.90.204.66:6878/ace/getstream?id=d865b49d6ec5844e0bcf8e596ab90a7be8bb2
 http://100.90.204.66:6878/ace/getstream?id=04dc4964d2bddf41da7da028397ed2a3feeea710
 #EXTINF:-1 tvg-id="La 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 06dd
 http://100.90.204.66:6878/ace/getstream?id=9c079e1bbd01814c107e89187b8c24ba0ac306dd
-#EXTINF:-1 tvg-id="La1.es" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="TDT",La 1 (TDT)
-https://rtvelivethls.akamaized.net/hls/live/2043697/la1-high/master.m3u8
-#EXTINF:-1 tvg-id="La2.es" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="TDT",La 2
-https://ztnr.rtve.es/ztnr/2/playlist.m3u8
 #EXTINF:-1 tvg-id="Antena 3 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Antena%203.png" group-title="MOVISTAR",Antena 3 2876
 http://100.90.204.66:6878/ace/getstream?id=ea8e71ca4c755812bb753838a31f5357426f2876
 #EXTINF:-1 tvg-id="La Sexta HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%20Sexta.png" group-title="MOVISTAR",La Sexta 7ecf
@@ -222,8 +215,6 @@ http://100.90.204.66:6878/ace/getstream?id=d88f53277cbff8bca0d63d17502d72746b115
 http://100.90.204.66:6878/ace/getstream?id=9a84a44833e4b8dc39a296584d4f587b7ae3163c
 #EXTINF:-1 tvg-id="Teledeporte HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="MOVISTAR",TELEDEPORTE f48e
 http://100.90.204.66:6878/ace/getstream?id=4048be88f84250719e864868e537612f389df48e
-#EXTINF:-1 tvg-id="Teledeporte.es" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="TDT",Teledeporte
-https://ztnr.rtve.es/ztnr/4/playlist.m3u8
 #EXTINF:-1 tvg-id="OneToro HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/OneToro.png" group-title="MOVISTAR",OneToro 1079
 http://100.90.204.66:6878/ace/getstream?id=cd0188292b6b3876ff66c99bd3d25eab88b41079
 #EXTINF:-1 tvg-id="OneToro HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/OneToro.png" group-title="MOVISTAR",OneToro 6216
