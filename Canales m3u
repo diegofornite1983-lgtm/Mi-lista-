@@ -224,6 +224,22 @@ https://rtvelivestream.rtve.es/rtvesec/la1/la1_main_dvr.m3u8
 https://rtvelivestream.rtve.es/rtvesec/la2/la2_main_dvr.m3u8
 #EXTINF:-1 tvg-id="TDP.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="MOVISTAR",Teledeporte HD
 https://rtvelivestream.rtve.es/rtvesec/tdp/tdp_main_dvr.m3u8
+#EXTINF:-1 tvg-id="La1.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 HD[span_3](start_span)[span_3](end_span)
+https://rtvelivestream.rtve.es/rtvesec/la1/la1_main_dvr.m3u8[span_4](start_span)[span_4](end_span)
+
+#EXTINF:-1 tvg-id="La2.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="MOVISTAR",La 2 HD[span_5](start_span)[span_5](end_span)
+https://rtvelivestream.rtve.es/rtvesec/la2/la2_main_dvr.m3u8[span_6](start_span)[span_6](end_span)
+
+#EXTINF:-1 tvg-id="TDP.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="MOVISTAR",Teledeporte HD[span_7](start_span)[span_7](end_span)
+https://rtvelivestream.rtve.es/rtvesec/tdp/tdp_main_dvr.m3u8[span_8](start_span)[span_8](end_span)
+
+#EXTINF:-1 tvg-id="24Horas.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/24%20Horas.png" group-title="MOVISTAR",24h TVE HD[span_9](start_span)[span_9](end_span)
+https://rtvelivestream.rtve.es/rtvesec/24h/24h_main_dvr.m3u8[span_10](start_span)[span_10](end_span)
+
+#EXTINF:-1 tvg-id="Clan.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Disney%20Channel.png" group-title="MOVISTAR",Clan TV HD[span_11](start_span)[span_11](end_span)
+https://rtvelivestream.rtve.es/rtvesec/clan/clan_main_dvr.m3u8[span_12](start_span)[span_12](end_span)
+
+
 
 
 
