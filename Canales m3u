@@ -1,6 +1,13 @@
 #EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,https://raw.githubusercontent.com/davidmuma/EPG_dobleM/master/guiatv.xml" refresh="3600"
 #EXTVLCOPT:network-caching=1000
 
+#EXTINF:-1 tvg-id="Teledeporte.es" tvg-logo="https://www.tdtchannels.com/images/logos/Teledeporte.png" group-title="TDT",Teledeporte
+https://rtve-live.live.rtve.es/iclive/dvr-teledeporte/teledeporte_main.m3u8
+
+#EXTINF:-1 tvg-id="La1.es" tvg-logo="https://www.tdtchannels.com/images/logos/La1.png" group-title="TDT",La 1
+https://rtve-live.live.rtve.es/iclive/dvr-la1/la1_main.m3u8
+
+
 
 # ==========================================
 # CARPETA: LA LIGA
