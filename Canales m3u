@@ -100,14 +100,14 @@ http://100.90.204.66:6878/ace/manifest.m3u8?id=fd869f34346154ca7cd78d46cbf7a6b86
 # CARPETA: MOVISTAR
 # ==========================================
 
-#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 4ec9
-http://100.90.204.66:6878/ace/getstream?id=67121cbb722b88ce4489717e9a87a26f60184ec9
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS ab78
 http://100.90.204.66:6878/ace/getstream?id=1ab443f5b4beb6d586f19e8b25b9f9646cf2ab78
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS a336
 http://100.90.204.66:6878/ace/getstream?id=d23497596720b47b096ec0f850d6d26a19d1a336
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 15bb
 http://100.90.204.66:6878/ace/getstream?id=ed74406ccdb3c21941b919db6bffca7f1de015bb
+#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 4ec9
+http://100.90.204.66:6878/ace/getstream?id=67121cbb722b88ce4489717e9a87a26f60184ec9
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",Movistar Plus+ FHD 8c67
 http://100.90.204.66:6878/ace/getstream?id=8c67cdb5ba81976662c3a67984a9545d9cfb0f70
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 0056
@@ -202,17 +202,6 @@ http://100.90.204.66:6878/ace/getstream?id=d865b49d6ec5844e0bcf8e596ab90a7be8bb2
 http://100.90.204.66:6878/ace/getstream?id=04dc4964d2bddf41da7da028397ed2a3feeea710
 #EXTINF:-1 tvg-id="La 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 06dd
 http://100.90.204.66:6878/ace/getstream?id=9c079e1bbd01814c107e89187b8c24ba0ac306dd
-#EXTINF:-1 tvg-id="La1.TV" tvg-logo="https://graph.facebook.com/la1detve/picture?width=200&height=200" group-title="MOVISTAR",La 1 HD
-https://rtvelivestream.rtve.es/rtvesec/la1/la1_main_dvr.m3u8
-#EXTINF:-1 tvg-id="La2.TV" tvg-logo="https://graph.facebook.com/la2detve/picture?width=200&height=200" group-title="MOVISTAR",La 2 HD
-https://rtvelivestream.rtve.es/rtvesec/la2/la2_main_dvr.m3u8
-#EXTINF:-1 tvg-id="24Horas.TV" tvg-logo="https://pbs.twimg.com/profile_images/1634293543987453954/mb1Rzmso_200x200.jpg" group-title="MOVISTAR",24h TVE HD
-https://rtvelivestream.rtve.es/rtvesec/24h/24h_main_dvr.m3u8
-#EXTINF:-1 tvg-id="TDP.TV" tvg-logo="https://graph.facebook.com/teledeporteRTVE/picture?width=200&height=200" group-title="MOVISTAR",Teledeporte HD
-https://rtvelivestream.rtve.es/rtvesec/tdp/tdp_main_dvr.m3u8
-#EXTINF:-1 tvg-id="Clan.TV" tvg-logo="https://graph.facebook.com/clantve/picture?width=200&height=200" group-title="MOVISTAR",Clan TV HD
-https://rtvelivestream.rtve.es/rtvesec/clan/clan_main_dvr.m3u8
-
 #EXTINF:-1 tvg-id="Antena 3 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Antena%203.png" group-title="MOVISTAR",Antena 3 2876
 http://100.90.204.66:6878/ace/getstream?id=ea8e71ca4c755812bb753838a31f5357426f2876
 #EXTINF:-1 tvg-id="La Sexta HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%20Sexta.png" group-title="MOVISTAR",La Sexta 7ecf
@@ -235,6 +224,7 @@ http://100.90.204.66:6878/ace/getstream?id=bb78482832c454dfbb932912d65726619f924
 http://100.90.204.66:6878/ace/getstream?id=79c9dbec46dfa7de3acea6e5e05118e17dc0f065
 #EXTINF:-1 tvg-id="M+ LaLiga HDR" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%20HDR.png" group-title="MOVISTAR",Canal HDR 9745
 http://100.90.204.66:6878/ace/getstream?id=5437f76710c6cf7769e4a101ee52a6f4d4b39745
+
 
 
 
