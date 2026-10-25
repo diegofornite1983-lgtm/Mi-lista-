@@ -208,9 +208,7 @@ http://100.90.204.66:6878/ace/getstream?id=cd0188292b6b3876ff66c99bd3d25eab88b41
 #EXTINF:-1 tvg-id="OneToro HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/OneToro.png" group-title="MOVISTAR",OneToro 6216
 http://100.90.204.66:6878/ace/getstream?id=889db6c87a28fd5b3092333b63bcdddf05d26216
 
-# ==========================================
-# CARPETA: TDT
-# ==========================================
+#  --- CANALES DE TDT INTEGRADOS DENTRO DE MOVISTAR ---
 
 #EXTINF:-1 tvg-id="La1.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="TDT",La 1 HD[span_0](start_span)[span_0](end_span)[span_1](start_span)[span_1](end_span)
 https://rtvelivestream.rtve.es/rtvesec/la1/la1_main_dvr.m3u8[span_2](start_span)[span_2](end_span)[span_3](start_span)[span_3](end_span)
