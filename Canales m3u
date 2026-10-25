@@ -225,6 +225,18 @@ http://100.90.204.66:6878/ace/getstream?id=5437f76710c6cf7769e4a101ee52a6f4d4b39
 
 
 
+#EXTINF:-1 tvg-id="M+ Western" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Western.png" group-title="MOVISTAR",M+ Western [HD] #1
+http://100.90.204.66:6878/ace/getstream?id=c5d339864350949aa5311a7aca52d4573818c560
+#EXTINF:-1 tvg-id="M+ Western" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Western.png" group-title="MOVISTAR",M+ Western [HD] #2
+http://100.90.204.66:6878/ace/getstream?id=07473038aa16ed164f5989234fafd303eecf67dc
+#EXTINF:-1 tvg-id="OneToro" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/OneToro.png" group-title="MOVISTAR",OneToro 1079
+http://100.90.204.66:6878/ace/getstream?id=cd0188292b6b3876ff66c99bd3d25eab88b41079
+#EXTINF:-1 tvg-id="OneToro" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/OneToro.png" group-title="MOVISTAR",OneToro 6216
+http://100.90.204.66:6878/ace/getstream?id=889db6c87a28fd5b3092333b63bcdddf05d26216
+
+
+
+
 
 
 # ==========================================
