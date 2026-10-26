@@ -224,7 +224,7 @@ http://100.90.204.66:6878/ace/getstream?id=6fa8e5288e9b91c926134362f7c01320f3eb7
 https://rtvelivestream.rtve.es/rtvesec/tdp/tdp_main_dvr.m3u8
 
 #EXTINF:-1 tvg-id="TDP.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="MOVISTAR",Teledeporte (Respaldo)
-http://100.90.204.66:6878/ace/getstream?id=5a7c41f2a3d22446cb80dc9c9f9d1f26867bc542
+http://100.90.204.66:6878/ace/getstream?id=4048be88f84250719e864868e537612f389df48e
 
 #EXTINF:-1 tvg-id="Antena 3 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Antena%203.png" group-title="MOVISTAR",Antena 3 2876
 http://100.90.204.66:6878/ace/getstream?id=ea8e71ca4c755812bb753838a31f5357426f2876
