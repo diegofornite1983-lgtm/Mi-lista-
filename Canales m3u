@@ -164,11 +164,12 @@ http://100.90.204.66:6878/ace/getstream?id=b331dcd389eaf6d4af356245cc0a02a3c478d
 http://100.90.204.66:6878/ace/getstream?id=887ac58d9ede35d19364c1959d9e78a78f288c36
 
 
-#EXTINF:-1 tvg-id="M+ Western" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Western.png" group-title="MOVISTAR",M+ Western [HD] #1
+#EXTINF:-1 tvg-id="M+ Western" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Movistar%20Western.png" group-title="MOVISTAR",M+ Western [HD] #1
 http://100.90.204.66:6878/ace/getstream?id=c5d339864350949aa5311a7aca52d4573818c560
 
-#EXTINF:-1 tvg-id="M+ Western" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Western.png" group-title="MOVISTAR",M+ Western [HD] #2
+#EXTINF:-1 tvg-id="M+ Western" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Movistar%20Western.png" group-title="MOVISTAR",M+ Western [HD] #2
 http://100.90.204.66:6878/ace/getstream?id=07473038aa16ed164f5989234fafd303eecf67dc
+
 
 
 #EXTINF:-1 tvg-id="Dark HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Dark.png" group-title="MOVISTAR",Dark HD
