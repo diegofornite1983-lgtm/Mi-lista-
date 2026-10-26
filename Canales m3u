@@ -249,8 +249,6 @@ https://rtvelivestream.rtve.es/rtvesec/24h/24h_main_dvr.m3u8
 #EXTINF:-1 tvg-id="Clan" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Clan.png" group-title="MOVISTAR",Clan TV HD
 https://rtvelivestream.rtve.es/rtvesec/clan/clan_main_dvr.m3u8
 
-#EXTINF:-1 tvg-id="La 1 UHD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201%20UHD.png" group-title="GENERALISTA",La 1 UHD
-http://176.65.146.237:8401/play/a09u/index.m3u8
 
 
 
