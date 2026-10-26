@@ -217,8 +217,6 @@ http://100.90.204.66:6878/ace/getstream?id=9c079e1bbd01814c107e89187b8c24ba0ac30
 #EXTINF:-1 tvg-id="La2.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="MOVISTAR",La 2 HD
 https://rtvelivestream.rtve.es/rtvesec/la2/la2_main_dvr.m3u8
 
-#EXTINF:-1 tvg-id="La2.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="MOVISTAR",La 2 (Respaldo)
-http://100.90.204.66:6878/ace/getstream?id=6fa8e5288e9b91c926134362f7c01320f3eb7ecf
 
 #EXTINF:-1 tvg-id="TDP.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="MOVISTAR",Teledeporte HD
 https://rtvelivestream.rtve.es/rtvesec/tdp/tdp_main_dvr.m3u8
