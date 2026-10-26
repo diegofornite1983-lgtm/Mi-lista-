@@ -185,8 +185,9 @@ http://100.90.204.66:6878/ace/getstream?id=bec9f6119618624d5a8b0702816c6bcce1f4f
 http://100.90.204.66:6878/ace/getstream?id=8269d72f3338c6b4ef7752732adaa9f62d4c09e4
 #EXTINF:-1 tvg-id="Comedy Central HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Comedy%20Central.png" group-title="MOVISTAR",Comedy Central
 http://100.90.204.66:6878/ace/getstream?id=e1c2c2a74a3688066526e5ff212e13d2101f44ad
-#EXTINF:-1 tvg-id="SYFY HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/SyFy.png" group-title="MOVISTAR",SYFY 1463
+#EXTINF:-1 tvg-id="Syfy" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/SyFy.png" group-title="MOVISTAR",SYFY 1463
 http://100.90.204.66:6878/ace/getstream?id=0abff11099cfe1bb45fac7fd29e996a68a9f1463
+
 #EXTINF:-1 tvg-id="SkyShowtime 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/SkyShowtime.png" group-title="MOVISTAR",SkyShowtime 1 8bcf
 http://100.90.204.66:6878/ace/getstream?id=d98f8926ec3c7c403cec32530f2ab7725cf88bcf
 #EXTINF:-1 tvg-id="HBO Max Avances" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/HBO%20Max%20Avances.png" group-title="MOVISTAR",HBO Max Avances 552d
