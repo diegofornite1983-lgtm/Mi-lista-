@@ -6,7 +6,8 @@
 # ==========================================
 
 #EXTINF:-1 tvg-id="La que se avecina 24h" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%20que%20se%20avecina.png" group-title="SERIES 24H",La que se avecina 24h
-https://i.mjh.nz/SamsungTVPlus/ES_SSCV7000030S/index.m3u8
+https://livetv.tivify.stream/live/st-lqa-24h/index.m3u8
+
 
 #EXTINF:-1 tvg-id="M+ LaLiga HDR" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%20HDR.png" group-title="LA LIGA",M+ LaLiga HDR (Solo Eventos) f065
 http://100.90.204.66:6878/ace/getstream?id=79c9dbec46dfa7de3acea6e5e05118e17dc0f065
