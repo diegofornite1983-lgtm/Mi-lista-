@@ -247,11 +247,12 @@ http://100.90.204.66:6878/ace/getstream?id=3f2b6ac892758f5f3574f649ba9c486b341ca
 http://100.90.204.66:6878/ace/getstream?id=d865b49d6ec5844e0bcf8e596ab90a7be8bb28fb
 
 
-#EXTINF:-1 tvg-id="Canal 24 Horas" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/24%20Horas.png" group-title="MOVISTAR",24h TVE HD
+#EXTINF:-1 tvg-id="24 Horas" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/24%20Horas.png" group-title="MOVISTAR",24h TVE HD
 https://rtvelivestream.rtve.es/rtvesec/24h/24h_main_dvr.m3u8
 
-#EXTINF:-1 tvg-id="Clan TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Disney%20Channel.png" group-title="MOVISTAR",Clan TV HD
+#EXTINF:-1 tvg-id="Clan" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Disney%20Channel.png" group-title="MOVISTAR",Clan TV HD
 https://rtvelivestream.rtve.es/rtvesec/clan/clan_main_dvr.m3u8
+
 
 
 
