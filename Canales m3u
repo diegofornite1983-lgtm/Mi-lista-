@@ -471,13 +471,13 @@ http://100.90.204.66:6878/ace/getstream?id=ad5ca6e24f87f47a9c3c5bc10c7e8e5af4676
 http://100.90.204.66:6878/ace/getstream?id=7a053fc56fc93f42ec656382408e647055110e3e
 #EXTINF:-1 tvg-id="M+ Vamos" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos 0e98
 http://100.90.204.66:6878/ace/getstream?id=86262568aa72b956b06ac67b1c310a32248a0e98
-#EXTINF:-1 tvg-id="M+ Vamos 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos%202.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos 2 d879
+#EXTINF:-1 tvg-id="M+ Vamos" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos d879
 http://100.90.204.66:6878/ace/getstream?id=c8c172886e466fbe443433f8e95d201e34edd879
-#EXTINF:-1 tvg-id="M+ Vamos 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos%202.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos 2 307c
+#EXTINF:-1 tvg-id="M+ Vamos" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos 307c
 http://100.90.204.66:6878/ace/getstream?id=0cd11c1f51b84ebe9954496b3ef9b6aeccf7307c
-#EXTINF:-1 tvg-id="M+ Vamos 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos%202.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos 2 91a8
+#EXTINF:-1 tvg-id="M+ Vamos" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos 91a8
 http://100.90.204.66:6878/ace/getstream?id=8cdb6d53f66d73bc8cba8ef850ab7895bcfa91a8
-#EXTINF:-1 tvg-id="M+ Vamos 3" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos%203.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos 3 f53a
+#EXTINF:-1 tvg-id="M+ Vamos" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos f53a
 http://100.90.204.66:6878/ace/getstream?id=837883625d40e1eb5566eefaf74811046491f53a
 #EXTINF:-1 tvg-id="M+ Vamos" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos 8933
 http://100.90.204.66:6878/ace/getstream?id=3b2a8b41e7097c16b0468b42d7de0320886fa933
@@ -487,6 +487,7 @@ http://100.90.204.66:6878/ace/getstream?id=2940120bf034db79a7f5849846ccea0255172
 http://100.90.204.66:6878/ace/getstream?id=651d6be899d1fafa107a265a9dc00ff914c1b548
 #EXTINF:-1 tvg-id="M+ Vamos" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos f89d
 http://100.90.204.66:6878/ace/getstream?id=d098d8f33ff7d088624f6ba5e45032e19fbcf89d
+
 
 
 
