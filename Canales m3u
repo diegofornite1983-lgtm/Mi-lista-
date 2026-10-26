@@ -244,8 +244,9 @@ http://100.90.204.66:6878/ace/getstream?id=5a7c41f2a3d22446cb80dc9c9f9d1f26867bc
 #EXTINF:-1 tvg-id="Nova" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Nova.png" group-title="MOVISTAR",Nova 5efe
 http://100.90.204.66:6878/ace/getstream?id=d88f53277cbff8bca0d63d17502d72746b115efe
 
-#EXTINF:-1 tvg-id="MTV Spain" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/MTV%20Espa%C3%B1a.png" group-title="MOVISTAR",MTV Spain 163c
+#EXTINF:-1 tvg-id="MTV España" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/MTV%20Espa%C3%B1a.png" group-title="MOVISTAR",MTV Spain 163c
 http://100.90.204.66:6878/ace/getstream?id=9a84a44833e4b8dc39a296584d4f587b7ae3163c
+
 
 
 #EXTINF:-1 tvg-id="Nickelodeon HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Nickelodeon.png" group-title="MOVISTAR",Nickelodeon HD
