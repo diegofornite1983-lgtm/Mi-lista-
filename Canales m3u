@@ -210,8 +210,9 @@ http://100.90.204.66:6878/ace/getstream?id=cd0188292b6b3876ff66c99bd3d25eab88b41
 #EXTINF:-1 tvg-id="La1.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 HD
 https://rtvelivestream.rtve.es/rtvesec/la1/la1_main_dvr.m3u8
 
-#EXTINF:-1 tvg-id="La1.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 (Respaldo)
+#EXTINF:-1 tvg-id="La 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 06dd
 http://100.90.204.66:6878/ace/getstream?id=9c079e1bbd01814c107e89187b8c24ba0ac306dd
+
 
 #EXTINF:-1 tvg-id="La2.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="MOVISTAR",La 2 HD
 https://rtvelivestream.rtve.es/rtvesec/la2/la2_main_dvr.m3u8
