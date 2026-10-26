@@ -382,6 +382,7 @@ http://100.90.204.66:6878/ace/getstream?id=a5b9d834ad92bfb80fe01bf89cc20bd68be19
 http://100.90.204.66:6878/ace/getstream?id=7efe62956b1f395161e217df1f438c8bf0d4416b
 #EXTINF:-1 tvg-id="LaLiga TV Hypermotion 8" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion3.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 3 f784
 http://100.90.204.66:6878/ace/getstream?id=589dfc625c0ddcd9960e40aaf8235ea58705f784
+
 #EXTINF:-1 tvg-id="LaLiga TV Hypermotion 10" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion10.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 10 07b6
 http://100.90.204.66:6878/ace/getstream?id=11ede21d726b3ac051a366960c6e89eec3c807b6
 #EXTINF:-1 tvg-id="LaLiga TV Hypermotion" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",Liga HYPERMOTION
