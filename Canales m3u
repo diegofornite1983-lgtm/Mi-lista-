@@ -362,27 +362,29 @@ http://100.90.204.66:6878/ace/getstream?id=7e90956539f4e1318a63f3960e4f75c7c7c5a
 # ==========================================
 # CARPETA: HYPERMOTION
 # ==========================================
-#EXTINF:-1 tvg-id="LaLiga TV Hypermotion" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 56aa
+# CARPETA: HYPERMOTION
+# ==========================================
+#EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 56aa
 http://100.90.204.66:6878/ace/getstream?id=2c54a4def58f41fc0d2163450a63f12955b656aa
-#EXTINF:-1 tvg-id="LaLiga TV Hypermotion" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 127c
+#EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 127c
 http://100.90.204.66:6878/ace/getstream?id=135c420f704d717b8913b2a66b2722fd6b2c127c
-#EXTINF:-1 tvg-id="LaLiga TV Hypermotion" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion d73f
+#EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion d73f
 http://100.90.204.66:6878/ace/getstream?id=4636ed75106cb00e9c70cc2029edf0a4df7ad73f
-#EXTINF:-1 tvg-id="LaLiga TV Hypermotion" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion d9fe
+#EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion d9fe
 http://100.90.204.66:6878/ace/getstream?id=e4cbd1a425120b1f44b523a55bd1a98c31cad9fe
-#EXTINF:-1 tvg-id="LaLiga TV Hypermotion" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 81b0
+#EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 81b0
 http://100.90.204.66:6878/ace/getstream?id=1f75d92098580443857caa95a719103cb83781b0
-#EXTINF:-1 tvg-id="LaLiga TV Hypermotion 2" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion2.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 2 99fb
+#EXTINF:-1 tvg-id="LaLiga TV Hypermotion 2 HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion2.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 2 99fb
 http://100.90.204.66:6878/ace/getstream?id=a5b9d834ad92bfb80fe01bf89cc20bd68be199fb
-#EXTINF:-1 tvg-id="LaLiga TV Hypermotion 3" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion3.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 3 416b
+#EXTINF:-1 tvg-id="LaLiga TV Hypermotion 3 HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion3.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 3 416b
 http://100.90.204.66:6878/ace/getstream?id=7efe62956b1f395161e217df1f438c8bf0d4416b
-#EXTINF:-1 tvg-id="LaLiga TV Hypermotion 8" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion3.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 3 f784
+#EXTINF:-1 tvg-id="LaLiga TV Hypermotion 3 HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion3.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 3 f784
 http://100.90.204.66:6878/ace/getstream?id=589dfc625c0ddcd9960e40aaf8235ea58705f784
-
-#EXTINF:-1 tvg-id="LaLiga TV Hypermotion 10" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion10.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 10 07b6
+#EXTINF:-1 tvg-id="LaLiga TV Hypermotion 10 HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion10.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 10 07b6
 http://100.90.204.66:6878/ace/getstream?id=11ede21d726b3ac051a366960c6e89eec3c807b6
-#EXTINF:-1 tvg-id="LaLiga TV Hypermotion" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",Liga HYPERMOTION
+#EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",Liga HYPERMOTION
 http://100.90.204.66:6878/ace/getstream?id=2c54a4def58f41fc0d2163450a63f12955b656aa
+
 
 
 
