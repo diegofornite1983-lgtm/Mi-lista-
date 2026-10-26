@@ -171,8 +171,6 @@ http://100.90.204.66:6878/ace/getstream?id=296007b6a8c2ea9ceb7d6528f5e5e109c3142
 http://100.90.204.66:6878/ace/getstream?id=91d38e143c3495dabf3ddf0497af98a227aeb613
 #EXTINF:-1 tvg-id="M+ Western" tvg-logo="",M+ Western [HD] 
 http://100.90.204.66:6878/ace/getstream?id=c5d339864350949aa5311a7aca52d4573818c560
-#EXTINF:-1 tvg-id="M+ Western" tvg-logo="",M+ Western [HD] 
-http://100.90.204.66:6878/ace/getstream?id=07473038aa16ed164f5989234fafd303eecf67dc
 #EXTINF:-1 tvg-id="AXN HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AXN.png" group-title="MOVISTAR",AXN
 http://100.90.204.66:6878/ace/getstream?id=bec9f6119618624d5a8b0702816c6bcce1f4f983
 #EXTINF:-1 tvg-id="AMC HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AMC.png" group-title="MOVISTAR",AMC
