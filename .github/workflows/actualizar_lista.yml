@@ -1,0 +1,26 @@
+name: Generar lista Tailscale automatica
+
+on:
+  push:
+    paths:
+      - 'Mi lista acestream'
+  workflow_dispatch:
+
+jobs:
+  convert-m3u:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v3
+
+      - name: Reemplazar IPs para Tailscale
+        run: |
+          sed 's/127\.0\.0\.1:6878/100.90.204.66:6878/g' "Mi lista acestream" > "Canales m3u"
+
+      - name: Guardar cambios en el repositorio
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add "Canales m3u"
+          git diff-index --quiet HEAD || git commit -m "Lista Tailscale actualizada automaticamente"
+          git push
