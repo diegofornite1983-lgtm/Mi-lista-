@@ -127,6 +127,12 @@ http://100.90.204.66:6878/ace/manifest.m3u8?id=fd869f34346154ca7cd78d46cbf7a6b86
 # CARPETA: MOVISTAR (TODO UNIFICADO CON REPETIDOS)
 # ==========================================
 
+#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 1080p *
+http://100.90.204.66:6878/ace/getstream?id=30b9909b14b1924798573cace9f41369e1a334c5
+
+#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 1080p **
+http://100.90.204.66:6878/ace/getstream?id=dc77ffac4ce00ca2c00243259370f777ba8aff4a
+
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS ab78
 http://100.90.204.66:6878/ace/getstream?id=1ab443f5b4beb6d586f19e8b25b9f9646cf2ab78
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS a336
