@@ -37,7 +37,7 @@ http://100.90.204.66:6878/ace/getstream?id=d3b11d6c18ad43df5cd42c1dafb4dd12d8f82
 http://100.90.204.66:6878/ace/getstream?id=3ace1463a7cad979c3a4002b245487e9982e9f1a
 
 #EXTINF:-1 tvg-id="" tvg-name="DAZN LaLiga" group-title="LA LIGA",DAZN LaLiga 1080p
-http://100.90.204.66:6878/play/acestream/8c0fa8c0f1be146dcc64a94e37c64993df86c72a/stream.mp4
+http://100.90.204.66:6878/ace/getstream?id=8c0fa8c0f1be146dcc64a94e37c64993df86c72a
 
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA",DAZN LaLiga 9745
 http://100.90.204.66:6878/ace/getstream?infohash=5437f76710c6cf7769e4a101ee52a6f4d4b39745
@@ -74,6 +74,7 @@ http://100.90.204.66:6878/ace/getstream?id=303c31ee08b34b4ae3486decca2df98089e4e
 http://100.90.204.66:6878/ace/getstream?id=b119416386155a6b85e7d0c7cab3ab92c7bfb87c
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA",DAZN LA LIGA 1 FHD --> NEW LOOP
 http://100.90.204.66:6878/ace/getstream?id=244a6fd6428f6ad13034339cb382e01a0e779d9d
+
 
 #EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA",DAZN LaLiga 2 e61f
 http://100.90.204.66:6878/ace/getstream?infohash=4e8f13dfa3a7719ce7c0e381cce2c58afc5ce61f
