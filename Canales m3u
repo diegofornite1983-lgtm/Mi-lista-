@@ -376,10 +376,12 @@ http://100.90.204.66:6878/ace/getstream?id=7e90956539f4e1318a63f3960e4f75c7c7c5a
 # ==========================================
 # CARPETA: HYPERMOTION
 # ==========================================
-#EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 56aa
-http://100.90.204.66:6878/ace/getstream?id=2c54a4def58f41fc0d2163450a63f12955b656aa
+
 #EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 127c
 http://100.90.204.66:6878/ace/getstream?id=135c420f704d717b8913b2a66b2722fd6b2c127c
+#EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 56aa
+http://100.90.204.66:6878/ace/getstream?id=2c54a4def58f41fc0d2163450a63f12955b656aa
+
 #EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion d73f
 http://100.90.204.66:6878/ace/getstream?id=4636ed75106cb00e9c70cc2029edf0a4df7ad73f
 #EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion d9fe
