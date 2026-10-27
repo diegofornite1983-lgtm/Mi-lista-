@@ -5,6 +5,12 @@
 # CARPETA: LA LIGA
 # ==========================================
 
+
+
+
+
+
+
 #EXTINF:-1 tvg-id="M+ LaLiga HDR" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%20HDR.png" group-title="LA LIGA",M+ LaLiga HDR (Solo Eventos) f065
 http://100.90.204.66:6878/ace/getstream?id=79c9dbec46dfa7de3acea6e5e05118e17dc0f065
 #EXTINF:-1 tvg-id="M+ LaLiga HDR" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%20HDR.png" group-title="LA LIGA",M+ LaLiga HDR 3007
@@ -255,11 +261,6 @@ http://100.90.204.66:6878/ace/getstream?id=71c0a154022167992d7752e0dd5d348df9461
 https://rtvelivestream.rtve.es/rtvesec/la2/la2_main_dvr.m3u8
 #EXTINF:-1 tvg-id="La 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="MOVISTAR",La 2 TVE 1080p *
 http://100.90.204.66:6878/ace/getstream?id=187821a2527a92efdc872182012c208091b165aa
-
-
-
-
-
 
 #EXTINF:-1 tvg-id="Teledeporte" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="MOVISTAR",TELEDEPORTE f48e
 http://100.90.204.66:6878/ace/getstream?id=4048be88f84250719e864868e537612f389df48e
