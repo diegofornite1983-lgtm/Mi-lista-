@@ -39,6 +39,18 @@ http://100.90.204.66:6878/ace/getstream?id=3ace1463a7cad979c3a4002b245487e9982e9
 #EXTINF:-1 tvg-id="" tvg-name="DAZN LaLiga" group-title="LA LIGA",DAZN LaLiga 1080p
 http://100.90.204.66:6878/ace/getstream?id=8c0fa8c0f1be146dcc64a94e37c64993df86c72a
 
+#EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA",DAZN LaLiga 1080p **
+http://100.90.204.66:6878/ace/getstream?id=cff402c0e11802d92fabf37b28d9ef20f03245d9
+
+#EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA",DAZN LaLiga 1080p ***
+http://100.90.204.66:6878/ace/getstream?id=3a03dc436b15f1d5d7b285c80b982da02502c26d
+
+#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA",DAZN LaLiga 2 720p *
+http://100.90.204.66:6878/ace/getstream?id=357e71223aad8bf80d3b86d31d9a0f75dd42d91e
+
+#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA",DAZN LaLiga 2 720p **
+http://100.90.204.66:6878/ace/getstream?id=db26cad444717c262dddb5ea37301ee779d4f5b9
+
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA",DAZN LaLiga 9745
 http://100.90.204.66:6878/ace/getstream?infohash=5437f76710c6cf7769e4a101ee52a6f4d4b39745
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA",DAZN LaLiga shickat
