@@ -547,11 +547,12 @@ http://100.90.204.66:6878/ace/getstream?id=8121478d3d3e563ad6b98018bc1c0aeb2f616
 #EXTINF:-1 tvg-id="M+ Golf 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf%202.png" group-title="MOVISTAR DEP-VAMOS",M+ Golf 2 a714
 http://100.90.204.66:6878/ace/getstream?id=597cca4ef375529aaca0608b43187d99d26ca714
 
-#EXTINF:-1 tvg-id="UFC Fight Pass" tvg-name="UFC Fight Pass" tvg-logo="https://raw.githubusercontent.com/davidmuma/iconos_iptv/main/logos/ufc.png" group-title="MOVISTAR DEP-VAMOS",UFC FIGHT PASS 1
+#EXTINF:-1 tvg-id="UFC Fight Pass 1" tvg-name="UFC Fight Pass 1" tvg-logo="https://raw.githubusercontent.com/davidmuma/iconos_iptv/main/logos/ufc.png" group-title="MOVISTAR DEP-VAMOS",UFC FIGHT PASS 1
 http://100.90.204.66:6878/ace/getstream?id=e935c5bbad7af4af6c88b59c8e6cccbb99fb1bde
 
-#EXTINF:-1 tvg-id="UFC Fight Pass" tvg-name="UFC Fight Pass" tvg-logo="https://raw.githubusercontent.com/davidmuma/iconos_iptv/main/logos/ufc.png" group-title="MOVISTAR DEP-VAMOS",UFC FIGHT PASS 2
+#EXTINF:-1 tvg-id="UFC Fight Pass 2" tvg-name="UFC Fight Pass 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/iconos_iptv/main/logos/ufc.png" group-title="MOVISTAR DEP-VAMOS",UFC FIGHT PASS 2
 http://100.90.204.66:6878/ace/getstream?id=477b3ea6be34bfd669cc35c5cdff8b18a3ad79f8
+
 
 
 
