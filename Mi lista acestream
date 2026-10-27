@@ -7,14 +7,14 @@
 
 
 
-
-
-
-
 #EXTINF:-1 tvg-id="M+ LaLiga HDR" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%20HDR.png" group-title="LA LIGA",M+ LaLiga HDR (Solo Eventos) f065
 http://127.0.0.1:6878/ace/getstream?id=79c9dbec46dfa7de3acea6e5e05118e17dc0f065
 #EXTINF:-1 tvg-id="M+ LaLiga HDR" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%20HDR.png" group-title="LA LIGA",M+ LaLiga HDR 3007
 http://127.0.0.1:6878/ace/getstream?id=f863873de9f7b2996dde19a0657dd89835af3007
+
+#EXTINF:-1 tvg-id="Bein Sports 1" tvg-logo="" group-title="LA LIGA",BEIN SPORTS 1
+http://127.0.0.1:6878/ace/getstream?id=58e454d067b9e25e40f09804bda0a803e0708573
+
 
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA",⭐️ M+ LaLiga 9e38
 http://127.0.0.1:6878/ace/getstream?id=31c19ffb3472c289c5bbbbc174449c8ed0d19e38
