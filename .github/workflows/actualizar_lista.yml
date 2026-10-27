@@ -6,6 +6,9 @@ on:
       - 'Mi lista acestream'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   actualizar:
     runs-on: ubuntu-latest
@@ -25,5 +28,3 @@ jobs:
           git add "Canales m3u"
           git diff-index --quiet HEAD || git commit -m "Actualizar Canales M3U Tailscale"
           git push origin HEAD:main
-
-          git push
