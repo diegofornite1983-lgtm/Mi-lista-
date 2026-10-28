@@ -10,6 +10,7 @@
 
 
 
+
 #EXTINF:-1 tvg-id="M+ LaLiga HDR" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%20HDR.png" group-title="LA LIGA",M+ LaLiga HDR (Solo Eventos) f065
 http://127.0.0.1:6878/ace/getstream?id=79c9dbec46dfa7de3acea6e5e05118e17dc0f065
 
