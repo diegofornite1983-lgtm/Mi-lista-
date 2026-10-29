@@ -141,10 +141,11 @@ http://100.90.204.66:6878/ace/getstream?id=205cf36437bf4e0643398f62f212832d4b8e2
 #EXTINF:-1 tvg-id="M+ Indie HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Indie.png" group-title="MOVISTAR",M+ Indie [HD] #2
 http://100.90.204.66:6878/ace/getstream?id=060f90e77ec1f3478ef81b58569c0158b7851af5
 
-#EXTINF:-1 tvg-id="M+ Romance" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Romance.png" group-title="MOVISTAR",M+ Romance #1
-http://100.90.204.66:6878/ace/getstream?id=9ebc9eed6bd8d8a278b7aaab1513dd9ad2299bc7
 #EXTINF:-1 tvg-id="M+ Romance" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Romance.png" group-title="MOVISTAR",M+ Romance [HD] #2
 http://100.90.204.66:6878/ace/getstream?id=c8a8710788e86761c4c702ee5cb7164e2a0e2d7a
+#EXTINF:-1 tvg-id="M+ Romance" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Romance.png" group-title="MOVISTAR",M+ Romance #1
+http://100.90.204.66:6878/ace/getstream?id=9ebc9eed6bd8d8a278b7aaab1513dd9ad2299bc7
+
 #EXTINF:-1 tvg-id="M+ Romance" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Romance.png" group-title="MOVISTAR",M+ Romance [HD] #3
 http://100.90.204.66:6878/ace/getstream?id=3e38995391f980d060508c93ab1783cc4d7c42b6
 
@@ -158,24 +159,24 @@ http://100.90.204.66:6878/ace/getstream?id=fd7e013b1827db32af3665d1ef5da7fc0cc6a
 
 #EXTINF:-1 tvg-id="AXN Movies HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AXN%20Movies.png" group-title="MOVISTAR",AXN Movies 457c
 http://100.90.204.66:6878/ace/getstream?id=6b4acf7cab48967eccea5c3e89b1e945ceab457c
-
-#EXTINF:-1 tvg-id="M+ Originales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Originales.png" group-title="MOVISTAR",M+ Originales c1ce
-http://100.90.204.66:6878/ace/getstream?id=60a59a6259b6d4cb5b826e1847cd0af0a7ecc1ce
 #EXTINF:-1 tvg-id="M+ Originales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Originales.png" group-title="MOVISTAR",M+ Originales f8bc
 http://100.90.204.66:6878/ace/getstream?id=0364449064d322a1bc0f97d568452053810ef8bc
+#EXTINF:-1 tvg-id="M+ Originales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Originales.png" group-title="MOVISTAR",M+ Originales c1ce
+http://100.90.204.66:6878/ace/getstream?id=60a59a6259b6d4cb5b826e1847cd0af0a7ecc1ce
+
 #EXTINF:-1 tvg-id="M+ Originales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Originales.png" group-title="MOVISTAR",M+ Originales [HD] #3
 http://100.90.204.66:6878/ace/getstream?id=fcfe83e9b75169730fedf7375127c0190443972e
-
-#EXTINF:-1 tvg-id="Calle 13 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Calle%2013.png" group-title="MOVISTAR",Calle 13 HD 2fa0
-http://100.90.204.66:6878/ace/getstream?id=296007b6a8c2ea9ceb7d6528f5e5e109c3142fa0
 #EXTINF:-1 tvg-id="Calle 13 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Calle%2013.png" group-title="MOVISTAR",Calle 13 HD b613
 http://100.90.204.66:6878/ace/getstream?id=91d38e143c3495dabf3ddf0497af98a227aeb613
-
-#EXTINF:-1 tvg-id="AXN HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AXN.png" group-title="MOVISTAR",AXN
-http://100.90.204.66:6878/ace/getstream?id=bec9f6119618624d5a8b0702816c6bcce1f4f983
+#EXTINF:-1 tvg-id="Calle 13 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Calle%2013.png" group-title="MOVISTAR",Calle 13 HD 2fa0
+http://100.90.204.66:6878/ace/getstream?id=296007b6a8c2ea9ceb7d6528f5e5e109c3142fa0
 
 #EXTINF:-1 tvg-id="AMC HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AMC.png" group-title="MOVISTAR",AMC
 http://100.90.204.66:6878/ace/getstream?id=8269d72f3338c6b4ef7752732adaa9f62d4c09e4
+#EXTINF:-1 tvg-id="AXN HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AXN.png" group-title="MOVISTAR",AXN
+http://100.90.204.66:6878/ace/getstream?id=bec9f6119618624d5a8b0702816c6bcce1f4f983
+
+
 
 #EXTINF:-1 tvg-id="Comedy Central HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Comedy%20Central.png" group-title="MOVISTAR",Comedy Central
 http://100.90.204.66:6878/ace/getstream?id=e1c2c2a74a3688066526e5ff212e13d2101f44ad
@@ -188,11 +189,11 @@ http://100.90.204.66:6878/ace/getstream?id=d98f8926ec3c7c403cec32530f2ab7725cf88
 
 #EXTINF:-1 tvg-id="HBO Max Avances" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/HBO%20Max%20Avances.png" group-title="MOVISTAR",HBO Max Avances 552d
 http://100.90.204.66:6878/ace/getstream?id=039719b35e6987a9b5888a8f4b903b3d31d2552d
-
-#EXTINF:-1 tvg-id="M+ Documentales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Documentales.png" group-title="MOVISTAR",M+ Documentales 7f5
-http://100.90.204.66:6878/ace/getstream?id=6317bdcbe852dce829e5c647cce4da04a7dcb7f5
 #EXTINF:-1 tvg-id="M+ Documentales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Documentales.png" group-title="MOVISTAR",M+ Documentales 2216
 http://100.90.204.66:6878/ace/getstream?id=3c1b00267a398093848ded743cfdb547e2232216
+#EXTINF:-1 tvg-id="M+ Documentales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Documentales.png" group-title="MOVISTAR",M+ Documentales 7f5
+http://100.90.204.66:6878/ace/getstream?id=6317bdcbe852dce829e5c647cce4da04a7dcb7f5
+
 #EXTINF:-1 tvg-id="M+ Documentales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Documentales.png" group-title="MOVISTAR",M+ Documentales [HD] #3
 http://100.90.204.66:6878/ace/getstream?id=a52f0bf0a381275ccbd65988b803fe4e5930bef7
 
