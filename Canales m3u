@@ -38,11 +38,6 @@ http://100.90.204.66:6878/ace/getstream?id=3a03dc436b15f1d5d7b285c80b982da02502c
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 4a3a
 http://100.90.204.66:6878/ace/getstream?infohash=8a25653a2f774f4ae1062d38a30dcd714d304a3a
 
-
-
-
-
-
 #EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 e61f
 http://100.90.204.66:6878/ace/getstream?infohash=4e8f13dfa3a7719ce7c0e381cce2c58afc5ce61f
 #EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 dbb9
@@ -57,7 +52,6 @@ http://100.90.204.66:6878/ace/getstream?id=a7ab6d2c40b253fee9d908a5fc6618acb53a9
 http://100.90.204.66:6878/ace/getstream?id=085afc93f3c502fb31fb79253ebc58e5a8949e84
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",⭐️ M+ LaLiga 2 33fe
 http://100.90.204.66:6878/ace/getstream?id=b8eb9c9868d487402569bba2d97a8af113d033fe
-
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 2 f466
 http://100.90.204.66:6878/ace/getstream?infohash=4348397f8d917ea94bf28a36db59c17e2f48f466
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 2 5ae6
@@ -80,9 +74,6 @@ http://100.90.204.66:6878/ace/getstream?id=7bd9d072b65919352bda907b472961641e6e2
 http://100.90.204.66:6878/ace/getstream?id=22178d72e0f255dedd7e56f9474fea879289a6f1
 #EXTINF:-1 tvg-id="beIN SPORTS XTRA ñ" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/beIN%20SPORTS%20XTRA%20%C3%B1.png" group-title="LA LIGA Y DAZN LIGA", beIN SPORTS XTRA HD
 http://100.90.204.66:6878/ace/manifest.m3u8?id=fd869f34346154ca7cd78d46cbf7a6b8671beab5
-
-
-
 
 
 # ==========================================
