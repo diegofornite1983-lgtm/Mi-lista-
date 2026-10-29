@@ -54,6 +54,7 @@ http://127.0.0.1:6878/ace/getstream?id=b8eb9c9868d487402569bba2d97a8af113d033fe
 
 
 
+
 #EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 e61f
 http://127.0.0.1:6878/ace/getstream?infohash=4e8f13dfa3a7719ce7c0e381cce2c58afc5ce61f
 #EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 dbb9
