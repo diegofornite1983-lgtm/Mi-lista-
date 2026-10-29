@@ -433,6 +433,8 @@ http://127.0.0.1:6878/ace/getstream?id=e18b79bce27f6ee8eef9a1fc811bb5f80e4b558c
 # CARPETA: MOVISTAR DEP-VAMOS
 # ==========================================
 
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 1080p **
+http://127.0.0.1:6878/ace/getstream?id=f6b5d72663225d9369ebb48f5ff4735606672dc5
 #EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 355d
 http://127.0.0.1:6878/ace/getstream?id=332d8fdeb9c51385230b8c9448e047ccc4a6355d
 
@@ -442,8 +444,7 @@ http://127.0.0.1:6878/ace/getstream?id=b7f8d2c56960cec120a275308c3750dfffee3a8
 http://127.0.0.1:6878/ace/getstream?id=dbb418eab96d891ae3aa7of8f4f4b58eed5b8b722
 #EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 1080p *
 http://127.0.0.1:6878/ace/getstream?id=c730c0e0d0bb0270bf5a1e6b5f04368fc1436728
-#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 1080p **
-http://127.0.0.1:6878/ace/getstream?id=f6b5d72663225d9369ebb48f5ff4735606672dc5
+
 
 #EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes b0ab
 http://127.0.0.1:6878/ace/getstream?id=7f8b4f57bf234510d3f607492508d68167d4b0ab
