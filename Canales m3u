@@ -37,8 +37,7 @@ http://100.90.204.66:6878/ace/getstream?id=7f9857c45764ef2c7cdfb619b89db3056a57a
 http://100.90.204.66:6878/ace/getstream?id=3a03dc436b15f1d5d7b285c80b982da02502c26d
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 4a3a
 http://100.90.204.66:6878/ace/getstream?infohash=8a25653a2f774f4ae1062d38a30dcd714d304a3a
-#EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga ef3b
-http://100.90.204.66:6878/ace/getstream?id=9c75f1d190c518cfe0f236415b8dccc1f676ef3b
+
 
 
 
