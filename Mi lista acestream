@@ -38,18 +38,6 @@ http://127.0.0.1:6878/ace/getstream?id=3a03dc436b15f1d5d7b285c80b982da02502c26d
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 4a3a
 http://127.0.0.1:6878/ace/getstream?infohash=8a25653a2f774f4ae1062d38a30dcd714d304a3a
 
-#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 e61f
-http://127.0.0.1:6878/ace/getstream?infohash=4e8f13dfa3a7719ce7c0e381cce2c58afc5ce61f
-#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 dbb9
-http://127.0.0.1:6878/ace/getstream?id=eb4975702ceadca7ed74f8707e17a9f55569dbb9
-#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 b431
-http://127.0.0.1:6878/ace/getstream?id=a70a1605f69c8379e04094df96922a42adfbb431
-#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 21a3
-http://127.0.0.1:6878/ace/getstream?id=b63fcadc2390455d8a328f6c16b8b0a9adec21a3
-#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",Dazn liga 2
-http://127.0.0.1:6878/ace/getstream?id=a7ab6d2c40b253fee9d908a5fc6618acb53a9122
-#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",Dazn liga 2 shickat
-http://127.0.0.1:6878/ace/getstream?id=085afc93f3c502fb31fb79253ebc58e5a8949e84
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",⭐️ M+ LaLiga 2 33fe
 http://127.0.0.1:6878/ace/getstream?id=b8eb9c9868d487402569bba2d97a8af113d033fe
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 2 f466
@@ -62,6 +50,21 @@ http://127.0.0.1:6878/ace/getstream?id=d16a9b50042cb9d6e648cae3b1472f655c4def61
 http://127.0.0.1:6878/ace/getstream?id=67966d205968de9cf95dcffe3b2ff6888b106634
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",Movistar liga 2
 http://127.0.0.1:6878/ace/getstream?id=b8eb9c9868d487402569bba2d97a8af113d033fe
+
+#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 e61f
+http://127.0.0.1:6878/ace/getstream?infohash=4e8f13dfa3a7719ce7c0e381cce2c58afc5ce61f
+#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 dbb9
+http://127.0.0.1:6878/ace/getstream?id=eb4975702ceadca7ed74f8707e17a9f55569dbb9
+#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 b431
+http://127.0.0.1:6878/ace/getstream?id=a70a1605f69c8379e04094df96922a42adfbb431
+#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 21a3
+http://127.0.0.1:6878/ace/getstream?id=b63fcadc2390455d8a328f6c16b8b0a9adec21a3
+#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",Dazn liga 2
+http://127.0.0.1:6878/ace/getstream?id=a7ab6d2c40b253fee9d908a5fc6618acb53a9122
+#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",Dazn liga 2 shickat
+http://127.0.0.1:6878/ace/getstream?id=085afc93f3c502fb31fb79253ebc58e5a8949e84
+
+
 
 
 #EXTINF:-1 tvg-id="M+ LaLiga 3 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%203.png" group-title="LA LIGA Y DAZN LIGA",⭐️ M+ LaLiga 3 1846
