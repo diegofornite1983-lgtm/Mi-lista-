@@ -60,10 +60,7 @@ http://100.90.204.66:6878/ace/getstream?id=71cb5e2567a8b39f5bdc4fa791992781b052f
 http://100.90.204.66:6878/ace/getstream?id=cc108ae39f92c48f6c946763047bd1c9b7b7d889
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",DAZN LA LIGA 1 --> NEW LOOP
 http://100.90.204.66:6878/ace/getstream?id=303c31ee08b34b4ae3486decca2df98089e4e488
-#EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",DAZN LA LIGA 1 --> NEW LOOP
-http://100.90.204.66:6878/ace/getstream?id=b119416386155a6b85e7d0c7cab3ab92c7bfb87c
-#EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",DAZN LA LIGA 1 FHD --> NEW LOOP
-http://100.90.204.66:6878/ace/getstream?id=244a6fd6428f6ad13034339cb382e01a0e779d9d
+
 
 #EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 e61f
 http://100.90.204.66:6878/ace/getstream?infohash=4e8f13dfa3a7719ce7c0e381cce2c58afc5ce61f
