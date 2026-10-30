@@ -425,7 +425,7 @@ http://100.90.204.66:6878/ace/getstream?id=e18b79bce27f6ee8eef9a1fc811bb5f80e4b5
 # CARPETA: MOVISTAR DEP-VAMOS
 # ==========================================
 
-#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",01 M+ Deportes 3e1d
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",⭐️ M+ Deportes 80c
 http://100.90.204.66:6878/ace/getstream?id=3e1dba7d70192fee5925f798d7bc78b8a65ce80c
 #EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 1080p **
 http://100.90.204.66:6878/ace/getstream?id=f6b5d72663225d9369ebb48f5ff4735606672dc5
@@ -435,6 +435,8 @@ http://100.90.204.66:6878/ace/getstream?id=b7f8d2c56960cec120a275308c3750dfffee3
 http://100.90.204.66:6878/ace/getstream?id=dbb418eab96d891ae3aa7of8f4f4b58eed5b8b722
 #EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 1080p *
 http://100.90.204.66:6878/ace/getstream?id=c730c0e0d0bb0270bf5a1e6b5f04368fc1436728
+
+
 
 
 
