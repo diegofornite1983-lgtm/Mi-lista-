@@ -424,6 +424,10 @@ http://100.90.204.66:6878/ace/getstream?id=e18b79bce27f6ee8eef9a1fc811bb5f80e4b5
 # ==========================================
 # CARPETA: MOVISTAR DEP-VAMOS
 # ==========================================
+
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 355d
+http://100.90.204.66:6878/ace/getstream?id=3e1dba7d70192fee5925f798d7bc78b8a65ce80c
+
 #EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 355d
 http://100.90.204.66:6878/ace/getstream?id=332d8fdeb9c51385230b8c9448e047ccc4a6355d
 #EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 1080p **
