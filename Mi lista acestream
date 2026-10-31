@@ -437,6 +437,32 @@ http://127.0.0.1:6878/ace/getstream?id=dbb418eab96d891ae3aa7of8f4f4b58eed5b8b722
 http://127.0.0.1:6878/ace/getstream?id=c730c0e0d0bb0270bf5a1e6b5f04368fc1436728
 
 
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes (NEW ERA FHD)
+http://127.0.0.1:6878/ace/getstream?id=332d8fdeb9c51385230b8c9448e047ccc4a6355d
+
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes (NEW ERA III)
+http://127.0.0.1:6878/ace/getstream?id=af393f93814d03160d48d2730759593b7bea5b47
+
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes (ELCANO 1)
+http://127.0.0.1:6878/ace/getstream?id=3e1dba7d70192fee5925f798d7bc78b8a65ce80c
+
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes (ELCANO 2)
+http://127.0.0.1:6878/ace/getstream?id=3d44884484303f51879f93ddaff6e4c267df2e3e
+
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes (ELCANO 3)
+http://127.0.0.1:6878/ace/getstream?id=8e22b547768ad2455e2015591ed2b06434d7415e
+
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes (ELCANO 4)
+http://127.0.0.1:6878/ace/getstream?id=26f3db95b4261c7d7e83b68b75f513d84b03e876
+
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes (ELCANO 5)
+http://127.0.0.1:6878/ace/getstream?id=fe262fe80790667a96a78da6ab4b676e4e8e0c6a
+
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes (ELCANO 6)
+http://127.0.0.1:6878/ace/getstream?id=25a358e8bde07d0ce157aac52618876da1279ab7
+
+
+
 
 
 
