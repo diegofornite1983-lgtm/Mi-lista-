@@ -41,16 +41,12 @@ http://100.90.204.66:6878/ace/getstream?infohash=8a25653a2f774f4ae1062d38a30dcd7
 
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA", ⭐️ M+ LaLiga 2 33fe
 http://100.90.204.66:6878/ace/getstream?id=b8eb9c9868d487402569bba2d97a8af113d033fe
-#EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 2 f466
-http://100.90.204.66:6878/ace/getstream?infohash=4348397f8d917ea94bf28a36db59c17e2f48f466
-#EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 2 5ae6
-http://100.90.204.66:6878/ace/getstream?infohash=a369c59a76949174d9f507e7635afc8ba9175ae6
-#EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 2 ef61
-http://100.90.204.66:6878/ace/getstream?id=d16a9b50042cb9d6e648cae3b1472f655c4def61
-#EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 2 6634
-http://100.90.204.66:6878/ace/getstream?id=67966d205968de9cf95dcffe3b2ff6888b106634
-#EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",Movistar liga 2
-http://100.90.204.66:6878/ace/getstream?id=b8eb9c9868d487402569bba2d97a8af113d033fe
+#EXTINF:-1 tvg-id="DAZN LaLiga 2" tvg-logo="" group-title="FUTBOL",DAZN LaLiga 2 720p **
+http://100.90.204.66:6878/ace/getstream?id=db26cad444717c262dddb5ea37301ee779d4f5b9
+
+#EXTINF:-1 tvg-id="DAZN LaLiga 2" tvg-logo="" group-title="FUTBOL",DAZN LaLiga 2 1080p **
+http://100.90.204.66:6878/ace/getstream?id=147635d4205d3be55c67d10e9f25ad6d093e5264
+
 
 
 
