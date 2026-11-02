@@ -13,8 +13,7 @@
 http://100.90.204.66:6878/ace/getstream?id=0b5f802f2de6488b4023d0f05195486e19d81ed7
 
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 1080p 
-http://100.90.204.66:6878/ace/manifest.m3u8?id=8fea6e58c59d3c01bd842d30a9211a51ef48ae38
-
+http://100.90.204.66:6878/ace/getstream?id=8fea6e58c59d3c01bd842d30a9211a51ef48ae38
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 1080p 
 http://100.90.204.66:6878/ace/getstream?id=0627f19a7dcfdd91eea1e6b0c2b417dea0740c6d
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",Movistar liga
@@ -97,8 +96,9 @@ http://100.90.204.66:6878/ace/getstream?id=fa931cbc87dc9d66fdd30a9644e054b403960
 http://100.90.204.66:6878/ace/getstream?id=8c67cdb5ba81976662c3a67984a9545d9cfb0f70
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS ab78
 http://100.90.204.66:6878/ace/getstream?id=1ab443f5b4beb6d586f19e8b25b9f9646cf2ab78
-#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 1080p 
-http://100.90.204.66:6878/ace/getstream?id=dc77ffac4ce00ca2c00243259370f777ba8aff4a
+#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS ab78
+http://100.90.204.66:6878/ace/manifest.m3u8?id=1ab443f5b4beb6d586f19e8b25b9f9646cf2ab78
+
 
 
 #EXTINF:-1 tvg-id="M+ Estrenos HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Estrenos.png" group-title="MOVISTAR",M+ Estrenos 0803
