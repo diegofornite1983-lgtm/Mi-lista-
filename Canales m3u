@@ -7,11 +7,9 @@
 # ==========================================
 
 
-#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga FHD - NEW ERA II
-http://100.90.204.66:6878/ace/getstream?id=d4ff041287a43e3114d411d671c4b4e92e21f33y
 
-#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga FHD - NEW ERA VI
-http://100.90.204.66:6878/ace/getstream?id=b3bdd6ef7f795c4f321a3ce5cf4907338f462929
+
+
 
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga - ELCANO 1
 http://100.90.204.66:6878/ace/getstream?id=623f9ce3c4adfcd9771da41a6cc433632cf2c680
