@@ -460,28 +460,15 @@ http://100.90.204.66:6878/ace/getstream?id=27d11bbeb3026231d52de16b1fac48da7a099
 #EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",⭐️ DAZN F1 0076
 http://100.90.204.66:6878/ace/getstream?id=b04372b9543d763bd2dbd2a1842d9723fd080076
 
-
-
 #EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",DAZN F1 4282
 http://100.90.204.66:6878/ace/getstream?id=ff770f04b4d985193edf8dd02feec90ef8234282
-
-#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",DAZN F1 4392
-http://100.90.204.66:6878/ace/getstream?id=a3034286770b8f4905174096b51b2b03db8e4392
-
-#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",DAZN F1 abac
-http://100.90.204.66:6878/ace/getstream?id=c3c6b0a1c155d50808fb10802f32e283bcaaabac
 
 #EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",DAZN F1 2218
 http://100.90.204.66:6878/ace/getstream?id=91823ce98b319e417da089e4b977eaa6a90a2218
 
-#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",DAZN F1 0041
-http://100.90.204.66:6878/ace/getstream?id=4a8fc1863b97e215bc52613d4336fc8929040041
-
-#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",DAZN F1 be30
-http://100.90.204.66:6878/ace/getstream?id=6d325cda6ed591647ef5e91edd043147bce8be30
-
 #EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",DAZN F1 4be2
 http://100.90.204.66:6878/ace/getstream?id=d65257bb934b73647374224fd62d836815804be2
+
 
 
 
