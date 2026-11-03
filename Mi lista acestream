@@ -597,6 +597,8 @@ http://127.0.0.1:6878/ace/getstream?id=477b3ea6be34bfd669cc35c5cdff8b18a3ad79f8
 # PRIMERA FEDERACIÓN (RFEF)
 # ==========================================
 
+#EXTINF:-1 tvg-id="Primera Federación" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Primera%20Federaci%C3%B3n.png" group-title="PRIMERA FEDERACIÓN",RFEF TV 7988f
+http://127.0.0.1:6878/ace/getstream?id=3d001b30e28db897b25ce918371d52d3b5b7988f
 #EXTINF:-1 tvg-id="Primera Federación" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Primera%20Federaci%C3%B3n.png" group-title="PRIMERA FEDERACIÓN",1RFEF Eventos --> NEW ERA III
 http://127.0.0.1:6878/ace/getstream?id=6adb885bc4b91164c17bcf99375b68c41abe6ac1
 
@@ -618,8 +620,7 @@ http://127.0.0.1:6878/ace/getstream?id=c1ee6e1e0ef5928d8261f855c417de21794f437d
 #EXTINF:-1 tvg-id="Primera Federación" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Primera%20Federaci%C3%B3n.png" group-title="PRIMERA FEDERACIÓN",1RFEF Canal 2 --> NEW ERA V
 http://127.0.0.1:6878/ace/getstream?id=8677d339ecddd75165c0015025f598b6215974cf
 
-#EXTINF:-1 tvg-id="Primera Federación" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Primera%20Federaci%C3%B3n.png" group-title="PRIMERA FEDERACIÓN",RFEF TV 7988f
-http://127.0.0.1:6878/ace/getstream?id=3d001b30e28db897b25ce918371d52d3b5b7988f
+
 
 
 
