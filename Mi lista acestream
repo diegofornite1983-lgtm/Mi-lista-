@@ -628,6 +628,12 @@ http://127.0.0.1:6878/ace/getstream?id=8677d339ecddd75165c0015025f598b6215974cf
 # CARPETA: EUROSPORT
 # ==========================================
 
+#EXTINF:-1 tvg-id="Eurosport1.es" tvg-logo="https://i.ibb.co/r2Yd7xD/euro1.png" group-title="EUROSPORT",Eurosport 1 e38de
+http://127.0.0.1:6878/ace/getstream?id=767eb0d95d884107f887d42662bd57d5b6ec38de
+
+#EXTINF:-1 tvg-id="Eurosport2.es" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 17aa3
+http://127.0.0.1:6878/ace/getstream?id=6b1fae4ad99474bd8dde2113c9a0d36bf6717aa3
+
 #EXTINF:-1 tvg-id="Eurosport1.es" tvg-logo="https://i.ibb.co/r2Yd7xD/euro1.png" group-title="EUROSPORT",Eurosport 1 FHD (New Era)
 http://127.0.0.1:6878/ace/getstream?id=bae98f69fbf867550b4f73b4eb176dae84d7f909
 
@@ -643,11 +649,7 @@ http://127.0.0.1:6878/ace/getstream?id=32fcf8e1513049ef9f90d08ba9040fe34b01d9fd
 #EXTINF:-1 tvg-id="Eurosport2.es" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 HD (Sport TV)
 http://127.0.0.1:6878/ace/getstream?id=6176281b9c46a5621a0e88524f8dc621f173b8e0
 
-#EXTINF:-1 tvg-id="Eurosport1.es" tvg-logo="https://i.ibb.co/r2Yd7xD/euro1.png" group-title="EUROSPORT",Eurosport 1 e38de
-http://127.0.0.1:6878/ace/getstream?id=767eb0d95d884107f887d42662bd57d5b6ec38de
 
-#EXTINF:-1 tvg-id="Eurosport2.es" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 17aa3
-http://127.0.0.1:6878/ace/getstream?id=6b1fae4ad99474bd8dde2113c9a0d36bf6717aa3
 
 
 
