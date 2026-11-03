@@ -9,6 +9,8 @@
 
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",⭐️ M+ LaLiga 9e38
 http://100.90.204.66:6878/ace/getstream?id=31c19ffb3472c289c5bbbbc174449c8ed0d19e38
+#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 8d2ad
+http://100.90.204.66:6878/ace/getstream?id=25ba36fb3ff78d37b304177cb5b9f9f84348d2ad
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",Movistar liga shickat
 http://100.90.204.66:6878/ace/getstream?id=0b5f802f2de6488b4023d0f05195486e19d81ed7
 
@@ -20,10 +22,6 @@ http://100.90.204.66:6878/ace/getstream?id=1c00e6a5404f84e9bd22aa9d8f09e96ffa4ab
 
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 65422
 http://100.90.204.66:6878/ace/getstream?id=3d4c3b9d44af0658a9ec6b29c92033f732b65422
-
-#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 8d2ad
-http://100.90.204.66:6878/ace/getstream?id=25ba36fb3ff78d37b304177cb5b9f9f84348d2ad
-
 
 
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga - ELCANO 3
