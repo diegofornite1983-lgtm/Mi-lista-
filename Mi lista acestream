@@ -613,20 +613,11 @@ http://127.0.0.1:6878/ace/getstream?id=7153060181b1f9b86703db2ebf98e45f45a6edc1
 #EXTINF:-1 tvg-id="Eurosport1.es" tvg-logo="https://i.ibb.co/r2Yd7xD/euro1.png" group-title="EUROSPORT",Eurosport 1 HD (New Loop)
 http://127.0.0.1:6878/ace/getstream?id=547ab7146a86d6119c9332c011669544720124e3
 
-#EXTINF:-1 tvg-id="Eurosport1.es" tvg-logo="https://i.ibb.co/r2Yd7xD/euro1.png" group-title="EUROSPORT",Eurosport 1 9c82
-http://127.0.0.1:6878/ace/getstream?id=9c825219b69291e2a103404bdfd63c3d7a6c9f66
-
-#EXTINF:-1 tvg-id="Eurosport1.es" tvg-logo="https://i.ibb.co/r2Yd7xD/euro1.png" group-title="EUROSPORT",Eurosport 1 705d
-http://127.0.0.1:6878/ace/getstream?id=714e14e6d6e27660fd25a75b57b0ac5580fe705d
-
 #EXTINF:-1 tvg-id="Eurosport2.es" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 (New Era III)
 http://127.0.0.1:6878/ace/getstream?id=32fcf8e1513049ef9f90d08ba9040fe34b01d9fd
 
 #EXTINF:-1 tvg-id="Eurosport2.es" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 HD (Sport TV)
 http://127.0.0.1:6878/ace/getstream?id=6176281b9c46a5621a0e88524f8dc621f173b8e0
-
-#EXTINF:-1 tvg-id="Eurosport2.es" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 91c4
-http://127.0.0.1:6878/ace/getstream?id=d05a03577faee7f5e267535be2397efc167891c4
 
 
 
