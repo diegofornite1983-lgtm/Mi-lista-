@@ -535,17 +535,18 @@ http://100.90.204.66:6878/ace/getstream?id=2d549bbcd898b09c4b736e6e3e83e8e8c19fc
 
 
 
-#EXTINF:-1 tvg-id="MovistarVamos.es" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos (Elcano 1)
+#EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos (Elcano 1)
 http://100.90.204.66:6878/ace/getstream?id=ad5661ef1b3da4b10156a8279d65c727d8ad2deb
 
-#EXTINF:-1 tvg-id="MovistarVamos.es" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos (Elcano 2)
+#EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos (Elcano 2)
 http://100.90.204.66:6878/ace/getstream?id=cb86f8bb48ae00fdaa6864257a67d2fc5e7d4a99
 
-#EXTINF:-1 tvg-id="MovistarVamos.es" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos (Elcano 3)
+#EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos (Elcano 3)
 http://100.90.204.66:6878/ace/getstream?id=a67d8015538d3c3f4ca4d2a06c9014c3085281da
 
-#EXTINF:-1 tvg-id="MovistarVamos.es" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos (Elcano 4)
+#EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos (Elcano 4)
 http://100.90.204.66:6878/ace/getstream?id=854f71a248771aa8c64f36d3dfd820caa2e76f2f
+
 
 
 #EXTINF:-1 tvg-id="M+ Golf HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf.png" group-title="MOVISTAR DEP-VAMOS",⭐️ M+ Golf 9afb
