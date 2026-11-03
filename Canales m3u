@@ -315,8 +315,9 @@ https://rtvelivestream.rtve.es/rtvesec/clan/clan_main_dvr.m3u8
 # ==========================================
 
 
-#EXTINF:-1 tvg-id="M+ Liga de Campeones HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",⭐️ M+ Liga de Campeones f370
-http://100.90.204.66:6878/ace/getstream?id=76f0f810b6f72d5e98d188689526a052b0900ac5
+#EXTINF:-1 tvg-id="M+ Liga de Campeones HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",M+ Liga de Campeones 2 1080p *
+http://100.90.204.66:6878/ace/getstream?id=2edf107f0a39392308b6e11e8d4aedd38d8b4ac5
+
 
 
 #EXTINF:-1 tvg-id="M+ Liga de Campeones HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",⭐️ M+ Liga de Campeones f370
