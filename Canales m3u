@@ -24,6 +24,7 @@ http://100.90.204.66:6878/ace/manifest.m3u8?id=8fea6e58c59d3c01bd842d30a9211a51e
 
 
 
+
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",⭐️ M+ LaLiga 9e38
 http://100.90.204.66:6878/ace/getstream?id=31c19ffb3472c289c5bbbbc174449c8ed0d19e38
 
