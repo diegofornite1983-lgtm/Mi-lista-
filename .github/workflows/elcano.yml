@@ -2,8 +2,8 @@ name: Actualizador Automatico Elcano
 
 on:
   schedule:
-    - cron: '0 * * * *' # Se ejecuta CADA HORA
-  workflow_dispatch: # Botón de ejecución manual
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -11,8 +11,9 @@ permissions:
 jobs:
   actualizar-lista:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Descargar el repositorio de GitHub
+      - name: Descargar repositorio
         uses: actions/checkout@v4
 
       - name: Configurar Python
@@ -20,107 +21,132 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Ejecutar script inyector de IDs
+      - name: Descargar Elcano y añadir canales nuevos
+        id: update
         run: |
-          python << 'EOF'
-          import urllib.request
-          import re
+          python <<'PY'
           import os
+          import re
+          import sys
+          import unicodedata
+          import urllib.request
+          from pathlib import Path
 
-          url_elcano = "http://elcano.top"
-          ruta_mia = "lista-elcano.txt"
+          URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          
+          # Apuntamos directamente a tu archivo 'Canales m3u' en la raíz del repositorio
+          destino = Path("Canales m3u")
 
-          if not os.path.exists(ruta_mia):
-              print(f"Error: No existe el archivo base '{ruta_mia}' en el repositorio.")
-              exit(1)
+          if not destino.is_file():
+              sys.exit("ERROR: No se encuentra el archivo 'Canales m3u' en la raíz del repositorio.")
 
-          # 1. Descargar fuente externa
+          def normalizar(nombre):
+              nombre = unicodedata.normalize("NFKD", nombre.lower())
+              nombre = "".join(c for c in nombre if not unicodedata.combining(c))
+              nombre = re.sub(r"[^a-z0-9]", "", nombre)
+              return nombre
+
+          def leer_m3u(texto):
+              lineas = texto.splitlines()
+              entradas = []
+              i = 0
+
+              while i < len(lineas):
+                  linea = lineas[i].strip()
+
+                  if linea.startswith("#EXTINF:"):
+                      url = None
+                      j = i + 1
+
+                      while j < len(lineas):
+                          candidata = lineas[j].strip()
+                          if candidata and not candidata.startswith("#"):
+                              url = candidata
+                              break
+                          j += 1
+
+                      if url:
+                          nombre = linea.rsplit(",", 1)[-1].strip()
+                          grupo = re.search(r'group-title="([^"]*)"', linea)
+                          entradas.append({
+                              "extinf": linea,
+                              "url": url,
+                              "nombre": nombre,
+                              "grupo": grupo.group(1) if grupo else ""
+                          })
+                          i = j
+
+                  i += 1
+
+              return entradas
+
           try:
-              req = urllib.request.Request(
-                  url_elcano, 
-                  headers={
-                      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-                      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-                  }
+              peticion = urllib.request.Request(
+                  URL_ELCANO,
+                  headers={"User-Agent": "Mozilla/5.0"}
               )
-              with urllib.request.urlopen(req, timeout=20) as r:
-                  contenido_elcano = r.read().decode("utf-8", errors="ignore")
-          except Exception as e:
-              print(f"Error crítico al descargar la fuente de Elcano: {e}")
-              exit(1)
+              with urllib.request.urlopen(peticion, timeout=60) as respuesta:
+                  fuente = respuesta.read().decode("utf-8-sig", errors="replace")
+          except Exception as error:
+              sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 2. Función para normalizar nombres
-          def limpiar_nombre(n):
-              n = n.strip().lower()
-              n = n.replace("抢", "").replace("⭐", "").replace("movistar", "m+").replace("liga", "laliga")
-              n = re.sub(r"\s+[a-f0-9]{4,5}$", "", n)
-              n = re.sub(r"\s*\*+\s*$", "", n)
-              return "".join(n.split())
+          if "#EXTM3U" not in fuente or "#EXTINF:" not in fuente:
+              sys.exit("ERROR: La dirección de Elcano no ha devuelto una lista M3U válida.")
 
-          # 3. Mapear enlaces de Elcano
-          diccionario_elcano = {}
-          lineas_fuente = contenido_elcano.splitlines()
-          for idx, l in enumerate(lineas_fuente):
-              if l.strip().startswith("#EXTINF"):
-                  match_name = re.search(r",\s*(.*)", l)
-                  if match_name and (idx + 1) < len(lineas_fuente):
-                      nxt = lineas_fuente[idx + 1].strip()
-                      if nxt.startswith("http"):
-                          nombre_limpio = limpiar_nombre(match_name.group(1))
-                          diccionario_elcano[nombre_limpio] = nxt
+          try:
+              original = destino.read_text(encoding="utf-8-sig")
+          except UnicodeDecodeError:
+              original = destino.read_text(encoding="latin-1")
 
-          print(f"Canales detectados en la fuente externa: {len(diccionario_elcano)}")
+          canales_fuente = leer_m3u(fuente)
+          canales_mios = leer_m3u(original)
 
-          # 4. Leer lista propia y actualizar
-          with open(ruta_mia, "r", encoding="utf-8", errors="ignore") as f:
-              lineas_mias = f.readlines()
+          if not canales_fuente:
+              sys.exit("ERROR: Elcano no contiene canales reconocibles.")
 
-          lineas_nuevas = []
-          i = 0
-          actualizados = 0
+          nombres_existentes = {
+              normalizar(c["nombre"]) for c in canales_mios
+          }
 
-          while i < len(lineas_mias):
-              linea = lineas_mias[i]
-              lineas_nuevas.append(linea)
+          nuevos = []
 
-          if linea.strip().startswith("#EXTINF"):
-                  match_mia = re.search(r",\s*(.*)", linea)
-                  if match_mia:
-                      nombre_mia_limpio = limpiar_nombre(match_mia.group(1))
-                      url_nueva = diccionario_elcano.get(nombre_mia_limpio)
+          for canal in canales_fuente:
+              nombre_id = normalizar(canal["nombre"])
 
-                      if not url_nueva:
-                          for k, v in diccionario_elcano.items():
-                              if nombre_mia_limpio in k or k in nombre_mia_limpio:
-                                  url_nueva = v
-                                  break
+              if not nombre_id or nombre_id in nombres_existentes:
+                  continue
 
-                      if (i + 1) < len(lineas_mias):
-                          siguiente_linea = lineas_mias[i+1].strip()
-                          if siguiente_linea.startswith("http") or "getstream" in siguiente_linea:
-                              if url_nueva:
-                                  lineas_nuevas.append(url_nueva + "\n")
-                                  actualizados += 1
-                              else:
-                                  lineas_nuevas.append(lineas_mias[i+1])
-                              i += 1 
-              i += 1
+              extinf = canal["extinf"]
+              url = canal["url"]
 
-          print(f"Canales actualizados con éxito: {actualizados}")
+              nuevos.extend([extinf, url])
+              nombres_existentes.add(nombre_id)
 
-          # 5. Guardar los cambios de vuelta en el archivo txt
-          with open(ruta_mia, "w", encoding="utf-8") as f:
-              f.writelines(lineas_nuevas)
-          EOF
+          if nuevos:
+              with destino.open("a", encoding="utf-8", newline="\n") as archivo:
+                  if original and not original.endswith("\n"):
+                      archivo.write("\n")
+                  archivo.write("\n".join(nuevos) + "\n")
 
-      - name: Guardar cambios y subir a GitHub
+          print(f"Archivo actualizado: {destino}")
+          print(f"Canales encontrados en Elcano: {len(canales_fuente)}")
+          print(f"Canales nuevos añadidos: {len(nuevos) // 2}")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as salida:
+              salida.write(f"path={destino.as_posix()}\n")
+          PY
+
+      - name: Guardar cambios en GitHub
+        env:
+          TARGET_FILE: ${{ steps.update.outputs.path }}
         run: |
-          git config --global user.name "GitHub Action Bot"
-          git config --global user.email "actions@github.com"
-          git add lista-elcano.txt
+          git config user.name "GitHub Action Bot"
+          git config user.email "actions@github.com"
+          git add -- "$TARGET_FILE"
+
           if ! git diff --cached --quiet; then
-            git commit -m "Lista de canales actualizada automáticamente por Elcano Bot"
+            git commit -m "Actualizar canales nuevos de Elcano automáticamente"
             git push
           else
-            echo "No hay cambios detectados en los canales."
+            echo "No hay canales nuevos que guardar."
           fi
