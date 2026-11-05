@@ -32,26 +32,26 @@ jobs:
           import urllib.request
           from pathlib import Path
 
-          URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
-          
-                CARPETA = Path("Mi lista acestream")
+                  URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+        CARPETA = Path("Mi lista acestream")
 
-          if not CARPETA.is_dir():
-              sys.exit("ERROR: No existe la carpeta Mi lista acestream.")
+        if not CARPETA.is_dir():
+            sys.exit("ERROR: No existe la carpeta Mi lista acestream.")
 
-          archivos = [
-              p for p in CARPETA.rglob("*")
-              if p.is_file() and p.suffix.lower() in (".m3u", ".m3u8", ".txt")
-          ]
+        archivos = [
+            p for p in CARPETA.rglob("*")
+            if p.is_file() and p.suffix.lower() in (".m3u", ".m3u8", ".txt")
+        ]
 
-          if len(archivos) != 1:
-              sys.exit(
-                  "ERROR: Se esperaba un único archivo M3U/TXT dentro de "
-                  f"Mi lista acestream, pero se encontraron {len(archivos)}. "
-                  "No se ha modificado nada."
-              )
+        if len(archivos) != 1:
+            sys.exit(
+                "ERROR: Se esperaba un único archivo M3U/TXT dentro de "
+                f"Mi lista acestream, pero se encontraron {len(archivos)}. "
+                "No se ha modificado nada."
+            )
 
-          destino = archivos[0]
+        destino = archivos[0]
+
 
 
           def normalizar(nombre):
