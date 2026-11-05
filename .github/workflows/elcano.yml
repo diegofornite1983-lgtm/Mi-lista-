@@ -79,7 +79,7 @@ jobs:
                                   url_nueva = v
                                   break
                       
-                      if i + 1 < len(lineas_mias) and (lineas_mias[i+1].strip().startswith("http://127.0.0.1:6878/ace/") or lineas_mias[i+1].strip().startswith("http://127.0.0")):
+                      if i + 1 < len(lineas_mias) and (lineas_mias[i+1].strip().startswith("http://127.0.0") or lineas_mias[i+1].strip().startswith("http://127.0.0")):
                           if url_nueva:
                               lineas_nuevas.append(url_nueva + "\n")
                           else:
