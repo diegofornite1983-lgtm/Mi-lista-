@@ -602,7 +602,8 @@ http://100.90.204.66:6878/ace/getstream?id=477b3ea6be34bfd669cc35c5cdff8b18a3ad7
 # ==========================================
 
 #EXTINF:-1 tvg-id="Primera Federación" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Primera%20Federaci%C3%B3n.png" group-title="PRIMERA FEDERACIÓN",RFEF TV 7988f
-http://100.90.204.66:6878/ace/getstream?id=3d001b30e28db897b25ce918371d52d3b5b7988f
+http://100.90.204.66:6878/ace/getstream?id=2042a3df45db52568fb629ca10b8b62b16c4f9d6
+
 #EXTINF:-1 tvg-id="Primera Federación" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Primera%20Federaci%C3%B3n.png" group-title="PRIMERA FEDERACIÓN",1RFEF Eventos --> NEW ERA III
 http://100.90.204.66:6878/ace/getstream?id=6adb885bc4b91164c17bcf99375b68c41abe6ac1
 
