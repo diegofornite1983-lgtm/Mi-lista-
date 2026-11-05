@@ -22,7 +22,7 @@ jobs:
 
       - name: Ejecutar script inyector inteligente sin errores
         run: |
-          python -c '
+          python << 'EOF'
           import urllib.request
           import re
           import os
@@ -56,4 +56,49 @@ jobs:
           for extinf, url in bloques:
               match_name = re.search(r"group-title=\"[^\"]+\",\s*(.*)", extinf)
               if match_name:
-                  nombre_limpio = limpiar_nombre(match
+                  nombre_limpio = limpiar_nombre(match_name.group(1))
+                  diccionario_elcano[nombre_limpio] = url.strip()
+
+          with open(ruta_mia, "r", encoding="utf-8", errors="ignore") as f:
+              lineas_mias = f.readlines()
+
+          lineas_nuevas = []
+          i = 0
+          while i < len(lineas_mias):
+              linea = lineas_mias[i]
+              lineas_nuevas.append(linea)
+
+              if linea.strip().startswith("#EXTINF:"):
+                  match_mia = re.search(r"group-title=\"[^\"]+\",\s*(.*)", linea)
+                  if match_mia:
+                      nombre_mia_limpio = limpiar_nombre(match_mia.group(1))
+                      url_nueva = None
+
+                      if nombre_mia_limpio in diccionario_elcano:
+                        url_nueva = diccionario_elcano[nombre_mia_limpio]
+                      else:
+                          for k, v in diccionario_elcano.items():
+                              if nombre_mia_limpio in k or k in nombre_mia_limpio:
+                                  url_nueva = v
+                                  break
+
+                      if i + 1 < len(lineas_mias) and ("127.0.0.1:6878" in lineas_mias[i+1]):
+                          if url_nueva:
+                              lineas_nuevas.append(url_nueva + "\n")
+                          else:
+                              lineas_nuevas.append(lineas_mias[i+1])
+                          i += 1
+
+              i += 1
+
+          with open(ruta_mia, "w", encoding="utf-8") as f:
+              f.writelines(lineas_nuevas)
+          EOF
+
+      - name: Guardar y subir cambios automaticamente a tu Github
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add "Mi lista acestream"
+          git diff --quiet && git diff --staged --quiet || git commit -m "Inyección horaria Elcano"
+          git push origin HEAD:main
