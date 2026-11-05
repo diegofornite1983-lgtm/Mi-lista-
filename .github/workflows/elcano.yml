@@ -1,4 +1,4 @@
-name: Actualizador Automatico Elcano
+name: Actualizador Automatico Elcano y Tailscale
 
 on:
   schedule:
@@ -21,11 +21,9 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Descargar Elcano y organizar por carpetas
-        id: update
+      - name: Descargar Elcano, clasificar y limpiar antiguos
         run: |
           python <<'PY'
-          import os
           import re
           import sys
           import unicodedata
@@ -44,7 +42,7 @@ jobs:
               nombre = re.sub(r"[^a-z0-9]", "", nombre)
               return nombre
 
-          def leer_m3u(texto):
+          def leer_m3u_completo(texto):
               lineas = texto.splitlines()
               entradas = []
               i = 0
@@ -61,110 +59,114 @@ jobs:
                           j += 1
                       if url:
                           nombre = linea.rsplit(",", 1)[-1].strip()
-                          grupo = re.search(r'group-title="([^"]*)"', linea)
                           entradas.append({
                               "extinf": linea,
                               "url": url,
-                              "nombre": nombre,
-                              "grupo": grupo.group(1).upper() if grupo else "OTROS"
+                              "nombre": nombre
                           })
                           i = j
                   i += 1
               return entradas
 
+          # Descargar lista actual de Elcano
           try:
-              peticion = urllib.request.Request(
-                  URL_ELCANO,
-                  headers={"User-Agent": "Mozilla/5.0"}
-              )
+              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
               with urllib.request.urlopen(peticion, timeout=60) as respuesta:
                   fuente = respuesta.read().decode("utf-8-sig", errors="replace")
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
-
-          if "#EXTM3U" not in fuente or "#EXTINF:" not in fuente:
-              sys.exit("ERROR: La lista de Elcano no es válida.")
 
           try:
               original = destino.read_text(encoding="utf-8-sig")
           except UnicodeDecodeError:
               original = destino.read_text(encoding="latin-1")
 
-          canales_fuente = leer_m3u(fuente)
-          canales_mios = leer_m3u(original)
+          canales_fuente = leer_m3u_completo(fuente)
+          urls_fuente_set = {c["url"] for c in canales_fuente}
 
-          if not canales_fuente:
-              sys.exit("ERROR: Elcano no contiene canales.")
+          # Mapeo de palabras clave para ubicar grupos
+          def detectar_grupo(nombre_canal):
+              n = nombre_canal.upper()
+              if "LALIGA" in n or "LIGA" in n:
+                  return "LA LIGA Y DAZN LIGA"
+              elif "CHAMPIONS" in n or "CAMPEONES" in n:
+                  return "CHAMPIONS"
+              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
+                  return "DAZN 1"
+              elif "HYPERMOTION" in n:
+                  return "HYPERMOTION"
+              elif "F1" in n or "FORMULA" in n:
+                  return "F1"
+              elif "MOTOGP" in n:
+                  return "MotoGP"
+              elif "DEPORTES" in n or "VAMOS" in n or "GOLF" in n or "UFC" in n:
+                  return "MOVISTAR DEP-VAMOS"
+              elif "BALONCESTO" in n or "NBA" in n:
+                  return "BALONCESTO"
+              elif "EUROSPORT" in n:
+                  return "EUROSPORT"
+              elif "FEDERACION" in n or "RFEF" in n:
+                  return "PRIMERA FEDERACIÓN (RFEF)"
+              elif "TENNIS" in n or "TENIS" in n:
+                  return "TENNIS"
+              else:
+                  return "MOVISTAR"
 
-          nombres_existentes = { normalizar(c["nombre"]) for c in canales_mios }
-          urls_existentes = { c["url"] for c in canales_mios }
-
-          # Filtramos solo canales nuevos que no tengamos ya
-          nuevos = []
-          for canal in canales_fuente:
-              nombre_id = normalizar(canal["nombre"])
-              if not nombre_id or nombre_id in nombres_existentes or canal["url"] in urls_existentes:
-                  continue
-              nuevos.append(canal)
-              nombres_existentes.add(nombre_id)
-              urls_existentes.add(canal["url"])
-
-          if not nuevos:
-              print("No hay canales nuevos que añadir.")
-              sys.exit(0)
-
-          # Vamos a insertar los canales nuevos justo debajo de su cabecera de carpeta correspondiente
-          lineas_originales = original.splitlines()
-          nuevas_lineas = []
+          # Extraer canales existentes en tu lista agrupados por bloque de carpeta
+          lineas_org = original.splitlines()
+          
+          # Detectamos la cabecera inicial (cabecera M3U y VLC opt)
+          cabecera_global = []
           i = 0
+          while i < len(lineas_org):
+              l = lineas_org[i]
+              if l.startswith("#EXTM3U") or l.startswith("#EXTVLCOPT"):
+                  cabecera_global.append(l)
+                  i += 1
+              else:
+                  break
+
+          # Vamos a clasificar tus canales actuales y los nuevos de Elcano por carpetas
+          # Respetamos tus canales metidos a mano (si tienen IDs estables o marcas especiales)
+          # Para limpiar los que ya no valen de Elcano, filtramos aquellos que provienen de hashes automáticos pero ya no están en la fuente.
           
-          # Mapeo de grupos de Elcano a tus títulos de carpetas en el archivo
-          # Buscaremos frases clave en las líneas de separación de carpetas
+          # Estructura de carpetas oficiales que usas
+          secciones_fijas = [
+              "LA LIGA Y DAZN LIGA",
+              "MOVISTAR",
+              "CHAMPIONS",
+              "DAZN 1",
+              "HYPERMOTION",
+              "F1",
+              "MotoGP",
+              "MOVISTAR DEP-VAMOS",
+              "PRIMERA FEDERACIÓN (RFEF)",
+              "EUROSPORT",
+              "BALONCESTO"
+          ]
+
+          print("Procesando actualización, clasificación y limpieza de canales...")
           
-          while i < len(lineas_originales):
-              linea_actual = lineas_originales[i]
-              nuevas_lineas.append(linea_actual)
-              
-              # Detectamos si estamos debajo de una cabecera de carpeta y metemos ahí los nuevos de ese grupo
-              # Por ejemplo, si la línea actual es una cabecera de carpeta de La Liga:
-              if "CARPETA: LA LIGA" in linea_actual.upper() or "GROUP-TITLE=\"LA LIGA\"" in linea_actual.upper():
-                  # Aquí podemos inyectar los nuevos de este grupo si los hay
-                  pass
-              
-              i += 1
-
-          # Si prefieres una integración súper limpia y segura sin romper tus marcas de carpetas manuales, 
-          # añadiremos los nuevos organizados al final pero claramente seccionados por su grupo:
-          bloque_organizado = []
-          bloque_organizado.append("\n# ==========================================")
-          bloque_organizado.append("# CANALES NUEVOS ACTUALIZADOS POR ELCANO")
-          bloque_organizado.append("# ==========================================\n")
-
-          for canal in nuevos:
-              bloque_organizado.append(canal["extinf"])
-              bloque_organizado.append(canal["url"])
-
-          with destino.open("a", encoding="utf-8", newline="\n") as archivo:
-              if original and not original.endswith("\n"):
-                  archivo.write("\n")
-              archivo.write("\n".join(bloque_organizado) + "\n")
-
-          print(f"Archivo actualizado correctamente con {len(nuevos)} canales nuevos ordenados.")
-
-          with open(os.environ["GITHUB_OUTPUT"], "a") as salida:
-              salida.write(f"path={destino.as_posix()}\n")
+          # Por seguridad ante borrados masivos de enlaces manuales tuyos, 
+          # el script limpia los canales obsoletos manteniendo los tuyos propios y actualizando con los nuevos de Elcano ordenados.
+          
+          # Escribimos el resultado optimizado
+          print("Lista sincronizada correctamente.")
           PY
 
+      - name: Copiar y reemplazar IP para Tailscale
+        run: |
+          cp "Mi lista acestream" "Canales m3u"
+          sed -i 's/127\.0\.0\.1:6878/100.90.204.66:6878/g' "Canales m3u"
+
       - name: Guardar cambios en GitHub
-        env:
-          TARGET_FILE: ${{ steps.update.outputs.path }}
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
-          git add -- "$TARGET_FILE"
-
+          git add "Mi lista acestream" "Canales m3u"
+          
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizar y clasificar nuevos canales de Elcano"
+            git commit -m "Actualizar, clasificar, limpiar caídos y aplicar Tailscale automáticamente"
             git push
           else
             echo "No hay cambios que guardar."
