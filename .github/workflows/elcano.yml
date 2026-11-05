@@ -18,6 +18,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
+
       - name: Ejecutar script inyector inteligente sin errores
         run: |
           python -c '
@@ -26,6 +27,7 @@ jobs:
           import os
 
           url_elcano = "https://elcano.top"
+
           ruta_mia = "Mi lista acestream"
 
           if not os.path.exists(ruta_mia):
@@ -90,6 +92,7 @@ jobs:
           with open(ruta_mia, "w", encoding="utf-8") as f:
               f.writelines(lineas_nuevas)
           '
+
       - name: Guardar y subir cambios automaticamente a tu Github
         run: |
           git config --local user.email "actions@github.com"
