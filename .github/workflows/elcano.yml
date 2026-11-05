@@ -1,4 +1,5 @@
 name: Actualizador Automatico Elcano
+
 on:
   schedule:
     - cron: '0 * * * *' # Se ejecuta CADA HORA las 24 horas del día automáticamente
@@ -26,9 +27,7 @@ jobs:
           import re
           import os
 
-         url_elcano = "elcano.top"         
-
-
+          url_elcano = "http://elcano.top/elcano.m3u"
           ruta_mia = "Mi lista acestream"
 
           if not os.path.exists(ruta_mia):
@@ -52,52 +51,9 @@ jobs:
               return "".join(n.split())
 
           diccionario_elcano = {}
-          bloques = re.findall(r"(#EXTINF:.*?\n)(http://127\.0\.0\.1:6878/ace/\S+)", contenido_elcano, re.DOTALL)
-          
+          bloques = re.findall(r"(#EXTINF:.*?\n)(http://127\.0\.0\.1:6878/ace/getstream\?id=\S+)", contenido_elcano, re.DOTALL)
+
           for extinf, url in bloques:
               match_name = re.search(r"group-title=\"[^\"]+\",\s*(.*)", extinf)
               if match_name:
-                  nombre_limpio = limpiar_nombre(match_name.group(1))
-                  diccionario_elcano[nombre_limpio] = url.strip()
-
-          with open(ruta_mia, "r", encoding="utf-8", errors="ignore") as f:
-              lineas_mias = f.readlines()
-
-          lineas_nuevas = []
-          i = 0
-          while i < len(lineas_mias):
-              linea = lineas_mias[i]
-              lineas_nuevas.append(linea)
-              if linea.strip().startswith("#EXTINF:"):
-                  match_mia = re.search(r"group-title=\"[^\"]+\",\s*(.*)", linea)
-                  if match_mia:
-                      nombre_mia_limpio = limpiar_nombre(match_mia.group(1))
-                      
-                      url_nueva = None
-                      if nombre_mia_limpio in diccionario_elcano:
-                          url_nueva = diccionario_elcano[nombre_mia_limpio]
-                      else:
-                          for k, v in diccionario_elcano.items():
-                              if nombre_mia_limpio in k or k in nombre_mia_limpio:
-                                  url_nueva = v
-                                  break
-                      
-                      if i + 1 < len(lineas_mias) and (lineas_mias[i+1].strip().startswith("http://127.0.0") or lineas_mias[i+1].strip().startswith("http://127.0.0")):
-                          if url_nueva:
-                              lineas_nuevas.append(url_nueva + "\n")
-                          else:
-                              lineas_nuevas.append(lineas_mias[i+1])
-                          i += 1
-              i += 1
-
-          with open(ruta_mia, "w", encoding="utf-8") as f:
-              f.writelines(lineas_nuevas)
-          '
-
-      - name: Guardar y subir cambios automaticamente a tu Github
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add "Mi lista acestream"
-          git diff --quiet && git diff --staged --quiet || git commit -m "Inyección horaria Elcano"
-          git push origin HEAD:main
+                  nombre_limpio = limpiar_nombre(match
