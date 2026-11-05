@@ -26,7 +26,8 @@ jobs:
           import re
           import os
 
-          url_elcano = "https://elcano.top"
+         url_elcano = "elcano.top"         
+
 
           ruta_mia = "Mi lista acestream"
 
