@@ -27,7 +27,6 @@ jobs:
           import re
           import os
 
-          # Fuente publica de Elcano accesible desde servidores de GitHub
           url_elcano = "http://elcano.top/elcano.m3u"
           ruta_mia = "lista-elcano.txt"
 
@@ -35,14 +34,20 @@ jobs:
               print(f"Error: No existe el archivo base '{ruta_mia}' en el repositorio.")
               exit(1)
 
-          # 1. Descargar fuente de Elcano
+          # 1. Descargar fuente de Elcano con cabeceras de navegador simuladas
           try:
-              req = urllib.request.Request(url_elcano, headers={"User-Agent": "Mozilla/5.0"})
-              with urllib.request.urlopen(req, timeout=15) as r:
+              req = urllib.request.Request(
+                  url_elcano, 
+                  headers={
+                      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+                  }
+              )
+              with urllib.request.urlopen(req, timeout=20) as r:
                   contenido_elcano = r.read().decode("utf-8", errors="ignore")
           except Exception as e:
-              print("Error al descargar la fuente de Elcano:", e)
-              exit(0)
+              print(f"Error crítico al descargar la fuente de Elcano: {e}")
+              exit(1)  # Forzar error para que GitHub avise si falla la descarga
 
           # 2. Función para normalizar nombres y cruzar datos
           def limpiar_nombre(n):
@@ -62,12 +67,16 @@ jobs:
                   nombre_limpio = limpiar_nombre(match_name.group(1))
                   diccionario_elcano[nombre_limpio] = url.strip()
 
-          # 4. Leer lista propia y actualizar únicamente el stream conservando tvg-id y estructura EPG
+          print(f"Canales detectados en la fuente externa: {len(diccionario_elcano)}")
+
+          # 4. Leer lista propia y actualizar conservando tvg-id y estructura EPG
           with open(ruta_mia, "r", encoding="utf-8", errors="ignore") as f:
               lineas_mias = f.readlines()
 
           lineas_nuevas = []
           i = 0
+          actualizados = 0
+
           while i < len(lineas_mias):
               linea = lineas_mias[i]
               lineas_nuevas.append(linea)
@@ -78,24 +87,29 @@ jobs:
                       nombre_mia_limpio = limpiar_nombre(match_mia.group(1))
                       url_nueva = diccionario_elcano.get(nombre_mia_limpio)
 
+                      # Búsqueda parcial si no coincide exacto
                       if not url_nueva:
                           for k, v in diccionario_elcano.items():
                               if nombre_mia_limpio in k or k in nombre_mia_limpio:
                                   url_nueva = v
                                   break
 
-                      if i + 1 < len(lineas_mias) and ("ace/getstream" in lineas_mias[i+1] or "http" in lineas_mias[i+1]):
-                          if url_nueva:
-                              lineas_nuevas.append(url_nueva + "\n")
-                          else:
-                              lineas_nuevas.append(lineas_mias[i+1])
-                          i += 1
+                      # Verificar si la siguiente línea es un enlace para actualizarlo
+                      if i + 1 < len(lineas_mias):
+                          siguiente_linea = lineas_mias[i+1].strip()
+                          if "getstream" in siguiente_linea or siguiente_linea.startswith("http"):
+                              if url_nueva:
+                                  lineas_nuevas.append(url_nueva + "\n")
+                                  actualizados += 1
+                              else:
+                                  lineas_nuevas.append(lineas_mias[i+1])
+                              i += 1
               i += 1
 
           # 5. Guardar cambios en el archivo del repositorio
           with open(ruta_mia, "w", encoding="utf-8") as f:
               f.writelines(lineas_nuevas)
-          print("Sincronización completada con éxito.")
+          print(f"Sincronización completada. Canales actualizados: {actualizados}")
           EOF
 
       - name: Guardar y subir cambios a GitHub
@@ -103,5 +117,5 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git add "lista-elcano.txt"
-          git diff --quiet && git diff --staged --quiet || git commit -m "Actualización automática de enlaces AceStream"
+          git diff --quiet && git diff --staged --quiet || git commit -m "Actualización automática de enlaces AceStream [skip ci]"
           git push origin HEAD:main
