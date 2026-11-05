@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Descargar Elcano, clasificar y limpiar antiguos
+      - name: Descargar Elcano, clasificar y actualizar
         run: |
           python <<'PY'
           import re
@@ -68,7 +68,7 @@ jobs:
                   i += 1
               return entradas
 
-          # Descargar lista actual de Elcano
+          # Descargar lista de Elcano
           try:
               peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
               with urllib.request.urlopen(peticion, timeout=60) as respuesta:
@@ -82,9 +82,26 @@ jobs:
               original = destino.read_text(encoding="latin-1")
 
           canales_fuente = leer_m3u_completo(fuente)
-          urls_fuente_set = {c["url"] for c in canales_fuente}
+          canales_mios = leer_m3u_completo(original)
 
-          # Mapeo de palabras clave para ubicar grupos
+          urls_existentes = {c["url"] for c in canales_mios}
+          nombres_existentes = {normalizar(c["nombre"]) for c in canales_mios}
+
+          # Filtrar canales nuevos de Elcano
+          nuevos = []
+          for canal in canales_fuente:
+              nombre_id = normalizar(canal["nombre"])
+              if not nombre_id or nombre_id in nombres_existentes or canal["url"] in urls_existentes:
+                  continue
+              nuevos.append(canal)
+              nombres_existentes.add(nombre_id)
+              urls_existentes.add(canal["url"])
+
+          if not nuevos:
+              print("No hay canales nuevos que añadir.")
+              sys.exit(0)
+
+          # Función para detectar a qué carpeta pertenece cada canal nuevo
           def detectar_grupo(nombre_canal):
               n = nombre_canal.upper()
               if "LALIGA" in n or "LIGA" in n:
@@ -112,46 +129,45 @@ jobs:
               else:
                   return "MOVISTAR"
 
-          # Extraer canales existentes en tu lista agrupados por bloque de carpeta
+          # Agrupar los canales nuevos por su grupo correspondiente
+          pendientes_por_grupo = {}
+          for c in nuevos:
+              g = detectar_grupo(c["nombre"])
+              if g not in pendientes_por_grupo:
+                  pendientes_por_grupo[g] = []
+              pendientes_por_grupo[g].append(c)
+
           lineas_org = original.splitlines()
+          nuevas_lineas = []
           
-          # Detectamos la cabecera inicial (cabecera M3U y VLC opt)
-          cabecera_global = []
           i = 0
           while i < len(lineas_org):
               l = lineas_org[i]
-              if l.startswith("#EXTM3U") or l.startswith("#EXTVLCOPT"):
-                  cabecera_global.append(l)
-                  i += 1
-              else:
-                  break
+              nuevas_lineas.append(l)
+              if "CARPETA:" in l.upper() or "SECCIÓN:" in l.upper():
+                  for nombre_carp, lista_c in list(pendientes_por_grupo.items()):
+                      if nombre_carp.upper() in l.upper():
+                          nuevas_lineas.append("") 
+                          for nc in lista_c:
+                              nuevas_lineas.append(nc["extinf"])
+                              nuevas_lineas.append(nc["url"])
+                          nuevas_lineas.append("")
+                          del pendientes_por_grupo[nombre_carp]
+              i += 1
 
-          # Vamos a clasificar tus canales actuales y los nuevos de Elcano por carpetas
-          # Respetamos tus canales metidos a mano (si tienen IDs estables o marcas especiales)
-          # Para limpiar los que ya no valen de Elcano, filtramos aquellos que provienen de hashes automáticos pero ya no están en la fuente.
-          
-          # Estructura de carpetas oficiales que usas
-          secciones_fijas = [
-              "LA LIGA Y DAZN LIGA",
-              "MOVISTAR",
-              "CHAMPIONS",
-              "DAZN 1",
-              "HYPERMOTION",
-              "F1",
-              "MotoGP",
-              "MOVISTAR DEP-VAMOS",
-              "PRIMERA FEDERACIÓN (RFEF)",
-              "EUROSPORT",
-              "BALONCESTO"
-          ]
+          # Si queda alguno sin encajar, se añade al final ordenado
+          if pendientes_por_grupo:
+              nuevas_lineas.append("")
+              nuevas_lineas.append("# ==========================================")
+              nuevas_lineas.append("# CARPETA: OTROS CANALES NUEVOS ELCANO")
+              nuevas_lineas.append("# ==========================================")
+              for g, lista_c in pendientes_por_grupo.items():
+                  for nc in lista_c:
+                      nuevas_lineas.append(nc["extinf"])
+                      nuevas_lineas.append(nc["url"])
 
-          print("Procesando actualización, clasificación y limpieza de canales...")
-          
-          # Por seguridad ante borrados masivos de enlaces manuales tuyos, 
-          # el script limpia los canales obsoletos manteniendo los tuyos propios y actualizando con los nuevos de Elcano ordenados.
-          
-          # Escribimos el resultado optimizado
-          print("Lista sincronizada correctamente.")
+          destino.write_text("\n".join(nuevas_lineas) + "\n", encoding="utf-8")
+          print(f"Se han clasificado e insertado {len(nuevos)} canales nuevos en sus carpetas.")
           PY
 
       - name: Copiar y reemplazar IP para Tailscale
@@ -166,7 +182,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizar, clasificar, limpiar caídos y aplicar Tailscale automáticamente"
+            git commit -m "Actualizar y clasificar canales nuevos en sus carpetas y aplicar IP Tailscale"
             git push
           else
             echo "No hay cambios que guardar."
