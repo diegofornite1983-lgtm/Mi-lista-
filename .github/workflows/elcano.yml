@@ -1,0 +1,97 @@
+name: Actualizador Automatico Elcano
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Se ejecuta solo cada 6 horas automáticamente
+  workflow_dispatch: # Activa el botón manual en GitHub Actions
+
+permissions:
+  contents: write
+
+jobs:
+  actualizar-lista:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio de Github
+        uses: actions/checkout@v4
+
+      - name: Configurar Python en el servidor virtual
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Ejecutar script inyector inteligente sin errores
+        run: |
+          python -c '
+          import urllib.request
+          import re
+          import os
+
+          url_elcano = "https://elcano.top"
+          
+          # Ruta directa a tu archivo base
+          ruta_mia = "Mi lista acestream"
+
+          if not os.path.exists(ruta_mia):
+              print("No se encontro el archivo base:", ruta_mia)
+              exit(0)
+
+          try:
+              req = urllib.request.Request(url_elcano, headers={"User-Agent": "Mozilla/5.0"})
+              with urllib.request.urlopen(req) as r:
+                  contenido_elcano = r.read().decode("utf-8", errors="ignore")
+          except Exception as e:
+              print("Error al descargar Elcano:", e)
+              exit(0)
+
+          diccionario_elcano = {}
+          bloques = re.findall(r"(#EXTINF:.*?\n)(http://127\.0\.0\.1:6878/ace/\S+)", contenido_elcano, re.DOTALL)
+          
+          for extinf, url in bloques:
+              match_name = re.search(r"group-title=\"[^\"]+\",\s*(.*)", extinf)
+              if match_name:
+                  nombre = match_name.group(1).strip().lower()
+                  nombre = re.sub(r"\s+[a-f0-9]{4,5}$", "", nombre)
+                  nombre = re.sub(r"\s*\*+\s*$", "", nombre).strip()
+                  diccionario_elcano[nombre] = url.strip()
+
+          print("Actualizando lista m3u:", ruta_mia)
+          with open(ruta_mia, "r", encoding="utf-8", errors="ignore") as f:
+              lineas_mias = f.readlines()
+
+          lineas_nuevas = []
+          i = 0
+          while i < len(lineas_mias):
+              linea = lineas_mias[i]
+              lineas_nuevas.append(linea)
+              if linea.strip().startswith("#EXTINF:"):
+                  match_mia = re.search(r"group-title=\"[^\"]+\",\s*(.*)", linea)
+                  if match_mia:
+                      nombre_mia = match_mia.group(1).strip().lower()
+                      nombre_base_mia = re.sub(r"\s+[a-f0-9]{4,5}$", "", nombre_mia)
+                      nombre_base_mia = re.sub(r"\s*\*+\s*$", "", nombre_base_mia).strip()
+                      
+                      url_nueva = None
+                      for k, v in diccionario_elcano.items():
+                          if nombre_base_mia in k or k in nombre_base_mia:
+                              url_nueva = v
+                              break
+                      
+                      if i + 1 < len(lineas_mias) and lineas_mias[i+1].strip().startswith("http://127.0.0"):
+                          if url_nueva:
+                              lineas_nuevas.append(url_nueva + "\n")
+                          else:
+                              lineas_nuevas.append(lineas_mias[i+1])
+                          i += 1
+              i += 1
+
+          with open(ruta_mia, "w", encoding="utf-8") as f:
+              f.writelines(lineas_nuevas)
+          '
+
+      - name: Guardar y subir cambios automaticamente a tu Github
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add "Mi lista acestream"
+          git diff --quiet && git diff --staged --quiet || git commit -m "Canales actualizados por Elcano"
+          git push origin HEAD:main
