@@ -1,8 +1,8 @@
 name: Actualizador Automatico Elcano
 on:
   schedule:
-    - cron: '0 */6 * * *' # Se ejecuta solo cada 6 horas automaticamente
-  workflow_dispatch: # Activa el boton manual en Github Actions
+    - cron: '0 * * * *' # Se ejecuta CADA HORA las 24 horas del día automáticamente
+  workflow_dispatch: # Activa el botón manual en GitHub Actions
 
 permissions:
   contents: write
@@ -25,7 +25,7 @@ jobs:
           import re
           import os
 
-          url_elcano = "https://elcano.top/elcano.m3u"
+          url_elcano = "https://elcano.top"
           ruta_mia = "Mi lista acestream"
 
           if not os.path.exists(ruta_mia):
@@ -40,18 +40,23 @@ jobs:
               print("Error al descargar Elcano:", e)
               exit(0)
 
+          # Función para limpiar nombres (quitar estrellas, espacios extras y hashes del final)
+          def limpiar_nombre(n):
+              n = n.strip().lower()
+              n = n.replace("⭐️", "").replace("movistar", "m+").replace("liga", "laliga")
+              n = re.sub(r"\s+[a-f0-9]{4,5}$", "", n)
+              n = re.sub(r"\s*\*+\s*$", "", n)
+              return "".join(n.split())
+
           diccionario_elcano = {}
           bloques = re.findall(r"(#EXTINF:.*?\n)(http://127\.0\.0\.1:6878/ace/\S+)", contenido_elcano, re.DOTALL)
           
           for extinf, url in bloques:
               match_name = re.search(r"group-title=\"[^\"]+\",\s*(.*)", extinf)
               if match_name:
-                  nombre = match_name.group(1).strip().lower()
-                  nombre = re.sub(r"\s+[a-f0-9]{4,5}$", "", nombre)
-                  nombre = re.sub(r"\s*\*+\s*$", "", nombre).strip()
-                  diccionario_elcano[nombre] = url.strip()
+                  nombre_limpio = limpiar_nombre(match_name.group(1))
+                  diccionario_elcano[nombre_limpio] = url.strip()
 
-          print("Actualizando lista m3u:", ruta_mia)
           with open(ruta_mia, "r", encoding="utf-8", errors="ignore") as f:
               lineas_mias = f.readlines()
 
@@ -63,17 +68,18 @@ jobs:
               if linea.strip().startswith("#EXTINF:"):
                   match_mia = re.search(r"group-title=\"[^\"]+\",\s*(.*)", linea)
                   if match_mia:
-                      nombre_mia = match_mia.group(1).strip().lower()
-                      nombre_base_mia = re.sub(r"\s+[a-f0-9]{4,5}$", "", nombre_mia)
-                      nombre_base_mia = re.sub(r"\s*\*+\s*$", "", nombre_base_mia).strip()
+                      nombre_mia_limpio = limpiar_nombre(match_mia.group(1))
                       
                       url_nueva = None
-                      for k, v in diccionario_elcano.items():
-                          if nombre_base_mia in k or k in nombre_base_mia:
-                              url_nueva = v
-                              break
+                      if nombre_mia_limpio in diccionario_elcano:
+                          url_nueva = diccionario_elcano[nombre_mia_limpio]
+                      else:
+                          for k, v in diccionario_elcano.items():
+                              if nombre_mia_limpio in k or k in nombre_mia_limpio:
+                                  url_nueva = v
+                                  break
                       
-                      if i + 1 < len(lineas_mias) and lineas_mias[i+1].strip().startswith("http://127.0.0.1:6878/ace/"):
+                      if i + 1 < len(lineas_mias) and (lineas_mias[i+1].strip().startswith("http://127.0.0.1:6878/ace/") or lineas_mias[i+1].strip().startswith("http://127.0.0")):
                           if url_nueva:
                               lineas_nuevas.append(url_nueva + "\n")
                           else:
@@ -89,5 +95,5 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git add "Mi lista acestream"
-          git diff --quiet && git diff --staged --quiet || git commit -m "Canales actualizados por Elcano"
+          git diff --quiet && git diff --staged --quiet || git commit -m "Inyección horaria Elcano"
           git push origin HEAD:main
