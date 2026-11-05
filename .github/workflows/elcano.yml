@@ -2,8 +2,8 @@ name: Actualizador Automatico Elcano
 
 on:
   schedule:
-    - cron: '0 * * * *' # Se ejecuta CADA HORA las 24 horas del día automáticamente
-  workflow_dispatch: # Activa el botón manual en GitHub Actions
+    - cron: '0 * * * *' # Se ejecuta CADA HORA
+  workflow_dispatch: # Botón de ejecución manual
 
 permissions:
   contents: write
@@ -12,37 +12,39 @@ jobs:
   actualizar-lista:
     runs-on: ubuntu-latest
     steps:
-      - name: Descargar el repositorio de Github
+      - name: Descargar el repositorio de GitHub
         uses: actions/checkout@v4
 
-      - name: Configurar Python en el servidor virtual
+      - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
-      - name: Ejecutar script inyector inteligente sin errores
+      - name: Ejecutar script inyector de IDs
         run: |
           python << 'EOF'
           import urllib.request
           import re
           import os
 
+          # Fuente publica de Elcano accesible desde servidores de GitHub
           url_elcano = "http://elcano.top/elcano.m3u"
-          ruta_mia = "Mi lista acestream"
+          ruta_mia = "lista-elcano.txt"
 
           if not os.path.exists(ruta_mia):
-              print("No se encontro el archivo base:", ruta_mia)
-              exit(0)
+              print(f"Error: No existe el archivo base '{ruta_mia}' en el repositorio.")
+              exit(1)
 
+          # 1. Descargar fuente de Elcano
           try:
               req = urllib.request.Request(url_elcano, headers={"User-Agent": "Mozilla/5.0"})
-              with urllib.request.urlopen(req) as r:
+              with urllib.request.urlopen(req, timeout=15) as r:
                   contenido_elcano = r.read().decode("utf-8", errors="ignore")
           except Exception as e:
-              print("Error al descargar Elcano:", e)
+              print("Error al descargar la fuente de Elcano:", e)
               exit(0)
 
-          # Función para limpiar nombres (quitar estrellas, espacios extras y hashes del final)
+          # 2. Función para normalizar nombres y cruzar datos
           def limpiar_nombre(n):
               n = n.strip().lower()
               n = n.replace("⭐️", "").replace("movistar", "m+").replace("liga", "laliga")
@@ -50,15 +52,17 @@ jobs:
               n = re.sub(r"\s*\*+\s*$", "", n)
               return "".join(n.split())
 
+          # 3. Mapear enlaces AceStream de Elcano
           diccionario_elcano = {}
-          bloques = re.findall(r"(#EXTINF:.*?\n)(http://127\.0\.0\.1:6878/ace/getstream\?id=\S+)", contenido_elcano, re.DOTALL)
+          bloques = re.findall(r"(#EXTINF:.*?\n)(http://\S+)", contenido_elcano, re.DOTALL)
 
           for extinf, url in bloques:
-              match_name = re.search(r"group-title=\"[^\"]+\",\s*(.*)", extinf)
+              match_name = re.search(r",\s*(.*)", extinf)
               if match_name:
                   nombre_limpio = limpiar_nombre(match_name.group(1))
                   diccionario_elcano[nombre_limpio] = url.strip()
 
+          # 4. Leer lista propia y actualizar únicamente el stream conservando tvg-id y estructura EPG
           with open(ruta_mia, "r", encoding="utf-8", errors="ignore") as f:
               lineas_mias = f.readlines()
 
@@ -68,37 +72,36 @@ jobs:
               linea = lineas_mias[i]
               lineas_nuevas.append(linea)
 
-              if linea.strip().startswith("#EXTINF:"):
-                  match_mia = re.search(r"group-title=\"[^\"]+\",\s*(.*)", linea)
+              if linea.strip().startswith("#EXTINF"):
+                  match_mia = re.search(r",\s*(.*)", linea)
                   if match_mia:
                       nombre_mia_limpio = limpiar_nombre(match_mia.group(1))
-                      url_nueva = None
+                      url_nueva = diccionario_elcano.get(nombre_mia_limpio)
 
-                      if nombre_mia_limpio in diccionario_elcano:
-                        url_nueva = diccionario_elcano[nombre_mia_limpio]
-                      else:
+                      if not url_nueva:
                           for k, v in diccionario_elcano.items():
                               if nombre_mia_limpio in k or k in nombre_mia_limpio:
                                   url_nueva = v
                                   break
 
-                      if i + 1 < len(lineas_mias) and ("127.0.0.1:6878" in lineas_mias[i+1]):
+                      if i + 1 < len(lineas_mias) and ("ace/getstream" in lineas_mias[i+1] or "http" in lineas_mias[i+1]):
                           if url_nueva:
                               lineas_nuevas.append(url_nueva + "\n")
                           else:
                               lineas_nuevas.append(lineas_mias[i+1])
                           i += 1
-
               i += 1
 
+          # 5. Guardar cambios en el archivo del repositorio
           with open(ruta_mia, "w", encoding="utf-8") as f:
               f.writelines(lineas_nuevas)
+          print("Sincronización completada con éxito.")
           EOF
 
-      - name: Guardar y subir cambios automaticamente a tu Github
+      - name: Guardar y subir cambios a GitHub
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git add "Mi lista acestream"
-          git diff --quiet && git diff --staged --quiet || git commit -m "Inyección horaria Elcano"
+          git add "lista-elcano.txt"
+          git diff --quiet && git diff --staged --quiet || git commit -m "Actualización automática de enlaces AceStream"
           git push origin HEAD:main
