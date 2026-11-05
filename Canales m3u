@@ -629,8 +629,11 @@ http://100.90.204.66:6878/ace/getstream?id=8677d339ecddd75165c0015025f598b621597
 # CARPETA: EUROSPORT
 # ==========================================
 
-#EXTINF:-1 tvg-id="Eurosport_1_1080p_" tvg-name="Eurosport 1 1080p **" tvg-logo="https://i.ibb.co/FVzKq1y/eurosport1.png" group-title="Deportes",Eurosport 1 1080p **
-http://100.90.204.66:6878/ace/getstream?id=6930c3a2dc706c96cd0a2cd2475f4615e845f191
+
+
+#EXTINF:-1 tvg-id="Eurosport_1_1080p_" tvg-name="Eurosport 1 1080p **" tvg-logo="https://i.ibb.co/FVzKq1y/eurosport1.png" group-title="EUROSPORT",Eurosport 1 1080p **
+http://100.90.204.66:6878/ace/getstream?id=6930c3a2dc706c96cd0a2cd2475f4615e845f0191
+
 
 
 #EXTINF:-1 tvg-id="Eurosport 2" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 17aa3
@@ -643,12 +646,6 @@ http://100.90.204.66:6878/ace/getstream?id=32fcf8e1513049ef9f90d08ba9040fe34b01d
 
 #EXTINF:-1 tvg-id="Eurosport 2" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 HD (Sport TV)
 http://100.90.204.66:6878/ace/getstream?id=6176281b9c46a5621a0e88524f8dc621f173b8e0
-
-
-
-
-
-
 
 
 
