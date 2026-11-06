@@ -21,13 +21,12 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización definitiva y orden estricto de La Liga
+      - name: Forzar Sincronización y Escritura de Canales
         run: |
           python <<'PY'
           import re
           import sys
           import urllib.request
-          import time
           from pathlib import Path
 
           urls_elcano = [
@@ -48,29 +47,25 @@ jobs:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
           fuente_elcano = None
-          headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+          headers = {"User-Agent": "Mozilla/5.0"}
 
           for url in urls_elcano:
               try:
                   peticion = urllib.request.Request(url, headers=headers)
-                  with urllib.request.urlopen(peticion, timeout=25) as respuesta:
+                  with urllib.request.urlopen(peticion, timeout=30) as respuesta:
                       texto = respuesta.read().decode("utf-8-sig", errors="replace")
                       if texto and "#EXTINF" in texto:
                           fuente_elcano = texto
-                          print("¡Conectado a Elcano correctamente!")
                           break
-              except Exception as e:
-                  print(f"Aviso de pasarela: {e}")
-                  time.sleep(1)
+              except Exception:
                   continue
 
-          # Respaldo inteligente: si las pasarelas fallan (429/red), usa la lista local para garantizar el éxito en verde
           if not fuente_elcano:
-              print("Aviso: Pasarelas externas ocupadas. Usando respaldo local para asegurar el éxito.")
-              fuente_elcano = contenido_casa
+              sys.exit("ERROR: No se pudo descargar Elcano de ninguna pasarela.")
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
+              n = re.sub(r'[⭐️*]', '', n)
               n = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTARPLUS', n)
               return "".join(n.split())
 
@@ -118,17 +113,6 @@ jobs:
 
           while i < len(lineas_casa):
               linea = lineas_casa[i]
-              
-              if "#EXTINF:" in linea and 'tvg-id="Movistar Plus+ HD"' in linea:
-                  nombre_mayus = linea.rsplit(",", 1)[-1].strip().upper()
-                  if "LALIGA" in nombre_mayus or "LIGA" in nombre_mayus:
-                      if "2" in nombre_mayus:
-                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', linea)
-                      elif "3" in nombre_mayus:
-                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', linea)
-                      else:
-                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', linea)
-
               lineas_actualizadas.append(linea)
 
               if linea.startswith("#EXTINF:"):
@@ -193,74 +177,25 @@ jobs:
                   extinf_f = extinf_f.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
               clasificados[carp].append((c["nombre"], extinf_f, c["url"]))
 
-          if "LA LIGA Y DAZN LIGA" in clasificados:
-              lista_liga = clasificados["LA LIGA Y DAZN LIGA"]
-              movistar_liga_nuevos = [ch for ch in lista_liga if "DAZN" not in ch[0].upper()]
-              dazn_liga_nuevos = [ch for ch in lista_liga if "DAZN" in ch[0].upper()]
-              clasificados["LA LIGA Y DAZN LIGA"] = movistar_liga_nuevos + dazn_liga_nuevos
-
-          lineas_finales_temp = []
-          i = 0
-          while i < len(lineas_actualizadas):
-              l = lineas_actualizadas[i]
-              lineas_finales_temp.append(l)
-              for nombre_carp, lista_canales in list(clasificados.items()):
-                  if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
-                      lineas_finales_temp.append("")
-                      for nom_f, extinf_f, url_f in lista_canales:
-                          if "DAZN" in nom_f.upper():
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga 2 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga HD"', extinf_f)
-                          else:
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', extinf_f)
-                              elif "3" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', extinf_f)
-                          lineas_finales_temp.append(extinf_f)
-                          lineas_finales_temp.append(url_f)
-                      lineas_finales_temp.append("")
-                      del clasificados[nombre_carp]
-              i += 1
-
           if clasificados:
+              lineas_finales_temp = lineas_actualizadas[:]
               for carp, lista_canales in clasificados.items():
-                  if carp == "LA LIGA Y DAZN LIGA":
-                      no_dazn = [ch for ch in lista_canales if "DAZN" not in ch[0].upper()]
-                      si_dazn = [ch for ch in lista_canales if "DAZN" in ch[0].upper()]
-                      lista_canales = no_dazn + si_dazn
-
                   lineas_finales_temp.append("")
                   lineas_finales_temp.append(f"# ==========================================")
                   lineas_finales_temp.append(f"# CARPETA: {carp}")
                   lineas_finales_temp.append(f"# ==========================================")
                   for nom_f, extinf_f, url_f in lista_canales:
-                      if carp == "LA LIGA Y DAZN LIGA":
-                          if "DAZN" in nom_f.upper():
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga 2 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga HD"', extinf_f)
-                          else:
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', extinf_f)
-                              elif "3" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', extinf_f)
                       lineas_finales_temp.append(extinf_f)
                       lineas_finales_temp.append(url_f)
+              lineas_actualizadas = lineas_finales_temp
 
-          lista_final_casa = "\n".join(lineas_finales_temp) + ("\n" if not "".join(lineas_finales_temp).endswith("\n") else "")
+          lista_final_casa = "\n".join(lineas_actualizadas) + ("\n" if not "".join(lineas_actualizadas).endswith("\n") else "")
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización final completada sin errores.")
+          print("Sincronización y inyección de canales forzada con éxito.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -270,8 +205,10 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizacion automatica de canales"
+            git commit -m "Actualizacion forzada de canales y carpetas"
             git push
           else
-            echo "No hay cambios que guardar."
+            echo "Forzando guardado de actualización"
+            git commit --allow-empty -m "Forzar actualizacion de listas"
+            git push
           fi
