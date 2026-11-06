@@ -21,28 +21,36 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronizar Elcano manteniendo estructura exacta
+      - name: Sincronizar manteniendo tu lista limpia y agrupando Elcano al final
         run: |
           python <<'PY'
           import re
           import sys
-          import unicodedata
           import urllib.request
           from pathlib import Path
 
           URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
-          destino = Path("Mi lista acestream")
+          archivo_casa = Path("Mi lista acestream")
+          archivo_tailscale = Path("Canales m3u")
 
-          if not destino.is_file():
-              sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream' en la raíz.")
+          if not archivo_casa.is_file():
+              sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream'.")
 
-          def normalizar(nombre):
-              nombre = unicodedata.normalize("NFKD", nombre.lower())
-              nombre = "".join(c for c in nombre if not unicodedata.combining(c))
-              nombre = re.sub(r"[^a-z0-9]", "", nombre)
-              return nombre
+          # 1. Leer tu lista limpia de casa
+          try:
+              contenido_casa = archivo_casa.read_text(encoding="utf-8-sig")
+          except UnicodeDecodeError:
+              contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          def leer_m3u_completo(texto):
+          # 2. Descargar los nuevos enlaces de Elcano
+          try:
+              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
+              with urllib.request.urlopen(peticion, timeout=60) as respuesta:
+                  fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
+          except Exception as error:
+              sys.exit(f"ERROR descargando Elcano: {error}")
+
+          def extraer_entradas(texto):
               lineas = texto.splitlines()
               entradas = []
               i = 0
@@ -58,123 +66,45 @@ jobs:
                               break
                           j += 1
                       if url:
-                          nombre = linea.rsplit(",", 1)[-1].strip()
-                          entradas.append({
-                              "extinf": linea,
-                              "url": url,
-                              "nombre": nombre
-                          })
+                          entradas.append((linea, url))
                           i = j
                   i += 1
               return entradas
 
-          try:
-              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
-              with urllib.request.urlopen(peticion, timeout=60) as respuesta:
-                  fuente = respuesta.read().decode("utf-8-sig", errors="replace")
-          except Exception as error:
-              sys.exit(f"ERROR descargando Elcano: {error}")
-
-          try:
-              original = destino.read_text(encoding="utf-8-sig")
-          except UnicodeDecodeError:
-              original = destino.read_text(encoding="latin-1")
-
-          canales_fuente = leer_m3u_completo(fuente)
-          canales_mios = leer_m3u_completo(original)
-
-          urls_existentes = {c["url"] for c in canales_mios}
-          nombres_existentes = {normalizar(c["nombre"]) for c in canales_mios}
-
-          nuevos = []
-          for canal in canales_fuente:
-              nombre_id = normalizar(canal["nombre"])
-              if not nombre_id or nombre_id in nombres_existentes or canal["url"] in urls_existentes:
-                  continue
-              nuevos.append(canal)
-              nombres_existentes.add(nombre_id)
-              urls_existentes.add(canal["url"])
-
-          if not nuevos:
-              print("No hay canales nuevos que añadir. La lista se mantiene intacta.")
-              sys.exit(0)
-
-          def detectar_grupo(nombre_canal):
-              n = nombre_canal.upper()
-              if "LALIGA" in n or "LIGA" in n:
-                  return "LA LIGA Y DAZN LIGA"
-              elif "CHAMPIONS" in n or "CAMPEONES" in n:
-                  return "CHAMPIONS"
-              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
-                  return "DAZN"
-              elif "HYPERMOTION" in n:
-                  return "HYPERMOTION"
-              elif "F1" in n or "FORMULA" in n:
-                  return "F1"
-              elif "MOTOGP" in n:
-                  return "MotoGP"
-              elif "DEPORTES" in n or "VAMOS" in n or "GOLF" in n or "UFC" in n:
-                  return "MOVISTAR DEP-VAMOS"
-              elif "BALONCESTO" in n or "NBA" in n:
-                  return "BALONCESTO"
-              elif "EUROSPORT" in n:
-                  return "EUROSPORT"
-              elif "FEDERACION" in n or "RFEF" in n:
-                  return "PRIMERA FEDERACIÓN"
-              else:
-                  return "MOVISTAR"
-
-          pendientes_por_grupo = {}
-          for c in nuevos:
-              g = detectar_grupo(c["nombre"])
-              if g not in pendientes_por_grupo:
-                  pendientes_por_grupo[g] = []
-              pendientes_por_grupo[g].append(c)
-
-          lineas_org = original.splitlines()
-          nuevas_lineas = []
+          canales_elcano = extraer_entradas(fuente_elcano)
           
-          i = 0
-          while i < len(lineas_org):
-              l = lineas_org[i]
-              nuevas_lineas.append(l)
-              # Detecta tus bloques y carpetas con precisión quirúrgica
-              if "CARPETA:" in l.upper() or "PRIMERA FEDERACIÓN" in l.upper():
-                  for nombre_carp, lista_c in list(pendientes_por_grupo.items()):
-                      if nombre_carp.upper() in l.upper():
-                          nuevas_lineas.append("") 
-                          for nc in lista_c:
-                              # Aseguramos que el group-title quede bien escrito en la línea del canal
-                              extinf_mod = nc["extinf"]
-                              if 'group-title="' in extinf_mod:
-                                  extinf_mod = re.sub(r'group-title="[^"]*"', f'group-title="{nombre_carp}"', extinf_mod)
-                              else:
-                                  extinf_mod = extinf_mod.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{nombre_carp}"')
-                              nuevas_lineas.append(extinf_mod)
-                              nuevas_lineas.append(nc["url"])
-                          nuevas_lineas.append("")
-                          del pendientes_por_grupo[nombre_carp]
-              i += 1
+          # Detectar qué URLs ya tienes para no duplicar
+          urls_existentes = set(re.findall(r'https?://[^\s]+|acestream://[a-zA-Z0-9]+', contenido_casa))
+          
+          novedades = []
+          for extinf, url in canales_elcano:
+              if url not in urls_existentes:
+                  novedades.append((extinf, url))
 
-          # Si queda algo pendiente que no encaje en las carpetas principales, va a su sitio
-          if pendientes_por_grupo:
-              nuevas_lineas.append("")
-              nuevas_lineas.append("# ==========================================")
-              nuevas_lineas.append("# CARPETA: OTROS CANALES NUEVOS ELCANO")
-              nuevas_lineas.append("# ==========================================")
-              for g, lista_c in pendientes_por_grupo.items():
-                  for nc in lista_c:
-                      nuevas_lineas.append(nc["extinf"])
-                      nuevas_lineas.append(nc["url"])
+          print(f"Se han encontrado {len(novedades]} canales nuevos de Elcano.")
 
-          destino.write_text("\n".join(nuevas_lineas) + "\n", encoding="utf-8")
-          print(f"Se han añadido {len(nuevos)} canales nuevos correctamente en sus carpetas.")
+          # 3. Guardar la lista de casa INTACTA (solo con tus cosas y IPs 127.0.0.1)
+          # Limpiamos posibles restos de ejecuciones anteriores si los hubiera
+          limpia_casa = contenido_casa.split("# ==========================================\n# CARPETA: CANALES NUEVOS ELCANO")[0]
+          archivo_casa.write_text(limpia_casa.strip() + "\n", encoding="utf-8")
+
+          # 4. Crear el archivo de Tailscale con tu IP fija y la carpeta dedicada de Elcano al final
+          contenido_ts = limpia_casa.strip()
+          
+          if novedades:
+              bloque_elcano = "\n\n# ==========================================\n# CARPETA: CANALES NUEVOS ELCANO\n# ==========================================\n"
+              for extinf, url in novedades:
+                  # Si vienen con localhost, las adaptamos a Tailscale
+                  url_ts = url.replace("127.0.0.1:6878", "100.90.204.66:6878")
+                  bloque_elcano += f"{extinf}\n{url_ts}\n"
+              contenido_ts += bloque_elcano
+
+          # Convertir todas las IPs del archivo de Tailscale a tu IP de Tailscale
+          contenido_ts = contenido_ts.replace("127.0.0.1:6878", "100.90.204.66:6878")
+          
+          archivo_tailscale.write_text(contenido_ts.strip() + "\n", encoding="utf-8")
+          print("Archivos sincronizados correctamente.")
           PY
-
-      - name: Generar Canales m3u exclusivo para Tailscale
-        run: |
-          cp "Mi lista acestream" "Canales m3u"
-          sed -i 's/127\.0\.0\.1:6878/100.90.204.66:6878/g' "Canales m3u"
 
       - name: Guardar cambios en GitHub
         run: |
@@ -183,7 +113,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizar Elcano manteniendo carpetas limpias e IPs de Tailscale"
+            git commit -m "Lista de casa intacta y Tailscale con carpeta limpia de Elcano"
             git push
           else
             echo "No hay cambios que guardar."
