@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización definitiva con normalización inteligente
+      - name: Sincronización definitiva con blindaje inteligente de EPG
         run: |
           python <<'PY'
           import re
@@ -90,7 +90,7 @@ jobs:
           canales_elcano = parsear_m3u(fuente_elcano)
           mapa_elcano_por_nombre = {normalizar_nombre(c["nombre"]): c["url"] for c in canales_elcano}
 
-          # 1. Actualizar enlaces respetando tu estructura exacta y normalizando nombres
+          # 1. Actualizar enlaces respetando tu estructura y aplicando el blindaje inteligente solo al canal general
           lineas_casa = contenido_casa.splitlines()
           lineas_actualizadas = []
           urls_en_casa = set()
@@ -99,11 +99,14 @@ jobs:
           while i < len(lineas_casa):
               linea = lineas_casa[i]
               
-              if ("MOVISTAR PLUS" in linea.upper() or "M+" in linea.upper()) and "#EXTINF:" in linea and 'tvg-id="Movistar Plus+ HD"' not in linea:
-                  if 'tvg-id="' in linea:
-                      linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus+ HD"', linea)
-                  else:
-                      linea = linea.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus+ HD"')
+              # Blindaje inteligente: SOLO aplica si es el canal principal "Movistar Plus+" genérico
+              if "#EXTINF:" in linea:
+                  nombre_mayus = linea.rsplit(",", 1)[-1].strip().upper()
+                  if "MOVISTAR PLUS" in nombre_mayus and not any(x in nombre_mayus for x in ["LALIGA", "LIGA", "DEPORTES", "GOLF", "VAMOS", "F1", "MOTOGP", "CAMPEONES"]):
+                      if 'tvg-id="' in linea:
+                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus+ HD"', linea)
+                      else:
+                          linea = linea.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus+ HD"')
 
               lineas_actualizadas.append(linea)
 
@@ -195,7 +198,7 @@ jobs:
                       lineas_finales_temp.append(extinf_f)
                       lineas_finales_temp.append(url_f)
 
-          # 3. ORDEN ESTRICTO PARA LA LAIGA: Movistar LaLiga ARRIBA, DAZN LaLiga ABAJO
+          # 3. ORDEN ESTRICTO PARA LA LIGA: Movistar LaLiga ARRIBA, DAZN LaLiga ABAJO
           texto_provisional = "\n".join(lineas_finales_temp)
           if "# CARPETA: LA LIGA Y DAZN LIGA" in texto_provisional:
               partes = texto_provisional.split("# CARPETA: LA LIGA Y DAZN LIGA")
@@ -217,9 +220,9 @@ jobs:
                   def sort_laliga(item):
                       texto_inf = item[0].upper()
                       if "DAZN" in texto_inf and "M+" not in texto_inf and "MOVISTAR" not in texto_inf:
-                        return 2
+                          return 2
                       else:
-                        return 1
+                          return 1
 
                   bloques_canales.sort(key=sort_laliga)
 
@@ -237,7 +240,7 @@ jobs:
 
           archivo_tailscale.write_text(lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878"), encoding="utf-8")
 
-          print("¡Sincronización clavada y normalizada con éxito!")
+          print("¡Sincronización maestra con blindaje inteligente completada con éxito!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -247,7 +250,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizar con normalización de nombres y orden de La Liga"
+            git commit -m "Aplicar blindaje inteligente de EPG solo a Movistar Plus genérico"
             git push
           else
             echo "No hay cambios que guardar."
