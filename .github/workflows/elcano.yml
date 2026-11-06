@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización definitiva con EPG de David Muma blindada
+      - name: Sincronización definitiva con normalización inteligente
         run: |
           python <<'PY'
           import re
@@ -47,6 +47,11 @@ jobs:
                   fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
+
+          def normalizar_nombre(nombre):
+              n = nombre.upper()
+              n = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTARPLUS', n)
+              return "".join(n.split())
 
           def parsear_m3u(texto):
               lineas = texto.splitlines()
@@ -83,9 +88,9 @@ jobs:
               return entradas
 
           canales_elcano = parsear_m3u(fuente_elcano)
-          mapa_elcano_por_nombre = {c["nombre"].upper(): c["url"] for c in canales_elcano}
+          mapa_elcano_por_nombre = {normalizar_nombre(c["nombre"]): c["url"] for c in canales_elcano}
 
-          # 1. Actualizar enlaces respetando tu estructura exacta
+          # 1. Actualizar enlaces respetando tu estructura exacta y normalizando nombres
           lineas_casa = contenido_casa.splitlines()
           lineas_actualizadas = []
           urls_en_casa = set()
@@ -94,19 +99,24 @@ jobs:
           while i < len(lineas_casa):
               linea = lineas_casa[i]
               
-              # Blindaje de tvg-id para canales de Movistar Plus que entran nuevos para que cojan la EPG de David Muma
-              if "MOVISTAR PLUS" in linea.upper() and "#EXTINF:" in linea and 'tvg-id="Movistar Plus+ HD"' not in linea:
-                  linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus+ HD"', linea)
+              if ("MOVISTAR PLUS" in linea.upper() or "M+" in linea.upper()) and "#EXTINF:" in linea and 'tvg-id="Movistar Plus+ HD"' not in linea:
+                  if 'tvg-id="' in linea:
+                      linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus+ HD"', linea)
+                  else:
+                      linea = linea.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus+ HD"')
 
               lineas_actualizadas.append(linea)
 
               if linea.startswith("#EXTINF:"):
-                  nombre_canal = linea.rsplit(",", 1)[-1].strip().upper()
+                  nombre_canal = linea.rsplit(",", 1)[-1].strip()
+                  nombre_norm = normalizar_nombre(nombre_canal)
+                  
                   if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
                       url_actual = lineas_casa[i+1].strip()
                       urls_en_casa.add(url_actual)
-                      if nombre_canal in mapa_elcano_por_nombre:
-                          nueva_url = mapa_elcano_por_nombre[nombre_canal]
+                      
+                      if nombre_norm in mapa_elcano_por_nombre:
+                          nueva_url = mapa_elcano_por_nombre[nombre_norm]
                           lineas_actualizadas.append(nueva_url)
                           urls_en_casa.add(nueva_url)
                       else:
@@ -185,7 +195,7 @@ jobs:
                       lineas_finales_temp.append(extinf_f)
                       lineas_finales_temp.append(url_f)
 
-          # 3. Orden estricto para La Liga: Movistar LaLiga ARRIBA, DAZN LaLiga ABAJO
+          # 3. ORDEN ESTRICTO PARA LA LAIGA: Movistar LaLiga ARRIBA, DAZN LaLiga ABAJO
           texto_provisional = "\n".join(lineas_finales_temp)
           if "# CARPETA: LA LIGA Y DAZN LIGA" in texto_provisional:
               partes = texto_provisional.split("# CARPETA: LA LIGA Y DAZN LIGA")
@@ -207,9 +217,9 @@ jobs:
                   def sort_laliga(item):
                       texto_inf = item[0].upper()
                       if "DAZN" in texto_inf and "M+" not in texto_inf and "MOVISTAR" not in texto_inf:
-                          return 2
+                        return 2
                       else:
-                          return 1
+                        return 1
 
                   bloques_canales.sort(key=sort_laliga)
 
@@ -221,13 +231,13 @@ jobs:
                   partes[1] = "# ==========================================".join(subpartes)
                   texto_provisional = "# CARPETA: LA LIGA Y DAZN LIGA".join(partes)
 
+          # Guardar archivos finales actualizados tanto para casa como para Tailscale
           lista_final_casa = texto_provisional + ("\n" if not texto_provisional.endswith("\n") else "")
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
-          lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
-          archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
+          archivo_tailscale.write_text(lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878"), encoding="utf-8")
 
-          print("Sincronización impecable con guía de David Muma.")
+          print("¡Sincronización clavada y normalizada con éxito!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -237,7 +247,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Asegurar EPG de David Muma en canales de Movistar y orden de La Liga"
+            git commit -m "Actualizar con normalización de nombres y orden de La Liga"
             git push
           else
             echo "No hay cambios que guardar."
