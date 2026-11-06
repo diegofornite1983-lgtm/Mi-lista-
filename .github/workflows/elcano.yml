@@ -98,16 +98,22 @@ jobs:
           while i < len(lineas_casa):
               linea = lineas_casa[i]
               
-              # Reparación de los tvg-id de LaLiga que se hayan quedado corruptos o mal vinculados
-              if "#EXTINF:" in linea and 'tvg-id="Movistar Plus+ HD"' in linea:
+              # BLINDAJE FORZADO DE EPG: Asigna los tvg-id oficiales exactos de David Muma a los canales de la Liga
+              if "#EXTINF:" in linea:
                   nombre_mayus = linea.rsplit(",", 1)[-1].strip().upper()
                   if "LALIGA" in nombre_mayus or "LIGA" in nombre_mayus:
-                      if "2" in nombre_mayus:
-                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', linea)
-                      elif "3" in nombre_mayus:
-                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', linea)
+                      if "DAZN" in nombre_mayus:
+                          if "2" in nombre_mayus:
+                              linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga 2 HD"', linea) if 'tvg-id="' in linea else linea.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD"')
+                          else:
+                              linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga HD"', linea) if 'tvg-id="' in linea else linea.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="DAZN LaLiga HD"')
                       else:
-                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', linea)
+                          if "2" in nombre_mayus:
+                              linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', linea) if 'tvg-id="' in linea else linea.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="M+ LaLiga 2 HD"')
+                          elif "3" in nombre_mayus:
+                              linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', linea) if 'tvg-id="' in linea else linea.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="M+ LaLiga 3 HD"')
+                          else:
+                              linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', linea) if 'tvg-id="' in linea else linea.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="M+ LaLiga HD"')
 
               lineas_actualizadas.append(linea)
 
@@ -173,7 +179,7 @@ jobs:
                   extinf_f = extinf_f.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
               clasificados[carp].append((c["nombre"], extinf_f, c["url"]))
 
-          # ORDENACIÓN SOLICITADA: Movistar Liga arriba del todo, DAZN Liga abajo
+          # ORDENACIÓN ESTRICTA: Canales nuevos de Movistar arriba, canales nuevos de DAZN abajo
           if "LA LIGA Y DAZN LIGA" in clasificados:
               lista_liga = clasificados["LA LIGA Y DAZN LIGA"]
               movistar_liga_nuevos = [ch for ch in lista_liga if "DAZN" not in ch[0].upper()]
@@ -189,6 +195,19 @@ jobs:
                   if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
                       lineas_finales_temp.append("")
                       for nom_f, extinf_f, url_f in lista_canales:
+                          # Aplicar parche de EPG también a las novedades entrantes
+                          if "DAZN" in nom_f.upper():
+                              if "2" in nom_f.upper():
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga 2 HD"', extinf_f)
+                              else:
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga HD"', extinf_f)
+                          else:
+                              if "2" in nom_f.upper():
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', extinf_f)
+                              elif "3" in nom_f.upper():
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', extinf_f)
+                              else:
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', extinf_f)
                           lineas_finales_temp.append(extinf_f)
                           lineas_finales_temp.append(url_f)
                       lineas_finales_temp.append("")
@@ -202,17 +221,29 @@ jobs:
                   lineas_finales_temp.append(f"# CARPETA: {carp}")
                   lineas_finales_temp.append(f"# ==========================================")
                   for nom_f, extinf_f, url_f in lista_canales:
+                      if "DAZN" in nom_f.upper():
+                          if "2" in nom_f.upper():
+                              extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga 2 HD"', extinf_f)
+                          else:
+                              extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga HD"', extinf_f)
+                      else:
+                          if "2" in nom_f.upper():
+                              extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', extinf_f)
+                          elif "3" in nom_f.upper():
+                              extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', extinf_f)
+                          else:
+                              extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', extinf_f)
                       lineas_finales_temp.append(extinf_f)
                       lineas_finales_temp.append(url_f)
 
           lista_final_casa = "\n".join(lineas_finales_temp) + ("\n" if not "".join(lineas_finales_temp).endswith("\n") else "")
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
-          # Generar versión Tailscale reemplazando la IP local
+          # Generar versión Tailscale
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Ficheros generados correctamente.")
+          print("Parche de EPG absoluto e inyección de orden aplicados con éxito.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -222,7 +253,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronización completa, EPG reparada y orden de La Liga"
+            git commit -m "Aplicar parche definitivo de EPG y orden de La Liga"
             git push
           else
             echo "No hay cambios que guardar."
