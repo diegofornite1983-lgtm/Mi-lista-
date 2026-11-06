@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización perfecta sin colar Esport3 en Movistar
+      - name: Sincronización perfecta con orden Movistar y DAZN LaLiga
         run: |
           python <<'PY'
           import re
@@ -94,7 +94,6 @@ jobs:
 
           print(f"Canales nuevos detectados de Elcano: {len(novedades)}")
 
-          # Filtro estricto para que Esport3 y otros vayan a su sitio exacto y NUNCA a Movistar
           def mapear_carpeta(nombre_canal, extinf_original):
               n = nombre_canal.upper()
               ext = extinf_original.upper()
@@ -102,7 +101,7 @@ jobs:
                   return "HYPERMOTION"
               elif "CHAMPIONS" in n or "CAMPEONES" in n:
                   return "CHAMPIONS"
-              elif "LALIGA" in n or "M+ LALIGA" in n or ("LIGA" in n and "CAMPEONES" not in n):
+              elif "LALIGA" in n or "M+ LALIGA" in n or "DAZN LIGA" in n or ("LIGA" in n and "CAMPEONES" not in n):
                   return "LA LIGA Y DAZN LIGA"
               elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
                   return "DAZN"
@@ -116,10 +115,8 @@ jobs:
                   return "EUROSPORT"
               elif "FEDERACION" in n or "RFEF" in n:
                   return "PRIMERA FEDERACIÓN"
-              elif "ESPORT" in n:
-                  return "MOVISTAR DEP-VAMOS"
-              elif "TENNIS" in n or "TENIS" in n or "DEPORTES" in n or "VAMOS" in n or "GOLF" in n or "UFC" in n:
-                  return "MOVISTAR DEP-VAMOS"
+              elif "ESTRENOS" in n or "ACCION" in n or "CINE" in n or "COMEDIA" in n or "HITS" in n or "DRAMA" in n or "INDIE" in n or "ROMANCE" in n or "TERROR" in n or "ORIGINALES" in n or "DOCUMENTALES" in n:
+                  return "MOVISTAR"
               else:
                   return "MOVISTAR DEP-VAMOS"
 
@@ -135,6 +132,16 @@ jobs:
               else:
                   extinf_f = extinf_f.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
               clasificados[carp].append((extinf_f, c["url"]))
+
+          # Orden inteligente interno para La Liga: Primero Movistar LaLiga, luego DAZN LaLiga
+          if "LA LIGA Y DAZN LIGA" in clasificados:
+              def orden_laliga(item):
+                  nombre_inf = item[0].upper()
+                  if "DAZN" in nombre_inf:
+                      return 2  # Abajo
+                  else:
+                      return 1  # Arriba Movistar
+              clasificados["LA LIGA Y DAZN LIGA"].sort(key=orden_laliga)
 
           lineas_org = contenido_casa.splitlines()
           nuevas_lineas = []
@@ -168,7 +175,7 @@ jobs:
 
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
-          print("Clasificación depurada: Movistar limpio de intrusos.")
+          print("Sincronización impecable y ordenada.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -178,7 +185,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Evitar que Esport3 y otros se cuelen en Movistar"
+            git commit -m "Ordenar Movistar LaLiga arriba y DAZN LaLiga debajo"
             git push
           else
             echo "No hay cambios que guardar."
