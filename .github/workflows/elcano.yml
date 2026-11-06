@@ -21,19 +21,24 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización inteligente de canales
+      - name: Instalar bypassed de Cloudflare
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests cloudscraper
+
+      - name: Sincronización inteligente y blindada
         run: |
           python <<'PY'
           import re
           import sys
-          import urllib.request
+          import time
           from pathlib import Path
+          import cloudscraper
 
           URLS_ELCANO = [
               "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
               "https://tokyo.elcano-ipfs.workers.dev/k51qzi5uqu5di462t7j4vu4akwfhvtjhy88qbupktvoacqfqe9uforjvhyi4wr/hashes_acestream.m3u",
-              "https://ipfs.io/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs.ipns.dweb.link/hashes_acestream.m3u"
+              "https://ipfs.io/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           ]
 
           archivo_casa = Path("Mi lista acestream")
@@ -47,27 +52,26 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
+          # Usamos cloudscraper para saltarnos los bloqueos de Cloudflare y el error 429
+          scraper = cloudscraper.create_scraper()
           fuente_elcano = None
-          headers = {
-              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-          }
 
           for url in URLS_ELCANO:
               try:
-                  print(f"Probando enlace: {url}")
-                  req = urllib.request.Request(url, headers=headers)
-                  with urllib.request.urlopen(req, timeout=15) as response:
-                      data = response.read().decode('utf-8', errors='ignore')
-                      if "#EXTM3U" in data:
-                          fuente_elcano = data
-                          print("¡Lista de Elcano descargada correctamente!")
-                          break
+                  print(f"Intentando descargar desde: {url}")
+                  resp = scraper.get(url, timeout=20)
+                  if resp.status_code == 200 and "#EXTM3U" in resp.text:
+                      fuente_elcano = resp.text
+                      print("¡Lista de Elcano obtenida con éxito mediante CloudScraper!")
+                      break
+                  else:
+                      print(f"Código de estado HTTP: {resp.status_code}, probando siguiente...")
               except Exception as e:
-                  print(f"Aviso: Falló este enlace ({e}), probando siguiente...")
+                  print(f"Aviso de error en conexión: {e}")
+              time.sleep(2)
 
           if not fuente_elcano:
-              sys.exit("ERROR CRÍTICO: Ninguna pasarela de Elcano respondió.")
+              sys.exit("ERROR CRÍTICO: Las pasarelas de Elcano devolvieron error de límite (429). Espera 10-15 minutos antes de volver a ejecutar manualmente.")
 
           def parsear_m3u(texto):
               lineas = texto.splitlines()
@@ -138,7 +142,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("¡Sincronización y actualización de hashes completada con éxito!")
+          print("¡Sincronización completada con éxito absoluto!")
           PY
 
       - name: Guardar cambios en GitHub
