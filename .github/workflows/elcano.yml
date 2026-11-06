@@ -27,17 +27,9 @@ jobs:
           import re
           import sys
           import urllib.request
-          import time
-          import random
           from pathlib import Path
 
-          rand_val = random.randint(1000, 99999)
-          urls_elcano = [
-              f"https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u?r={rand_val}",
-              f"https://gateway.pinata.cloud/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u?r={rand_val}",
-              f"https://ipfs.io/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u?r={rand_val}"
-          ]
-          
+          URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
 
@@ -49,30 +41,12 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          fuente_elcano = None
-          headers = {
-              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-          }
-
-          for url in urls_elcano:
-              try:
-                  peticion = urllib.request.Request(url, headers=headers)
-                  with urllib.request.urlopen(peticion, timeout=30) as respuesta:
-                      texto_prueba = respuesta.read().decode("utf-8-sig", errors="replace")
-                      if texto_prueba and "#EXTINF" in texto_prueba:
-                          fuente_elcano = texto_prueba
-                          print("¡Conectado a Elcano con éxito!")
-                          break
-              except Exception as e:
-                  print(f"Aviso de pasarela: {e}")
-                  time.sleep(1)
-                  continue
-
-          # Respaldo blindado: si el servidor externo bloquea, usamos la lista local para que NUNCA dé error rojo
-          if not fuente_elcano:
-              print("Aviso: Pasarelas externas ocupadas (429/500/403). Usando respaldo local para asegurar el éxito.")
-              fuente_elcano = contenido_casa
+          try:
+              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
+              with urllib.request.urlopen(peticion, timeout=60) as respuesta:
+                  fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
+          except Exception as error:
+              sys.exit(f"ERROR descargando Elcano: {error}")
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
@@ -222,7 +196,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("¡Sincronización final completada con éxito!")
+          print("Sincronización completada con éxito.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -232,7 +206,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizacion automatica protegida"
+            git commit -m "Actualizacion de canales y hashes"
             git push
           else
             echo "No hay cambios que guardar."
