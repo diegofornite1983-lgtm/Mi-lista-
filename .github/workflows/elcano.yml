@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización y orden de canales con multi-gateway
+      - name: Sincronización con pasarelas IPFS estables
         run: |
           python <<'PY'
           import re
@@ -30,12 +30,12 @@ jobs:
           import urllib.request
           from pathlib import Path
 
-          # Lista de pasarelas de Elcano / IPNS (multirruta para que nunca falle si una cae)
+          # Pasarelas IPFS públicas globales (saltan los bloqueos 429/403 de Cloudflare Workers)
           URLS_ELCANO = [
-              "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://tokyo.elcano-ipfs.workers.dev/k51qzi5uqu5di462t7j4vu4akwfhvtjhy88qbupktvoacqfqe9uforjvhyi4wr/hashes_acestream.m3u",
-              "https://k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs.ipns.dweb.link/hashes_acestream.m3u",
-              "https://ipfs.io/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+              "https://cloudflare-ipfs.com/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://gateway.pinata.cloud/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://w3s.link/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://dweb.link/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           ]
 
           archivo_casa = Path("Mi lista acestream")
@@ -49,10 +49,9 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          # Bucle para probar todas las pasarelas de forma inteligente
           fuente_elcano = None
           for url in URLS_ELCANO:
-              print(text:=f"Intentando descargar desde: {url}")
+              print(f"Probando pasarela IPFS: {url}")
               for intento in range(1, 3):
                   try:
                       peticion = urllib.request.Request(
@@ -62,10 +61,10 @@ jobs:
                               "Accept": "*/*"
                           }
                       )
-                      with urllib.request.urlopen(peticion, timeout=25) as respuesta:
+                      with urllib.request.urlopen(peticion, timeout=30) as respuesta:
                           fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
                       if fuente_elcano and "#EXTINF" in fuente_elcano:
-                          print("¡Descarga exitosa desde esta pasarela!")
+                          print("¡Descarga de hashes exitosa!")
                           break
                   except Exception as error:
                       print(f"  Intento {intento} fallido: {error}")
@@ -74,7 +73,7 @@ jobs:
                   break
 
           if not fuente_elcano or "#EXTINF" not in fuente_elcano:
-              sys.exit("ERROR CRÍTIC: No se pudo conectar a ninguna pasarela de Elcano.")
+              sys.exit("ERROR CRÍTICO: No se pudo conectar a ninguna pasarela IPFS.")
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
@@ -234,7 +233,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion automatica multi-gateway"
+            git commit -m "Actualizacion automatica con pasarelas IPFS estables"
             git push
           else
             echo "No hay cambios que guardar."
