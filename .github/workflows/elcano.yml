@@ -81,10 +81,9 @@ jobs:
               if url not in urls_existentes:
                   novedades.append((extinf, url))
 
-          print(f"Se han encontrado {len(novedades]} canales nuevos de Elcano.")
+          print(f"Se han encontrado {len(novedades)} canales nuevos de Elcano.")
 
           # 3. Guardar la lista de casa INTACTA (solo con tus cosas y IPs 127.0.0.1)
-          # Limpiamos posibles restos de ejecuciones anteriores si los hubiera
           limpia_casa = contenido_casa.split("# ==========================================\n# CARPETA: CANALES NUEVOS ELCANO")[0]
           archivo_casa.write_text(limpia_casa.strip() + "\n", encoding="utf-8")
 
