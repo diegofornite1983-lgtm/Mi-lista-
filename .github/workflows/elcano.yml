@@ -94,14 +94,13 @@ jobs:
           lineas_casa = contenido_casa.splitlines()
           lineas_actualizadas = []
           hashes_en_casa = set()
-          i = 0
 
-          # Extraemos todos los hashes que ya tenemos en casa para saber qué actualizar
           for l in lineas_casa:
               match_h = re.search(r'id=([0-9a-fA-F]{40})', l)
               if match_h:
                   hashes_en_casa.add(match_h.group(1).lower())
 
+          i = 0
           while i < len(lineas_casa):
               linea = lineas_casa[i]
               lineas_actualizadas.append(linea)
@@ -112,10 +111,8 @@ jobs:
                   
                   if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
                       url_actual = lineas_casa[i+1].strip()
-                      
                       if nombre_norm in mapa_elcano_por_nombre:
-                          nueva_url = mapa_elcano_por_nombre[nombre_norm]
-                          lineas_actualizadas.append(nueva_url)
+                          lineas_actualizadas.append(mapa_elcano_por_nombre[nombre_norm])
                       else:
                           lineas_actualizadas.append(url_actual)
                       i += 1
@@ -128,9 +125,11 @@ jobs:
                   return "HYPERMOTION"
               elif "CHAMPIONS" in n or "CAMPEONES" in n:
                   return "CHAMPIONS"
+              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
+                  return "DAZN"
               elif "LALIGA" in n or "M+ LALIGA" in n or "DAZN LIGA" in n or ("LIGA" in n and "CAMPEONES" not in n):
                   return "LA LIGA Y DAZN LIGA"
-              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
+              elif "DAZN" in n:
                   return "DAZN"
               elif "F1" in n or "FORMULA" in n:
                   return "F1"
@@ -197,17 +196,17 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización y adición de nuevos canales de Elcano completada.")
+          print("Sincronización final completada correctamente.")
           PY
 
       - name: Guardar cambios en GitHub
-		run: |
+        run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizacion de canales nuevos y hashes"
+            git commit -m "Actualizacion completa de canales y hashes"
             git push
           else
             echo "No hay cambios que guardar."
