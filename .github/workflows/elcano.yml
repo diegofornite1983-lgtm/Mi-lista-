@@ -24,7 +24,7 @@ jobs:
       - name: Instalar dependencias de red avanzadas
         run: |
           python -m pip install --upgrade pip
-          pip install cloudscraper requests
+          pip install requests
 
       - name: Sincronización definitiva y orden estricto de La Liga
         run: |
@@ -33,9 +33,16 @@ jobs:
           import sys
           import time
           from pathlib import Path
-          import cloudscraper
+          import requests
 
-          URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          # Lista de pasarelas IPFS públicas alternativas para evitar el bloqueo 429 de Cloudflare Workers
+          URLS_ELCANO = [
+              "https://ipfs.io/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://dweb.link/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://cloudflare-ipfs.com/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          ]
+          
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
 
@@ -47,50 +54,29 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          # Creamos un scraper avanzado con cabeceras personalizadas para evitar el bloqueo 429
-          scraper = cloudscraper.create_scraper(
-              browser={
-                  'browser': 'firefox',
-                  'platform': 'windows',
-                  'desktop': True
-              }
-          )
-
-          # Añadimos cabeceras adicionales para simular un navegador real y evitar restricciones de Cloudflare
+          fuente_elcano = None
           headers = {
-              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
-              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-              "Accept-Language": "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3",
-              "Referer": "https://tokyo2.elcano-ipfs.workers.dev/"
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
           }
 
-          fuente_elcano = None
-          esperas = [20, 40, 60]
-          for intento in range(4):
+          for url_objetivo in URLS_ELCANO:
               try:
-                  print(f"Intentando descargar Elcano (Intento {intento + 1}/4)...")
-                  respuesta = scraper.get(URL_ELCANO, headers=headers, timeout=60)
+                  print(probando := f"Intentando descargar desde: {url_objetivo[:45]}...")
+                  respuesta = requests.get(url_objetivo, headers=headers, timeout=30)
                   
-                  if respuesta.status_code == 200:
+                  if respuesta.status_code == 200 and len(respuesta.text) > 100:
                       fuente_elcano = respuesta.text
                       print("¡Descarga de Elcano exitosa!")
                       break
                   else:
-                      print(f"Aviso: El servidor respondió con código {respuesta.status_code}")
-                      if intento == 3:
-                          sys.exit(f"ERROR: El servidor devolvió el código HTTP {respuesta.status_code}")
+                      print(f"Aviso: La pasarela respondió con código {respuesta.status_code}")
               except Exception as error:
-                  print(f"Excepción en intento {intento + 1}: {error}")
-                  if intento == 3:
-                      sys.exit(f"ERROR descargando Elcano tras 4 intentos: {error}")
+                  print(f"Fallo en esta pasarela: {error}")
               
-              if intento < 3:
-                  tiempo_espera = esperas[intento]
-                  print(f"Esperando {tiempo_espera} segundos para reintentar y sortear el límite...")
-                  time.sleep(tiempo_espera)
+              time.sleep(2)
 
           if not fuente_elcano:
-              sys.exit("ERROR crítico: No se pudo obtener el contenido de Elcano.")
+              sys.exit("ERROR crítico: Ninguna de las pasarelas IPFS pudo entregar el contenido.")
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
