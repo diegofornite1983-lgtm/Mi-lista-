@@ -1,8 +1,8 @@
-name: Actualizador Automatico Elcano y Tailscale
+name: Actualizador Automatico Elcano
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -21,260 +21,174 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Instalar nodo IPFS oficial (Kubo) para saltar bloqueos
-        run: |
-          wget https://dist.ipfs.tech/kubo/v0.26.0/kubo_v0.26.0_linux-amd64.tar.gz
-          tar -xvzf kubo_v0.26.0_linux-amd64.tar.gz
-          cd kubo
-          sudo bash install.sh
-          ipfs init --profile=server
-          ipfs daemon &
-          sleep 8
-
-      - name: Sincronización definitiva y orden estricto de La Liga
+      - name: Descargar Elcano y añadir canales nuevos
+        id: update
         run: |
           python <<'PY'
+          import os
           import re
           import sys
-          import subprocess
+          import unicodedata
+          import urllib.request
           from pathlib import Path
 
-          archivo_casa = Path("Mi lista acestream")
-          archivo_tailscale = Path("Canales m3u")
+          URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          CARPETA = Path("Mi lista acestream")
 
-          if not archivo_casa.is_file():
-              sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream'.")
+          if not CARPETA.is_dir():
+              sys.exit("ERROR: No existe la carpeta Mi lista acestream.")
 
-          try:
-              contenido_casa = archivo_casa.read_text(encoding="utf-8-sig")
-          except UnicodeDecodeError:
-              contenido_casa = archivo_casa.read_text(encoding="latin-1")
+          archivos = [
+              p for p in CARPETA.rglob("*")
+              if p.is_file() and p.suffix.lower() in (".m3u", ".m3u8", ".txt")
+          ]
 
-          # Descarga directa por P2P puro mediante IPFS nativo (sin bloqueos de Cloudflare)
-          ipns_path = "/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
-          print(f"Descargando desde la red P2P IPFS: {ipns_path}")
-          
-          resultado = subprocess.run(["ipfs", "cat", ipns_path], capture_output=True, text=True, timeout=60)
-          
-          if resultado.returncode != 0 or not resultado.stdout or len(resultado.stdout) < 100:
-              print(f"Aviso en ipfs cat: {resultado.stderr}")
-              # Intento alternativo con la pasarela local del daemon
-              import urllib.request
-              try:
-                  url_local = "http://127.0.0.1:8080" + ipns_path
-                  print(f"Probando pasarela local del daemon: {url_local}")
-                  with urllib.request.urlopen(url_local, timeout=30) as response:
-                      fuente_elcano = response.read().decode('utf-8', errors='ignore')
-              except Exception as e:
-                  sys.exit(f"ERROR crítico: No se pudo obtener la lista por IPFS P2P: {e}")
-          else:
-              fuente_elcano = resultado.stdout
+          if len(archivos) != 1:
+              sys.exit(
+                  "ERROR: Se esperaba un único archivo M3U/TXT dentro de "
+                  f"Mi lista acestream, pero se encontraron {len(archivos)}. "
+                  "No se ha modificado nada."
+              )
 
-          print("¡Descarga de Elcano por IPFS P2P exitosa!")
+          destino = archivos[0]
 
-          def normalizar_nombre(nombre):
-              n = nombre.upper()
-              n = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTARPLUS', n)
-              return "".join(n.split())
+          def normalizar(nombre):
+              nombre = unicodedata.normalize("NFKD", nombre.lower())
+              nombre = "".join(c for c in nombre if not unicodedata.combining(c))
+              nombre = re.sub(r"[^a-z0-9]", "", nombre)
+              return nombre
 
-          def parsear_m3u(texto):
+          def leer_m3u(texto):
               lineas = texto.splitlines()
               entradas = []
               i = 0
+
               while i < len(lineas):
                   linea = lineas[i].strip()
+
                   if linea.startswith("#EXTINF:"):
                       url = None
                       j = i + 1
+
                       while j < len(lineas):
                           candidata = lineas[j].strip()
                           if candidata and not candidata.startswith("#"):
                               url = candidata
                               break
                           j += 1
+
                       if url:
-                          match_hash = re.search(r'([0-9a-fA-F]{40})', url)
-                          if match_hash:
-                              h_id = match_hash.group(1)
-                              url_limpia = f"http://127.0.0.1:6878/ace/getstream?id={h_id}"
-                          else:
-                              url_limpia = url
-                          
                           nombre = linea.rsplit(",", 1)[-1].strip()
+                          grupo = re.search(r'group-title="([^"]*)"', linea)
                           entradas.append({
                               "extinf": linea,
-                              "url": url_limpia,
+                              "url": url,
                               "nombre": nombre,
-                              "raw_url": url
+                              "grupo": grupo.group(1) if grupo else ""
                           })
                           i = j
+
                   i += 1
+
               return entradas
 
-          canales_elcano = parsear_m3u(fuente_elcano)
-          mapa_elcano_por_nombre = {normalizar_nombre(c["nombre"]): c["url"] for c in canales_elcano}
+          try:
+              peticion = urllib.request.Request(
+                  URL_ELCANO,
+                  headers={"User-Agent": "Mozilla/5.0"}
+              )
+              with urllib.request.urlopen(peticion, timeout=60) as respuesta:
+                  fuente = respuesta.read().decode("utf-8-sig", errors="replace")
+          except Exception as error:
+              sys.exit(f"ERROR descargando Elcano: {error}")
 
-          lineas_casa = contenido_casa.splitlines()
-          lineas_actualizadas = []
-          urls_en_casa = set()
-          i = 0
+          if "#EXTM3U" not in fuente or "#EXTINF:" not in fuente:
+              sys.exit("ERROR: La dirección no ha devuelto una lista M3U válida.")
 
-          while i < len(lineas_casa):
-              linea = lineas_casa[i]
-              
-              if "#EXTINF:" in linea and 'tvg-id="Movistar Plus+ HD"' in linea:
-                  nombre_mayus = linea.rsplit(",", 1)[-1].strip().upper()
-                  if "LALIGA" in nombre_mayus or "LIGA" in nombre_mayus:
-                      if "2" in nombre_mayus:
-                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', linea)
-                      elif "3" in nombre_mayus:
-                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', linea)
-                      else:
-                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', linea)
+          try:
+              original = destino.read_text(encoding="utf-8-sig")
+          except UnicodeDecodeError:
+              original = destino.read_text(encoding="latin-1")
 
-              lineas_actualizadas.append(linea)
+          canales_fuente = leer_m3u(fuente)
+          canales_mios = leer_m3u(original)
 
-              if linea.startswith("#EXTINF:"):
-                  nombre_canal = linea.rsplit(",", 1)[-1].strip()
-                  nombre_norm = normalizar_nombre(nombre_canal)
-                  
-                  if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
-                      url_actual = lineas_casa[i+1].strip()
-                      urls_en_casa.add(url_actual)
-                      
-                      if nombre_norm in mapa_elcano_por_nombre:
-                          nueva_url = mapa_elcano_por_nombre[nombre_norm]
-                          lineas_actualizadas.append(nueva_url)
-                          urls_en_casa.add(nueva_url)
-                      else:
-                          lineas_actualizadas.append(url_actual)
-                      i += 1
-              elif not linea.startswith("#") and linea.strip():
-                  urls_en_casa.add(linea.strip())
-              i += 1
+          if not canales_fuente:
+              sys.exit("ERROR: Elcano no contiene canales reconocibles.")
 
-          def mapear_carpeta(nombre_canal, extinf_original):
-              n = nombre_canal.upper()
-              ext = extinf_original.upper()
-              if "HYPERMOTION" in n or "HYPERMOTION" in ext:
-                  return "HYPERMOTION"
-              elif "CHAMPIONS" in n or "CAMPEONES" in n:
-                  return "CHAMPIONS"
-              elif "LALIGA" in n or "M+ LALIGA" in n or "DAZN LIGA" in n or ("LIGA" in n and "CAMPEONES" not in n):
-                  return "LA LIGA Y DAZN LIGA"
-              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
-                  return "DAZN"
-              elif "F1" in n or "FORMULA" in n:
-                  return "F1"
-              elif "MOTOGP" in n:
-                  return "MotoGP"
-              elif "BALONCESTO" in n or "NBA" in n:
-                  return "BALONCESTO"
-              elif "EUROSPORT" in n:
-                  return "EUROSPORT"
-              elif "FEDERACION" in n or "RFEF" in n:
-                  return "PRIMERA FEDERACIÓN"
-              elif "ESTRENOS" in n or "ACCION" in n or "CINE" in n or "COMEDIA" in n or "HITS" in n or "DRAMA" in n or "INDIE" in n or "ROMANCE" in n or "TERROR" in n or "ORIGINALES" in n or "DOCUMENTALES" in n or "MOVISTAR PLUS" in n or "MOVISTAR+" in n:
-                  return "MOVISTAR"
-              else:
-                  return "MOVISTAR DEP-VAMOS"
+          nombres_existentes = {
+              normalizar(c["nombre"]) for c in canales_mios
+          }
 
-          novedades = []
-          for c in canales_elcano:
-              if c["url"] not in urls_en_casa and c["raw_url"] not in urls_en_casa:
-                  novedades.append(c)
+          grupos_existentes = {
+              c["grupo"] for c in canales_mios if c["grupo"]
+          }
 
-          clasificados = {}
-          for c in novedades:
-              carp = mapear_carpeta(c["nombre"], c["extinf"])
-              if carp not in clasificados:
-                  clasificados[carp] = []
-              extinf_f = c["extinf"]
-              if 'group-title="' in extinf_f:
-                  extinf_f = re.sub(r'group-title="[^"]*"', f'group-title="{carp}"', extinf_f)
-              else:
-                  extinf_f = extinf_f.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
-              clasificados[carp].append((c["nombre"], extinf_f, c["url"]))
+          # Equivalencias conocidas entre categorías.
+          equivalencias = {
+              "LA LIGA": "LA LIGA Y DAZN LIGA"
+          }
 
-          if "LA LIGA Y DAZN LIGA" in clasificados:
-              lista_liga = clasificados["LA LIGA Y DAZN LIGA"]
-              movistar_liga_nuevos = [ch for ch in lista_liga if "DAZN" not in ch[0].upper()]
-              dazn_liga_nuevos = [ch for ch in lista_liga if "DAZN" in ch[0].upper()]
-              clasificados["LA LIGA Y DAZN LIGA"] = movistar_liga_nuevos + dazn_liga_nuevos
+          nuevos = []
+          omitidos = 0
 
-          lineas_finales_temp = []
-          i = 0
-          while i < len(lineas_actualizadas):
-              l = lineas_actualizadas[i]
-              lineas_finales_temp.append(l)
-              for nombre_carp, lista_canales in list(clasificados.items()):
-                  if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
-                      lineas_finales_temp.append("")
-                      for nom_f, extinf_f, url_f in lista_canales:
-                          if "DAZN" in nom_f.upper():
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga 2 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga HD"', extinf_f)
-                          else:
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', extinf_f)
-                              elif "3" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', extinf_f)
-                          lineas_finales_temp.append(extinf_f)
-                          lineas_finales_temp.append(url_f)
-                      lineas_finales_temp.append("")
-                      del clasificados[nombre_carp]
-              i += 1
+          for canal in canales_fuente:
+              nombre_id = normalizar(canal["nombre"])
 
-          if clasificados:
-              for carp, lista_canales in clasificados.items():
-                  if carp == "LA LIGA Y DAZN LIGA":
-                      movistar_liga_nuevos = [ch for ch in lista_canales if "DAZN" not in ch[0].upper()]
-                      dazn_liga_nuevos = [ch for ch in lista_canales if "DAZN" in ch[0].upper()]
-                      lista_canales = movistar_liga_nuevos + dazn_liga_nuevos
+              if not nombre_id or nombre_id in nombres_existentes:
+                  continue
 
-                  lineas_finales_temp.append("")
-                  lineas_finales_temp.append(f"# ==========================================")
-                  lineas_finales_temp.append(f"# CARPETA: {carp}")
-                  lineas_finales_temp.append(f"# ==========================================")
-                  for nom_f, extinf_f, url_f in lista_canales:
-                      if carp == "LA LIGA Y DAZN LIGA":
-                          if "DAZN" in nom_f.upper():
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga 2 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga HD"', extinf_f)
-                          else:
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', extinf_f)
-                              elif "3" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', extinf_f)
-                      lineas_finales_temp.append(extinf_f)
-                      lineas_finales_temp.append(url_f)
+              grupo_origen = canal["grupo"]
+              grupo_destino = equivalencias.get(grupo_origen, grupo_origen)
 
-          lista_final_casa = "\n".join(lineas_finales_temp) + ("\n" if not "".join(lineas_finales_temp).endswith("\n") else "")
-          archivo_casa.write_text(lista_final_casa, encoding="utf-8")
+              # No inventar carpetas ni colocar canales en categorías dudosas.
+              if not grupo_destino or grupo_destino not in grupos_existentes:
+                  omitidos += 1
+                  print(
+                      f"CATEGORÍA NO ENCONTRADA: {canal['nombre']} "
+                      f"({grupo_origen})"
+                  )
+                  continue
 
-          lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
-          archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
+              extinf = canal["extinf"]
 
-          print("Sincronización final y orden estricto completados.")
+              if grupo_destino != grupo_origen:
+                  extinf = re.sub(
+                      r'group-title="[^"]*"',
+                      f'group-title="{grupo_destino}"',
+                      extinf,
+                      count=1
+                  )
+
+              nuevos.extend([extinf, canal["url"]])
+              nombres_existentes.add(nombre_id)
+
+          if nuevos:
+              with destino.open("a", encoding="utf-8", newline="\n") as archivo:
+                  if original and not original.endswith("\n"):
+                      archivo.write("\n")
+                  archivo.write("\n".join(nuevos) + "\n")
+
+          print(f"Archivo actualizado: {destino}")
+          print(f"Canales encontrados en Elcano: {len(canales_fuente)}")
+          print(f"Canales nuevos añadidos: {len(nuevos) // 2}")
+          print(f"Canales omitidos por categoría: {omitidos}")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as salida:
+              salida.write(f"path={destino.as_posix()}\n")
           PY
 
       - name: Guardar cambios en GitHub
+        env:
+          TARGET_FILE: ${{ steps.update.outputs.path }}
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
-          git add "Mi lista acestream" "Canales m3u"
-          
+          git add -- "$TARGET_FILE"
+
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizacion definitiva y ordenada de canales"
+            git commit -m "Añadir canales nuevos de Elcano"
             git push
           else
-            echo "No hay cambios que guardar."
+            echo "No hay canales nuevos que guardar."
           fi
