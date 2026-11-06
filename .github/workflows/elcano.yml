@@ -21,28 +21,24 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Instalar dependencias de red avanzadas
+      - name: Instalar nodo IPFS oficial (Kubo) para saltar bloqueos
         run: |
-          python -m pip install --upgrade pip
-          pip install requests
+          wget https://dist.ipfs.tech/kubo/v0.26.0/kubo_v0.26.0_linux-amd64.tar.gz
+          tar -xvzf kubo_v0.26.0_linux-amd64.tar.gz
+          cd kubo
+          sudo bash install.sh
+          ipfs init --profile=server
+          ipfs daemon &
+          sleep 8
 
       - name: Sincronización definitiva y orden estricto de La Liga
         run: |
           python <<'PY'
           import re
           import sys
-          import time
+          import subprocess
           from pathlib import Path
-          import requests
 
-          # Añadimos pasarelas descentralizadas puras que no bloquean servidores
-          URLS_ELCANO = [
-              "https://gateway.pinata.cloud/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://ipfs.io/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://tokyo.elcano-ipfs.workers.dev/k51qzi5uqu5di462t7j4vu4akwfhvtjhy88qbupktvoacqfqe9uforjvhyi4wr/hashes_acestream.m3u"
-          ]
-          
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
 
@@ -54,30 +50,27 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          fuente_elcano = None
-          headers = {
-              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
-              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-          }
-
-          for url_objetivo in URLS_ELCANO:
+          # Descarga directa por P2P puro mediante IPFS nativo (sin bloqueos de Cloudflare)
+          ipns_path = "/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          print(f"Descargando desde la red P2P IPFS: {ipns_path}")
+          
+          resultado = subprocess.run(["ipfs", "cat", ipns_path], capture_output=True, text=True, timeout=60)
+          
+          if resultado.returncode != 0 or not resultado.stdout or len(resultado.stdout) < 100:
+              print(f"Aviso en ipfs cat: {resultado.stderr}")
+              # Intento alternativo con la pasarela local del daemon
+              import urllib.request
               try:
-                  print(f"Probando pasarela: {url_objetivo[:60]}...")
-                  respuesta = requests.get(url_objetivo, headers=headers, timeout=30)
-                  
-                  if respuesta.status_code == 200 and len(respuesta.text) > 100:
-                      fuente_elcano = respuesta.text
-                      print(f"¡Conexión y descarga exitosa!")
-                      break
-                  else:
-                      print(f"Aviso: La pasarela respondió con código HTTP {respuesta.status_code}")
-              except Exception as error:
-                  print(f"Fallo en este intento: {error}")
-              
-              time.sleep(3)
+                  url_local = "http://127.0.0.1:8080" + ipns_path
+                  print(f"Probando pasarela local del daemon: {url_local}")
+                  with urllib.request.urlopen(url_local, timeout=30) as response:
+                      fuente_elcano = response.read().decode('utf-8', errors='ignore')
+              except Exception as e:
+                  sys.exit(f"ERROR crítico: No se pudo obtener la lista por IPFS P2P: {e}")
+          else:
+              fuente_elcano = resultado.stdout
 
-          if not fuente_elcano:
-              sys.exit("ERROR crítico: Todas las pasarelas están bloqueadas temporalmente. Prueba a lanzar la acción de nuevo en unos minutos.")
+          print("¡Descarga de Elcano por IPFS P2P exitosa!")
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
