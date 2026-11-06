@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Descargar Elcano, unificar y clasificar
+      - name: Sincronizar Elcano manteniendo estructura exacta
         run: |
           python <<'PY'
           import re
@@ -99,7 +99,6 @@ jobs:
               print("No hay canales nuevos que añadir. La lista se mantiene intacta.")
               sys.exit(0)
 
-          # Función unificada para que vaya exactamente a tu categoría exacta sin duplicar
           def detectar_grupo(nombre_canal):
               n = nombre_canal.upper()
               if "LALIGA" in n or "LIGA" in n:
@@ -107,7 +106,7 @@ jobs:
               elif "CHAMPIONS" in n or "CAMPEONES" in n:
                   return "CHAMPIONS"
               elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
-                  return "DAZN 1"
+                  return "DAZN"
               elif "HYPERMOTION" in n:
                   return "HYPERMOTION"
               elif "F1" in n or "FORMULA" in n:
@@ -121,9 +120,7 @@ jobs:
               elif "EUROSPORT" in n:
                   return "EUROSPORT"
               elif "FEDERACION" in n or "RFEF" in n:
-                  return "PRIMERA FEDERACIÓN (RFEF)"
-              elif "TENNIS" in n or "TENIS" in n:
-                  return "TENNIS"
+                  return "PRIMERA FEDERACIÓN"
               else:
                   return "MOVISTAR"
 
@@ -146,9 +143,7 @@ jobs:
                       if nombre_carp.upper() in l.upper():
                           nuevas_lineas.append("") 
                           for nc in lista_c:
-                              # Aseguramos que el group-title coincida exactamente con tu estructura
-                              extinf_mod = re.sub(r'group-title="[^"]*"]', f'group-title="{nombre_carp}"', nc["extinf"])
-                              nuevas_lineas.append(extinf_mod)
+                              nuevas_lineas.append(nc["extinf"])
                               nuevas_lineas.append(nc["url"])
                           nuevas_lineas.append("")
                           del pendientes_por_grupo[nombre_carp]
@@ -165,7 +160,7 @@ jobs:
                       nuevas_lineas.append(nc["url"])
 
           destino.write_text("\n".join(nuevas_lineas) + "\n", encoding="utf-8")
-          print(f"Se han añadido {len(nuevos)} canales nuevos ordenados correctamente.")
+          print(f"Se han añadido {len(nuevos)} canales nuevos ordenados en tus carpetas.")
           PY
 
       - name: Generar Canales m3u para Tailscale
@@ -180,7 +175,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizar lista sin duplicar carpetas y aplicar IP Tailscale"
+            git commit -m "Sincronizar canales de Elcano manteniendo estructura y IPs"
             git push
           else
             echo "No hay cambios que guardar."
