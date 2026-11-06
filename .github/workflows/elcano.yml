@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización definitiva y orden estricto de La Liga
+      - name: Sincronización corregida y lectura exacta de hashes
         run: |
           python <<'PY'
           import re
@@ -48,14 +48,10 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          def normalizar_nombre(nombre):
-              n = nombre.upper()
-              n = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTARPLUS', n)
-              return "".join(n.split())
-
-          def parsear_m3u(texto):
+          # Parsear Elcano extrayendo el nombre limpio y su URL con hash limpio
+          def parsear_elcano(texto):
               lineas = texto.splitlines()
-              entradas = []
+              mapa = {}
               i = 0
               while i < len(lineas):
                   linea = lineas[i].strip()
@@ -76,139 +72,58 @@ jobs:
                           else:
                               url_limpia = url
                           
-                          nombre = linea.rsplit(",", 1)[-1].strip()
-                          entradas.append({
-                              "extinf": linea,
-                              "url": url_limpia,
-                              "nombre": nombre,
-                              "raw_url": url
-                          })
+                          nombre_bruto = linea.rsplit(",", 1)[-1].strip()
+                          nombre_limpio = re.sub(r'[^A-Z0-9]', '', nombre_bruto.upper())
+                          mapa[nombre_limpio] = url_limpia
                           i = j
                   i += 1
-              return entradas
+              return mapa
 
-          canales_elcano = parsear_m3u(fuente_elcano)
-          mapa_elcano_por_nombre = {normalizar_nombre(c["nombre"]): c["url"] for c in canales_elcano}
+          mapa_elcano = parsear_elcano(fuente_elcano)
 
           lineas_casa = contenido_casa.splitlines()
           lineas_actualizadas = []
-          urls_en_casa = set()
           i = 0
 
+          # Recorrido seguro línea a línea sin saltos de índice erróneos
           while i < len(lineas_casa):
               linea = lineas_casa[i]
               
-              # Limpieza de URLs huérfanas al final del archivo
-              if not linea.startswith("#") and linea.strip():
-                  if i + 1 >= len(lineas_casa) and not lineas_casa[i-1].startswith("#EXTINF:"):
-                      i += 1
-                      continue
-
-              lineas_actualizadas.append(linea)
-
               if linea.startswith("#EXTINF:"):
+                  lineas_actualizadas.append(linea)
                   nombre_canal = linea.rsplit(",", 1)[-1].strip()
-                  nombre_norm = normalizar_nombre(nombre_canal)
+                  nombre_limpio_casa = re.sub(r'[^A-Z0-9]', '', nombre_canal.upper())
                   
-                  if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
-                      url_actual = lineas_casa[i+1].strip()
-                      urls_en_casa.add(url_actual)
-                      
-                      if nombre_norm in mapa_elcano_por_nombre:
-                          nueva_url = mapa_elcano_por_nombre[nombre_norm]
-                          lineas_actualizadas.append(nueva_url)
-                          urls_en_casa.add(nueva_url)
-                      else:
-                          lineas_actualizadas.append(url_actual)
-                      i += 1
-              elif not linea.startswith("#") and linea.strip():
-                  urls_en_casa.add(linea.strip())
+                  # Miramos si la siguiente línea es la URL del stream
+                  if i + 1 < len(lineas_casa):
+                      siguiente_linea = lineas_casa[i + 1].strip()
+                      if siguiente_linea and not siguiente_linea.startswith("#"):
+                          # Intentamos emparejar con Elcano
+                          nueva_url = None
+                          if nombre_limpio_casa in mapa_elcano:
+                              nueva_url = mapa_elcano[nombre_limpio_casa]
+                          else:
+                              for k, v in mapa_elcano.items():
+                                  if k in nombre_limpio_casa or nombre_limpio_casa in k:
+                                      nueva_url = v
+                                      break
+                          
+                          if nueva_url:
+                              lineas_actualizadas.append(nueva_url)
+                          else:
+                              lineas_actualizadas.append(siguiente_linea)
+                          i += 1 # Consumimos la línea de la URL correctamente
+              else:
+                  lineas_actualizadas.append(linea)
               i += 1
 
-          def mapear_carpeta(nombre_canal, extinf_original):
-              n = nombre_canal.upper()
-              ext = extinf_original.upper()
-              if "HYPERMOTION" in n or "HYPERMOTION" in ext:
-                  return "HYPERMOTION"
-              elif "CHAMPIONS" in n or "CAMPEONES" in n:
-                  return "CHAMPIONS"
-              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
-                  return "DAZN"
-              elif "LALIGA" in n or "M+ LALIGA" in n or "DAZN LIGA" in n or ("LIGA" in n and "CAMPEONES" not in n):
-                  return "LA LIGA Y DAZN LIGA"
-              elif "DAZN" in n:
-                  return "DAZN"
-              elif "F1" in n or "FORMULA" in n:
-                  return "F1"
-              elif "MOTOGP" in n:
-                  return "MotoGP"
-              elif "BALONCESTO" in n or "NBA" in n:
-                  return "BALONCESTO"
-              elif "EUROSPORT" in n:
-                  return "EUROSPORT"
-              elif "FEDERACION" in n or "RFEF" in n:
-                  return "PRIMERA FEDERACIÓN"
-              elif "ESTRENOS" in n or "ACCION" in n or "CINE" in n or "COMEDIA" in n or "HITS" in n or "DRAMA" in n or "INDIE" in n or "ROMANCE" in n or "TERROR" in n or "ORIGINALES" in n or "DOCUMENTALES" in n or "MOVISTAR PLUS" in n or "MOVISTAR+" in n:
-                  return "MOVISTAR"
-              else:
-                  return "MOVISTAR DEP-VAMOS"
-
-          novedades = []
-          for c in canales_elcano:
-              if c["url"] not in urls_en_casa and c["raw_url"] not in urls_en_casa:
-                  novedades.append(c)
-
-          clasificados = {}
-          for c in novedades:
-              carp = mapear_carpeta(c["nombre"], c["extinf"])
-              if carp not in clasificados:
-                  clasificados[carp] = []
-              extinf_f = c["extinf"]
-              if 'group-title="' in extinf_f:
-                  extinf_f = re.sub(r'group-title="[^"]*"', f'group-title="{carp}"', extinf_f)
-              else:
-                  extinf_f = extinf_f.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
-              clasificados[carp].append((c["nombre"], extinf_f, c["url"]))
-
-          if "LA LIGA Y DAZN LIGA" in clasificados:
-              lista_liga = clasificados["LA LIGA Y DAZN LIGA"]
-              movistar_liga_nuevos = [ch for ch in lista_liga if "DAZN" not in ch[0].upper()]
-              dazn_liga_nuevos = [ch for ch in lista_liga if "DAZN" in ch[0].upper()]
-              clasificados["LA LIGA Y DAZN LIGA"] = movistar_liga_nuevos + dazn_liga_nuevos
-
-          lineas_finales_temp = []
-          i = 0
-          while i < len(lineas_actualizadas):
-              l = lineas_actualizadas[i]
-              lineas_finales_temp.append(l)
-              for nombre_carp, lista_canales in list(clasificados.items()):
-                  if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
-                      lineas_finales_temp.append("")
-                      for nom_f, extinf_f, url_f in lista_canales:
-                          lineas_finales_temp.append(extinf_f)
-                          lineas_finales_temp.append(url_f)
-                      lineas_finales_temp.append("")
-                      del clasificados[nombre_carp]
-              i += 1
-
-          if clasificados:
-              for carp, lista_canales in clasificados.items():
-                  lineas_finales_temp.append("")
-                  lineas_finales_temp.append(f"# ==========================================")
-                  lineas_finales_temp.append(f"# CARPETA: {carp}")
-                  lineas_finales_temp.append(f"# ==========================================")
-                  for nom_f, extinf_f, url_f in lista_canales:
-                      lineas_finales_temp.append(extinf_f)
-                      lineas_finales_temp.append(url_f)
-
-          # Limpieza final de líneas duplicadas o vacías excesivas
-          lista_final_casa = "\n".join(lineas_finales_temp) + ("\n" if not "".join(lineas_finales_temp).endswith("\n") else "")
+          lista_final_casa = "\n".join(lineas_actualizadas) + ("\n" if not "".join(lineas_actualizadas).endswith("\n") else "")
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización final y orden estricto completados.")
+          print("Sincronización exacta y actualización de hashes completada.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -218,7 +133,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizacion definitiva y ordenada de canales"
+            git commit -m "Actualizacion correcta de hashes de Elcano"
             git push
           else
             echo "No hay cambios que guardar."
