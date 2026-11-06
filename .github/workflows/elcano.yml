@@ -28,12 +28,15 @@ jobs:
           import sys
           import urllib.request
           import time
+          import random
           from pathlib import Path
 
+          # Parámetro aleatorio para evitar la caché de Cloudflare y sortear el error 429
+          rand_val = random.randint(1000, 99999)
           urls_elcano = [
-              "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://gateway.pinata.cloud/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://ipfs.io/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+              f"https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u?r={rand_val}",
+              f"https://gateway.pinata.cloud/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u?r={rand_val}",
+              f"https://ipfs.io/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u?r={rand_val}"
           ]
           
           archivo_casa = Path("Mi lista acestream")
@@ -48,24 +51,27 @@ jobs:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
           fuente_elcano = None
-          headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+          headers = {
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+          }
 
           for url in urls_elcano:
               try:
                   peticion = urllib.request.Request(url, headers=headers)
-                  with urllib.request.urlopen(peticion, timeout=30) as respuesta:
+                  with urllib.request.urlopen(peticion, timeout=35) as respuesta:
                       texto_prueba = respuesta.read().decode("utf-8-sig", errors="replace")
                       if texto_prueba and "#EXTINF" in texto_prueba:
                           fuente_elcano = texto_prueba
+                          print(f"¡Descargado con éxito!")
                           break
-              except Exception:
+              except Exception as e:
+                  print(f"Fallo en pasarela: {e}")
                   time.sleep(2)
                   continue
 
-          # Respaldo inteligente anti-429: si las pasarelas fallan puntualmente, usa la lista local para garantizar el verde
           if not fuente_elcano:
-              print("Aviso 429/Red: Usando respaldo local para asegurar el éxito del workflow.")
-              fuente_elcano = contenido_casa
+              sys.exit("ERROR: No se pudo conectar a ninguna pasarela de Elcano. Inténtalo de nuevo en unos minutos.")
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
@@ -176,57 +182,4 @@ jobs:
           for c in novedades:
               carp = mapear_carpeta(c["nombre"], c["extinf"])
               if carp not in clasificados:
-                  clasificados[carp] = []
-              extinf_f = c["extinf"]
-              if 'group-title="' in extinf_f:
-                  extinf_f = re.sub(r'group-title="[^"]*"', f'group-title="{carp}"', extinf_f)
-              else:
-                  extinf_f = extinf_f.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
-              clasificados[carp].append((c["nombre"], extinf_f, c["url"]))
-
-          lineas_finales_temp = []
-          i = 0
-          while i < len(lineas_actualizadas):
-              l = lineas_actualizadas[i]
-              lineas_finales_temp.append(l)
-              for nombre_carp, lista_canales in list(clasificados.items()):
-                  if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
-                      lineas_finales_temp.append("")
-                      for nom_f, extinf_f, url_f in lista_canales:
-                          lineas_finales_temp.append(extinf_f)
-                          lineas_finales_temp.append(url_f)
-                      lineas_finales_temp.append("")
-                      del clasificados[nombre_carp]
-              i += 1
-
-          if clasificados:
-              for carp, lista_canales in clasificados.items():
-                  lineas_finales_temp.append("")
-                  lineas_finales_temp.append(f"# ==========================================")
-                  lineas_finales_temp.append(f"# CARPETA: {carp}")
-                  lineas_finales_temp.append(f"# ==========================================")
-                  for nom_f, extinf_f, url_f in lista_canales:
-                      lineas_finales_temp.append(extinf_f)
-                      lineas_finales_temp.append(url_f)
-
-          lista_final_casa = "\n".join(lineas_finales_temp) + ("\n" if not "".join(lineas_finales_temp).endswith("\n") else "")
-          archivo_casa.write_text(lista_final_casa, encoding="utf-8")
-
-          lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
-          archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
-
-          print("Sincronización y actualización completadas sin errores.")
-          PY
-
-      - name: Guardar cambios en GitHub
-        run: |
-          git config user.name "GitHub Action Bot"
-          git config user.email "actions@github.com"
-          git add "Mi lista acestream" "Canales m3u"
-          
-          if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion automatica protegida"
-            git push
-          else
-            echo "No hay cambios que guardar."
-          fi
+                  clasificados
