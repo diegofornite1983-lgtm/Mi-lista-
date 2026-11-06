@@ -2,7 +2,7 @@ name: Actualizador Automatico Elcano y Tailscale
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 permissions:
@@ -42,7 +42,7 @@ jobs:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
           try:
-              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
+              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
               with urllib.request.urlopen(peticion, timeout=60) as respuesta:
                   fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
           except Exception as error:
@@ -50,6 +50,7 @@ jobs:
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
+              n = re.sub(r'[⭐️*]', '', n)
               n = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTARPLUS', n)
               return "".join(n.split())
 
@@ -92,22 +93,16 @@ jobs:
 
           lineas_casa = contenido_casa.splitlines()
           lineas_actualizadas = []
-          urls_en_casa = set()
-          i = 0
+          hashes_en_casa = set()
 
+          for l in lineas_casa:
+              match_h = re.search(r'id=([0-9a-fA-F]{40})', l)
+              if match_h:
+                  hashes_en_casa.add(match_h.group(1).lower())
+
+          i = 0
           while i < len(lineas_casa):
               linea = lineas_casa[i]
-              
-              if "#EXTINF:" in linea and 'tvg-id="Movistar Plus+ HD"' in linea:
-                  nombre_mayus = linea.rsplit(",", 1)[-1].strip().upper()
-                  if "LALIGA" in nombre_mayus or "LIGA" in nombre_mayus:
-                      if "2" in nombre_mayus:
-                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', linea)
-                      elif "3" in nombre_mayus:
-                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', linea)
-                      else:
-                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', linea)
-
               lineas_actualizadas.append(linea)
 
               if linea.startswith("#EXTINF:"):
@@ -116,17 +111,11 @@ jobs:
                   
                   if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
                       url_actual = lineas_casa[i+1].strip()
-                      urls_en_casa.add(url_actual)
-                      
                       if nombre_norm in mapa_elcano_por_nombre:
-                          nueva_url = mapa_elcano_por_nombre[nombre_norm]
-                          lineas_actualizadas.append(nueva_url)
-                          urls_en_casa.add(nueva_url)
+                          lineas_actualizadas.append(mapa_elcano_por_nombre[nombre_norm])
                       else:
                           lineas_actualizadas.append(url_actual)
                       i += 1
-              elif not linea.startswith("#") and linea.strip():
-                  urls_en_casa.add(linea.strip())
               i += 1
 
           def mapear_carpeta(nombre_canal, extinf_original):
@@ -136,9 +125,11 @@ jobs:
                   return "HYPERMOTION"
               elif "CHAMPIONS" in n or "CAMPEONES" in n:
                   return "CHAMPIONS"
+              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
+                  return "DAZN"
               elif "LALIGA" in n or "M+ LALIGA" in n or "DAZN LIGA" in n or ("LIGA" in n and "CAMPEONES" not in n):
                   return "LA LIGA Y DAZN LIGA"
-              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
+              elif "DAZN" in n:
                   return "DAZN"
               elif "F1" in n or "FORMULA" in n:
                   return "F1"
@@ -157,7 +148,9 @@ jobs:
 
           novedades = []
           for c in canales_elcano:
-              if c["url"] not in urls_en_casa and c["raw_url"] not in urls_en_casa:
+              match_nh = re.search(r'id=([0-9a-fA-F]{40})', c["url"])
+              h_val = match_nh.group(1).lower() if match_nh else ""
+              if h_val and h_val not in hashes_en_casa:
                   novedades.append(c)
 
           clasificados = {}
@@ -172,12 +165,6 @@ jobs:
                   extinf_f = extinf_f.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
               clasificados[carp].append((c["nombre"], extinf_f, c["url"]))
 
-          if "LA LIGA Y DAZN LIGA" in clasificados:
-              lista_liga = clasificados["LA LIGA Y DAZN LIGA"]
-              movistar_liga_nuevos = [ch for ch in lista_liga if "DAZN" not in ch[0].upper()]
-              dazn_liga_nuevos = [ch for ch in lista_liga if "DAZN" in ch[0].upper()]
-              clasificados["LA LIGA Y DAZN LIGA"] = movistar_liga_nuevos + dazn_liga_nuevos
-
           lineas_finales_temp = []
           i = 0
           while i < len(lineas_actualizadas):
@@ -187,18 +174,6 @@ jobs:
                   if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
                       lineas_finales_temp.append("")
                       for nom_f, extinf_f, url_f in lista_canales:
-                          if "DAZN" in nom_f.upper():
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga 2 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga HD"', extinf_f)
-                          else:
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', extinf_f)
-                              elif "3" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', extinf_f)
                           lineas_finales_temp.append(extinf_f)
                           lineas_finales_temp.append(url_f)
                       lineas_finales_temp.append("")
@@ -207,29 +182,11 @@ jobs:
 
           if clasificados:
               for carp, lista_canales in clasificados.items():
-                  if carp == "LA LIGA Y DAZN LIGA":
-                      movistar_liga_nuevos = [ch for ch in lista_canales if "DAZN" not in ch[0].upper()]
-                      dazn_liga_nuevos = [ch for ch in lista_canales if "DAZN" in ch[0].upper()]
-                      lista_canales = movistar_liga_nuevos + dazn_liga_nuevos
-
                   lineas_finales_temp.append("")
                   lineas_finales_temp.append(f"# ==========================================")
                   lineas_finales_temp.append(f"# CARPETA: {carp}")
                   lineas_finales_temp.append(f"# ==========================================")
                   for nom_f, extinf_f, url_f in lista_canales:
-                      if carp == "LA LIGA Y DAZN LIGA":
-                          if "DAZN" in nom_f.upper():
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga 2 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga HD"', extinf_f)
-                          else:
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', extinf_f)
-                              elif "3" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', extinf_f)
                       lineas_finales_temp.append(extinf_f)
                       lineas_finales_temp.append(url_f)
 
@@ -239,7 +196,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización final y orden estricto completados.")
+          print("Sincronización y actualización completada perfectamente.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -249,7 +206,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizacion definitiva y ordenada de canales"
+            git commit -m "Actualizacion completa y limpia de canales"
             git push
           else
             echo "No hay cambios que guardar."
