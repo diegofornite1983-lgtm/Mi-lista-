@@ -23,8 +23,8 @@ jobs:
           if [ -f "elcano_temp.m3u" ]; then
             echo "Lista de Elcano descargada con éxito."
             
-            # Buscamos automáticamente cualquier archivo .m3u en la raíz del repositorio
-            LISTA_M3U=$(find . -maxdepth 1 -name "*.m3u" | head -n 1)
+            # Buscar tu archivo de canales (Canales m3u o similar)
+            LISTA_M3U=$(find . -maxdepth 1 \( -name "*m3u*" -o -name "*acestream*" \) ! -name "elcano_temp.m3u" | head -n 1)
             
             if [ -n "$LISTA_M3U" ]; then
               echo "Archivo de lista encontrado: $LISTA_M3U"
@@ -35,15 +35,15 @@ jobs:
               echo "# ==========================================" >> "$LISTA_M3U"
               
               grep -A 1 "^#EXTINF" elcano_temp.m3u >> "$LISTA_M3U"
-              echo "¡Canales de Elcano añadidos correctamente al archivo!"
+              echo "Canales de Elcano añadidos correctamente al archivo."
             else
-              echo "Error: No se encuentra ningún archivo .m3u en la raíz del repositorio."
+              echo "Error: No se encuentra tu archivo de canales."
               exit 1
             fi
           else
             echo "Error al descargar la lista de Elcano."
             exit 1
-          endif
+          fi
           
           rm -f elcano_temp.m3u
 
