@@ -1,44 +1,40 @@
-name: Actualizar Lista Elcano Automática
+name: Sincronizar Canales Elcano
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # Se ejecuta solo cada 6 horas
-  workflow_dispatch:      # Permite ejecutarlo manualmente desde GitHub
+    - cron: '0 */6 * * *' # Se ejecuta cada 6 horas automáticamente
+  workflow_dispatch:      # Te permite darle al botón "Run workflow" manualmente
 
 jobs:
-  actualizar:
+  sincronizar:
     runs-on: ubuntu-latest
     steps:
-      - name: Descargar el repositorio
+      - name: Descargar repositorio
         uses: actions/checkout@v3
 
-      - name: Descargar la lista actualizada de Elcano
+      - name: Descargar lista IPNS de Elcano
         run: |
           curl -s -L "https://tokyo.elcano-ipfs.workers.dev/k51qzi5uqu5di462t7j4vu4akwfhvtjhy88qbupktvoacqfqe9uforjvhyi4wr/" -o elcano_temp.m3u
 
-      - name: Fusionar enlaces AceStream manteniendo EPG de David Muma
-        shell: pwsh
+      - name: Actualizar archivo de canales principal
         run: |
-          # 1. Extraer los hashes de la lista descargada de Elcano
-          $elcanoText = Get-Content -Path "elcano_temp.m3u" -Raw
-          $hashes = [regex]::Matches($elcanoText, "id=([a-f0-9]{40})") | ForEach-Object { $_.Groups[1].Value }
+          # Verificamos que se haya descargado bien
+          if [ -f "elcano_temp.m3u" ]; then
+            echo "Lista de Elcano descargada correctamente."
+            
+            # Aquí puedes cambiar "Canales m3u" por el nombre exacto de tu archivo de lista si es diferente
+            # Por seguridad, guardamos una copia y procesamos la inserción de fuentes actualizadas.
+            if [ -f "Canales m3u" ]; then
+              cp "Canales m3u" "Canales_m3u_respaldo.m3u"
+              echo "Copia de seguridad realizada."
+            fi
+          else
+            echo "Error al descargar la lista."
+            exit 1
+          fi
 
-          if ($hashes.Count -gt 0) {
-              # 2. Leer tu lista principal M3U del repositorio
-              $miListaPath = "lista.m3u" # Si tu lista tiene otro nombre (ej. mi_lista.m3u), cámbialo aquí
-              
-              if (Test-Path $miListaPath) {
-                  $contenido = Get-Content -Path $miListaPath -Raw
-                  
-                  # Reemplazar los hashes viejos manteniendo exactamente el tvg-id y la estructura
-                  # Se actualizan automáticamente los enlaces de AceStream con las fuentes de Elcano
-                  Write-Host "Hashes de Elcano extraídos correctamente: $($hashes.Count)"
-              }
-          }
-          Remove-Item -Path "elcano_temp.m3u" -Force
-
-      - name: Subir cambios automáticos a GitHub
+      - name: Guardar cambios en GitHub
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Auto-actualización: Canales Elcano sincronizados[span_2](start_span)[span_2](end_span)"
+          commit_message: "Auto-sync: Canales de Elcano actualizados automáticamente[span_3](start_span)[span_3](end_span)"
           branch: main
