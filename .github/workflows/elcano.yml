@@ -128,16 +128,16 @@ jobs:
           def mapear_carpeta(nombre_canal, extinf_original):
               n = nombre_canal.upper()
               ext = extinf_original.upper()
+              
               if "HYPERMOTION" in n or "HYPERMOTION" in ext:
                   return "HYPERMOTION"
               elif "CHAMPIONS" in n or "CAMPEONES" in n:
                   return "CHAMPIONS"
-              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
+              # BLINDAJE: DAZN 1-4 o DAZN general van primero para que no confundan con La Liga
+              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n or ("DAZN" in n and "LIGA" not in n):
                   return "DAZN"
               elif "LALIGA" in n or "M+ LALIGA" in n or "DAZN LIGA" in n or ("LIGA" in n and "CAMPEONES" not in n):
                   return "LA LIGA Y DAZN LIGA"
-              elif "DAZN" in n:
-                  return "DAZN"
               elif "F1" in n or "FORMULA" in n:
                   return "F1"
               elif "MOTOGP" in n:
@@ -185,8 +185,8 @@ jobs:
                   if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
                       lineas_finales_temp.append("")
                       for nom_f, extinf_f, url_f in lista_canales:
-                          lineas_finales_temp.append(extinf_f)
-                          lineas_finales_temp.append(url_f)
+                        lineas_finales_temp.append(extinf_f)
+                        lineas_finales_temp.append(url_f)
                       lineas_finales_temp.append("")
                       del clasificados[nombre_carp]
               i += 1
