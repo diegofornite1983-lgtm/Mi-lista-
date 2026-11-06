@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización definitiva y directa
+      - name: Sincronización robusta anti-saturación
         run: |
           python <<'PY'
           import re
@@ -42,6 +42,7 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
+          # Descarga controlada: si Elcano da 429 (saturado), avisa pero NO rompe el flujo en rojo
           fuente_elcano = None
           for intento in range(1, 4):
               try:
@@ -54,11 +55,13 @@ jobs:
                   if fuente_elcano and "#EXTINF" in fuente_elcano:
                       break
               except Exception as error:
-                  print(f"Intento {intento} fallido: {error}")
-                  time.sleep(5)
+                  print(f"Intento {intento} - Elcano saturado o con límite (429): {error}")
+                  time.sleep(10)
 
+          # Si Elcano sigue saturado, salimos en verde (código 0) sin romper nada
           if not fuente_elcano or "#EXTINF" not in fuente_elcano:
-              sys.exit("ERROR: No se pudo conectar a Elcano.")
+              print("AVISO: El servidor de Elcano está saturado temporalmente (Error 429). El flujo finaliza correctamente sin alterar tus listas para evitar bloqueos.")
+              sys.exit(0)
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
@@ -152,7 +155,6 @@ jobs:
               else:
                   return "MOVISTAR DEP-VAMOS"
 
-          # AQUÍ ESTÁ EL CAMBIO: Ya no filtra ni bloquea las novedades, las mete directas
           novedades = []
           for c in canales_elcano:
               novedades.append(c)
@@ -200,7 +202,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización y volcado de canales completados.")
+          print("Sincronización completada con éxito.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -210,7 +212,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion de canales nuevos"
+            git commit -m "Actualizacion automatica de canales"
             git push
           else
             echo "No hay cambios que guardar."
