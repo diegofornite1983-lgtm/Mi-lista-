@@ -1,4 +1,4 @@
-name: Actualizador Automatico Elcano y Tailscale
+name: actualizador-lista
 
 on:
   schedule:
@@ -21,11 +21,10 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronizar Elcano manteniendo estructura exacta
+      - name: Sincronizar Elcano y organizar carpetas
         id: update
         run: |
           python <<'PY'
-          import os
           import re
           import sys
           import urllib.request
@@ -35,20 +34,28 @@ jobs:
           archivo_lista = Path("Mi lista acestream")
 
           if not archivo_lista.is_file():
-              sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream' en la raíz del repositorio.")
+              sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream' en la raíz.")
 
           try:
               original = archivo_lista.read_text(encoding="utf-8-sig")
           except UnicodeDecodeError:
               original = archivo_lista.read_text(encoding="latin-1")
 
-          # Descargar Elcano
-          try:
-              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
-              with urllib.request.urlopen(peticion, timeout=60) as respuesta:
-                  fuente = respuesta.read().decode("utf-8-sig", errors="replace")
-          except Exception as error:
-              sys.exit(f"ERROR descargando Elcano: {error}")
+          # Descargar Elcano con reintentos
+          fuente = None
+          for intento in range(1, 4):
+              try:
+                  peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0", "Accept": "*/*"})
+                  with urllib.request.urlopen(peticion, timeout=30) as respuesta:
+                      fuente = respuesta.read().decode("utf-8-sig", errors="replace")
+                  if fuente and "#EXTINF" in fuente:
+                      break
+              except Exception as e:
+                  print(f"Intento {intento} fallido: {e}")
+
+          if not fuente or "#EXTINF" not in fuente:
+              print("AVISO: Elcano no responde o está saturado. Se mantiene la lista actual intacta.")
+              sys.exit(0)
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
@@ -95,7 +102,7 @@ jobs:
           lineas_casa = original.splitlines()
           lineas_actualizadas = []
 
-          # Actualizar hashes existentes si hay coincidencia
+          # Actualizar hashes de canales existentes
           i = 0
           while i < len(lineas_casa):
               linea = lineas_casa[i]
@@ -114,7 +121,6 @@ jobs:
                       i += 1
               i += 1
 
-          # Mapeo de carpetas
           def mapear_carpeta(nombre_canal, extinf_original):
               n = nombre_canal.upper()
               ext = extinf_original.upper()
@@ -143,7 +149,7 @@ jobs:
               else:
                   return "MOVISTAR DEP-VAMOS"
 
-          # Recoger canales nuevos que no estuvieran en la lista
+          # Detectar canales nuevos de Elcano que no tengas
           nombres_en_casa = {normalizar_nombre(c["nombre"]) for c in parsear_m3u(original)}
           clasificados = {}
           for c in canales_elcano:
@@ -158,7 +164,7 @@ jobs:
                       extinf_f = extinf_f.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
                   clasificados[carp].append((c["nombre"], extinf_f, c["url"]))
 
-          # Insertar los nuevos canales dentro de sus respectivas carpetas o al final
+          # Insertar los nuevos dentro de sus carpetas correspondientes
           lineas_finales = []
           i = 0
           while i < len(lineas_actualizadas):
@@ -168,12 +174,13 @@ jobs:
                   if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
                       lineas_finales.append("")
                       for nom_f, extinf_f, url_f in lista_canales:
-                          lineas_finales.append(extinf_f)
-                          lineas_finales.append(url_f)
+                        lineas_finales.append(extinf_f)
+                        lineas_finales.append(url_f)
                       lineas_finales.append("")
                       del clasificados[nombre_carp]
               i += 1
 
+          # Si queda alguna carpeta nueva sin cabecera en tu lista, créala al final
           if clasificados:
               for carp, lista_canales in clasificados.items():
                   lineas_finales.append("")
@@ -185,10 +192,7 @@ jobs:
                       lineas_finales.append(url_f)
 
           archivo_lista.write_text("\n".join(lineas_finales) + "\n", encoding="utf-8")
-          print("Sincronización y ordenación completadas con éxito.")
-
-          with open(os.environ["GITHUB_OUTPUT"], "a") as salida:
-              salida.write("path=Mi lista acestream\n")
+          print("Sincronización completada con éxito.")
           PY
 
       - name: Generar Canales m3u para Tailscale
@@ -197,15 +201,13 @@ jobs:
           sed -i 's/127\.0\.0\.1:6878/100.90.204.66:6878/g' "Canales m3u"
 
       - name: Guardar cambios en GitHub
-        env:
-          TARGET_FILE: ${{ steps.update.outputs.path }}
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
-          git add "$TARGET_FILE" "Canales m3u"
+          git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizar canales de Elcano manteniendo estructura y IPs"
+            git commit -m "Auto-sync: Elcano y Tailscale actualizados correctamente"
             git push
           else
             echo "No hay cambios que guardar."
