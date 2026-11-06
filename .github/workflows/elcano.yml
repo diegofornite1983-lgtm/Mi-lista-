@@ -18,18 +18,17 @@ jobs:
         run: |
           curl -s -L "https://tokyo.elcano-ipfs.workers.dev/k51qzi5uqu5di462t7j4vu4akwfhvtjhy88qbupktvoacqfqe9uforjvhyi4wr/" -o elcano_temp.m3u
 
-      - name: Fusionar canales con seguridad
+      - name: Fusionar canales perfectamente
         run: |
           if [ -f "elcano_temp.m3u" ]; then
             echo "Lista de Elcano descargada con éxito."
             
-            # Usamos el nombre exacto de tu archivo tal como aparece en tu repositorio
-            ARCHIVO_LISTA="Mi lista acestream"
+            # Usamos el nuevo nombre sin espacios
+            ARCHIVO_LISTA="milista.m3u"
             
             if [ -f "$ARCHIVO_LISTA" ]; then
               echo "Procesando la lista: $ARCHIVO_LISTA"
               
-              # Añadimos los canales de Elcano al final del archivo de forma limpia
               echo "" >> "$ARCHIVO_LISTA"
               echo "# ==========================================" >> "$ARCHIVO_LISTA"
               echo "# ACTUALIZADO DESDE ELCANO AUTOMÁTICAMENTE" >> "$ARCHIVO_LISTA"
@@ -38,7 +37,7 @@ jobs:
               grep -A 1 "^#EXTINF" elcano_temp.m3u >> "$ARCHIVO_LISTA"
               echo "¡Canales de Elcano incorporados con éxito!"
             else
-              echo "Error crítico: No se encuentra el archivo $ARCHIVO_LISTA"
+              echo "Error: No se encuentra el archivo milista.m3u"
               exit 1
             fi
           else
