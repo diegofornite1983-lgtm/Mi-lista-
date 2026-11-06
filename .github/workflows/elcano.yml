@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización definitiva y ordenada
+      - name: Sincronización maestra, ordenada y con EPG fijo
         run: |
           python <<'PY'
           import re
@@ -48,7 +48,7 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          def parsear_elcano(texto):
+          def parsear_m3u(texto):
               lineas = texto.splitlines()
               entradas = []
               i = 0
@@ -69,114 +69,93 @@ jobs:
                               h_id = match_hash.group(1)
                               url_limpia = f"http://127.0.0.1:6878/ace/getstream?id={h_id}"
                           else:
-                              url_limpia = url.replace("localhost:6878", "127.0.0.1:6878")
-                              if "127.0.0.1" not in url_limpia and not url_limpia.startswith("http"):
-                                  url_limpia = f"http://127.0.0.1:6878/ace/getstream?id={url}"
-
+                              url_limpia = url
+                          
                           nombre = linea.rsplit(",", 1)[-1].strip()
                           entradas.append({
                               "extinf": linea,
                               "url": url_limpia,
                               "nombre": nombre,
-                              "raw_url": url
+                              "hash": match_hash.group(1) if match_hash else None
                           })
                           i = j
                   i += 1
               return entradas
 
-          canales_elcano = parsear_elcano(fuente_elcano)
-          urls_existentes = set(re.findall(r'https?://[^\s]+|acestream://[a-zA-Z0-9]+', contenido_casa))
+          canales_elcano = parsear_m3u(fuente_elcano)
+          mapa_elcano_por_nombre = {c["nombre"].upper(): c["url"] for c in canales_elcano}
 
-          novedades = []
-          for c in canales_elcano:
-              if c["url"] not in urls_existentes and c["raw_url"] not in urls_existentes:
-                  novedades.append(c)
-
-          print(f"Canales nuevos detectados de Elcano: {len(novedades)}")
-
-          # Clasificador súper estricto y limpio
-          def mapear_carpeta(nombre_canal, extinf_original):
-              n = nombre_canal.upper()
-              ext = extinf_original.upper()
-              if "HYPERMOTION" in n or "HYPERMOTION" in ext:
-                  return "HYPERMOTION"
-              elif "CHAMPIONS" in n or "CAMPEONES" in n:
-                  return "CHAMPIONS"
-              elif "LALIGA" in n or "M+ LALIGA" in n or "DAZN LIGA" in n or ("LIGA" in n and "CAMPEONES" not in n):
-                  return "LA LIGA Y DAZN LIGA"
-              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
-                  return "DAZN"
-              elif "F1" in n or "FORMULA" in n:
-                  return "F1"
-              elif "MOTOGP" in n:
-                  return "MotoGP"
-              elif "BALONCESTO" in n or "NBA" in n:
-                  return "BALONCESTO"
-              elif "EUROSPORT" in n:
-                  return "EUROSPORT"
-              elif "FEDERACION" in n or "RFEF" in n:
-                  return "PRIMERA FEDERACIÓN"
-              elif "ESTRENOS" in n or "ACCION" in n or "CINE" in n or "COMEDIA" in n or "HITS" in n or "DRAMA" in n or "INDIE" in n or "ROMANCE" in n or "TERROR" in n or "ORIGINALES" in n or "DOCUMENTALES" in n or "MOVISTAR PLUS" in n or "MOVISTAR+" in n:
-                  return "MOVISTAR"
-              else:
-                  return "MOVISTAR DEP-VAMOS"
-
-          clasificados = {}
-          for c in novedades:
-              carp = mapear_carpeta(c["nombre"], c["extinf"])
-              if carp not in clasificados:
-                  clasificados[carp] = []
-              
-              extinf_f = c["extinf"]
-              if 'group-title="' in extinf_f:
-                  extinf_f = re.sub(r'group-title="[^"]*"', f'group-title="{carp}"', extinf_f)
-              else:
-                  extinf_f = extinf_f.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
-              clasificados[carp].append((extinf_f, c["url"]))
-
-          # Orden estricto dentro de La Liga: Primero M+ LaLiga arriba, luego DAZN LaLiga debajo
-          if "LA LIGA Y DAZN LIGA" in clasificados:
-              def orden_laliga(item):
-                  nombre_inf = item[0].upper()
-                  if "DAZN" in nombre_inf:
-                      return 2  # Abajo DAZN
-                  else:
-                      return 1  # Arriba Movistar LaLiga
-              clasificados["LA LIGA Y DAZN LIGA"].sort(key=orden_laliga)
-
-          lineas_org = contenido_casa.splitlines()
-          nuevas_lineas = []
-          
+          lineas_casa = contenido_casa.splitlines()
+          lineas_actualizadas = []
           i = 0
-          while i < len(lineas_org):
-              l = lineas_org[i]
-              nuevas_lineas.append(l)
-              for nombre_carp, lista_canales in list(clasificados.items()):
-                  if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
-                      nuevas_lineas.append("")
-                      for extinf_f, url_f in lista_canales:
-                          nuevas_lineas.append(extinf_f)
-                          nuevas_lineas.append(url_f)
-                      nuevas_lineas.append("")
-                      del clasificados[nombre_carp]
+
+          while i < len(lineas_casa):
+              linea = lineas_casa[i]
+              
+              # Corrección milimétrica del tvg-id para los dos canales de Movistar Plus superiores si perdían la EPG
+              if "MOVISTAR PLUS" in linea.upper() and ('tvg-id="Movistar Plus HD"' in linea or 'tvg-id="Movistar Plus+ HD"' in linea):
+                  linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus HD"', linea)
+
+              lineas_actualizadas.append(linea)
+
+              if linea.startswith("#EXTINF:"):
+                  nombre_canal = linea.rsplit(",", 1)[-1].strip().upper()
+                  if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
+                      url_actual = lineas_casa[i+1].strip()
+                      if nombre_canal in mapa_elcano_por_nombre:
+                          nueva_url = mapa_elcano_por_nombre[nombre_canal]
+                          lineas_actualizadas.append(nueva_url)
+                      else:
+                          lineas_actualizadas.append(url_actual)
+                      i += 1
               i += 1
 
-          if clasificados:
-              for carp, lista_canales in clasificados.items():
-                  nuevas_lineas.append("")
-                  nuevas_lineas.append(f"# ==========================================")
-                  nuevas_lineas.append(f"# CARPETA: {carp}")
-                  nuevas_lineas.append(f"# ==========================================")
-                  for extinf_f, url_f in lista_canales:
-                      nuevas_lineas.append(extinf_f)
-                      nuevas_lineas.append(url_f)
+          # BLOQUE DE REORDENAMIENTO ESTRICTO PARA LA CARPETA DE LA LIGA: Movistar arriba, DAZN abajo
+          texto_provisional = "\n".join(lineas_actualizadas)
+          if "# CARPETA: LA LIGA Y DAZN LIGA" in texto_provisional:
+              partes = texto_provisional.split("# CARPETA: LA LIGA Y DAZN LIGA")
+              if len(partes) > 1:
+                  subpartes = partes[1].split("# ==========================================")
+                  bloque_liga = subpartes[0]
+                  
+                  lineas_liga = [l for l in bloque_liga.splitlines() if l.strip()]
+                  bloques_canales = []
+                  k = 0
+                  while k < len(lineas_liga):
+                      if lineas_liga[k].startswith("#EXTINF:"):
+                          ext = lineas_liga[k]
+                          url_c = lineas_liga[k+1] if k+1 < len(lineas_liga) and not lineas_liga[k+1].startswith("#") else ""
+                          bloques_canales.append((ext, url_c))
+                          k += 2
+                      else:
+                          k += 1
 
-          lista_final_casa = "\n".join(nuevas_lineas) + "\n"
+                  # Ordenar: Movistar LaLiga (1) arriba, DAZN LaLiga (2) abajo
+                  def sort_laliga(item):
+                      txt = item[0].upper()
+                      if "DAZN" in txt:
+                          return 2
+                      else:
+                          return 1
+
+                  bloques_canales.sort(key=sort_laliga)
+
+                  nuevo_bloque_texto = "\n\n"
+                  for ext, url_c in bloques_canales:
+                      nuevo_bloque_texto += f"{ext}\n{url_c}\n"
+
+                  subpartes[0] = nuevo_bloque_texto
+                  partes[1] = "# ==========================================".join(subpartes)
+                  texto_provisional = "# CARPETA: LA LIGA Y DAZN LIGA".join(partes)
+
+          lista_final_casa = texto_provisional + ("\n" if not texto_provisional.endswith("\n") else "")
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
+          # Generar versión Tailscale con IP local adaptada
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
-          print("Sincronización rematada con éxito.")
+
+          print("Sincronización perfecta: EPG restaurado y La Liga ordenada.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -186,7 +165,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Orden perfecto de LaLiga y Movistar limpio"
+            git commit -m "Arreglar EPG de Movistar y ordenar LaLiga perfectamente"
             git push
           else
             echo "No hay cambios que guardar."
