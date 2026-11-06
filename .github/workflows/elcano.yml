@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronizar e integrar Elcano en tus carpetas exactas
+      - name: Sincronización inteligente y clasificada de Elcano
         run: |
           python <<'PY'
           import re
@@ -48,7 +48,6 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # Extraer canales de Elcano estandarizando el enlace a formato local getstream
           def parsear_elcano(texto):
               lineas = texto.splitlines()
               entradas = []
@@ -65,7 +64,6 @@ jobs:
                               break
                           j += 1
                       if url:
-                          # Convertir formato acestream:// o hashes a la estructura http://127.0.0.1:6878/ace/getstream?id=...
                           match_hash = re.search(r'([0-9a-fA-F]{40})', url)
                           if match_hash:
                               h_id = match_hash.group(1)
@@ -87,30 +85,27 @@ jobs:
               return entradas
 
           canales_elcano = parsear_elcano(fuente_elcano)
-
-          # URLs ya existentes en tu lista para evitar duplicados exactos
           urls_existentes = set(re.findall(r'https?://[^\s]+|acestream://[a-zA-Z0-9]+', contenido_casa))
 
-          # Filtrar novedades
           novedades = []
           for c in canales_elcano:
               if c["url"] not in urls_existentes and c["raw_url"] not in urls_existentes:
-                  novedades.append(c)
+                novedades.append(c)
 
           print(f"Canales nuevos detectados de Elcano: {len(novedades)}")
 
-          # Función para mapear las categorías de Elcano EXACTAMENTE a tus nombres de carpetas
+          # Filtro de categorías súper preciso para que vayan exactamente a su carpeta
           def mapear_carpeta(nombre_canal, extinf_original):
               n = nombre_canal.upper()
               ext = extinf_original.upper()
-              if "LALIGA" in n or "LIGA" in n or "LALIGA" in ext:
-                  return "LA LIGA Y DAZN LIGA"
+              if "HYPERMOTION" in n or "HYPERMOTION" in ext:
+                  return "HYPERMOTION"
               elif "CHAMPIONS" in n or "CAMPEONES" in n:
                   return "CHAMPIONS"
+              elif "LALIGA" in n or "M+ LALIGA" in n or ("LIGA" in n and "CAMPEONES" not in n):
+                  return "LA LIGA Y DAZN LIGA"
               elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
                   return "DAZN"
-              elif "HYPERMOTION" in n:
-                  return "HYPERMOTION"
               elif "F1" in n or "FORMULA" in n:
                   return "F1"
               elif "MOTOGP" in n:
@@ -121,20 +116,19 @@ jobs:
                   return "EUROSPORT"
               elif "FEDERACION" in n or "RFEF" in n:
                   return "PRIMERA FEDERACIÓN"
-              elif "TENNIS" in n or "TENIS" in n:
-                  return "MOVISTAR DEP-VAMOS"
-              elif "DEPORTES" in n or "VAMOS" in n or "GOLF" in n or "UFC" in n:
+              elif "ESPORT" in n:
+                  return "MOVISTAR"
+              elif "TENNIS" in n or "TENIS" in n or "DEPORTES" in n or "VAMOS" in n or "GOLF" in n or "UFC" in n:
                   return "MOVISTAR DEP-VAMOS"
               else:
                   return "MOVISTAR"
 
-          # Organizar novedades por tus carpetas
           clasificados = {}
           for c in novedades:
               carp = mapear_carpeta(c["nombre"], c["extinf"])
               if carp not in clasificados:
                   clasificados[carp] = []
-              # Asegurar que el group-title apunte a tu carpeta exacta
+              
               extinf_f = c["extinf"]
               if 'group-title="' in extinf_f:
                   extinf_f = re.sub(r'group-title="[^"]*"', f'group-title="{carp}"', extinf_f)
@@ -142,7 +136,6 @@ jobs:
                   extinf_f = extinf_f.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
               clasificados[carp].append((extinf_f, c["url"]))
 
-          # Inyectar las novedades dentro de las secciones correspondientes de tu archivo de casa
           lineas_org = contenido_casa.splitlines()
           nuevas_lineas = []
           
@@ -150,7 +143,6 @@ jobs:
           while i < len(lineas_org):
               l = lineas_org[i]
               nuevas_lineas.append(l)
-              # Si encontramos una línea de carpeta o separador que coincida
               for nombre_carp, lista_canales in list(clasificados.items()):
                   if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
                       nuevas_lineas.append("")
@@ -161,7 +153,6 @@ jobs:
                       del clasificados[nombre_carp]
               i += 1
 
-          # Si sobra algo por cualquier motivo, lo añadimos en MOVISTAR por defecto
           if clasificados:
               for carp, lista_canales in clasificados.items():
                   nuevas_lineas.append("")
@@ -175,10 +166,9 @@ jobs:
           lista_final_casa = "\n".join(nuevas_lineas) + "\n"
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
-          # Generar archivo Tailscale reemplazando 127.0.0.1 por la IP de Tailscale
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
-          print("Sincronización quirúrgica completada con éxito.")
+          print("Clasificación de Elcano ajustada y aplicada correctamente.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -188,7 +178,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Integrar canales de Elcano ordenadamente en sus respectivas carpetas"
+            git commit -m "Ajustar clasificación de canales de Elcano con precisión"
             git push
           else
             echo "No hay cambios que guardar."
