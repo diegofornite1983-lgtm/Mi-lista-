@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización definitiva y quirúrgica
+      - name: Sincronización perfecta con EPG y orden exactos
         run: |
           python <<'PY'
           import re
@@ -85,21 +85,18 @@ jobs:
           canales_elcano = parsear_m3u(fuente_elcano)
           mapa_elcano_por_nombre = {c["nombre"].upper(): c["url"] for c in canales_elcano}
 
-          # 1. Actualizar enlaces y asegurar el tvg-id de los dos Movistar Plus superiores
+          # 1. Actualizar enlaces y asegurar el tvg-id correcto con 'Movistar Plus+ HD'
           lineas_casa = contenido_casa.splitlines()
           lineas_actualizadas = []
           urls_en_casa = set()
           i = 0
-          contador_mplus = 0
 
           while i < len(lineas_casa):
               linea = lineas_casa[i]
               
+              # Si es un canal de Movistar Plus, unificamos el tvg-id al que sí funciona con la EPG
               if "MOVISTAR PLUS" in linea.upper() and "#EXTINF:" in linea:
-                  contador_mplus += 1
-                  if contador_mplus <= 2:
-                      # Forzar tvg-id limpio para que coja la EPG sin fallo
-                      linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus HD"', linea)
+                  linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus+ HD"', linea)
 
               lineas_actualizadas.append(linea)
 
@@ -188,7 +185,7 @@ jobs:
                       lineas_finales_temp.append(extinf_f)
                       lineas_finales_temp.append(url_f)
 
-          # 3. ORDEN ESTRICTO E INQUEBRANTABLE PARA LA LIGA: Movistar LaLiga ARRIBA, DAZN LaLiga ABAJO
+          # 3. ORDEN ESTRICTO PARA LA LIGA: Movistar LaLiga ARRIBA, DAZN LaLiga ABAJO
           texto_provisional = "\n".join(lineas_finales_temp)
           if "# CARPETA: LA LIGA Y DAZN LIGA" in texto_provisional:
               partes = texto_provisional.split("# CARPETA: LA LIGA Y DAZN LIGA")
@@ -209,7 +206,6 @@ jobs:
 
                   def sort_laliga(item):
                       texto_inf = item[0].upper()
-                      # Si contiene DAZN (y no es Movistar), va abajo (2). Si es Movistar LaLiga, va arriba (1).
                       if "DAZN" in texto_inf and "M+" not in texto_inf and "MOVISTAR" not in texto_inf:
                           return 2
                       else:
@@ -231,7 +227,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización clavada al milímetro.")
+          print("Sincronización clavada al milímetro con EPG unificado.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -241,7 +237,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Orden perfecto de La Liga y EPG de Movistar reparado"
+            git commit -m "Unificar tvg-id para EPG de Movistar Plus y ordenar La Liga"
             git push
           else
             echo "No hay cambios que guardar."
