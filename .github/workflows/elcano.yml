@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Descargar Elcano y clasificar ordenadamente
+      - name: Sincronizar Elcano manteniendo estructura exacta
         run: |
           python <<'PY'
           import re
@@ -106,7 +106,7 @@ jobs:
               elif "CHAMPIONS" in n or "CAMPEONES" in n:
                   return "CHAMPIONS"
               elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
-                  return "DAZN 1"
+                  return "DAZN"
               elif "HYPERMOTION" in n:
                   return "HYPERMOTION"
               elif "F1" in n or "FORMULA" in n:
@@ -138,21 +138,25 @@ jobs:
           while i < len(lineas_org):
               l = lineas_org[i]
               nuevas_lineas.append(l)
-              if "CARPETA:" in l.upper():
+              # Detecta tus bloques y carpetas con precisión quirúrgica
+              if "CARPETA:" in l.upper() or "PRIMERA FEDERACIÓN" in l.upper():
                   for nombre_carp, lista_c in list(pendientes_por_grupo.items()):
                       if nombre_carp.upper() in l.upper():
                           nuevas_lineas.append("") 
                           for nc in lista_c:
-                              # Asegurar group-title correcto para que vaya a su carpeta sin duplicar
+                              # Aseguramos que el group-title quede bien escrito en la línea del canal
                               extinf_mod = nc["extinf"]
                               if 'group-title="' in extinf_mod:
-                                  extinf_mod = re.sub(r'group-title="[^"]*23"', f'group-title="{nombre_carp}"', extinf_mod)
+                                  extinf_mod = re.sub(r'group-title="[^"]*"', f'group-title="{nombre_carp}"', extinf_mod)
+                              else:
+                                  extinf_mod = extinf_mod.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{nombre_carp}"')
                               nuevas_lineas.append(extinf_mod)
                               nuevas_lineas.append(nc["url"])
                           nuevas_lineas.append("")
                           del pendientes_por_grupo[nombre_carp]
               i += 1
 
+          # Si queda algo pendiente que no encaje en las carpetas principales, va a su sitio
           if pendientes_por_grupo:
               nuevas_lineas.append("")
               nuevas_lineas.append("# ==========================================")
@@ -164,10 +168,10 @@ jobs:
                       nuevas_lineas.append(nc["url"])
 
           destino.write_text("\n".join(nuevas_lineas) + "\n", encoding="utf-8")
-          print(f"Se han añadido {len(nuevos)} canales nuevos ordenados en sus carpetas.")
+          print(f"Se han añadido {len(nuevos)} canales nuevos correctamente en sus carpetas.")
           PY
 
-      - name: Generar Canales m3u para Tailscale
+      - name: Generar Canales m3u exclusivo para Tailscale
         run: |
           cp "Mi lista acestream" "Canales m3u"
           sed -i 's/127\.0\.0\.1:6878/100.90.204.66:6878/g' "Canales m3u"
@@ -179,7 +183,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizar carpetas limpias y actualizar Tailscale"
+            git commit -m "Actualizar Elcano manteniendo carpetas limpias e IPs de Tailscale"
             git push
           else
             echo "No hay cambios que guardar."
