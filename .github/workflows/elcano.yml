@@ -29,8 +29,7 @@ jobs:
           import urllib.request
           from pathlib import Path
 
-          # Usamos un enlace raw alternativo o pasarela directa y segura
-          URL_ELCANO = "https://raw.githubusercontent.com/diegofornite1983-lgtm/Mi-lista-/main/Mi%20lista%20acestream"
+          URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
 
@@ -42,12 +41,15 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          # Si falla la descarga externa, usamos el contenido actual de casa para evitar bloqueos
+          # Sistema de seguridad inteligente: si el servidor externo bloquea o da error,
+          # utiliza el contenido local de casa para no romper jamás el flujo.
+          fuente_elcano = None
           try:
-              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
+              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
               with urllib.request.urlopen(peticion, timeout=30) as respuesta:
                   fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
-          except Exception:
+          except Exception as e:
+              print(f"Aviso de red (protección 429/bloqueo): {e}. Usando respaldo interno.")
               fuente_elcano = contenido_casa
 
           def normalizar_nombre(nombre):
