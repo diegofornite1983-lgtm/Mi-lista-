@@ -2,7 +2,7 @@ name: Actualizador Automatico Elcano y Tailscale
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 permissions:
@@ -22,19 +22,35 @@ jobs:
           python-version: '3.x'
 
       - name: Sincronizar Elcano manteniendo estructura exacta
+        id: update
         run: |
           python <<'PY'
+          import os
           import re
           import sys
           import unicodedata
           import urllib.request
           from pathlib import Path
 
-          URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
-          destino = Path("Mi lista acestream")
+          URL_ELCANO = "https://cloudflare-ipfs.com/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          CARPETA = Path("Mi lista acestream")
 
-          if not destino.is_file():
-              sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream' en la raíz.")
+          if not CARPETA.is_dir():
+              sys.exit("ERROR: No existe la carpeta Mi lista acestream.")
+
+          archivos = [
+              p for p in CARPETA.rglob("*")
+              if p.is_file() and p.suffix.lower() in (".m3u", ".m3u8", ".txt")
+          ]
+
+          if len(archivos) != 1:
+              sys.exit(
+                  "ERROR: Se esperaba un único archivo M3U/TXT dentro de "
+                  f"Mi lista acestream, pero se encontraron {len(archivos)}. "
+                  "No se ha modificado nada."
+              )
+
+          destino = archivos[0]
 
           def normalizar(nombre):
               nombre = unicodedata.normalize("NFKD", nombre.lower())
@@ -97,6 +113,8 @@ jobs:
 
           if not nuevos:
               print("No hay canales nuevos que añadir. La lista se mantiene intacta.")
+              with open(os.environ["GITHUB_OUTPUT"], "a") as salida:
+                  salida.write(f"path={destino.as_posix()}\n")
               sys.exit(0)
 
           def detectar_grupo(nombre_canal):
@@ -161,18 +179,24 @@ jobs:
 
           destino.write_text("\n".join(nuevas_lineas) + "\n", encoding="utf-8")
           print(f"Se han añadido {len(nuevos)} canales nuevos ordenados en tus carpetas.")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as salida:
+              salida.write(f"path={destino.as_posix()}\n")
           PY
 
       - name: Generar Canales m3u para Tailscale
         run: |
-          cp "Mi lista acestream" "Canales m3u"
-          sed -i 's/127\.0\.0\.1:6878/100.90.204.66:6878/g' "Canales m3u"
+          mkdir -p "Canales m3u"
+          cp -r "Mi lista acestream"/. "Canales m3u"/
+          find "Canales m3u" -type f -exec sed -i 's/127\.0\.0\.1:6878/100.90.204.66:6878/g' {} +
 
       - name: Guardar cambios en GitHub
+        env:
+          TARGET_FILE: ${{ steps.update.outputs.path }}
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
-          git add "Mi lista acestream" "Canales m3u"
+          git add -- "$TARGET_FILE" "Canales m3u"
           
           if ! git diff --cached --quiet; then
             git commit -m "Sincronizar canales de Elcano manteniendo estructura y IPs"
