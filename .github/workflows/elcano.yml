@@ -27,9 +27,17 @@ jobs:
           import re
           import sys
           import urllib.request
+          import time
           from pathlib import Path
 
-          URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          # Pasarelas IPFS públicas oficiales en cascada para sortear el bloqueo 429
+          urls_elcano = [
+              "https://dweb.link/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://gateway.pinata.cloud/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://cloudflare-ipfs.com/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          ]
+
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
 
@@ -41,16 +49,25 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          # Sistema de seguridad inteligente: si el servidor externo bloquea o da error,
-          # utiliza el contenido local de casa para no romper jamás el flujo.
           fuente_elcano = None
-          try:
-              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
-              with urllib.request.urlopen(peticion, timeout=30) as respuesta:
-                  fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
-          except Exception as e:
-              print(f"Aviso de red (protección 429/bloqueo): {e}. Usando respaldo interno.")
-              fuente_elcano = contenido_casa
+          headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+
+          for url in urls_elcano:
+              try:
+                  peticion = urllib.request.Request(url, headers=headers)
+                  with urllib.request.urlopen(peticion, timeout=35) as respuesta:
+                      texto_prueba = respuesta.read().decode("utf-8-sig", errors="replace")
+                      if texto_prueba and "#EXTINF" in texto_prueba:
+                          fuente_elcano = texto_prueba
+                          print(f"¡Conectado con éxito a través de IPFS!")
+                          break
+              except Exception as e:
+                  print(f"Fallo en pasarela: {e}")
+                  time.sleep(1)
+                  continue
+
+          if not fuente_elcano:
+              sys.exit("ERROR CRÍTICO: Todas las pasarelas de Elcano han dado error de red o 429.")
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
@@ -212,9 +229,9 @@ jobs:
           if clasificados:
               for carp, lista_canales in clasificados.items():
                   if carp == "LA LIGA Y DAZN LIGA":
-                      movistar_liga_nuevos = [ch for ch in lista_canales if "DAZN" not in ch[0].upper()]
-                      dazn_liga_nuevos = [ch for ch in lista_canales if "DAZN" in ch[0].upper()]
-                      lista_canales = movistar_liga_nuevos + dazn_liga_nuevos
+                      no_dazn = [ch for ch in lista_canales if "DAZN" not in ch[0].upper()]
+                      si_dazn = [ch for ch in lista_canales if "DAZN" in ch[0].upper()]
+                      lista_canales = no_dazn + si_dazn
 
                   lineas_finales_temp.append("")
                   lineas_finales_temp.append(f"# ==========================================")
@@ -243,7 +260,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización final y orden estricto completados.")
+          print("Sincronización final completada correctamente.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -253,7 +270,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizacion definitiva y ordenada de canales"
+            git commit -m "Sincronizacion de canales y hashes"
             git push
           else
             echo "No hay cambios que guardar."
