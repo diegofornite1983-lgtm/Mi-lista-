@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronizar manteniendo tu lista limpia y agrupando Elcano al final
+      - name: Sincronizar e integrar Elcano en tus carpetas exactas
         run: |
           python <<'PY'
           import re
@@ -36,13 +36,11 @@ jobs:
           if not archivo_casa.is_file():
               sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream'.")
 
-          # 1. Leer tu lista limpia de casa
           try:
               contenido_casa = archivo_casa.read_text(encoding="utf-8-sig")
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          # 2. Descargar los nuevos enlaces de Elcano
           try:
               peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
               with urllib.request.urlopen(peticion, timeout=60) as respuesta:
@@ -50,7 +48,8 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          def extraer_entradas(texto):
+          # Extraer canales de Elcano estandarizando el enlace a formato local getstream
+          def parsear_elcano(texto):
               lineas = texto.splitlines()
               entradas = []
               i = 0
@@ -66,43 +65,120 @@ jobs:
                               break
                           j += 1
                       if url:
-                          entradas.append((linea, url))
+                          # Convertir formato acestream:// o hashes a la estructura http://127.0.0.1:6878/ace/getstream?id=...
+                          match_hash = re.search(r'([0-9a-fA-F]{40})', url)
+                          if match_hash:
+                              h_id = match_hash.group(1)
+                              url_limpia = f"http://127.0.0.1:6878/ace/getstream?id={h_id}"
+                          else:
+                              url_limpia = url.replace("localhost:6878", "127.0.0.1:6878")
+                              if "127.0.0.1" not in url_limpia and not url_limpia.startswith("http"):
+                                  url_limpia = f"http://127.0.0.1:6878/ace/getstream?id={url}"
+
+                          nombre = linea.rsplit(",", 1)[-1].strip()
+                          entradas.append({
+                              "extinf": linea,
+                              "url": url_limpia,
+                              "nombre": nombre,
+                              "raw_url": url
+                          })
                           i = j
                   i += 1
               return entradas
 
-          canales_elcano = extraer_entradas(fuente_elcano)
-          
-          # Detectar qué URLs ya tienes para no duplicar
+          canales_elcano = parsear_elcano(fuente_elcano)
+
+          # URLs ya existentes en tu lista para evitar duplicados exactos
           urls_existentes = set(re.findall(r'https?://[^\s]+|acestream://[a-zA-Z0-9]+', contenido_casa))
-          
+
+          # Filtrar novedades
           novedades = []
-          for extinf, url in canales_elcano:
-              if url not in urls_existentes:
-                  novedades.append((extinf, url))
+          for c in canales_elcano:
+              if c["url"] not in urls_existentes and c["raw_url"] not in urls_existentes:
+                  novedades.append(c)
 
-          print(f"Se han encontrado {len(novedades)} canales nuevos de Elcano.")
+          print(f"Canales nuevos detectados de Elcano: {len(novedades)}")
 
-          # 3. Guardar la lista de casa INTACTA (solo con tus cosas y IPs 127.0.0.1)
-          limpia_casa = contenido_casa.split("# ==========================================\n# CARPETA: CANALES NUEVOS ELCANO")[0]
-          archivo_casa.write_text(limpia_casa.strip() + "\n", encoding="utf-8")
+          # Función para mapear las categorías de Elcano EXACTAMENTE a tus nombres de carpetas
+          def mapear_carpeta(nombre_canal, extinf_original):
+              n = nombre_canal.upper()
+              ext = extinf_original.upper()
+              if "LALIGA" in n or "LIGA" in n or "LALIGA" in ext:
+                  return "LA LIGA Y DAZN LIGA"
+              elif "CHAMPIONS" in n or "CAMPEONES" in n:
+                  return "CHAMPIONS"
+              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
+                  return "DAZN"
+              elif "HYPERMOTION" in n:
+                  return "HYPERMOTION"
+              elif "F1" in n or "FORMULA" in n:
+                  return "F1"
+              elif "MOTOGP" in n:
+                  return "MotoGP"
+              elif "BALONCESTO" in n or "NBA" in n:
+                  return "BALONCESTO"
+              elif "EUROSPORT" in n:
+                  return "EUROSPORT"
+              elif "FEDERACION" in n or "RFEF" in n:
+                  return "PRIMERA FEDERACIÓN"
+              elif "TENNIS" in n or "TENIS" in n:
+                  return "MOVISTAR DEP-VAMOS"
+              elif "DEPORTES" in n or "VAMOS" in n or "GOLF" in n or "UFC" in n:
+                  return "MOVISTAR DEP-VAMOS"
+              else:
+                  return "MOVISTAR"
 
-          # 4. Crear el archivo de Tailscale con tu IP fija y la carpeta dedicada de Elcano al final
-          contenido_ts = limpia_casa.strip()
+          # Organizar novedades por tus carpetas
+          clasificados = {}
+          for c in novedades:
+              carp = mapear_carpeta(c["nombre"], c["extinf"])
+              if carp not in clasificados:
+                  clasificados[carp] = []
+              # Asegurar que el group-title apunte a tu carpeta exacta
+              extinf_f = c["extinf"]
+              if 'group-title="' in extinf_f:
+                  extinf_f = re.sub(r'group-title="[^"]*"', f'group-title="{carp}"', extinf_f)
+              else:
+                  extinf_f = extinf_f.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
+              clasificados[carp].append((extinf_f, c["url"]))
+
+          # Inyectar las novedades dentro de las secciones correspondientes de tu archivo de casa
+          lineas_org = contenido_casa.splitlines()
+          nuevas_lineas = []
           
-          if novedades:
-              bloque_elcano = "\n\n# ==========================================\n# CARPETA: CANALES NUEVOS ELCANO\n# ==========================================\n"
-              for extinf, url in novedades:
-                  # Si vienen con localhost, las adaptamos a Tailscale
-                  url_ts = url.replace("127.0.0.1:6878", "100.90.204.66:6878")
-                  bloque_elcano += f"{extinf}\n{url_ts}\n"
-              contenido_ts += bloque_elcano
+          i = 0
+          while i < len(lineas_org):
+              l = lineas_org[i]
+              nuevas_lineas.append(l)
+              # Si encontramos una línea de carpeta o separador que coincida
+              for nombre_carp, lista_canales in list(clasificados.items()):
+                  if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
+                      nuevas_lineas.append("")
+                      for extinf_f, url_f in lista_canales:
+                          nuevas_lineas.append(extinf_f)
+                          nuevas_lineas.append(url_f)
+                      nuevas_lineas.append("")
+                      del clasificados[nombre_carp]
+              i += 1
 
-          # Convertir todas las IPs del archivo de Tailscale a tu IP de Tailscale
-          contenido_ts = contenido_ts.replace("127.0.0.1:6878", "100.90.204.66:6878")
-          
-          archivo_tailscale.write_text(contenido_ts.strip() + "\n", encoding="utf-8")
-          print("Archivos sincronizados correctamente.")
+          # Si sobra algo por cualquier motivo, lo añadimos en MOVISTAR por defecto
+          if clasificados:
+              for carp, lista_canales in clasificados.items():
+                  nuevas_lineas.append("")
+                  nuevas_lineas.append(f"# ==========================================")
+                  nuevas_lineas.append(f"# CARPETA: {carp}")
+                  nuevas_lineas.append(f"# ==========================================")
+                  for extinf_f, url_f in lista_canales:
+                      nuevas_lineas.append(extinf_f)
+                      nuevas_lineas.append(url_f)
+
+          lista_final_casa = "\n".join(nuevas_lineas) + "\n"
+          archivo_casa.write_text(lista_final_casa, encoding="utf-8")
+
+          # Generar archivo Tailscale reemplazando 127.0.0.1 por la IP de Tailscale
+          lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
+          archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
+          print("Sincronización quirúrgica completada con éxito.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -112,7 +188,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Lista de casa intacta y Tailscale con carpeta limpia de Elcano"
+            git commit -m "Integrar canales de Elcano ordenadamente en sus respectivas carpetas"
             git push
           else
             echo "No hay cambios que guardar."
