@@ -37,7 +37,6 @@ jobs:
           import requests
           import cloudscraper
 
-          # Enlaces de Elcano
           URLS_BASE = [
               "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
               "https://tokyo.elcano-ipfs.workers.dev/k51qzi5uqu5di462t7j4vu4akwfhvtjhy88qbupktvoacqfqe9uforjvhyi4wr/hashes_acestream.m3u",
@@ -58,35 +57,29 @@ jobs:
 
           fuente_elcano = None
 
-          # Pasarelas proxy abiertas para burlar el 429/403 de Cloudflare en GitHub
           def descargar_con_proxies(url_destino):
               proxies_gateway = [
                   f"https://corsproxy.io/?{urllib.parse.quote(url_destino)}",
                   f"https://api.allorigins.win/raw?url={urllib.parse.quote(url_destino)}",
                   url_destino
               ]
-              
               headers = {
                   "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
                   "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
               }
-
               for target in proxies_gateway:
                   try:
-                      print(f"Probando: {target[:70]}...")
                       resp = requests.get(target, headers=headers, timeout=25)
                       if resp.status_code == 200 and "#EXTM3U" in resp.text:
                           return resp.text
-                  except Exception as err:
-                      print(f"Error en pasarela: {err}")
+                  except Exception:
+                      pass
                   time.sleep(1)
               return None
 
-          print("Iniciando descarga segura de la fuente Elcano...")
           for url in URLS_BASE:
               fuente_elcano = descargar_con_proxies(url)
               if fuente_elcano:
-                  print("¡Descarga de Elcano completada con éxito!")
                   break
 
           if not fuente_elcano:
@@ -228,4 +221,73 @@ jobs:
               l = lineas_actualizadas[i]
               lineas_finales_temp.append(l)
               for nombre_carp, lista_canales in list(clasificados.items()):
-                  if nombre_carp.upper() in l.upper() and ("
+                  if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
+                      lineas_finales_temp.append("")
+                      for nom_f, extinf_f, url_f in lista_canales:
+                          if "DAZN" in nom_f.upper():
+                              if "2" in nom_f.upper():
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga 2 HD"', extinf_f)
+                              else:
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga HD"', extinf_f)
+                          else:
+                              if "2" in nom_f.upper():
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', extinf_f)
+                              elif "3" in nom_f.upper():
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', extinf_f)
+                              else:
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', extinf_f)
+                          lineas_finales_temp.append(extinf_f)
+                          lineas_finales_temp.append(url_f)
+                      lineas_finales_temp.append("")
+                      del clasificados[nombre_carp]
+              i += 1
+
+          if clasificados:
+              for carp, lista_canales in clasificados.items():
+                  if carp == "LA LIGA Y DAZN LIGA":
+                      movistar_liga_nuevos = [ch for ch in lista_canales if "DAZN" not in ch[0].upper()]
+                      dazn_liga_nuevos = [ch for ch in lista_canales if "DAZN" in ch[0].upper()]
+                      lista_canales = movistar_liga_nuevos + dazn_liga_nuevos
+
+                  lineas_finales_temp.append("")
+                  lineas_finales_temp.append("# ==========================================")
+                  lineas_finales_temp.append(f"# CARPETA: {carp}")
+                  lineas_finales_temp.append("# ==========================================")
+                  for nom_f, extinf_f, url_f in lista_canales:
+                      if carp == "LA LIGA Y DAZN LIGA":
+                          if "DAZN" in nom_f.upper():
+                              if "2" in nom_f.upper():
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga 2 HD"', extinf_f)
+                              else:
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga HD"', extinf_f)
+                          else:
+                              if "2" in nom_f.upper():
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', extinf_f)
+                              elif "3" in nom_f.upper():
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', extinf_f)
+                              else:
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', extinf_f)
+                      lineas_finales_temp.append(extinf_f)
+                      lineas_finales_temp.append(url_f)
+
+          lista_final_casa = "\n".join(lineas_finales_temp) + ("\n" if not "".join(lineas_finales_temp).endswith("\n") else "")
+          archivo_casa.write_text(lista_final_casa, encoding="utf-8")
+
+          lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
+          archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
+
+          print("Sincronización final completada con éxito.")
+          PY
+
+      - name: Guardar cambios en GitHub
+        run: |
+          git config user.name "GitHub Action Bot"
+          git config user.email "actions@github.com"
+          git add "Mi lista acestream" "Canales m3u"
+          
+          if ! git diff --cached --quiet; then
+            git commit -m "Sincronizacion automatica de canales"
+            git push
+          else
+            echo "No hay cambios que guardar."
+          fi
