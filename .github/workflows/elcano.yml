@@ -41,15 +41,15 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          # Descarga segura: si Elcano da error 429 o bloquea, usamos el contenido local de casa como fuente
-          # para que el workflow NUNCA se rompa ni dé error.
+          # Sistema de seguridad inteligente: si el servidor externo bloquea o da error,
+          # utiliza el contenido local de casa para no romper jamás el flujo.
           fuente_elcano = None
           try:
               peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
               with urllib.request.urlopen(peticion, timeout=30) as respuesta:
                   fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
           except Exception as e:
-              print(f"Aviso de red (posible bloqueo temporal 429): {e}. Usando respaldo interno.")
+              print(f"Aviso de red (protección 429/bloqueo): {e}. Usando respaldo interno.")
               fuente_elcano = contenido_casa
 
           def normalizar_nombre(nombre):
@@ -243,7 +243,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización y orden estricto completados con éxito.")
+          print("Sincronización final y orden estricto completados.")
           PY
 
       - name: Guardar cambios en GitHub
