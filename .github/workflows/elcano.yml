@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización inteligente y clasificada de Elcano
+      - name: Sincronización perfecta sin colar Esport3 en Movistar
         run: |
           python <<'PY'
           import re
@@ -90,11 +90,11 @@ jobs:
           novedades = []
           for c in canales_elcano:
               if c["url"] not in urls_existentes and c["raw_url"] not in urls_existentes:
-                novedades.append(c)
+                  novedades.append(c)
 
           print(f"Canales nuevos detectados de Elcano: {len(novedades)}")
 
-          # Filtro de categorías súper preciso para que vayan exactamente a su carpeta
+          # Filtro estricto para que Esport3 y otros vayan a su sitio exacto y NUNCA a Movistar
           def mapear_carpeta(nombre_canal, extinf_original):
               n = nombre_canal.upper()
               ext = extinf_original.upper()
@@ -117,11 +117,11 @@ jobs:
               elif "FEDERACION" in n or "RFEF" in n:
                   return "PRIMERA FEDERACIÓN"
               elif "ESPORT" in n:
-                  return "MOVISTAR"
+                  return "MOVISTAR DEP-VAMOS"
               elif "TENNIS" in n or "TENIS" in n or "DEPORTES" in n or "VAMOS" in n or "GOLF" in n or "UFC" in n:
                   return "MOVISTAR DEP-VAMOS"
               else:
-                  return "MOVISTAR"
+                  return "MOVISTAR DEP-VAMOS"
 
           clasificados = {}
           for c in novedades:
@@ -168,7 +168,7 @@ jobs:
 
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
-          print("Clasificación de Elcano ajustada y aplicada correctamente.")
+          print("Clasificación depurada: Movistar limpio de intrusos.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -178,7 +178,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Ajustar clasificación de canales de Elcano con precisión"
+            git commit -m "Evitar que Esport3 y otros se cuelen en Movistar"
             git push
           else
             echo "No hay cambios que guardar."
