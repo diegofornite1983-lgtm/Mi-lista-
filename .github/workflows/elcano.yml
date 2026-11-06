@@ -31,7 +31,15 @@ jobs:
           import urllib.request
           from pathlib import Path
 
-          URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          # Lista de pasarelas IPFS oficiales de respaldo para evitar el error 429
+          URLS_ELCANO = [
+              "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://ipfs.io/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://dweb.link/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://w3s.link/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://gateway.pinata.cloud/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          ]
+
           archivo_lista = Path("Mi lista acestream")
 
           if not archivo_lista.is_file():
@@ -42,27 +50,30 @@ jobs:
           except UnicodeDecodeError:
               original = archivo_lista.read_text(encoding="latin-1")
 
-          # Descargar Elcano con espera y cabeceras de navegador anti-429
+          # Intentar descarga rotando por las diferentes pasarelas IPFS
           fuente = None
-          for intento in range(1, 4):
+          for url_elcano in URLS_ELCANO:
               try:
+                  print(probando := f"Probando pasarela: {url_elcano}")
                   peticion = urllib.request.Request(
-                      URL_ELCANO, 
+                      url_elcano, 
                       headers={
                           "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
                           "Cache-Control": "no-cache"
                       }
                   )
-                  with urllib.request.urlopen(peticion, timeout=30) as respuesta:
-                      fuente = respuesta.read().decode("utf-8-sig", errors="replace")
-                  if fuente and "#EXTINF" in fuente:
+                  with urllib.request.urlopen(peticion, timeout=20) as respuesta:
+                      contenido = respuesta.read().decode("utf-8-sig", errors="replace")
+                  if contenido and "#EXTINF" in contenido:
+                      fuente = contenido
+                      print("¡Descarga exitosa desde esta pasarela!")
                       break
               except Exception as e:
-                  print(f"Intento {intento} reintentando por: {e}")
-                  time.sleep(3)
+                  print(f"Fallo en pasarela: {e}")
+                  time.sleep(1)
 
           if not fuente or "#EXTINF" not in fuente:
-              print("AVISO: Límite temporal alcanzado en Cloudflare. Se mantiene la lista actual intacta.")
+              print("AVISO: Todas las pasarelas IPFS están saturadas temporalmente. Se mantiene la lista actual intacta.")
               sys.exit(0)
 
           def normalizar_nombre(nombre):
