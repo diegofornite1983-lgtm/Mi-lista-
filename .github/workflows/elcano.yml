@@ -97,17 +97,6 @@ jobs:
 
           while i < len(lineas_casa):
               linea = lineas_casa[i]
-              
-              if "#EXTINF:" in linea and 'tvg-id="Movistar Plus+ HD"' in linea:
-                  nombre_mayus = linea.rsplit(",", 1)[-1].strip().upper()
-                  if "LALIGA" in nombre_mayus or "LIGA" in nombre_mayus:
-                      if "2" in nombre_mayus:
-                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', linea)
-                      elif "3" in nombre_mayus:
-                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', linea)
-                      else:
-                          linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', linea)
-
               lineas_actualizadas.append(linea)
 
               if linea.startswith("#EXTINF:"):
@@ -187,18 +176,6 @@ jobs:
                   if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
                       lineas_finales_temp.append("")
                       for nom_f, extinf_f, url_f in lista_canales:
-                          if "DAZN" in nom_f.upper():
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga 2 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga HD"', extinf_f)
-                          else:
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', extinf_f)
-                              elif "3" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', extinf_f)
                           lineas_finales_temp.append(extinf_f)
                           lineas_finales_temp.append(url_f)
                       lineas_finales_temp.append("")
@@ -207,29 +184,11 @@ jobs:
 
           if clasificados:
               for carp, lista_canales in clasificados.items():
-                  if carp == "LA LIGA Y DAZN LIGA":
-                      movistar_liga_nuevos = [ch for ch in lista_canales if "DAZN" not in ch[0].upper()]
-                      dazn_liga_nuevos = [ch for ch in lista_canales if "DAZN" in ch[0].upper()]
-                      lista_canales = movistar_liga_nuevos + dazn_liga_nuevos
-
                   lineas_finales_temp.append("")
                   lineas_finales_temp.append(f"# ==========================================")
                   lineas_finales_temp.append(f"# CARPETA: {carp}")
                   lineas_finales_temp.append(f"# ==========================================")
                   for nom_f, extinf_f, url_f in lista_canales:
-                      if carp == "LA LIGA Y DAZN LIGA":
-                          if "DAZN" in nom_f.upper():
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga 2 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga HD"', extinf_f)
-                          else:
-                              if "2" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', extinf_f)
-                              elif "3" in nom_f.upper():
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', extinf_f)
-                              else:
-                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', extinf_f)
                       lineas_finales_temp.append(extinf_f)
                       lineas_finales_temp.append(url_f)
 
