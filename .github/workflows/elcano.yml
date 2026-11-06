@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización robusta con control de errores HTTP
+      - name: Sincronización completa con Elcano
         run: |
           python <<'PY'
           import re
@@ -41,98 +41,92 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          # Descarga segura con manejo del error 429 (Too Many Requests)
           try:
               peticion = urllib.request.Request(
                   URL_ELCANO, 
-                  headers={
-                      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-                      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-                  }
+                  headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
               )
               with urllib.request.urlopen(peticion, timeout=60) as respuesta:
                   fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
-          except urllib.error.HTTPError as e:
-              if e.code == 429:
-                  print("AVISO: El servidor de Elcano ha limitado temporalmente las peticiones (Error 429). Se omite la actualización en este ciclo para evitar fallos.")
-                  sys.exit(0)
-              else:
-                  sys.exit(f"ERROR HTTP descargando Elcano: {e}")
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          def parsear_elcano(texto):
-              lineas = texto.splitlines()
-              mapa = {}
-              i = 0
-              while i < len(lineas):
-                  linea = lineas[i].strip()
-                  if linea.startswith("#EXTINF:"):
-                      url = None
-                      j = i + 1
-                      while j < len(lineas):
-                          candidata = lineas[j].strip()
-                          if candidata and not candidata.startswith("#"):
-                              url = candidata
-                              break
-                          j += 1
-                      if url:
-                          match_hash = re.search(r'([0-9a-fA-F]{40})', url)
-                          if match_hash:
-                              h_id = match_hash.group(1)
-                              url_limpia = f"http://127.0.0.1:6878/ace/getstream?id={h_id}"
-                          else:
-                              url_limpia = url
-                          
-                          nombre_bruto = linea.rsplit(",", 1)[-1].strip()
-                          nombre_limpio = re.sub(r'[^A-Z0-9]', '', nombre_bruto.upper())
-                          mapa[nombre_limpio] = url_limpia
-                          i = j
-                  i += 1
-              return mapa
+          def normalizar(texto):
+              return "".join(c.upper() for c in texto if c.isalnum())
 
-          mapa_elcano = parsear_elcano(fuente_elcano)
+          # Parsear Elcano extrayendo todos los canales disponibles con su hash limpio
+          canales_elcano = []
+          lineas_elcano = fuente_elcano.splitlines()
+          i = 0
+          while i < len(lineas_elcano):
+              linea = lineas_elcano[i].strip()
+              if linea.startswith("#EXTINF:"):
+                  url = None
+                  j = i + 1
+                  while j < len(lineas_elcano):
+                      candidata = lineas_elcano[j].strip()
+                      if candidata and not candidata.startswith("#"):
+                          url = candidata
+                          break
+                      j += 1
+                  if url:
+                      match_hash = re.search(r'([0-9a-fA-F]{40})', url)
+                      if match_hash:
+                          h_id = match_hash.group(1)
+                          url_limpia = f"http://127.0.0.1:6878/ace/getstream?id={h_id}"
+                      else:
+                          url_limpia = url
+                      
+                      nombre = linea.rsplit(",", 1)[-1].strip()
+                      canales_elcano.append({
+                          "extinf": linea,
+                          "nombre": nombre,
+                          "nombre_norm": normalizar(nombre),
+                          "url": url_limpia
+                      })
+                      i = j
+              i += 1
 
+          mapa_elcano = {c["nombre_norm"]: c["url"] for c in canales_elcano}
+
+          # Actualizar los canales que ya tienes en casa
           lineas_casa = contenido_casa.splitlines()
           lineas_actualizadas = []
           i = 0
 
           while i < len(lineas_casa):
               linea = lineas_casa[i]
-              
+              lineas_actualizadas.append(linea)
+
               if linea.startswith("#EXTINF:"):
-                  lineas_actualizadas.append(linea)
                   nombre_canal = linea.rsplit(",", 1)[-1].strip()
-                  nombre_limpio_casa = re.sub(r'[^A-Z0-9]', '', nombre_canal.upper())
+                  nombre_norm_casa = normalizar(nombre_canal)
                   
-                  if i + 1 < len(lineas_casa):
-                      siguiente_linea = lineas_casa[i + 1].strip()
-                      if siguiente_linea and not siguiente_linea.startswith("#"):
-                          nueva_url = None
-                          if nombre_limpio_casa in mapa_elcano:
-                              nueva_url = mapa_elcano[nombre_limpio_casa]
-                          else:
-                              for k, v in mapa_elcano.items():
-                                  if k in nombre_limpio_casa or nombre_limpio_casa in k:
-                                      nueva_url = v
-                                      break
-                          
-                          if nueva_url:
-                              lineas_actualizadas.append(nueva_url)
-                          else:
-                              lineas_actualizadas.append(siguiente_linea)
-                          i += 1
-              else:
-                  lineas_actualizadas.append(linea)
+                  if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
+                      url_actual = lineas_casa[i+1].strip()
+                      if nombre_norm_casa in mapa_elcano:
+                          lineas_actualizadas.append(mapa_elcano[nombre_norm_casa])
+                      else:
+                          # Búsqueda parcial por si el nombre varía ligeramente
+                          encontrado = False
+                          for k_elcano, v_elcano in mapa_elcano.items():
+                              if k_elcano in nombre_norm_casa or nombre_norm_casa in k_elcano:
+                                  lineas_actualizadas.append(v_elcano)
+                                  encontrado = True
+                                  break
+                          if not encontrado:
+                              lineas_actualizadas.append(url_actual)
+                      i += 1
               i += 1
 
           lista_final_casa = "\n".join(lineas_actualizadas) + ("\n" if not "".join(lineas_actualizadas).endswith("\n") else "")
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
+          # Generar el archivo para Tailscale
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización completada correctamente.")
+          print("Sincronización con Elcano realizada correctamente.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -142,7 +136,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion automatica de hashes"
+            git commit -m "Sincronizacion de canales con Elcano"
             git push
           else
             echo "No hay cambios que guardar."
