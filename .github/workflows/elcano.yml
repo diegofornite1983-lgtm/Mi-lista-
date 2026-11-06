@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización perfecta con orden Movistar y DAZN LaLiga
+      - name: Sincronización definitiva y ordenada
         run: |
           python <<'PY'
           import re
@@ -94,6 +94,7 @@ jobs:
 
           print(f"Canales nuevos detectados de Elcano: {len(novedades)}")
 
+          # Clasificador súper estricto y limpio
           def mapear_carpeta(nombre_canal, extinf_original):
               n = nombre_canal.upper()
               ext = extinf_original.upper()
@@ -115,7 +116,7 @@ jobs:
                   return "EUROSPORT"
               elif "FEDERACION" in n or "RFEF" in n:
                   return "PRIMERA FEDERACIÓN"
-              elif "ESTRENOS" in n or "ACCION" in n or "CINE" in n or "COMEDIA" in n or "HITS" in n or "DRAMA" in n or "INDIE" in n or "ROMANCE" in n or "TERROR" in n or "ORIGINALES" in n or "DOCUMENTALES" in n:
+              elif "ESTRENOS" in n or "ACCION" in n or "CINE" in n or "COMEDIA" in n or "HITS" in n or "DRAMA" in n or "INDIE" in n or "ROMANCE" in n or "TERROR" in n or "ORIGINALES" in n or "DOCUMENTALES" in n or "MOVISTAR PLUS" in n or "MOVISTAR+" in n:
                   return "MOVISTAR"
               else:
                   return "MOVISTAR DEP-VAMOS"
@@ -133,14 +134,14 @@ jobs:
                   extinf_f = extinf_f.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
               clasificados[carp].append((extinf_f, c["url"]))
 
-          # Orden inteligente interno para La Liga: Primero Movistar LaLiga, luego DAZN LaLiga
+          # Orden estricto dentro de La Liga: Primero M+ LaLiga arriba, luego DAZN LaLiga debajo
           if "LA LIGA Y DAZN LIGA" in clasificados:
               def orden_laliga(item):
                   nombre_inf = item[0].upper()
                   if "DAZN" in nombre_inf:
-                      return 2  # Abajo
+                      return 2  # Abajo DAZN
                   else:
-                      return 1  # Arriba Movistar
+                      return 1  # Arriba Movistar LaLiga
               clasificados["LA LIGA Y DAZN LIGA"].sort(key=orden_laliga)
 
           lineas_org = contenido_casa.splitlines()
@@ -175,7 +176,7 @@ jobs:
 
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
-          print("Sincronización impecable y ordenada.")
+          print("Sincronización rematada con éxito.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -185,7 +186,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Ordenar Movistar LaLiga arriba y DAZN LaLiga debajo"
+            git commit -m "Orden perfecto de LaLiga y Movistar limpio"
             git push
           else
             echo "No hay cambios que guardar."
