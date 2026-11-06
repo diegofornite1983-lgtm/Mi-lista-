@@ -1,4 +1,4 @@
-name: Actualizador Automatico Elcano y Tailscale
+Name: Actualizador Automatico Elcano y Tailscale
 
 on:
   schedule:
@@ -26,6 +26,7 @@ jobs:
           python <<'PY'
           import re
           import sys
+          import time
           import urllib.request
           from pathlib import Path
 
@@ -41,12 +42,24 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          try:
-              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
-              with urllib.request.urlopen(peticion, timeout=60) as respuesta:
-                  fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
-          except Exception as error:
-              sys.exit(f"ERROR descargando Elcano: {error}")
+          # Descarga robusta con reintentos para evitar el error 429 (Too Many Requests)
+          url_headers = {
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+              "Accept-Language": "es-ES,es;q=0.9"
+          }
+
+          fuente_elcano = None
+          for intento in range(3):
+              try:
+                  peticion = urllib.request.Request(URL_ELCANO, headers=url_headers)
+                  with urllib.request.urlopen(peticion, timeout=60) as respuesta:
+                      fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
+                  break
+              except Exception as error:
+                  if intento == 2:
+                      sys.exit(f"ERROR descargando Elcano tras 3 intentos: {error}")
+                  time.sleep(5)
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
@@ -250,7 +263,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Aplicar blindaje inteligente de EPG solo a Movistar Plus genérico"
+            git commit -m "Aplicar blindaje inteligente de EPG solo a Movistar Plus genérico con reintentos Anti-429"
             git push
           else
             echo "No hay cambios que guardar."
