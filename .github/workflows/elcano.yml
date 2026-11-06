@@ -21,27 +21,23 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Instalar dependencias de red avanzadas
+      - name: Instalar herramientas de red IPFS
         run: |
           python -m pip install --upgrade pip
-          pip install requests cloudscraper
+          pip install requests
 
       - name: Sincronización definitiva y orden estricto de La Liga
         run: |
           python <<'PY'
           import re
           import sys
-          import time
-          import urllib.parse
+          import urllib.request
           from pathlib import Path
-          import requests
-          import cloudscraper
 
-          URLS_BASE = [
-              "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://tokyo.elcano-ipfs.workers.dev/k51qzi5uqu5di462t7j4vu4akwfhvtjhy88qbupktvoacqfqe9uforjvhyi4wr/hashes_acestream.m3u",
+          # Usamos la API pública directa de respaldo IPFS sin Cloudflare de por medio
+          URLS_RESPALDO = [
               "https://ipfs.io/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs.ipns.dweb.link/hashes_acestream.m3u"
+              "https://dweb.link/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           ]
 
           archivo_casa = Path("Mi lista acestream")
@@ -56,34 +52,23 @@ jobs:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
           fuente_elcano = None
+          headers = {"User-Agent": "Mozilla/5.0 (Compatible; IPTVBot/1.0)"}
 
-          def descargar_con_proxies(url_destino):
-              proxies_gateway = [
-                  f"https://corsproxy.io/?{urllib.parse.quote(url_destino)}",
-                  f"https://api.allorigins.win/raw?url={urllib.parse.quote(url_destino)}",
-                  url_destino
-              ]
-              headers = {
-                  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-                  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-              }
-              for target in proxies_gateway:
-                  try:
-                      resp = requests.get(target, headers=headers, timeout=25)
-                      if resp.status_code == 200 and "#EXTM3U" in resp.text:
-                          return resp.text
-                  except Exception:
-                      pass
-                  time.sleep(1)
-              return None
-
-          for url in URLS_BASE:
-              fuente_elcano = descargar_con_proxies(url)
-              if fuente_elcano:
-                  break
+          for url in URLS_RESPALDO:
+              try:
+                  print(f"Intentando conectar a: {url}")
+                  req = urllib.request.Request(url, headers=headers)
+                  with urllib.request.urlopen(req, timeout=20) as response:
+                      data = response.read().decode('utf-8', errors='ignore')
+                      if "#EXTM3U" in data:
+                          fuente_elcano = data
+                          print("¡Conexión IPFS establecida con éxito!")
+                          break
+              except Exception as e:
+                  print(f"Fallo en este intento: {e}")
 
           if not fuente_elcano:
-              sys.exit("ERROR crítico: No se ha podido descargar la lista de Elcano por ninguna vía.")
+              sys.exit("ERROR crítico: Las rutas IPFS no respondieron. Revisa si el hash IPNS ha cambiado hoy.")
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
@@ -276,7 +261,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización final completada con éxito.")
+          print("¡Sincronización completada con éxito!")
           PY
 
       - name: Guardar cambios en GitHub
