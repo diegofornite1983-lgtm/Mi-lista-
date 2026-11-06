@@ -1,4 +1,4 @@
-Name: Actualizador Automatico Elcano y Tailscale
+name: Actualizador Automatico Elcano y Tailscale
 
 on:
   schedule:
@@ -42,7 +42,6 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          # Descarga robusta con reintentos para evitar el error 429 (Too Many Requests)
           url_headers = {
               "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
               "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -103,7 +102,6 @@ jobs:
           canales_elcano = parsear_m3u(fuente_elcano)
           mapa_elcano_por_nombre = {normalizar_nombre(c["nombre"]): c["url"] for c in canales_elcano}
 
-          # 1. Actualizar enlaces respetando tu estructura y aplicando el blindaje inteligente solo al canal general
           lineas_casa = contenido_casa.splitlines()
           lineas_actualizadas = []
           urls_en_casa = set()
@@ -112,7 +110,6 @@ jobs:
           while i < len(lineas_casa):
               linea = lineas_casa[i]
               
-              # Blindaje inteligente: SOLO aplica si es el canal principal "Movistar Plus+" genérico
               if "#EXTINF:" in linea:
                   nombre_mayus = linea.rsplit(",", 1)[-1].strip().upper()
                   if "MOVISTAR PLUS" in nombre_mayus and not any(x in nombre_mayus for x in ["LALIGA", "LIGA", "DEPORTES", "GOLF", "VAMOS", "F1", "MOTOGP", "CAMPEONES"]):
@@ -142,7 +139,6 @@ jobs:
                   urls_en_casa.add(linea.strip())
               i += 1
 
-          # 2. Descargar novedades de Elcano y clasificarlas limpiamente
           def mapear_carpeta(nombre_canal, extinf_original):
               n = nombre_canal.upper()
               ext = extinf_original.upper()
@@ -195,8 +191,8 @@ jobs:
                   if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
                       lineas_finales_temp.append("")
                       for extinf_f, url_f in lista_canales:
-                          lineas_finales_temp.append(extinf_f)
-                          lineas_finales_temp.append(url_f)
+                        lineas_finales_temp.append(extinf_f)
+                        lineas_finales_temp.append(url_f)
                       lineas_finales_temp.append("")
                       del clasificados[nombre_carp]
               i += 1
@@ -211,7 +207,6 @@ jobs:
                       lineas_finales_temp.append(extinf_f)
                       lineas_finales_temp.append(url_f)
 
-          # 3. ORDEN ESTRICTO PARA LA LIGA: Movistar LaLiga ARRIBA, DAZN LaLiga ABAJO
           texto_provisional = "\n".join(lineas_finales_temp)
           if "# CARPETA: LA LIGA Y DAZN LIGA" in texto_provisional:
               partes = texto_provisional.split("# CARPETA: LA LIGA Y DAZN LIGA")
@@ -247,7 +242,6 @@ jobs:
                   partes[1] = "# ==========================================".join(subpartes)
                   texto_provisional = "# CARPETA: LA LIGA Y DAZN LIGA".join(partes)
 
-          # Guardar archivos finales actualizados tanto para casa como para Tailscale
           lista_final_casa = texto_provisional + ("\n" if not texto_provisional.endswith("\n") else "")
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
@@ -257,13 +251,15 @@ jobs:
           PY
 
       - name: Guardar cambios en GitHub
+        runs-on: ubuntu-latest # Omitible pero necesario al nivel de step si estuviera separado, aquí va dentro de los runs-on del job principal
+      - name: Commit y Push
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Aplicar blindaje inteligente de EPG solo a Movistar Plus genérico con reintentos Anti-429"
+            git commit -m "Actualizar listas con reintentos Anti-429"
             git push
           else
             echo "No hay cambios que guardar."
