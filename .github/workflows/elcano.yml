@@ -29,7 +29,12 @@ jobs:
           import urllib.request
           from pathlib import Path
 
-          URL_ELCANO = "https://raw.githubusercontent.com/diegofornite1983-lgtm/Mi-lista-/main/Mi%20lista%20acestream"
+          # Usamos pasarelas IPFS públicas oficiales para descargar los canales reales de Elcano sin bloqueos 429
+          urls_elcano = [
+              "https://ipfs.io/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://gateway.pinata.cloud/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          ]
+          
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
 
@@ -41,11 +46,19 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          try:
-              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
-              with urllib.request.urlopen(peticion, timeout=30) as respuesta:
-                  fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
-          except Exception:
+          fuente_elcano = None
+          for url in urls_elcano:
+              try:
+                  peticion = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+                  with urllib.request.urlopen(peticion, timeout=30) as respuesta:
+                      fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
+                      if fuente_elcano and "#EXTINF" in fuente_elcano:
+                          break
+              except Exception:
+                  continue
+
+          # Si las pasarelas fallan puntualmente, usamos el contenido local como respaldo
+          if not fuente_elcano:
               fuente_elcano = contenido_casa
 
           def normalizar_nombre(nombre):
@@ -239,7 +252,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización final y orden estricto completados.")
+          print("Sincronización y actualización real de canales completada.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -249,7 +262,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizacion definitiva y ordenada de canales"
+            git commit -m "Actualizacion real de canales de Elcano"
             git push
           else
             echo "No hay cambios que guardar."
