@@ -5,8 +5,7 @@
 # ==========================================
 # CARPETA: LA LIGA Y DAZN LIGA
 
-#EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://i.ibb.co/FVzKq1y/dazn1.png" group-title="DAZN",DAZN 1 720p **
-http://100.90.204.66:6878/ace/getstream?id=49545d05f95846e93fd8f08da320be866995c550
+
 
 
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 720p *
