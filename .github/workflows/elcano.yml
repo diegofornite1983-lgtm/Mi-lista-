@@ -34,24 +34,19 @@ jobs:
           from pathlib import Path
 
           URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
-          CARPETA = Path("Mi lista acestream")
-
-          if not CARPETA.is_dir():
-              sys.exit("ERROR: No existe la carpeta Mi lista acestream.")
-
+          
+          # Buscar cualquier archivo .m3u, .m3u8 o .txt en todo el repositorio de forma automática
           archivos = [
-              p for p in CARPETA.rglob("*")
-              if p.is_file() and p.suffix.lower() in (".m3u", ".m3u8", ".txt")
+              p for p in Path(".").rglob("*")
+              if p.is_file() and p.suffix.lower() in (".m3u", ".m3u8", ".txt") and ".git" not in p.parts
           ]
 
-          if len(archivos) != 1:
-              sys.exit(
-                  "ERROR: Se esperaba un único archivo M3U/TXT dentro de "
-                  f"Mi lista acestream, pero se encontraron {len(archivos)}. "
-                  "No se ha modificado nada."
-              )
+          if not archivos:
+              sys.exit("ERROR: No se ha encontrado ningún archivo M3U o TXT en el repositorio.")
 
+          # Si hay varios, cogemos el primero que no sea un archivo del sistema o logs
           destino = archivos[0]
+          print(f"Archivo de lista detectado: {destino}")
 
           try:
               peticion = urllib.request.Request(
@@ -71,10 +66,7 @@ jobs:
           except UnicodeDecodeError:
               original = destino.read_text(encoding="latin-1")
 
-          # Extraer los hashes nuevos de Elcano basándonos en algún identificador o nombre normalizado si es necesario,
-          # o mapear por hash/ID de acestream de la fuente.
-          # Como Elcano actualiza los hashes, vamos a parsear la fuente de Elcano para extraer los IDs de acestream o enlaces.
-          
+          # Extraer enlaces de la fuente de Elcano
           def extraer_enlaces_fuente(texto):
               lineas = texto.splitlines()
               mapa_canales = {}
@@ -91,7 +83,6 @@ jobs:
                               break
                           j += 1
                       if url:
-                          # Extraer nombre o tvg-id para relacionar
                           match_id = re.search(r'tvg-id="([^"]*)"', linea)
                           tvg_id = match_id.group(1) if match_id else None
                           nombre_limpio = linea.rsplit(",", 1)[-1].strip()
@@ -104,7 +95,7 @@ jobs:
 
           mapa_elcano = extraer_enlaces_fuente(fuente)
 
-          # Leer archivo local respetando estrictamente el esqueleto y tvg-id
+          # Actualizar manteniendo estrictamente el esqueleto y tvg-id
           lineas_originales = original.splitlines()
           nuevas_lineas = []
           i = 0
@@ -115,7 +106,6 @@ jobs:
               nuevas_lineas.append(lineas_originales[i])
 
               if linea.startswith("#EXTINF:"):
-                # Buscar el tvg-id o el nombre para buscar su equivalente actualizado en Elcano
                 match_tvg = re.search(r'tvg-id="([^"]*)"', linea)
                 nombre_canal = linea.rsplit(",", 1)[-1].strip()
                 
@@ -126,7 +116,6 @@ jobs:
                         break
                     url_idx += 1
 
-                # Intentar encontrar la nueva URL en Elcano por tvg-id o nombre
                 nueva_url = None
                 if match_tvg and match_tvg.group(1).lower() in mapa_elcano:
                     nueva_url = mapa_elcano[match_tvg.group(1).lower()]
@@ -164,4 +153,4 @@ jobs:
             git push
           else
             echo "No hay cambios nuevos que guardar."
-          %
+          fi
