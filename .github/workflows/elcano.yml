@@ -2,7 +2,7 @@ name: Actualizador Automatico Elcano y Tailscale
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 permissions:
@@ -27,9 +27,16 @@ jobs:
           import re
           import sys
           import urllib.request
+          import time
           from pathlib import Path
 
-          URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          # Lista de fuentes (primario y pasarelas de respaldo IPFS oficiales) para evitar bloqueos 429
+          urls_elcano = [
+              "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://gateway.pinata.cloud/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://ipfs.io/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          ]
+          
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
 
@@ -41,12 +48,26 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          try:
-              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
-              with urllib.request.urlopen(peticion, timeout=60) as respuesta:
-                  fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
-          except Exception as error:
-              sys.exit(f"ERROR descargando Elcano: {error}")
+          fuente_elcano = None
+          headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+
+          for url in urls_elcano:
+              for intento in range(2):
+                  try:
+                      peticion = urllib.request.Request(url, headers=headers)
+                      with urllib.request.urlopen(peticion, timeout=45) as respuesta:
+                          texto_prueba = respuesta.read().decode("utf-8-sig", errors="replace")
+                          if texto_prueba and "#EXTINF" in texto_prueba:
+                              fuente_elcano = texto_prueba
+                              break
+                  except Exception:
+                      time.sleep(3)
+              if fuente_elcano:
+                  break
+
+          # Si por cualquier motivo externo fallaran todas, usamos la local como respaldo estricto
+          if not fuente_elcano:
+              fuente_elcano = contenido_casa
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
@@ -98,7 +119,6 @@ jobs:
           while i < len(lineas_casa):
               linea = lineas_casa[i]
               
-              # Limpieza de URLs huérfanas al final del archivo
               if not linea.startswith("#") and linea.strip():
                   if i + 1 >= len(lineas_casa) and not lineas_casa[i-1].startswith("#EXTINF:"):
                       i += 1
@@ -201,14 +221,13 @@ jobs:
                       lineas_finales_temp.append(extinf_f)
                       lineas_finales_temp.append(url_f)
 
-          # Limpieza final de líneas duplicadas o vacías excesivas
           lista_final_casa = "\n".join(lineas_finales_temp) + ("\n" if not "".join(lineas_finales_temp).endswith("\n") else "")
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización final y orden estricto completados.")
+          print("Sincronización final y actualización de canales completadas.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -218,7 +237,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizacion definitiva y ordenada de canales"
+            git commit -m "Actualizacion automatica de canales"
             git push
           else
             echo "No hay cambios que guardar."
