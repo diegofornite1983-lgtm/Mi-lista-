@@ -1,3 +1,5 @@
+name: Actualizador Automatico Elcano y Tailscale
+
 on:
   schedule:
     - cron: '0 * * * *'
@@ -19,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización forzada de Elcano sin mover carpetas
+      - name: Sincronización robusta con control de errores HTTP
         run: |
           python <<'PY'
           import re
@@ -39,14 +41,26 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
+          # Descarga segura con manejo del error 429 (Too Many Requests)
           try:
-              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
+              peticion = urllib.request.Request(
+                  URL_ELCANO, 
+                  headers={
+                      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+                  }
+              )
               with urllib.request.urlopen(peticion, timeout=60) as respuesta:
                   fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
+          except urllib.error.HTTPError as e:
+              if e.code == 429:
+                  print("AVISO: El servidor de Elcano ha limitado temporalmente las peticiones (Error 429). Se omite la actualización en este ciclo para evitar fallos.")
+                  sys.exit(0)
+              else:
+                  sys.exit(f"ERROR HTTP descargando Elcano: {e}")
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # Extraer todos los hashes y nombres limpios de Elcano
           def parsear_elcano(texto):
               lineas = texto.splitlines()
               mapa = {}
@@ -71,7 +85,6 @@ jobs:
                               url_limpia = url
                           
                           nombre_bruto = linea.rsplit(",", 1)[-1].strip()
-                          # Limpieza profunda para asegurar cruce exacto
                           nombre_limpio = re.sub(r'[^A-Z0-9]', '', nombre_bruto.upper())
                           mapa[nombre_limpio] = url_limpia
                           i = j
@@ -86,31 +99,31 @@ jobs:
 
           while i < len(lineas_casa):
               linea = lineas_casa[i]
-              lineas_actualizadas.append(linea)
-
+              
               if linea.startswith("#EXTINF:"):
+                  lineas_actualizadas.append(linea)
                   nombre_canal = linea.rsplit(",", 1)[-1].strip()
                   nombre_limpio_casa = re.sub(r'[^A-Z0-9]', '', nombre_canal.upper())
                   
-                  if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
-                      url_actual = lineas_casa[i+1].strip()
-                      
-                      # Busqueda directa o por coincidencia parcial para asegurar que pille el hash de Elcano
-                      nueva_url = None
-                      if nombre_limpio_casa in mapa_elcano:
-                          nueva_url = mapa_elcano[nombre_limpio_casa]
-                      else:
-                          # Buscar si alguna clave de Elcano contiene el nombre o viceversa
-                          for k, v in mapa_elcano.items():
-                              if k in nombre_limpio_casa or nombre_limpio_casa in k:
-                                  nueva_url = v
-                                  break
-
-                      if nueva_url:
-                          lineas_actualizadas.append(nueva_url)
-                      else:
-                          lineas_actualizadas.append(url_actual)
-                      i += 1
+                  if i + 1 < len(lineas_casa):
+                      siguiente_linea = lineas_casa[i + 1].strip()
+                      if siguiente_linea and not siguiente_linea.startswith("#"):
+                          nueva_url = None
+                          if nombre_limpio_casa in mapa_elcano:
+                              nueva_url = mapa_elcano[nombre_limpio_casa]
+                          else:
+                              for k, v in mapa_elcano.items():
+                                  if k in nombre_limpio_casa or nombre_limpio_casa in k:
+                                      nueva_url = v
+                                      break
+                          
+                          if nueva_url:
+                              lineas_actualizadas.append(nueva_url)
+                          else:
+                              lineas_actualizadas.append(siguiente_linea)
+                          i += 1
+              else:
+                  lineas_actualizadas.append(linea)
               i += 1
 
           lista_final_casa = "\n".join(lineas_actualizadas) + ("\n" if not "".join(lineas_actualizadas).endswith("\n") else "")
@@ -119,7 +132,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización forzada completada con éxito.")
+          print("Sincronización completada correctamente.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -129,7 +142,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion forzada de hashes de Elcano"
+            git commit -m "Actualizacion automatica de hashes"
             git push
           else
             echo "No hay cambios que guardar."
