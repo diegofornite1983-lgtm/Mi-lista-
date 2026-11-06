@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización definitiva y orden estricto de La Liga
+      - name: Sincronización y orden de canales
         run: |
           python <<'PY'
           import re
@@ -206,7 +206,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion de canales y hashes"
+            git commit -m "Actualizacion automatica cada 6 horas"
             git push
           else
             echo "No hay cambios que guardar."
