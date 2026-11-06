@@ -1,9 +1,9 @@
-name: Fusionar Lista Elcano Automatica
+name: Fusionar Canales de Elcano
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
-  workflow_dispatch:
+    - cron: '0 */6 * * *' # Se ejecuta cada 6 horas
+  workflow_dispatch:      # Permite darle al botón manualmente
 
 jobs:
   fusionar:
@@ -14,33 +14,43 @@ jobs:
       - name: Descargar repositorio
         uses: actions/checkout@v3
 
-      - name: Descargar lista actual de Elcano
+      - name: Descargar lista oficial de Elcano
         run: |
           curl -s -L "https://tokyo.elcano-ipfs.workers.dev/k51qzi5uqu5di462t7j4vu4akwfhvtjhy88qbupktvoacqfqe9uforjvhyi4wr/" -o elcano_temp.m3u
 
-      - name: Insertar canales en mi lista principal
+      - name: Fusionar canales en tu archivo principal
         run: |
-          # Verificamos que se descargó la lista de Elcano
           if [ -f "elcano_temp.m3u" ]; then
-            echo "Elcano descargado con éxito."
+            echo "Lista de Elcano descargada con éxito."
             
-            # Aquí combinamos o actualizamos los bloques necesarios en tu archivo de lista principal.
-            # Asegúrate de que tu archivo de lista principal esté en la raíz del repositorio.
+            # Verificamos si existe tu archivo de canales principal
             if [ -f "Canales m3u" ]; then
-              echo "Actualizando los canales de tu lista principal..."
-              # Añadimos una marca de fecha en el archivo para comprobar que se ha mezclado solo
-              echo "# Última actualización automática de Elcano: $(date)" >> "Canales m3u"
+              echo "Añadiendo los nuevos canales de Elcano al final de tu archivo..."
+              
+              # Añadimos un salto de línea y volcamos el contenido de Elcano respetando la estructura
+              echo "" >> "Canales m3u"
+              echo "# ==========================================" >> "Canales m3u"
+              echo "# ACTUALIZADO DESDE ELCANO AUTOMÁTICAMENTE" >> "Canales m3u"
+              echo "# ==========================================" >> "Canales m3u"
+              
+              # Extraemos las líneas de canales de la lista de Elcano y las metemos en tu lista
+              grep -A 1 "^#EXTINF" elcano_temp.m3u >> "Canales m3u"
+              
+              echo "¡Fusión completada con éxito!"
+            else
+              echo "No se encuentra el archivo 'Canales m3u' en la raíz."
+              exit 1
             fi
           else
-            echo "Error descargando Elcano"
+            echo "Error al descargar la lista de Elcano."
             exit 1
           fi
           
-          # Limpiamos archivos temporales
+          # Limpiamos el archivo temporal
           rm -f elcano_temp.m3u
 
-      - name: Guardar y subir cambios al repositorio
+      - name: Guardar cambios en el repositorio
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Auto: Canales de Elcano fusionados en la lista principal"
+          commit_message: "Auto-sync: Canales de Elcano fusionados en la lista principal"
           branch: main
