@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización perfecta con EPG heredada para Movistar
+      - name: Sincronización definitiva con EPG de David Muma blindada
         run: |
           python <<'PY'
           import re
@@ -85,21 +85,18 @@ jobs:
           canales_elcano = parsear_m3u(fuente_elcano)
           mapa_elcano_por_nombre = {c["nombre"].upper(): c["url"] for c in canales_elcano}
 
-          # 1. Actualizar tu lista respetando tus canales y clonando el tvg-id correcto del tercero a los dos primeros de Movistar
+          # 1. Actualizar enlaces respetando tu estructura exacta
           lineas_casa = contenido_casa.splitlines()
           lineas_actualizadas = []
           urls_en_casa = set()
           i = 0
-          contador_movistar_top = 0
 
           while i < len(lineas_casa):
               linea = lineas_casa[i]
               
-              # Si pillamos los canales de Movistar Plus de arriba del todo, les ponemos el tvg-id exacto del tercero para que carguen la EPG
-              if "MOVISTAR PLUS" in linea.upper() and "#EXTINF:" in linea:
-                  contador_movistar_top += 1
-                  if contador_movistar_top <= 2:
-                      linea = '#EXTINF:-1 tvg-id="Movistar Plus+ HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",' + linea.split(",")[-1]
+              # Blindaje de tvg-id para canales de Movistar Plus que entran nuevos para que cojan la EPG de David Muma
+              if "MOVISTAR PLUS" in linea.upper() and "#EXTINF:" in linea and 'tvg-id="Movistar Plus+ HD"' not in linea:
+                  linea = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus+ HD"', linea)
 
               lineas_actualizadas.append(linea)
 
@@ -119,7 +116,7 @@ jobs:
                   urls_en_casa.add(linea.strip())
               i += 1
 
-          # 2. Descargar novedades de Elcano y colocarlas en su sitio
+          # 2. Descargar novedades de Elcano y clasificarlas limpiamente
           def mapear_carpeta(nombre_canal, extinf_original):
               n = nombre_canal.upper()
               ext = extinf_original.upper()
@@ -230,7 +227,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización completada con EPG unificado al estilo de tu tercer canal.")
+          print("Sincronización impecable con guía de David Muma.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -240,7 +237,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Igualar tvg-id de Movistar Plus al tuyo bueno y ordenar La Liga"
+            git commit -m "Asegurar EPG de David Muma en canales de Movistar y orden de La Liga"
             git push
           else
             echo "No hay cambios que guardar."
