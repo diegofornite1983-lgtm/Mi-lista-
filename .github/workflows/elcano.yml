@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización estricta de hashes sin alterar orden
+      - name: Actualización quirúrgica de hashes respetando estructura
         run: |
           python <<'PY'
           import re
@@ -53,9 +53,10 @@ jobs:
               n = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTARPLUS', n)
               return "".join(n.split())
 
-          def parsear_m3u(texto):
+          # Parsear la lista de Elcano para sacar un mapa limpio de Nombre -> Enlace con su hash
+          def parsear_m3u_elcano(texto):
               lineas = texto.splitlines()
-              entradas = {}
+              mapa = {}
               i = 0
               while i < len(lineas):
                   linea = lineas[i].strip()
@@ -77,13 +78,14 @@ jobs:
                               url_limpia = url
                           
                           nombre = linea.rsplit(",", 1)[-1].strip()
-                          entradas[normalizar_nombre(nombre)] = url_limpia
+                          mapa[normalizar_nombre(nombre)] = url_limpia
                           i = j
                   i += 1
-              return entradas
+              return mapa
 
-          mapa_elcano = parsear_m3u(fuente_elcano)
+          mapa_elcano = parsear_m3u_elcano(fuente_elcano)
 
+          # Recorrer línea por línea tu lista original sin alterar el orden ni mover carpetas
           lineas_casa = contenido_casa.splitlines()
           lineas_actualizadas = []
           i = 0
@@ -96,6 +98,7 @@ jobs:
                   nombre_canal = linea.rsplit(",", 1)[-1].strip()
                   nombre_norm = normalizar_nombre(nombre_canal)
                   
+                  # Si la línea siguiente es una URL, comprobamos si Elcano tiene una nueva para este nombre
                   if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
                       url_actual = lineas_casa[i+1].strip()
                       if nombre_norm in mapa_elcano:
@@ -105,13 +108,15 @@ jobs:
                       i += 1
               i += 1
 
+          # Guardar el archivo de casa exactamente con tu misma estructura
           lista_final_casa = "\n".join(lineas_actualizadas) + ("\n" if not "".join(lineas_actualizadas).endswith("\n") else "")
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
+          # Generar el archivo de Tailscale con la IP correspondiente
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización completada respetando el orden estricto.")
+          print("Actualización exacta completada sin tocar el orden de tus carpetas.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -121,7 +126,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion limpia de hashes manteniendo estructura"
+            git commit -m "Actualizacion limpia de hashes respetando orden manual"
             git push
           else
             echo "No hay cambios que guardar."
