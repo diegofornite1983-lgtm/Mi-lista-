@@ -18,26 +18,27 @@ jobs:
         run: |
           curl -s -L "https://tokyo.elcano-ipfs.workers.dev/k51qzi5uqu5di462t7j4vu4akwfhvtjhy88qbupktvoacqfqe9uforjvhyi4wr/" -o elcano_temp.m3u
 
-      - name: Buscar lista y fusionar canales automáticamente
+      - name: Fusionar canales con seguridad
         run: |
           if [ -f "elcano_temp.m3u" ]; then
             echo "Lista de Elcano descargada con éxito."
             
-            # Buscar tu archivo de canales (Canales m3u o similar)
-            LISTA_M3U=$(find . -maxdepth 1 \( -name "*m3u*" -o -name "*acestream*" \) ! -name "elcano_temp.m3u" | head -n 1)
+            # Usamos el nombre exacto de tu archivo tal como aparece en tu repositorio
+            ARCHIVO_LISTA="Mi lista acestream"
             
-            if [ -n "$LISTA_M3U" ]; then
-              echo "Archivo de lista encontrado: $LISTA_M3U"
+            if [ -f "$ARCHIVO_LISTA" ]; then
+              echo "Procesando la lista: $ARCHIVO_LISTA"
               
-              echo "" >> "$LISTA_M3U"
-              echo "# ==========================================" >> "$LISTA_M3U"
-              echo "# ACTUALIZADO DESDE ELCANO AUTOMÁTICAMENTE" >> "$LISTA_M3U"
-              echo "# ==========================================" >> "$LISTA_M3U"
+              # Añadimos los canales de Elcano al final del archivo de forma limpia
+              echo "" >> "$ARCHIVO_LISTA"
+              echo "# ==========================================" >> "$ARCHIVO_LISTA"
+              echo "# ACTUALIZADO DESDE ELCANO AUTOMÁTICAMENTE" >> "$ARCHIVO_LISTA"
+              echo "# ==========================================" >> "$ARCHIVO_LISTA"
               
-              grep -A 1 "^#EXTINF" elcano_temp.m3u >> "$LISTA_M3U"
-              echo "Canales de Elcano añadidos correctamente al archivo."
+              grep -A 1 "^#EXTINF" elcano_temp.m3u >> "$ARCHIVO_LISTA"
+              echo "¡Canales de Elcano incorporados con éxito!"
             else
-              echo "Error: No se encuentra tu archivo de canales."
+              echo "Error crítico: No se encuentra el archivo $ARCHIVO_LISTA"
               exit 1
             fi
           else
@@ -50,5 +51,5 @@ jobs:
       - name: Guardar cambios en el repositorio
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Auto-sync: Canales de Elcano fusionados en la lista"
+          commit_message: "Auto-sync: Canales de Elcano incorporados en la lista"
           branch: main
