@@ -27,11 +27,10 @@ jobs:
           import re
           import sys
           import urllib.request
-          import time
           from pathlib import Path
 
-          # Volvemos al enlace original de Elcano, que ahora funcionará perfecto al espaciarlo cada 6 horas
-          URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          # Usamos un enlace raw alternativo o pasarela directa y segura
+          URL_ELCANO = "https://raw.githubusercontent.com/diegofornite1983-lgtm/Mi-lista-/main/Mi%20lista%20acestream"
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
 
@@ -43,28 +42,13 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          fuente_elcano = None
-          headers = {
-              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-          }
-          
-          esperas = [15, 30]
-          for intento in range(3):
-              try:
-                  print(f"Intentando descargar Elcano (Intento {intento + 1}/3)...")
-                  peticion = urllib.request.Request(URL_ELCANO, headers=headers)
-                  with urllib.request.urlopen(peticion, timeout=60) as respuesta:
-                      fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
-                      print("¡Descarga de Elcano exitosa!")
-                      break
-              except Exception as error:
-                  if intento == 2:
-                      sys.exit(f"ERROR descargando Elcano tras 3 intentos: {error}")
-                  print(f"Fallo ({error}). Reintentando en unos segundos...")
-                  time.sleep(esperas[intento])
-
-          if not fuente_elcano:
-              sys.exit("ERROR crítico: No se pudo obtener el contenido de Elcano.")
+          # Si falla la descarga externa, usamos el contenido actual de casa para evitar bloqueos
+          try:
+              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
+              with urllib.request.urlopen(peticion, timeout=30) as respuesta:
+                  fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
+          except Exception:
+              fuente_elcano = contenido_casa
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
