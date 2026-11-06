@@ -189,26 +189,21 @@ jobs:
                       lineas_finales_temp.append(url_f)
               lineas_actualizadas = lineas_finales_temp
 
-          lista_final_casa = "\n".join(lineas_actualizadas) + ("\n" if not "".join(lineas_actualizadas).endswith("\n") else "")
+          lista_final_casa = "\n".join(lineas_actualizadas) + "\n"
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
-
-          lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
-          archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
-
-          print("Sincronización y inyección de canales forzada con éxito.")
+          
+          # También dejamos una copia actualizada de Tailscale si fuese necesario usarla
+          archivo_tailscale.write_text(lista_final_casa, encoding="utf-8")
           PY
 
-      - name: Guardar cambios en GitHub
+      - name: Guardar cambios y subir al repositorio
         run: |
-          git config user.name "GitHub Action Bot"
-          git config user.email "actions@github.com"
+          git config --local user.email "github-actions[bot]@://github.com"
+          git config --local user.name "github-actions[bot]"
           git add "Mi lista acestream" "Canales m3u"
-          
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion forzada de canales y carpetas"
+            git commit -m "Lista de canales actualizada automáticamente por Elcano [skip ci]"
             git push
           else
-            echo "Forzando guardado de actualización"
-            git commit --allow-empty -m "Forzar actualizacion de listas"
-            git push
+            echo "No hay cambios detectados en las listas."
           fi
