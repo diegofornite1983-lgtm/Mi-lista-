@@ -35,12 +35,12 @@ jobs:
           from pathlib import Path
           import requests
 
-          # Lista de pasarelas IPFS públicas alternativas para evitar el bloqueo 429 de Cloudflare Workers
+          # Lista completa de tus enlaces proporcionados (probando todos en orden hasta que uno funcione)
           URLS_ELCANO = [
+              "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://tokyo.elcano-ipfs.workers.dev/k51qzi5uqu5di462t7j4vu4akwfhvtjhy88qbupktvoacqfqe9uforjvhyi4wr/hashes_acestream.m3u",
               "https://ipfs.io/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://dweb.link/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://cloudflare-ipfs.com/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+              "https://k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs.ipns.dweb.link/hashes_acestream.m3u"
           ]
           
           archivo_casa = Path("Mi lista acestream")
@@ -61,22 +61,22 @@ jobs:
 
           for url_objetivo in URLS_ELCANO:
               try:
-                  print(probando := f"Intentando descargar desde: {url_objetivo[:45]}...")
-                  respuesta = requests.get(url_objetivo, headers=headers, timeout=30)
+                  print(f"Probando enlace: {url_objetivo[:60]}...")
+                  respuesta = requests.get(url_objetivo, headers=headers, timeout=25)
                   
                   if respuesta.status_code == 200 and len(respuesta.text) > 100:
                       fuente_elcano = respuesta.text
-                      print("¡Descarga de Elcano exitosa!")
+                      print(f"¡Conexión exitosa con el enlace!")
                       break
                   else:
-                      print(f"Aviso: La pasarela respondió con código {respuesta.status_code}")
+                      print(f"Aviso: El enlace respondió con código HTTP {respuesta.status_code}")
               except Exception as error:
-                  print(f"Fallo en esta pasarela: {error}")
+                  print(f"Fallo en este intento: {error}")
               
               time.sleep(2)
 
           if not fuente_elcano:
-              sys.exit("ERROR crítico: Ninguna de las pasarelas IPFS pudo entregar el contenido.")
+              sys.exit("ERROR crítico: Ninguno de los enlaces de Elcano está operativo en este momento.")
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
