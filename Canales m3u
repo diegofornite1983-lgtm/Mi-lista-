@@ -6,7 +6,7 @@
 # CARPETA: LA LIGA Y DAZN LIGA
 
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 720p *
-http://100.90.204.66:6878/ace/getstream?id=1c00e6a5404f84e9bd22aa9d8f09e96ffa4ab319
+http://100.90.204.66:6878/ace/getstream?id=69f76f6516620d91612e7509077b5ac3bb4d3c0b
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 1080p **
 http://100.90.204.66:6878/ace/getstream?id=25ba36fb3ff78d37b304177cb5b9f9f84348d2ad
 
@@ -19,17 +19,17 @@ http://100.90.204.66:6878/ace/getstream?id=49545d05f95846e93fd8f08da320be866995c
 
 
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 720p *
-http://100.90.204.66:6878/ace/getstream?id=1c00e6a5404f84e9bd22aa9d8f09e96ffa4ab319
+http://100.90.204.66:6878/ace/getstream?id=69f76f6516620d91612e7509077b5ac3bb4d3c0b
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 720p **
 http://100.90.204.66:6878/ace/getstream?id=69f76f6516620d91612e7509077b5ac3bb4d3c0b
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 1080p *
-http://100.90.204.66:6878/ace/getstream?id=aae8bcb9b00c4505ccfa5981b860da012e8cf23e
+http://100.90.204.66:6878/ace/getstream?id=25ba36fb3ff78d37b304177cb5b9f9f84348d2ad
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA Y DAZN LIGA",M+ LaLiga 1080p **
 http://100.90.204.66:6878/ace/getstream?id=25ba36fb3ff78d37b304177cb5b9f9f84348d2ad
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/spain/dazn-laliga-es.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 1080p *
-http://100.90.204.66:6878/ace/getstream?id=529f5abd2c87209f69c0727ade740ff6f160be88
+http://100.90.204.66:6878/ace/getstream?id=3a03dc436b15f1d5d7b285c80b982da02502c26d
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/spain/dazn-laliga-es.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 1080p **
-http://100.90.204.66:6878/ace/getstream?id=5bf898b0ffc2ca662b898a424a988a922ab88abd
+http://100.90.204.66:6878/ace/getstream?id=3a03dc436b15f1d5d7b285c80b982da02502c26d
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/spain/dazn-laliga-es.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga **
 http://100.90.204.66:6878/ace/getstream?id=599fb52eba4bd937b2029210bdeca9f1a34a32da
 
@@ -130,7 +130,7 @@ http://100.90.204.66:6878/ace/getstream?id=fd869f34346154ca7cd78d46cbf7a6b8671be
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/hFYPWbpJ/plus.png" group-title="MOVISTAR",MOVISTAR PLUS 720p *
 http://100.90.204.66:6878/ace/getstream?id=d2b5299ed45cbaf35482bb0869b2c2f75fbed64a
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/hFYPWbpJ/plus.png" group-title="MOVISTAR",MOVISTAR PLUS 1080p *
-http://100.90.204.66:6878/ace/getstream?id=a2d33536b7d55727c8f6bea010624d6478c3ba2d
+http://100.90.204.66:6878/ace/getstream?id=30b9909b14b1924798573cace9f41369e1a334c5
 
 # ==========================================
 
@@ -352,7 +352,7 @@ http://100.90.204.66:6878/ace/getstream?id=8ce3c02c950c857a1a258493bf2fb4628c1b4
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",M+ Liga de Campeones 720p **
 http://100.90.204.66:6878/ace/getstream?id=45f160e173eb93dfdc37ca14b95ab1e6869868e0
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",M+ Liga de Campeones 1080p *
-http://100.90.204.66:6878/ace/getstream?id=66382069b0b1863428e2a107bbeb236241365e84
+http://100.90.204.66:6878/ace/getstream?id=8ce3c02c950c857a1a258493bf2fb4628c1b48fd
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",M+ Liga de Campeones 1080p **
 http://100.90.204.66:6878/ace/getstream?id=8ce3c02c950c857a1a258493bf2fb4628c1b48fd
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",M+ Liga de Campeones 1080p **
@@ -366,11 +366,11 @@ http://100.90.204.66:6878/ace/getstream?id=c6c9cd6cf39c3fe04d2ca3152f6ee13714cd3
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%204.png" group-title="CHAMPIONS",M+ Liga de Campeones 4 1080p *
 http://100.90.204.66:6878/ace/getstream?id=d0b3e6728c08ff648cad74021c36a7410069160f
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%205.png" group-title="CHAMPIONS",M+ Liga de Campeones 6 1080p *
-http://100.90.204.66:6878/ace/getstream?id=577c31553729915add3d154e53adfe4415a7c15a
+http://100.90.204.66:6878/ace/getstream?id=2d2bd9bef1ddf8443c414cda886cc7a282d8fd15
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%205.png" group-title="CHAMPIONS",M+ Liga de Campeones 6 1080p **
 http://100.90.204.66:6878/ace/getstream?id=2d2bd9bef1ddf8443c414cda886cc7a282d8fd15
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%205.png" group-title="CHAMPIONS",M+ Liga de Campeones 7 1080p *
-http://100.90.204.66:6878/ace/getstream?id=3a7dc12a37229e29861b826f7935b2d7804b817b
+http://100.90.204.66:6878/ace/getstream?id=aa3168cd64fa1cea8409dcd1ceb294659de70c00
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%205.png" group-title="CHAMPIONS",M+ Liga de Campeones 7 1080p **
 http://100.90.204.66:6878/ace/getstream?id=aa3168cd64fa1cea8409dcd1ceb294659de70c00
 
@@ -565,7 +565,7 @@ http://100.90.204.66:6878/ace/getstream?id=27fdc342ae5fae5012eaf9502415107d94eb1
 #EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1772006365-dazn-motogp-699eaba85423e.jpg" group-title="MotoGP",Dazn MotoGP 720p *
 http://100.90.204.66:6878/ace/getstream?id=218137b5dc6bb17ec3df65019225ceb7ddeb37e6
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1772006365-dazn-motogp-699eaba85423e.jpg" group-title="MotoGP",Dazn MotoGP 1080p *
-http://100.90.204.66:6878/ace/getstream?id=002ebb242685b729fd1235fc24c93110593343a6
+http://100.90.204.66:6878/ace/getstream?id=27fdc342ae5fae5012eaf9502415107d94eb1f11
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1772006365-dazn-motogp-699eaba85423e.jpg" group-title="MotoGP",Dazn MotoGP 1080p **
 http://100.90.204.66:6878/ace/getstream?id=27fdc342ae5fae5012eaf9502415107d94eb1f11
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1772006365-dazn-motogp-699eaba85423e.jpg" group-title="MotoGP",Dazn MotoGP 1080p **
@@ -600,27 +600,27 @@ http://100.90.204.66:6878/ace/getstream?id=973094e625613b693cffb05a3f98fabe2d59d
 
 
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/CV4CLjz/deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 720p *
-http://100.90.204.66:6878/ace/getstream?id=0fd61072edad41e15d072cfab53e5e3503cbd498
+http://100.90.204.66:6878/ace/getstream?id=63307e32e9cbf51e7ca610f9fac0b9910217ea49
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/CV4CLjz/deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 720p **
 http://100.90.204.66:6878/ace/getstream?id=63307e32e9cbf51e7ca610f9fac0b9910217ea49
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/CV4CLjz/deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 1080p *
-http://100.90.204.66:6878/ace/getstream?id=7793c6658b8d9c5e6219f27ce54e20ca1b8c0859
+http://100.90.204.66:6878/ace/getstream?id=f6b5d72663225d9369ebb48f5ff4735606672dc5
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/CV4CLjz/deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 1080p **
-http://100.90.204.66:6878/ace/getstream?id=403354bfa8ec7769589b18977c22b99f1cae5aca
+http://100.90.204.66:6878/ace/getstream?id=f6b5d72663225d9369ebb48f5ff4735606672dc5
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/q95fBKV/deportes2.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 2 1080p *
 http://100.90.204.66:6878/ace/getstream?id=1c15bb40e6b2d153e3b30ed28eaa057ea44c3f41
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/jDg5qWD/deportes3.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 3 720p *
-http://100.90.204.66:6878/ace/getstream?id=b53deba2d4f6a26d6fe69cffec360e1916d77fa8
+http://100.90.204.66:6878/ace/getstream?id=c47fe0698f928f92481ca709ead6ff7b635a8bf9
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/jDg5qWD/deportes3.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 3 720p **
 http://100.90.204.66:6878/ace/getstream?id=c47fe0698f928f92481ca709ead6ff7b635a8bf9
 #EXTINF:-1 tvg-id="M+ LaLiga 3 HD" tvg-logo="https://i.ibb.co/jDg5qWD/deportes3.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 3 1080p **
 http://100.90.204.66:6878/ace/getstream?id=239fc67555e053a344d0259560ae23c37a96e64b
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/spain/deportes-5-por-movistar-plus-es.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 5 1080p *
-http://100.90.204.66:6878/ace/getstream?id=b872a46bd1a4e99bd1cd68c8e61f51279f456539
+http://100.90.204.66:6878/ace/getstream?id=bfcc1ccd2ce52dd947731a8d8fc9de85d5dbe4c3
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/spain/deportes-5-por-movistar-plus-es.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 5 1080p **
 http://100.90.204.66:6878/ace/getstream?id=bfcc1ccd2ce52dd947731a8d8fc9de85d5dbe4c3
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://www.movistarplus.es/recorte/n/caratula5/M2114916V1621463" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 6 1080p *
-http://100.90.204.66:6878/ace/getstream?id=cb389520f92a6ec25a14e9887103fb7463c0ced4
+http://100.90.204.66:6878/ace/getstream?id=432c450563e47b21e41540f19bff0f05d5adc59f
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://www.movistarplus.es/recorte/n/caratula5/M2114916V1621463" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 6 1080p **
 http://100.90.204.66:6878/ace/getstream?id=432c450563e47b21e41540f19bff0f05d5adc59f
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://www.movistarplus.es/recorte/n/caratula5/M2114916V1621463" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 7 1080p **
@@ -630,11 +630,11 @@ http://100.90.204.66:6878/ace/getstream?id=29b1e1f1009f52d5adf95e4d6089154d8ec03
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://www.vhv.rs/dpng/d/424-4244985_file-movistar-golf-svg-logo-movistar-golf-hd.png" group-title="MOVISTAR DEP-VAMOS",M+ Golf 720p *
 http://100.90.204.66:6878/ace/getstream?id=c50eeeff75b016cc115842cd2db4e80c5615e89a
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://www.vhv.rs/dpng/d/424-4244985_file-movistar-golf-svg-logo-movistar-golf-hd.png" group-title="MOVISTAR DEP-VAMOS",M+ Golf 1080p *
-http://100.90.204.66:6878/ace/getstream?id=f96a97afa44dd515c09eb6e7863f6cd465c8a90e
+http://100.90.204.66:6878/ace/getstream?id=c499ba98f4b0d78804ef5aa64e5d1f4d44f7e2e9
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://www.vhv.rs/dpng/d/424-4244985_file-movistar-golf-svg-logo-movistar-golf-hd.png" group-title="MOVISTAR DEP-VAMOS",M+ Golf 1080p **
 http://100.90.204.66:6878/ace/getstream?id=c499ba98f4b0d78804ef5aa64e5d1f4d44f7e2e9
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://r2.thesportsdb.com/images/media/channel/logo/irjqp71744196637.png" group-title="MOVISTAR DEP-VAMOS",M+ Golf 2 1080p *
-http://100.90.204.66:6878/ace/getstream?id=8c22182e8ebe7320c97d87d030a6b5741c84f782
+http://100.90.204.66:6878/ace/getstream?id=ced3af9d4f5f90fa0c2465d3e01d24dfe7f8e22c
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://r2.thesportsdb.com/images/media/channel/logo/irjqp71744196637.png" group-title="MOVISTAR DEP-VAMOS",M+ Golf 2 1080p **
 http://100.90.204.66:6878/ace/getstream?id=ced3af9d4f5f90fa0c2465d3e01d24dfe7f8e22c
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos 720p *
@@ -644,7 +644,7 @@ http://100.90.204.66:6878/ace/getstream?id=9e5da99bac88a4a3ed200d3bdf260b683145c
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ VAMOS 2 720p *
 http://100.90.204.66:6878/ace/getstream?id=eadc069bbd45d77cb33ca3bac6f6d86281597122
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ VAMOS 2 1080p *
-http://100.90.204.66:6878/ace/getstream?id=8fd3ab88c95744e502aca1cdb369e07941914344
+http://100.90.204.66:6878/ace/getstream?id=973094e625613b693cffb05a3f98fabe2d59dafa
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ VAMOS 2 1080p **
 http://100.90.204.66:6878/ace/getstream?id=973094e625613b693cffb05a3f98fabe2d59dafa
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ VAMOS 2 1080p **
@@ -656,7 +656,7 @@ http://100.90.204.66:6878/ace/getstream?id=acc2d46eaf6a0b4c3dbd299ffcd67c2b946c2
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://img.3cat.cat/multimedia/jpg/1/5/1697802708951.jpg" group-title="MOVISTAR DEP-VAMOS",Esport3 720p **
 http://100.90.204.66:6878/ace/getstream?id=ff162bf69c1579edf953bf76933c80b1c7e893d0
 #EXTINF:-1 tvg-id="M+ LaLiga 3 HD" tvg-logo="https://img.3cat.cat/multimedia/jpg/1/5/1697802708951.jpg" group-title="MOVISTAR DEP-VAMOS",Esport3 1080p *
-http://100.90.204.66:6878/ace/getstream?id=720111bc8ab44e425e24b93785f06ba3184ef3a4
+http://100.90.204.66:6878/ace/getstream?id=1aacd162a6e6fcd06216da5a39ebe335ad2a97b4
 #EXTINF:-1 tvg-id="M+ LaLiga 3 HD" tvg-logo="https://img.3cat.cat/multimedia/jpg/1/5/1697802708951.jpg" group-title="MOVISTAR DEP-VAMOS",Esport3 1080p **
 http://100.90.204.66:6878/ace/getstream?id=1aacd162a6e6fcd06216da5a39ebe335ad2a97b4
 #EXTINF:-1 tvg-logo="https://www.sportsvideo.org/wp-content/uploads/2016/01/tennis-channel-logo-e1518530950839.jpg" group-title="MOVISTAR DEP-VAMOS",Tennis Channel 1080p *
@@ -758,13 +758,13 @@ http://100.90.204.66:6878/ace/getstream?id=477b3ea6be34bfd669cc35c5cdff8b18a3ad7
 # PRIMERA FEDERACIÓN (RFEF)
 
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://static.wikia.nocookie.net/logopedia/images/d/df/Logo_Primera_RFEF_2021.png/revision/latest?cb=20230620215900&path-prefix=es" group-title="PRIMERA FEDERACIÓN",RFEF TV 1080p *
-http://100.90.204.66:6878/ace/getstream?id=0664b139ecacfe236cab92ebbb26f2d5a6816455
+http://100.90.204.66:6878/ace/getstream?id=eb1a92754ca21883e4473646eed3a5d69202e629
 
 
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://static.wikia.nocookie.net/logopedia/images/d/df/Logo_Primera_RFEF_2021.png/revision/latest?cb=20230620215900&path-prefix=es" group-title="PRIMERA FEDERACIÓN",RFEF TV 1080p *
-http://100.90.204.66:6878/ace/getstream?id=0664b139ecacfe236cab92ebbb26f2d5a6816455
+http://100.90.204.66:6878/ace/getstream?id=eb1a92754ca21883e4473646eed3a5d69202e629
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://static.wikia.nocookie.net/logopedia/images/d/df/Logo_Primera_RFEF_2021.png/revision/latest?cb=20230620215900&path-prefix=es" group-title="PRIMERA FEDERACIÓN",RFEF TV 1080p *
-http://100.90.204.66:6878/ace/getstream?id=0664b139ecacfe236cab92ebbb26f2d5a6816455
+http://100.90.204.66:6878/ace/getstream?id=eb1a92754ca21883e4473646eed3a5d69202e629
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://static.wikia.nocookie.net/logopedia/images/d/df/Logo_Primera_RFEF_2021.png/revision/latest?cb=20230620215900&path-prefix=es" group-title="PRIMERA FEDERACIÓN",RFEF TV 1080p **
 http://100.90.204.66:6878/ace/getstream?id=eb1a92754ca21883e4473646eed3a5d69202e629
 
@@ -802,7 +802,7 @@ http://100.90.204.66:6878/ace/getstream?id=8677d339ecddd75165c0015025f598b621597
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/r2Yd7xD/euro1.png" group-title="EUROSPORT",Eurosport 1 1080p *
 http://100.90.204.66:6878/ace/getstream?id=ca185612d5b5b6e863a16fc0177e8a6db1d1d3c2
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 1080p *
-http://100.90.204.66:6878/ace/getstream?id=ce85dfd81162036f5d113343332e523ca94ce825
+http://100.90.204.66:6878/ace/getstream?id=dcc3be2e16b61b10557d8a7e954c5496ba5e4b60
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 1080p **
 http://100.90.204.66:6878/ace/getstream?id=dcc3be2e16b61b10557d8a7e954c5496ba5e4b60
 
@@ -830,7 +830,7 @@ http://100.90.204.66:6878/ace/getstream?id=6176281b9c46a5621a0e88524f8dc621f173b
 # CARPETA: BALONCESTO
 
 #EXTINF:-1 tvg-logo="https://www.vhv.rs/dpng/d/431-4310509_nba-league-pass-logo-png-transparent-nba-league.png" group-title="BALONCESTO",NBA League Pass 1080p *
-http://100.90.204.66:6878/ace/getstream?id=8698d62f3b2a35aabb599c420b06945ea006400b
+http://100.90.204.66:6878/ace/getstream?id=4af480f65d5d09eea5b546a79ace5b55979c7685
 
 
 #EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://www.adslzone.net/app/uploads-adslzone.net/2025/12/dazn-baloncesto-movistar-plus.png" group-title="BALONCESTO",DAZN Baloncesto 720p *
@@ -844,9 +844,9 @@ http://100.90.204.66:6878/ace/getstream?id=5ba57eae303be35f8b551d2ba27b27ef0dd64
 #EXTINF:-1 tvg-logo="https://www.adslzone.net/app/uploads-adslzone.net/2026/04/baloncesto-movistar-plus-canales.jpg" group-title="BALONCESTO",M+ Baloncesto 3 1080p *
 http://100.90.204.66:6878/ace/getstream?id=e675aecf437124d37f7f2daf31669f1af532a50c
 #EXTINF:-1 tvg-logo="https://www.vhv.rs/dpng/d/431-4310509_nba-league-pass-logo-png-transparent-nba-league.png" group-title="BALONCESTO",NBA League Pass 1080p *
-http://100.90.204.66:6878/ace/getstream?id=8698d62f3b2a35aabb599c420b06945ea006400b
+http://100.90.204.66:6878/ace/getstream?id=4af480f65d5d09eea5b546a79ace5b55979c7685
 #EXTINF:-1 tvg-logo="https://www.vhv.rs/dpng/d/431-4310509_nba-league-pass-logo-png-transparent-nba-league.png" group-title="BALONCESTO",NBA League Pass 1080p *
-http://100.90.204.66:6878/ace/getstream?id=8698d62f3b2a35aabb599c420b06945ea006400b
+http://100.90.204.66:6878/ace/getstream?id=4af480f65d5d09eea5b546a79ace5b55979c7685
 #EXTINF:-1 tvg-logo="https://www.vhv.rs/dpng/d/431-4310509_nba-league-pass-logo-png-transparent-nba-league.png" group-title="BALONCESTO",NBA League Pass 1080p **
 http://100.90.204.66:6878/ace/getstream?id=4af480f65d5d09eea5b546a79ace5b55979c7685
 
