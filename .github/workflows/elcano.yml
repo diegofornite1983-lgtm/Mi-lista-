@@ -29,9 +29,10 @@ jobs:
           import urllib.request
           from pathlib import Path
 
-          # Usamos pasarelas IPFS públicas oficiales para descargar los canales reales de Elcano sin bloqueos 429
+          # Pasarelas IPFS públicas oficiales para sortear el bloqueo 429 y obtener los hashes reales de Elcano
           urls_elcano = [
-              "https://ipfs.io/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://dweb.link/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://cloudflare-ipfs.com/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
               "https://gateway.pinata.cloud/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           ]
           
@@ -49,20 +50,21 @@ jobs:
           fuente_elcano = None
           for url in urls_elcano:
               try:
-                  peticion = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+                  peticion = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
                   with urllib.request.urlopen(peticion, timeout=30) as respuesta:
-                      fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
-                      if fuente_elcano and "#EXTINF" in fuente_elcano:
+                      texto_prueba = respuesta.read().decode("utf-8-sig", errors="replace")
+                      if texto_prueba and "#EXTINF" in texto_prueba:
+                          fuente_elcano = texto_prueba
                           break
               except Exception:
                   continue
 
-          # Si las pasarelas fallan puntualmente, usamos el contenido local como respaldo
           if not fuente_elcano:
-              fuente_elcano = contenido_casa
+              sys.exit("ERROR: No se pudo conectar a ninguna pasarela de Elcano para descargar los hashes.")
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
+              n = re.sub(r'[⭐️*]', '', n)
               n = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTARPLUS', n)
               return "".join(n.split())
 
