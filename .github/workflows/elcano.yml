@@ -1,4 +1,4 @@
-name: Actualizador Automatico Elcano
+Name: Actualizador Automatico Elcano
 
 on:
   schedule:
@@ -21,30 +21,78 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Descargar Elcano y actualizar hashes respetando EPG
+      - name: Descargar Elcano y añadir canales nuevos
         id: update
         run: |
           python <<'PY'
           import os
           import re
           import sys
+          import unicodedata
           import urllib.request
           from pathlib import Path
 
-          URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
-          
-          # Buscar cualquier archivo .m3u, .m3u8 o .txt en todo el repositorio de forma automática
-          archivos = [
-              p for p in Path(".").rglob("*")
-              if p.is_file() and p.suffix.lower() in (".m3u", ".m3u8", ".txt") and ".git" not in p.parts
-          ]
+                  URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+        CARPETA = Path("Mi lista acestream")
 
-          if not archivos:
-              sys.exit("ERROR: No se ha encontrado ningún archivo M3U o TXT en el repositorio.")
+        if not CARPETA.is_dir():
+            sys.exit("ERROR: No existe la carpeta Mi lista acestream.")
 
-          # Si hay varios, cogemos el primero que no sea un archivo del sistema o logs
-          destino = archivos[0]
-          print(f"Archivo de lista detectado: {destino}")
+        archivos = [
+            p for p in CARPETA.rglob("*")
+            if p.is_file() and p.suffix.lower() in (".m3u", ".m3u8", ".txt")
+        ]
+
+        if len(archivos) != 1:
+            sys.exit(
+                "ERROR: Se esperaba un único archivo M3U/TXT dentro de "
+                f"Mi lista acestream, pero se encontraron {len(archivos)}. "
+                "No se ha modificado nada."
+            )
+
+        destino = archivos[0]
+
+
+
+          def normalizar(nombre):
+              nombre = unicodedata.normalize("NFKD", nombre.lower())
+              nombre = "".join(c for c in nombre if not unicodedata.combining(c))
+              nombre = re.sub(r"[^a-z0-9]", "", nombre)
+              return nombre
+
+          def leer_m3u(texto):
+              lineas = texto.splitlines()
+              entradas = []
+              i = 0
+
+              while i < len(lineas):
+                  linea = lineas[i].strip()
+
+                  if linea.startswith("#EXTINF:"):
+                      url = None
+                      j = i + 1
+
+                      while j < len(lineas):
+                          candidata = lineas[j].strip()
+                          if candidata and not candidata.startswith("#"):
+                              url = candidata
+                              break
+                          j += 1
+
+                      if url:
+                          nombre = linea.rsplit(",", 1)[-1].strip()
+                          grupo = re.search(r'group-title="([^"]*)"', linea)
+                          entradas.append({
+                              "extinf": linea,
+                              "url": url,
+                              "nombre": nombre,
+                              "grupo": grupo.group(1) if grupo else ""
+                          })
+                          i = j
+
+                  i += 1
+
+              return entradas
 
           try:
               peticion = urllib.request.Request(
@@ -64,75 +112,39 @@ jobs:
           except UnicodeDecodeError:
               original = destino.read_text(encoding="latin-1")
 
-          # Extraer enlaces de la fuente de Elcano
-          def extraer_enlaces_fuente(texto):
-              lineas = texto.splitlines()
-              mapa_canales = {}
-              i = 0
-              while i < len(lineas):
-                  linea = lineas[i].strip()
-                  if linea.startswith("#EXTINF:"):
-                      url = None
-                      j = i + 1
-                      while j < len(lineas):
-                          candidata = lineas[j].strip()
-                          if candidata and not candidata.startswith("#"):
-                              url = candidata
-                              break
-                          j += 1
-                      if url:
-                          match_id = re.search(r'tvg-id="([^"]*)"', linea)
-                          tvg_id = match_id.group(1) if match_id else None
-                          nombre_limpio = linea.rsplit(",", 1)[-1].strip()
-                          mapa_canales[nombre_limpio.lower()] = url
-                          if tvg_id:
-                              mapa_canales[tvg_id.lower()] = url
-                      i = j
-                  i += 1
-              return mapa_canales
+          canales_fuente = leer_m3u(fuente)
+          canales_mios = leer_m3u(original)
 
-          mapa_elcano = extraer_enlaces_fuente(fuente)
+          if not canales_fuente:
+              sys.exit("ERROR: Elcano no contiene canales reconocibles.")
 
-          # Actualizar manteniendo estrictamente el esqueleto y tvg-id
-          lineas_originales = original.splitlines()
-          nuevas_lineas = []
-          i = 0
-          actualizados = 0
+          nombres_existentes = {
+              normalizar(c["nombre"]) for c in canales_mios
+          }
 
-          while i < len(lineas_originales):
-              linea = lineas_originales[i].strip()
-              nuevas_lineas.append(lineas_originales[i])
+          nuevos = []
 
-              if linea.startswith("#EXTINF:"):
-                match_tvg = re.search(r'tvg-id="([^"]*)"', linea)
-                nombre_canal = linea.rsplit(",", 1)[-1].strip()
-                
-                url_idx = i + 1
-                while url_idx < len(lineas_originales):
-                    candidata = lineas_originales[url_idx].strip()
-                    if candidata and not candidata.startswith("#"):
-                        break
-                    url_idx += 1
+          for canal in canales_fuente:
+              nombre_id = normalizar(canal["nombre"])
 
-                nueva_url = None
-                if match_tvg and match_tvg.group(1).lower() in mapa_elcano:
-                    nueva_url = mapa_elcano[match_tvg.group(1).lower()]
-                elif nombre_canal.lower() in mapa_elcano:
-                    nueva_url = mapa_elcano[nombre_canal.lower()]
+              if not nombre_id or nombre_id in nombres_existentes:
+                  continue
 
-                if url_idx < len(lineas_originales):
-                    if nueva_url and nueva_url != lineas_originales[url_idx].strip():
-                        nuevas_lineas.append(nueva_url)
-                        actualizados += 1
-                    else:
-                        nuevas_lineas.append(lineas_originales[url_idx])
-                    i = url_idx
-              i += 1
+              extinf = canal["extinf"]
+              url = canal["url"]
 
-          destino.write_text("\n".join(nuevas_lineas) + "\n", encoding="utf-8")
+              nuevos.extend([extinf, url])
+              nombres_existentes.add(nombre_id)
 
-          print(f"Archivo actualizado correctamente: {destino}")
-          print(f"Canales con hashes actualizados: {actualizados}")
+          if nuevos:
+              with destino.open("a", encoding="utf-8", newline="\n") as archivo:
+                  if original and not original.endswith("\n"):
+                      archivo.write("\n")
+                  archivo.write("\n".join(nuevos) + "\n")
+
+          print(f"Archivo actualizado: {destino}")
+          print(f"Canales encontrados en Elcano: {len(canales_fuente)}")
+          print(f"Canales nuevos añadidos: {len(nuevos) // 2}")
 
           with open(os.environ["GITHUB_OUTPUT"], "a") as salida:
               salida.write(f"path={destino.as_posix()}\n")
@@ -147,8 +159,7 @@ jobs:
           git add -- "$TARGET_FILE"
 
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizar hashes de Elcano manteniendo estructura EPG"
+            git commit -m "Actualizar canales nuevos de Elcano automáticamente"
             git push
           else
-            echo "No hay cambios nuevos que guardar."
-          fi
+            echo "No hay canales nuevos que guardar."
