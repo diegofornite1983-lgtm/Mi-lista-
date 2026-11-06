@@ -1,4 +1,4 @@
-name: Actualizador Automatico Elcano y Tailscale
+name: Actualizador Automatico Elcano
 
 on:
   schedule:
@@ -21,123 +21,134 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización completa con Elcano
+      - name: Descargar Elcano y actualizar hashes respetando EPG
+        id: update
         run: |
           python <<'PY'
+          import os
           import re
           import sys
           import urllib.request
           from pathlib import Path
 
           URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
-          archivo_casa = Path("Mi lista acestream")
-          archivo_tailscale = Path("Canales m3u")
+          
+          # Buscar cualquier archivo .m3u, .m3u8 o .txt en todo el repositorio de forma automática
+          archivos = [
+              p for p in Path(".").rglob("*")
+              if p.is_file() and p.suffix.lower() in (".m3u", ".m3u8", ".txt") and ".git" not in p.parts
+          ]
 
-          if not archivo_casa.is_file():
-              sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream'.")
+          if not archivos:
+              sys.exit("ERROR: No se ha encontrado ningún archivo M3U o TXT en el repositorio.")
 
-          try:
-              contenido_casa = archivo_casa.read_text(encoding="utf-8-sig")
-          except UnicodeDecodeError:
-              contenido_casa = archivo_casa.read_text(encoding="latin-1")
+          # Si hay varios, cogemos el primero que no sea un archivo del sistema o logs
+          destino = archivos[0]
+          print(f"Archivo de lista detectado: {destino}")
 
           try:
               peticion = urllib.request.Request(
-                  URL_ELCANO, 
-                  headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+                  URL_ELCANO,
+                  headers={"User-Agent": "Mozilla/5.0"}
               )
               with urllib.request.urlopen(peticion, timeout=60) as respuesta:
-                  fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
+                  fuente = respuesta.read().decode("utf-8-sig", errors="replace")
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          def normalizar(texto):
-              return "".join(c.upper() for c in texto if c.isalnum())
+          if "#EXTM3U" not in fuente or "#EXTINF:" not in fuente:
+              sys.exit("ERROR: La dirección de Elcano no ha devuelto una lista M3U válida.")
 
-          # Parsear Elcano extrayendo todos los canales disponibles con su hash limpio
-          canales_elcano = []
-          lineas_elcano = fuente_elcano.splitlines()
-          i = 0
-          while i < len(lineas_elcano):
-              linea = lineas_elcano[i].strip()
-              if linea.startswith("#EXTINF:"):
-                  url = None
-                  j = i + 1
-                  while j < len(lineas_elcano):
-                      candidata = lineas_elcano[j].strip()
-                      if candidata and not candidata.startswith("#"):
-                          url = candidata
-                          break
-                      j += 1
-                  if url:
-                      match_hash = re.search(r'([0-9a-fA-F]{40})', url)
-                      if match_hash:
-                          h_id = match_hash.group(1)
-                          url_limpia = f"http://127.0.0.1:6878/ace/getstream?id={h_id}"
-                      else:
-                          url_limpia = url
-                      
-                      nombre = linea.rsplit(",", 1)[-1].strip()
-                      canales_elcano.append({
-                          "extinf": linea,
-                          "nombre": nombre,
-                          "nombre_norm": normalizar(nombre),
-                          "url": url_limpia
-                      })
+          try:
+              original = destino.read_text(encoding="utf-8-sig")
+          except UnicodeDecodeError:
+              original = destino.read_text(encoding="latin-1")
+
+          # Extraer enlaces de la fuente de Elcano
+          def extraer_enlaces_fuente(texto):
+              lineas = texto.splitlines()
+              mapa_canales = {}
+              i = 0
+              while i < len(lineas):
+                  linea = lineas[i].strip()
+                  if linea.startswith("#EXTINF:"):
+                      url = None
+                      j = i + 1
+                      while j < len(lineas):
+                          candidata = lineas[j].strip()
+                          if candidata and not candidata.startswith("#"):
+                              url = candidata
+                              break
+                          j += 1
+                      if url:
+                          match_id = re.search(r'tvg-id="([^"]*)"', linea)
+                          tvg_id = match_id.group(1) if match_id else None
+                          nombre_limpio = linea.rsplit(",", 1)[-1].strip()
+                          mapa_canales[nombre_limpio.lower()] = url
+                          if tvg_id:
+                              mapa_canales[tvg_id.lower()] = url
                       i = j
-              i += 1
+                  i += 1
+              return mapa_canales
 
-          mapa_elcano = {c["nombre_norm"]: c["url"] for c in canales_elcano}
+          mapa_elcano = extraer_enlaces_fuente(fuente)
 
-          # Actualizar los canales que ya tienes en casa
-          lineas_casa = contenido_casa.splitlines()
-          lineas_actualizadas = []
+          # Actualizar manteniendo estrictamente el esqueleto y tvg-id
+          lineas_originales = original.splitlines()
+          nuevas_lineas = []
           i = 0
+          actualizados = 0
 
-          while i < len(lineas_casa):
-              linea = lineas_casa[i]
-              lineas_actualizadas.append(linea)
+          while i < len(lineas_originales):
+              linea = lineas_originales[i].strip()
+              nuevas_lineas.append(lineas_originales[i])
 
               if linea.startswith("#EXTINF:"):
-                  nombre_canal = linea.rsplit(",", 1)[-1].strip()
-                  nombre_norm_casa = normalizar(nombre_canal)
-                  
-                  if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
-                      url_actual = lineas_casa[i+1].strip()
-                      if nombre_norm_casa in mapa_elcano:
-                          lineas_actualizadas.append(mapa_elcano[nombre_norm_casa])
-                      else:
-                          # Búsqueda parcial por si el nombre varía ligeramente
-                          encontrado = False
-                          for k_elcano, v_elcano in mapa_elcano.items():
-                              if k_elcano in nombre_norm_casa or nombre_norm_casa in k_elcano:
-                                  lineas_actualizadas.append(v_elcano)
-                                  encontrado = True
-                                  break
-                          if not encontrado:
-                              lineas_actualizadas.append(url_actual)
-                      i += 1
+                match_tvg = re.search(r'tvg-id="([^"]*)"', linea)
+                nombre_canal = linea.rsplit(",", 1)[-1].strip()
+                
+                url_idx = i + 1
+                while url_idx < len(lineas_originales):
+                    candidata = lineas_originales[url_idx].strip()
+                    if candidata and not candidata.startswith("#"):
+                        break
+                    url_idx += 1
+
+                nueva_url = None
+                if match_tvg and match_tvg.group(1).lower() in mapa_elcano:
+                    nueva_url = mapa_elcano[match_tvg.group(1).lower()]
+                elif nombre_canal.lower() in mapa_elcano:
+                    nueva_url = mapa_elcano[nombre_canal.lower()]
+
+                if url_idx < len(lineas_originales):
+                    if nueva_url and nueva_url != lineas_originales[url_idx].strip():
+                        nuevas_lineas.append(nueva_url)
+                        actualizados += 1
+                    else:
+                        nuevas_lineas.append(lineas_originales[url_idx])
+                    i = url_idx
               i += 1
 
-          lista_final_casa = "\n".join(lineas_actualizadas) + ("\n" if not "".join(lineas_actualizadas).endswith("\n") else "")
-          archivo_casa.write_text(lista_final_casa, encoding="utf-8")
+          destino.write_text("\n".join(nuevas_lineas) + "\n", encoding="utf-8")
 
-          # Generar el archivo para Tailscale
-          lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
-          archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
+          print(f"Archivo actualizado correctamente: {destino}")
+          print(f"Canales con hashes actualizados: {actualizados}")
 
-          print("Sincronización con Elcano realizada correctamente.")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as salida:
+              salida.write(f"path={destino.as_posix()}\n")
           PY
 
       - name: Guardar cambios en GitHub
+        env:
+          TARGET_FILE: ${{ steps.update.outputs.path }}
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
-          git add "Mi lista acestream" "Canales m3u"
-          
+          git add -- "$TARGET_FILE"
+
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizacion de canales con Elcano"
+            git commit -m "Actualizar hashes de Elcano manteniendo estructura EPG"
             git push
           else
-            echo "No hay cambios que guardar."
+            echo "No hay cambios nuevos que guardar."
           fi
