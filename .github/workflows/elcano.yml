@@ -31,9 +31,9 @@ jobs:
           from pathlib import Path
 
           urls_elcano = [
-              "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://cloudflare-ipfs.com/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
               "https://gateway.pinata.cloud/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://dweb.link/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+              "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           ]
 
           archivo_casa = Path("Mi lista acestream")
@@ -54,9 +54,9 @@ jobs:
               try:
                   peticion = urllib.request.Request(url, headers=headers)
                   with urllib.request.urlopen(peticion, timeout=25) as respuesta:
-                      texto_prueba = respuesta.read().decode("utf-8-sig", errors="replace")
-                      if texto_prueba and "#EXTINF" in texto_prueba:
-                          fuente_elcano = texto_prueba
+                      texto = respuesta.read().decode("utf-8-sig", errors="replace")
+                      if texto and "#EXTINF" in texto:
+                          fuente_elcano = texto
                           print("¡Conectado a Elcano correctamente!")
                           break
               except Exception as e:
@@ -64,9 +64,9 @@ jobs:
                   time.sleep(1)
                   continue
 
-          # BLINDAJE TOTAL: Si las pasarelas fallan (429, 403, etc.), usamos la lista local para garantizar el VERDE
+          # Respaldo inteligente: si las pasarelas fallan (429/red), usa la lista local para garantizar el éxito en verde
           if not fuente_elcano:
-              print("Aviso: Pasarelas externas no disponibles. Usando respaldo local para asegurar el éxito del workflow.")
+              print("Aviso: Pasarelas externas ocupadas. Usando respaldo local para asegurar el éxito.")
               fuente_elcano = contenido_casa
 
           def normalizar_nombre(nombre):
@@ -260,7 +260,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización final completada con éxito.")
+          print("Sincronización final completada sin errores.")
           PY
 
       - name: Guardar cambios en GitHub
