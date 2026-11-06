@@ -21,11 +21,12 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización y orden de canales
+      - name: Sincronización y orden de canales con reintentos
         run: |
           python <<'PY'
           import re
           import sys
+          import time
           import urllib.request
           from pathlib import Path
 
@@ -41,12 +42,25 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          try:
-              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
-              with urllib.request.urlopen(peticion, timeout=60) as respuesta:
-                  fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
-          except Exception as error:
-              sys.exit(f"ERROR descargando Elcano: {error}")
+          # Descarga con reintentos automáticos para evitar errores 429 (Too Many Requests)
+          fuente_elcano = None
+          for intento in range(1, 4):
+              try:
+                  peticion = urllib.request.Request(
+                      URL_ELCANO, 
+                      headers={
+                          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+                      }
+                  )
+                  with urllib.request.urlopen(peticion, timeout=60) as respuesta:
+                      fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
+                  break
+              except Exception as error:
+                  print(f"Intento {intento} fallido al descargar Elcano: {error}")
+                  if intento == 3:
+                      sys.exit(f"ERROR: No se pudo descargar Elcano tras 3 intentos.")
+                  time.sleep(10) # Espera 10 segundos antes del siguiente reintento
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
@@ -174,8 +188,8 @@ jobs:
                   if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
                       lineas_finales_temp.append("")
                       for nom_f, extinf_f, url_f in lista_canales:
-                          lineas_finales_temp.append(extinf_f)
-                          lineas_finales_temp.append(url_f)
+                        lineas_finales_temp.append(extinf_f)
+                        lineas_finales_temp.append(url_f)
                       lineas_finales_temp.append("")
                       del clasificados[nombre_carp]
               i += 1
@@ -200,13 +214,13 @@ jobs:
           PY
 
       - name: Guardar cambios en GitHub
-        run: |
+        res: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion automatica cada 6 horas"
+            git commit -m "Actualizacion automatica con reintentos"
             git push
           else
             echo "No hay cambios que guardar."
