@@ -1,16 +1,22 @@
-name: Actualizador Automatico Elcano y Tailscale
+
+name: Actualizador Automatico Elcano
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: actualizar-elcano
+  cancel-in-progress: false
+
 jobs:
   actualizar-lista:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Descargar repositorio
@@ -21,139 +27,372 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Instalar bypassed de Cloudflare
+      - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
-          pip install requests cloudscraper
+          pip install requests
 
-      - name: Sincronización inteligente y blindada
+      - name: Sincronizacion inteligente de Elcano
         run: |
           python <<'PY'
           import re
           import sys
           import time
+          import unicodedata
+          import requests
           from pathlib import Path
-          import cloudscraper
+
+          # ==========================================
+          # CONFIGURACION
+          # ==========================================
 
           URLS_ELCANO = [
               "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+
               "https://tokyo.elcano-ipfs.workers.dev/k51qzi5uqu5di462t7j4vu4akwfhvtjhy88qbupktvoacqfqe9uforjvhyi4wr/hashes_acestream.m3u",
+
               "https://ipfs.io/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           ]
 
-          archivo_casa = Path("Mi lista acestream")
-          archivo_tailscale = Path("Canales m3u")
+          ARCHIVO = Path("Mi lista acestream")
 
-          if not archivo_casa.is_file():
-              sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream'.")
+          URL_LOCAL = "http://127.0.0.1:6878/ace/getstream?id="
 
-          try:
-              contenido_casa = archivo_casa.read_text(encoding="utf-8-sig")
-          except UnicodeDecodeError:
-              contenido_casa = archivo_casa.read_text(encoding="latin-1")
+          # ==========================================
+          # DESCARGA CON REINTENTOS
+          # ==========================================
 
-          # Usamos cloudscraper para saltarnos los bloqueos de Cloudflare y el error 429
-          scraper = cloudscraper.create_scraper()
-          fuente_elcano = None
+          def descargar_elcano():
 
-          for url in URLS_ELCANO:
-              try:
-                  print(f"Intentando descargar desde: {url}")
-                  resp = scraper.get(url, timeout=20)
-                  if resp.status_code == 200 and "#EXTM3U" in resp.text:
-                      fuente_elcano = resp.text
-                      print("¡Lista de Elcano obtenida con éxito mediante CloudScraper!")
-                      break
-                  else:
-                      print(f"Código de estado HTTP: {resp.status_code}, probando siguiente...")
-              except Exception as e:
-                  print(f"Aviso de error en conexión: {e}")
-              time.sleep(2)
+              sesion = requests.Session()
 
-          if not fuente_elcano:
-              sys.exit("ERROR CRÍTICO: Las pasarelas de Elcano devolvieron error de límite (429). Espera 10-15 minutos antes de volver a ejecutar manualmente.")
+              sesion.headers.update({
+                  "User-Agent": "Mozilla/5.0 (compatible; ElcanoUpdater/1.0)",
+                  "Accept": "application/vnd.apple.mpegurl, application/x-mpegURL, text/plain, */*"
+              })
+
+              for url in URLS_ELCANO:
+
+                  for intento in range(3):
+
+                      try:
+                          print(f"Descargando: {url}")
+                          respuesta = sesion.get(url, timeout=30)
+
+                          if respuesta.status_code == 200:
+
+                              contenido = respuesta.text
+
+                              if "#EXTM3U" in contenido:
+                                  print("Lista Elcano descargada correctamente.")
+                                  return contenido
+
+                              print("Respuesta recibida, pero no es una lista M3U.")
+                              break
+
+                          if respuesta.status_code == 429:
+                              espera = 15 * (intento + 1)
+
+                              retry = respuesta.headers.get("Retry-After", "")
+                              if retry.isdigit():
+                                  espera = max(espera, min(int(retry), 60))
+
+                              print(f"Limite 429. Esperando {espera} segundos.")
+                              time.sleep(espera)
+                              continue
+
+                          if respuesta.status_code >= 500:
+                              espera = 15 * (intento + 1)
+                              print(f"Error {respuesta.status_code}. Esperando {espera}s.")
+                              time.sleep(espera)
+                              continue
+
+                          print(f"Error HTTP {respuesta.status_code}. Probando otra fuente.")
+                          break
+
+                      except requests.RequestException as error:
+                          print(f"Error de conexion: {error}")
+                          if intento < 2:
+                              time.sleep(15 * (intento + 1))
+
+              return None
+
+          # ==========================================
+          # NORMALIZAR NOMBRES
+          # ==========================================
+
+          def normalizar(nombre):
+
+              nombre = unicodedata.normalize("NFKD", nombre)
+              nombre = "".join(
+                  c for c in nombre
+                  if not unicodedata.combining(c)
+              )
+
+              return re.sub(
+                  r"[^A-Z0-9]",
+                  "",
+                  nombre.upper()
+              )
+
+          # ==========================================
+          # EXTRAER HASH ACESTREAM
+          # ==========================================
+
+          def obtener_hash(url):
+
+              match = re.search(
+                  r"(?i)([a-f0-9]{40})",
+                  url
+              )
+
+              return match.group(1).lower() if match else None
+
+          # ==========================================
+          # LEER CANALES DE ELCANO
+          # ==========================================
 
           def parsear_m3u(texto):
+
               lineas = texto.splitlines()
-              entradas = []
+              canales = []
               i = 0
+
               while i < len(lineas):
+
                   linea = lineas[i].strip()
+
                   if linea.startswith("#EXTINF:"):
-                      url = None
+
                       j = i + 1
+
                       while j < len(lineas):
+
                           candidata = lineas[j].strip()
+
                           if candidata and not candidata.startswith("#"):
-                              url = candidata
                               break
+
                           j += 1
-                      if url:
-                          match_hash = re.search(r'([0-9a-fA-F]{40})', url)
-                          if match_hash:
-                              h_id = match_hash.group(1)
-                              url_limpia = f"http://127.0.0.1:6878/ace/getstream?id={h_id}"
-                          else:
-                              url_limpia = url
-                          
-                          nombre = linea.rsplit(",", 1)[-1].strip()
-                          entradas.append({
-                              "extinf": linea,
-                              "url": url_limpia,
-                              "nombre": nombre,
-                              "raw_url": url
-                          })
+
+                      if j < len(lineas):
+
+                          hash_id = obtener_hash(lineas[j])
+
+                          if hash_id:
+
+                              nombre = linea.rsplit(",", 1)[-1].strip()
+
+                              canales.append({
+                                  "nombre": nombre,
+                                  "normalizado": normalizar(nombre),
+                                  "extinf": linea,
+                                  "hash": hash_id,
+                                  "url": URL_LOCAL + hash_id
+                              })
+
                           i = j
+
                   i += 1
-              return entradas
 
-          canales_elcano = parsear_m3u(fuente_elcano)
-          print(f"Total canales parseados de Elcano: {len(canales_elcano)}")
+              return canales
 
-          lineas_casa = contenido_casa.splitlines()
-          lineas_actualizadas = []
+          # ==========================================
+          # COMPROBAR ARCHIVO PRINCIPAL
+          # ==========================================
+
+          if not ARCHIVO.is_file():
+              sys.exit("ERROR: No existe Mi lista acestream.")
+
+          try:
+              contenido = ARCHIVO.read_text(encoding="utf-8-sig")
+          except UnicodeDecodeError:
+              contenido = ARCHIVO.read_text(encoding="latin-1")
+
+          if not contenido.strip().startswith("#EXTM3U"):
+              sys.exit("ERROR: El archivo principal no es una M3U valida.")
+
+          # ==========================================
+          # DESCARGAR ELCANO
+          # ==========================================
+
+          fuente = descargar_elcano()
+
+          if not fuente:
+              sys.exit("ERROR: Ninguna fuente de Elcano ha respondido. No se modifica ningun archivo.")
+
+          canales = parsear_m3u(fuente)
+
+          if not canales:
+              sys.exit("ERROR: Elcano no contiene canales con hashes validos.")
+
+          print(f"Canales validos encontrados: {len(canales)}")
+
+          # ==========================================
+          # CREAR MAPA DE CANALES
+          # ==========================================
+
+          mapa = {}
+
+          for canal in canales:
+              mapa[canal["normalizado"]] = canal
+
+          # ==========================================
+          # ACTUALIZAR CANALES EXISTENTES
+          # SIN CAMBIAR SUS METADATOS
+          # ==========================================
+
+          lineas = contenido.splitlines()
+          resultado = []
+          nombres_existentes = set()
+
+          actualizados = 0
           i = 0
 
-          def normalizar(n):
-              return "".join(n.upper().split())
+          while i < len(lineas):
 
-          mapa_elcano = {normalizar(c["nombre"]): c["url"] for c in canales_elcano}
+              linea = lineas[i]
+              resultado.append(linea)
 
-          while i < len(lineas_casa):
-              linea = lineas_casa[i]
-              lineas_actualizadas.append(linea)
+              if linea.strip().startswith("#EXTINF:"):
 
-              if linea.startswith("#EXTINF:"):
-                  nombre_canal = linea.rsplit(",", 1)[-1].strip()
-                  nombre_norm = normalizar(nombre_canal)
-                  
-                  if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
-                      url_actual = lineas_casa[i+1].strip()
-                      if nombre_norm in mapa_elcano:
-                          lineas_actualizadas.append(mapa_elcano[nombre_norm])
+                  nombre = linea.rsplit(",", 1)[-1].strip()
+                  nombre_norm = normalizar(nombre)
+
+                  nombres_existentes.add(nombre_norm)
+
+                  j = i + 1
+
+                  while j < len(lineas):
+
+                      candidata = lineas[j].strip()
+
+                      if candidata and not candidata.startswith("#"):
+                          break
+
+                      j += 1
+
+                  if j < len(lineas):
+
+                      for k in range(i + 1, j):
+                          resultado.append(lineas[k])
+
+                      if nombre_norm in mapa:
+
+                          url_nueva = mapa[nombre_norm]["url"]
+                          url_actual = lineas[j].strip()
+
+                          if url_actual != url_nueva:
+                              actualizados += 1
+                              print(f"Actualizado: {nombre}")
+
+                          resultado.append(url_nueva)
+
                       else:
-                          lineas_actualizadas.append(url_actual)
+                          resultado.append(lineas[j])
+
+                      i = j + 1
+
+                  else:
                       i += 1
-              i += 1
 
-          lista_final_casa = "\n".join(lineas_actualizadas) + "\n"
-          archivo_casa.write_text(lista_final_casa, encoding="utf-8")
+              else:
+                  i += 1
 
-          lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
-          archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
+          # ==========================================
+          # AÑADIR CANALES NUEVOS
+          # SIN DUPLICADOS
+          # ==========================================
 
-          print("¡Sincronización completada con éxito absoluto!")
+          nuevos = 0
+          vistos = set(nombres_existentes)
+
+          for canal in canales:
+
+              nombre_norm = canal["normalizado"]
+
+              if not nombre_norm or nombre_norm in vistos:
+                  continue
+
+              extinf = canal["extinf"]
+
+              # Conservar la categoria de Elcano.
+              # Si no existe, crear una categoria de nuevos.
+
+              if "group-title=" not in extinf.lower():
+
+                  partes = extinf.split(",", 1)
+
+                  if len(partes) == 2:
+                      extinf = (
+                          partes[0]
+                          + ' group-title="ELCANO - NUEVOS",'
+                          + partes[1]
+                      )
+
+              resultado.append(extinf)
+              resultado.append(canal["url"])
+
+              vistos.add(nombre_norm)
+              nuevos += 1
+
+              print(f"CANAL NUEVO: {canal['nombre']} | HASH: {canal['hash']}")
+
+          # ==========================================
+          # GUARDAR SOLO SI HAY CAMBIOS
+          # ==========================================
+
+          lista_final = "\n".join(resultado) + "\n"
+
+          if lista_final != contenido:
+
+              temporal = ARCHIVO.with_suffix(".tmp")
+
+              temporal.write_text(
+                  lista_final,
+                  encoding="utf-8"
+              )
+
+              temporal.replace(ARCHIVO)
+
+              print("Archivo Mi lista acestream guardado.")
+
+          else:
+              print("No hay cambios. Se conserva el archivo original.")
+
+          # ==========================================
+          # RESUMEN
+          # ==========================================
+
+          print("")
+          print("================================")
+          print("       RESUMEN DE ELCANO")
+          print("================================")
+          print(f"Canales encontrados: {len(canales)}")
+          print(f"Canales actualizados: {actualizados}")
+          print(f"Canales nuevos: {nuevos}")
+          print("Canales antiguos conservados.")
+          print("Metadatos existentes conservados.")
+          print("Canales m3u: SIN MODIFICAR")
+          print("================================")
+
           PY
+
+      # ==========================================
+      # GUARDAR CAMBIOS EN GITHUB
+      # ==========================================
 
       - name: Guardar cambios en GitHub
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
-          git add "Mi lista acestream" "Canales m3u"
-          
+
+          git add -- "Mi lista acestream"
+
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion automatica de hashes de Elcano"
+            git commit -m "Actualizacion automatica Elcano"
             git push
+            echo "Cambios guardados correctamente."
           else
             echo "No hay cambios nuevos que guardar."
           fi
