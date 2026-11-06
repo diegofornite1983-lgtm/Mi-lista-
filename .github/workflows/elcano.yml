@@ -41,16 +41,12 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
-          # Sistema de seguridad inteligente: si el servidor externo bloquea o da error,
-          # utiliza el contenido local de casa para no romper jamás el flujo.
-          fuente_elcano = None
           try:
               peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
-              with urllib.request.urlopen(peticion, timeout=30) as respuesta:
+              with urllib.request.urlopen(peticion, timeout=60) as respuesta:
                   fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
-          except Exception as e:
-              print(f"Aviso de red (protección 429/bloqueo): {e}. Usando respaldo interno.")
-              fuente_elcano = contenido_casa
+          except Exception as error:
+              sys.exit(f"ERROR descargando Elcano: {error}")
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
