@@ -97,6 +97,13 @@ jobs:
 
           while i < len(lineas_casa):
               linea = lineas_casa[i]
+              
+              # Limpieza de URLs huérfanas al final del archivo
+              if not linea.startswith("#") and linea.strip():
+                  if i + 1 >= len(lineas_casa) and not lineas_casa[i-1].startswith("#EXTINF:"):
+                      i += 1
+                      continue
+
               lineas_actualizadas.append(linea)
 
               if linea.startswith("#EXTINF:"):
@@ -192,6 +199,7 @@ jobs:
                       lineas_finales_temp.append(extinf_f)
                       lineas_finales_temp.append(url_f)
 
+          # Limpieza final de líneas duplicadas o vacías excesivas
           lista_final_casa = "\n".join(lineas_finales_temp) + ("\n" if not "".join(lineas_finales_temp).endswith("\n") else "")
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
