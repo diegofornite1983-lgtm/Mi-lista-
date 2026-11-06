@@ -21,19 +21,21 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización y Blindaje Total
+      - name: Sincronización y orden de canales con multi-gateway
         run: |
           python <<'PY'
           import re
           import sys
+          import time
           import urllib.request
-          import datetime
           from pathlib import Path
 
-          urls_elcano = [
+          # Lista de pasarelas de Elcano / IPNS (multirruta para que nunca falle si una cae)
+          URLS_ELCANO = [
               "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://gateway.pinata.cloud/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://cloudflare-ipfs.com/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+              "https://tokyo.elcano-ipfs.workers.dev/k51qzi5uqu5di462t7j4vu4akwfhvtjhy88qbupktvoacqfqe9uforjvhyi4wr/hashes_acestream.m3u",
+              "https://k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs.ipns.dweb.link/hashes_acestream.m3u",
+              "https://ipfs.io/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           ]
 
           archivo_casa = Path("Mi lista acestream")
@@ -47,25 +49,32 @@ jobs:
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
+          # Bucle para probar todas las pasarelas de forma inteligente
           fuente_elcano = None
-          headers = {"User-Agent": "Mozilla/5.0"}
-
-          for url in urls_elcano:
-              try:
-                  peticion = urllib.request.Request(url, headers=headers)
-                  with urllib.request.urlopen(peticion, timeout=25) as respuesta:
-                      texto = respuesta.read().decode("utf-8-sig", errors="replace")
-                      if texto and "#EXTINF" in texto:
-                          fuente_elcano = texto
-                          print("¡Conectado a Elcano con éxito!")
+          for url in URLS_ELCANO:
+              print(text:=f"Intentando descargar desde: {url}")
+              for intento in range(1, 3):
+                  try:
+                      peticion = urllib.request.Request(
+                          url, 
+                          headers={
+                              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+                              "Accept": "*/*"
+                          }
+                      )
+                      with urllib.request.urlopen(peticion, timeout=25) as respuesta:
+                          fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
+                      if fuente_elcano and "#EXTINF" in fuente_elcano:
+                          print("¡Descarga exitosa desde esta pasarela!")
                           break
-              except Exception:
-                  continue
+                  except Exception as error:
+                      print(f"  Intento {intento} fallido: {error}")
+                      time.sleep(3)
+              if fuente_elcano and "#EXTINF" in fuente_elcano:
+                  break
 
-          # BLINDAJE ABSOLUTO: Si las pasarelas fallan, usamos el contenido local para que NUNCA dé error rojo
-          if not fuente_elcano:
-              print("Aviso: Pasarelas externas ocupadas. Usando respaldo interno para asegurar el éxito.")
-              fuente_elcano = contenido_casa
+          if not fuente_elcano or "#EXTINF" not in fuente_elcano:
+              sys.exit("ERROR CRÍTIC: No se pudo conectar a ninguna pasarela de Elcano.")
 
           def normalizar_nombre(nombre):
               n = nombre.upper()
@@ -100,7 +109,8 @@ jobs:
                           entradas.append({
                               "extinf": linea,
                               "url": url_limpia,
-                              "nombre": nombre
+                              "nombre": nombre,
+                              "raw_url": url
                           })
                           i = j
                   i += 1
@@ -109,17 +119,42 @@ jobs:
           canales_elcano = parsear_m3u(fuente_elcano)
           mapa_elcano_por_nombre = {normalizar_nombre(c["nombre"]): c["url"] for c in canales_elcano}
 
-          nombres_en_casa = set()
-          for l in contenido_casa.splitlines():
-              if l.startswith("#EXTINF:"):
-                  nombres_en_casa.add(normalizar_nombre(l.rsplit(",", 1)[-1].strip()))
+          lineas_casa = contenido_casa.splitlines()
+          lineas_actualizadas = []
+          hashes_en_casa = set()
 
-          def mapear_carpeta(nombre_canal):
+          for l in lineas_casa:
+              match_h = re.search(r'id=([0-9a-fA-F]{40})', l)
+              if match_h:
+                  hashes_en_casa.add(match_h.group(1).lower())
+
+          i = 0
+          while i < len(lineas_casa):
+              linea = lineas_casa[i]
+              lineas_actualizadas.append(linea)
+
+              if linea.startswith("#EXTINF:"):
+                  nombre_canal = linea.rsplit(",", 1)[-1].strip()
+                  nombre_norm = normalizar_nombre(nombre_canal)
+                  
+                  if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
+                      url_actual = lineas_casa[i+1].strip()
+                      if nombre_norm in mapa_elcano_por_nombre:
+                          lineas_actualizadas.append(mapa_elcano_por_nombre[nombre_norm])
+                      else:
+                          lineas_actualizadas.append(url_actual)
+                      i += 1
+              i += 1
+
+          def mapear_carpeta(nombre_canal, extinf_original):
               n = nombre_canal.upper()
-              if "HYPERMOTION" in n:
+              ext = extinf_original.upper()
+              if "HYPERMOTION" in n or "HYPERMOTION" in ext:
                   return "HYPERMOTION"
               elif "CHAMPIONS" in n or "CAMPEONES" in n:
                   return "CHAMPIONS"
+              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
+                  return "DAZN"
               elif "LALIGA" in n or "M+ LALIGA" in n or "DAZN LIGA" in n or ("LIGA" in n and "CAMPEONES" not in n):
                   return "LA LIGA Y DAZN LIGA"
               elif "DAZN" in n:
@@ -134,44 +169,62 @@ jobs:
                   return "EUROSPORT"
               elif "FEDERACION" in n or "RFEF" in n:
                   return "PRIMERA FEDERACIÓN"
-              elif "ESTRENOS" in n or "CINE" in n or "ACCION" in n or "COMEDIA" in n or "HITS" in n or "DRAMA" in n or "DOCUMENTALES" in n or "MOVISTAR" in n:
+              elif "ESTRENOS" in n or "ACCION" in n or "CINE" in n or "COMEDIA" in n or "HITS" in n or "DRAMA" in n or "INDIE" in n or "ROMANCE" in n or "TERROR" in n or "ORIGINALES" in n or "DOCUMENTALES" in n or "MOVISTAR PLUS" in n or "MOVISTAR+" in n:
                   return "MOVISTAR"
               else:
                   return "MOVISTAR DEP-VAMOS"
 
           novedades = []
           for c in canales_elcano:
-              if normalizar_nombre(c["nombre"]) not in nombres_en_casa:
+              match_nh = re.search(r'id=([0-9a-fA-F]{40})', c["url"])
+              h_val = match_nh.group(1).lower() if match_nh else ""
+              if h_val and h_val not in hashes_en_casa:
                   novedades.append(c)
 
-          lineas_actualizadas = contenido_casa.splitlines()
+          clasificados = {}
+          for c in novedades:
+              carp = mapear_carpeta(c["nombre"], c["extinf"])
+              if carp not in clasificados:
+                  clasificados[carp] = []
+              extinf_f = c["extinf"]
+              if 'group-title="' in extinf_f:
+                  extinf_f = re.sub(r'group-title="[^"]*"', f'group-title="{carp}"', extinf_f)
+              else:
+                  extinf_f = extinf_f.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
+              clasificados[carp].append((c["nombre"], extinf_f, c["url"]))
 
-          if novedades:
-              lineas_actualizadas.append("")
-              lineas_actualizadas.append(f"# ==========================================")
-              lineas_actualizadas.append(f"# NUEVOS CANALES ELCANO - {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}")
-              lineas_actualizadas.append(f"# ==========================================")
-              for c in novedades:
-                  carp = mapear_carpeta(c["nombre"])
-                  extinf = c["extinf"]
-                  if 'group-title="' in extinf:
-                      extinf = re.sub(r'group-title="[^"]*"', f'group-title="{carp}"', extinf)
-                  else:
-                      extinf = extinf.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
-                  
-                  lineas_actualizadas.append(extinf)
-                  lineas_actualizadas.append(c["url"])
+          lineas_finales_temp = []
+          i = 0
+          while i < len(lineas_actualizadas):
+              l = lineas_actualizadas[i]
+              lineas_finales_temp.append(l)
+              for nombre_carp, lista_canales in list(clasificados.items()):
+                  if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp in l):
+                      lineas_finales_temp.append("")
+                      for nom_f, extinf_f, url_f in lista_canales:
+                          lineas_finales_temp.append(extinf_f)
+                          lineas_finales_temp.append(url_f)
+                      lineas_finales_temp.append("")
+                      del clasificados[nombre_carp]
+              i += 1
 
-          # Sello de tiempo para asegurar cambio y commit obligatorio
-          lineas_actualizadas.append(f"# Ultima comprobacion: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+          if clasificados:
+              for carp, lista_canales in clasificados.items():
+                  lineas_finales_temp.append("")
+                  lineas_finales_temp.append(f"# ==========================================")
+                  lineas_finales_temp.append(f"# CARPETA: {carp}")
+                  lineas_finales_temp.append(f"# ==========================================")
+                  for nom_f, extinf_f, url_f in lista_canales:
+                      lineas_finales_temp.append(extinf_f)
+                      lineas_finales_temp.append(url_f)
 
-          lista_final_casa = "\n".join(lineas_actualizadas) + "\n"
+          lista_final_casa = "\n".join(lineas_finales_temp) + ("\n" if not "".join(lineas_finales_temp).endswith("\n") else "")
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print(f"Sincronización completada con éxito. Novedades añadidas: {len(novedades)}")
+          print("Sincronización completada con éxito.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -181,10 +234,8 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion automatica y de canales de Elcano"
+            git commit -m "Actualizacion automatica multi-gateway"
             git push
           else
-            echo "Forzando commit de actualizacion"
-            git commit --allow-empty -m "Forzar sincronizacion"
-            git push
+            echo "No hay cambios que guardar."
           fi
