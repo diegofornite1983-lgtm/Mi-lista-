@@ -78,13 +78,23 @@ jobs:
                   i += 1
               return entradas
 
+          # Descarga segura con control estricto del Error 429
           try:
               peticion = urllib.request.Request(
                   URL_ELCANO,
-                  headers={"User-Agent": "Mozilla/5.0"}
+                  headers={
+                      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+                  }
               )
               with urllib.request.urlopen(peticion, timeout=60) as respuesta:
                   fuente = respuesta.read().decode("utf-8-sig", errors="replace")
+          except urllib.error.HTTPError as e:
+              if e.code == 429:
+                  print("AVISO: Servidor de Elcano saturado temporalmente (Error 429). Se omite este ciclo para evitar bloqueos.")
+                  sys.exit(0)
+              else:
+                  sys.exit(f"ERROR HTTP descargando Elcano: {e}")
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
@@ -97,7 +107,6 @@ jobs:
           except UnicodeDecodeError:
               original = archivo_casa.read_text(encoding="latin-1")
 
-          # Actualizar hashes de los canales existentes y mantener estructura
           lineas_casa = original.splitlines()
           lineas_actualizadas = []
           i = 0
@@ -121,7 +130,6 @@ jobs:
                       i += 1
               i += 1
 
-          # Añadir canales nuevos de Elcano que no estén en tu lista
           nuevos_bloques = []
           for norm_nombre, datos in canales_elcano.items():
               if norm_nombre not in nombres_procesados:
@@ -135,11 +143,9 @@ jobs:
               lineas_actualizadas.append("# ==========================================")
               lineas_actualizadas.extend(nuevos_bloques)
 
-          # Guardar archivo de casa
           lista_final_casa = "\n".join(lineas_actualizadas) + "\n"
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
-          # Generar archivo de Tailscale automáticamente
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
