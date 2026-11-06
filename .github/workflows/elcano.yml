@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización definitiva, EPG limpia y orden estricto de Liga
+      - name: Sincronización definitiva, EPG y orden estricto de nuevos
         run: |
           python <<'PY'
           import re
@@ -172,7 +172,7 @@ jobs:
                   extinf_f = extinf_f.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
               clasificados[carp].append((c["nombre"], extinf_f, c["url"]))
 
-          # ORDENACIÓN ESTRICTA ABSOLUTA PARA LA LIGA: Movistar primero, DAZN después
+          # ORDENACIÓN ESTRICTA Y SEPARADA DE NUEVOS EN LA LIGA: Movistar arriba, DAZN abajo
           if "LA LIGA Y DAZN LIGA" in clasificados:
               lista_liga = clasificados["LA LIGA Y DAZN LIGA"]
               movistar_liga_nuevos = [ch for ch in lista_liga if "DAZN" not in ch[0].upper()]
@@ -208,23 +208,30 @@ jobs:
 
           if clasificados:
               for carp, lista_canales in clasificados.items():
+                  # Si por lo que sea sobraran de la liga aquí también los separamos bien
+                  if carp == "LA LIGA Y DAZN LIGA":
+                      movistar_liga_nuevos = [ch for ch in lista_canales if "DAZN" not in ch[0].upper()]
+                      dazn_liga_nuevos = [ch for ch in lista_canales if "DAZN" in ch[0].upper()]
+                      lista_canales = movistar_liga_nuevos + dazn_liga_nuevos
+
                   lineas_finales_temp.append("")
                   lineas_finales_temp.append(f"# ==========================================")
                   lineas_finales_temp.append(f"# CARPETA: {carp}")
                   lineas_finales_temp.append(f"# ==========================================")
                   for nom_f, extinf_f, url_f in lista_canales:
-                      if "DAZN" in nom_f.upper():
-                          if "2" in nom_f.upper():
-                              extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga 2 HD"', extinf_f)
+                      if carp == "LA LIGA Y DAZN LIGA":
+                          if "DAZN" in nom_f.upper():
+                              if "2" in nom_f.upper():
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga 2 HD"', extinf_f)
+                              else:
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga HD"', extinf_f)
                           else:
-                              extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="DAZN LaLiga HD"', extinf_f)
-                      else:
-                          if "2" in nom_f.upper():
-                              extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', extinf_f)
-                          elif "3" in nom_f.upper():
-                              extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', extinf_f)
-                          else:
-                              extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', extinf_f)
+                              if "2" in nom_f.upper():
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 2 HD"', extinf_f)
+                              elif "3" in nom_f.upper():
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga 3 HD"', extinf_f)
+                              else:
+                                  extinf_f = re.sub(r'tvg-id="[^"]*"', 'tvg-id="M+ LaLiga HD"', extinf_f)
                       lineas_finales_temp.append(extinf_f)
                       lineas_finales_temp.append(url_f)
 
@@ -234,7 +241,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización y orden estricto completados con éxito.")
+          print("Sincronización y ordenación de nuevos completada.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -244,7 +251,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Orden estricto de Liga aplicado correctamente"
+            git commit -m "Orden estricto separado para canales nuevos de Liga"
             git push
           else
             echo "No hay cambios que guardar."
