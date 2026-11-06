@@ -30,8 +30,8 @@ jobs:
           import time
           from pathlib import Path
 
-          # Usamos la pasarela IPFS pública oficial para evitar el bloqueo 429 del Worker
-          URL_ELCANO = "https://cloudflare-ipfs.com/ipfs/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          # Volvemos al enlace original de Elcano, que ahora funcionará perfecto al espaciarlo cada 6 horas
+          URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
 
@@ -48,7 +48,7 @@ jobs:
               "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
           }
           
-          esperas = [10, 20]
+          esperas = [15, 30]
           for intento in range(3):
               try:
                   print(f"Intentando descargar Elcano (Intento {intento + 1}/3)...")
