@@ -29,15 +29,14 @@ jobs:
           import sys
           import time
           import urllib.request
+          import urllib.parse
           from pathlib import Path
 
-          # Lista de pasarelas IPFS oficiales de respaldo para evitar el error 429
-          URLS_ELCANO = [
-              "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://ipfs.io/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://dweb.link/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://w3s.link/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
-              "https://gateway.pinata.cloud/ipns/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          # URLs directas y pasarelas proxy para saltarse el bloqueo de Cloudflare en GitHub Actions
+          URLS_INTENTO = [
+              "https://api.allorigins.win/raw?url=" + urllib.parse.quote("https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"),
+              "https://corsproxy.io/?https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u",
+              "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           ]
 
           archivo_lista = Path("Mi lista acestream")
@@ -50,30 +49,30 @@ jobs:
           except UnicodeDecodeError:
               original = archivo_lista.read_text(encoding="latin-1")
 
-          # Intentar descarga rotando por las diferentes pasarelas IPFS
+          # Descargar usando los proxys anti-bloqueo
           fuente = None
-          for url_elcano in URLS_ELCANO:
+          for url in URLS_INTENTO:
               try:
-                  print(probando := f"Probando pasarela: {url_elcano}")
+                  print(f"Intentando descargar mediante: {url[:50]}...")
                   peticion = urllib.request.Request(
-                      url_elcano, 
+                      url, 
                       headers={
-                          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-                          "Cache-Control": "no-cache"
+                          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+                          "Accept": "*/*"
                       }
                   )
-                  with urllib.request.urlopen(peticion, timeout=20) as respuesta:
+                  with urllib.request.urlopen(peticion, timeout=25) as respuesta:
                       contenido = respuesta.read().decode("utf-8-sig", errors="replace")
                   if contenido and "#EXTINF" in contenido:
                       fuente = contenido
-                      print("¡Descarga exitosa desde esta pasarela!")
+                      print("¡Descarga completada con éxito!")
                       break
               except Exception as e:
-                  print(f"Fallo en pasarela: {e}")
-                  time.sleep(1)
+                  print(f"Fallo en este intento: {e}")
+                  time.sleep(2)
 
           if not fuente or "#EXTINF" not in fuente:
-              print("AVISO: Todas las pasarelas IPFS están saturadas temporalmente. Se mantiene la lista actual intacta.")
+              print("AVISO: No se pudo conectar con Elcano en este momento. Se mantiene la lista actual intacta.")
               sys.exit(0)
 
           def normalizar_nombre(nombre):
@@ -121,7 +120,7 @@ jobs:
           lineas_casa = original.splitlines()
           lineas_actualizadas = []
 
-          # Actualizar hashes de canales existentes
+          # Actualizar hashes respetando la estructura y EPG original
           i = 0
           while i < len(lineas_casa):
               linea = lineas_casa[i]
@@ -168,7 +167,7 @@ jobs:
               else:
                   return "MOVISTAR DEP-VAMOS"
 
-          # Detectar canales nuevos de Elcano que no tengas
+          # Detectar canales nuevos y ordenarlos en sus carpetas
           nombres_en_casa = {normalizar_nombre(c["nombre"]) for c in parsear_m3u(original)}
           clasificados = {}
           for c in canales_elcano:
@@ -183,7 +182,6 @@ jobs:
                       extinf_f = extinf_f.replace('#EXTINF:-1', f'#EXTINF:-1 group-title="{carp}"')
                   clasificados[carp].append((c["nombre"], extinf_f, c["url"]))
 
-          # Insertar los nuevos dentro de sus carpetas correspondientes
           lineas_finales = []
           i = 0
           while i < len(lineas_actualizadas):
@@ -199,7 +197,6 @@ jobs:
                       del clasificados[nombre_carp]
               i += 1
 
-          # Si queda alguna carpeta nueva sin cabecera, créala al final
           if clasificados:
               for carp, lista_canales in clasificados.items():
                   lineas_finales.append("")
@@ -211,7 +208,7 @@ jobs:
                       lineas_finales.append(url_f)
 
           archivo_lista.write_text("\n".join(lineas_finales) + "\n", encoding="utf-8")
-          print("Sincronización completada con éxito.")
+          print("Sincronización y ordenación completadas con éxito.")
           PY
 
       - name: Generar Canales m3u para Tailscale
