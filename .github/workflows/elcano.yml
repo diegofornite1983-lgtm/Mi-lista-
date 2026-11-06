@@ -196,7 +196,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización y actualización completada perfectamente.")
+          print("Sincronización final completada correctamente.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -206,7 +206,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion completa y limpia de canales"
+            git commit -m "Actualizacion completa de canales y hashes"
             git push
           else
             echo "No hay cambios que guardar."
