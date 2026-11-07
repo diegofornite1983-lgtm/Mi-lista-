@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización milimétrica por carpetas y EPG blindada
+      - name: Sincronización milimétrica estricta por bloques
         run: |
           python <<'PY'
           import re
@@ -125,21 +125,21 @@ jobs:
                   return "HYPERMOTION"
               elif "CHAMPIONS" in n or "CAMPEONES" in n:
                   return "CHAMPIONS"
-              elif "LALIGA" in n or "M+ LALIGA" in n or "DAZN LIGA" in n or ("LIGA" in n and "CAMPEONES" not in n):
-                  return "LA LIGA Y DAZN LIGA"
-              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
-                  return "DAZN 1"
               elif "F1" in n or "FORMULA" in n:
                   return "F1"
               elif "MOTOGP" in n:
                   return "MotoGP"
+              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
+                  return "DAZN 1"
               elif "BALONCESTO" in n or "NBA" in n:
                   return "BALONCESTO"
               elif "EUROSPORT" in n:
                   return "EUROSPORT"
               elif "FEDERACION" in n or "RFEF" in n:
                   return "PRIMERA FEDERACIÓN"
-              elif any(k in n for k in ["ESTRENOS", "ACCION", "CINE", "COMEDIA", "HITS", "DRAMA", "INDIE", "ROMANCE", "TERROR", "ORIGINALES", "DOCUMENTALES", "MOVISTAR PLUS", "MOVISTAR+"]) and "TDT" not in ext:
+              elif "LALIGA" in n or "DAZN LALIGA" in n:
+                  return "LA LIGA Y DAZN LIGA"
+              elif any(k in n for k in ["ESTRENOS", "ACCION", "CINE", "COMEDIA", "HITS", "DRAMA", "INDIE", "ROMANCE", "TERROR", "ORIGINALES", "DOCUMENTALES", "MOVISTAR PLUS", "MOVISTAR+", "COCINA", "CAZA", "TORO", "AXN", "CALLE 13", "AMC", "COMEDY", "SYFY", "SKYSHOWTIME", "HBO"]):
                   return "MOVISTAR (CINE, SERIES Y DOCUMENTALES)"
               else:
                   return "MOVISTAR DEP-VAMOS"
@@ -162,7 +162,7 @@ jobs:
               l = lineas_actualizadas[i]
               lineas_finales_temp.append(l)
               for nombre_carp, lista_canales in list(clasificados.items()):
-                  if nombre_carp.split()[0].upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp.upper() in l.upper()):
+                  if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or "GROUP-TITLE" in l.upper()):
                       lineas_finales_temp.append("")
                       for nom_f, extinf_f, url_f in lista_canales:
                           lineas_finales_temp.append(extinf_f)
@@ -187,7 +187,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización milimétrica completada con éxito.")
+          print("Sincronización milimétrica estricta completada con éxito.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -197,7 +197,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizacion milimetrica respetando carpetas y EPG original"
+            git commit -m "Sincronizacion milimetrica estricta respetando estructura"
             git push
           else
             echo "No hay cambios que guardar."
