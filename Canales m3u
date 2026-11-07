@@ -271,7 +271,7 @@ http://100.90.204.66:6878/ace/getstream?id=303502c689c33f8ff8539a036225c029e42e2
 http://100.90.204.66:6878/ace/getstream?id=4048be88f84250719e864868e537612f389df48e
 
 #EXTINF:-1 tvg-id="TDP.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="MOVISTAR",Teledeporte HD
-https://rtvelivestream.rtve.es/rtvesec/tdp/tdp_main_dvr.m3u8
+http://100.90.204.66:6878/ace/getstream?id=c7d8405bdef3650b9bac58042c3708440ef286a8
 
 #EXTINF:-1 tvg-id="Antena 3 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Antena%203.png" group-title="MOVISTAR",Antena 3 2876
 http://100.90.204.66:6878/ace/getstream?id=ea8e71ca4c755812bb753838a31f5357426f2876
@@ -569,7 +569,7 @@ http://100.90.204.66:6878/ace/getstream?id=d2b5299ed45cbaf35482bb0869b2c2f75fbed
 http://100.90.204.66:6878/ace/getstream?id=eadc069bbd45d77cb33ca3bac6f6d86281597122
 
 #EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos 3
-http://100.90.204.66:6878/ace/getstream?id=30de10517ae304747a56addc1dfba2e963852e52
+http://100.90.204.66:6878/ace/getstream?id=8d752ceceaa26b063d8edfa9c70352ada62c424d
 
 #EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos 4
 http://100.90.204.66:6878/ace/getstream?id=d2b5299ed45cbaf35482bb0869b2c2f75fbed64a
