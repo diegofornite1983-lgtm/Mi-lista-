@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización automática ELCANO Máxima Calidad
+      - name: Sincronización automática ELCANO con prioridad 1080p arriba
         run: |
           python <<'PY'
           import re
@@ -49,7 +49,7 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 1. Parsear los canales de Elcano y asignarles el grupo con el nombre oficial
+          # 1. Parsear los canales de Elcano
           lineas_elcano = fuente_elcano.splitlines()
           canales_raw = []
           i = 0
@@ -83,21 +83,34 @@ jobs:
                       i = j
               i += 1
 
+          # Criterio de ordenación avanzado: Prioridad de canales Y obligar a que 1080p/4K vayan antes que 720p
           def prioridad_elcano(item):
-              n = item[0]
-              if "M+ LALIGA" in n: return 1
-              if "DAZN LALIGA" in n: return 2
-              if "CAMPEONES" in n: return 3
-              if "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n: return 4
-              if "F1" in n: return 5
-              if "MOTOGP" in n: return 6
-              if "DEPORTES" in n or "VAMOS" in n: return 7
-              if "BALONCESTO" in n: return 8
-              return 9
+              nombre = item[0]
+              
+              # Asignar peso principal por tipo de evento/liga
+              if "M+ LALIGA" in nombre: bloque = 1
+              elif "DAZN LALIGA" in nombre: bloque = 2
+              elif "CAMPEONES" in nombre: bloque = 3
+              elif "DAZN 1" in nombre or "DAZN 2" in nombre or "DAZN 3" in nombre or "DAZN 4" in nombre: bloque = 4
+              elif "F1" in nombre: bloque = 5
+              elif "MOTOGP" in nombre: bloque = 6
+              elif "DEPORTES" in nombre or "VAMOS" in nombre: bloque = 7
+              elif "BALONCESTO" in nombre: bloque = 8
+              else: bloque = 9
+
+              # Sub-criterio de calidad: 1080p y 4K van antes (subnivel 0), los demás o 720p van después (subnivel 1)
+              if "1080" in nombre or "4K" in nombre:
+                  calidad = 0
+              elif "720" in nombre:
+                  calidad = 2
+              else:
+                  calidad = 1
+
+              return (bloque, calidad, nombre)
 
           canales_ordenados = sorted(canales_raw, key=prioridad_elcano)
 
-          # Construir el bloque automático limpio con el nuevo nombre de carpeta
+          # Construir el bloque automático limpio
           bloque_automatico = [
               "# ==========================================",
               "# ZONA AUTOMATICA: ⭐ ELCANO [MÁXIMA CALIDAD]",
@@ -134,7 +147,7 @@ jobs:
           # Unir todo de forma perfectamente estructurada
           texto_final = (
               cabecera_m3u + 
-              texto_nuevo_elcano + 
+              texto_nuevo_elicano + 
               "\n\n\n# ==========================================\n" +
               "# ZONA PERSONAL: TUS CATEGORÍAS Y LISTAS\n" +
               "# ==========================================\n\n" + 
@@ -148,7 +161,7 @@ jobs:
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
 
-          print("¡Sincronización completada con éxito cada 3 horas!")
+          print("¡Sincronización completada: 1080p primeros y cada 3 horas!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -158,7 +171,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización automática carpeta ELCANO cada 3 horas"
+            git commit -m "Actualización: 1080p prioritarios en ELCANO cada 3 horas"
             git push
           else
             echo "No hay cambios que guardar."
