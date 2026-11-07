@@ -48,7 +48,7 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 1. Parsear canales nuevos de Elcano y forzar la carpeta aislada
+          # 1. Parsear los canales nuevos de la red Elcano y empaquetarlos únicamente en la carpeta superior ELCANO
           lineas_elcano = fuente_elcano.splitlines()
           canales_raw = []
           i = 0
@@ -67,11 +67,11 @@ jobs:
                       match_h = re.search(r'([0-9a-fA-F]{40})', url)
                       if match_h:
                           h_id = match_h.group(1)
-                          url_local = f"http://127.0.0.1:6878/ace/getstream?id={h_id}"
+                          url_local = f"http://127.0.0{h_id}"
                       else:
                           url_local = url
 
-                      # Forzar group-title="ELCANO" para que se queden en su propia carpeta en tu app
+                      # Forzar group-title="ELCANO" de forma estricta para estos canales dinámicos
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="ELCANO"', linea)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="ELCANO"')
@@ -95,64 +95,68 @@ jobs:
 
           canales_ordenados = sorted(canales_raw, key=prioridad_elcano)
 
-          # Construir bloque superior aislado de Elcano
-          bloque_elcano = [
-              "# ==========================================",
-              "# CARPETA: ELCANO",
-              "# =========================================="
-          ]
+          # Preparar el bloque de canales dinámicos aislados de Elcano
+          bloque_elcano = []
           for _, inf, u in canales_ordenados:
               bloque_elcano.append(inf)
               bloque_elcano.append(u)
 
-          # 2. Leer tus categorías personales y limpiar de forma segura SOLO restos de ejecuciones automatizadas anteriores
+          # 2. Filtrar tu archivo original de forma segura línea a línea sin tocar tus canales personales
           lineas_casa = contenido_casa.splitlines()
           lineas_personales = []
           
-          en_bloque_elcano_automatico = False
+          idx = 0
+          en_bloque_elcano_anterior = False
           
-          for linea in lineas_casa:
-              linea_strip = linea.strip()
+          while idx < len(lineas_casa):
+              linea = lineas_casa[idx].strip()
               
-              # Saltar las dos cabeceras iniciales para no duplicarlas
-              if linea_strip.startswith("#EXTM3U") or linea_strip.startswith("#EXTVLCOPT"):
+              # Omitir cabeceras globales viejas para evitar duplicados en la reconstrucción
+              if linea.startswith("#EXTM3U") or linea.startswith("#EXTVLCOPT"):
+                  idx += 1
                   continue
                   
-              # Detectar si entramos en la zona donde el script automático escribe su carpeta
-              if "CARPETA: ELCANO" in linea:
-                  en_bloque_elcano_automatico = True
+              # Detectar si entramos en un bloque automático de ELCANO previo para limpiarlo
+              if "ZONA AUTOMATICA: CARPETA ELCANO" in linea:
+                  en_bloque_elcano_anterior = True
+                  idx += 1
+                  continue
+              
+              if "FIN ZONA AUTOMATICA" in linea:
+                  en_bloque_elcano_anterior = False
+                  idx += 1
                   continue
                   
-              # Si vemos que empiezan tus categorías originales, desactivamos el salto
-              if "CARPETA: LA LIGA Y DAZN LIGA" in linea:
-                  en_bloque_elcano_automatico = False
-                  
-              # Si estamos dentro del bloque automático de ELCANO, saltamos líneas
-              if en_bloque_elcano_automatico:
-                  # Si encontramos una línea que pertenece de verdad a tus listas manuales, la salvamos por si acaso
-                  if "LA LIGA Y DAZN LIGA" in linea or "MOVISTAR" in linea:
-                      en_bloque_elcano_automatico = False
-                  else:
-                      continue
-                      
-              lineas_personales.append(linea)
+              if en_bloque_elcano_anterior:
+                  idx += 1
+                  continue
+              
+              # Si no es basura de ejecuciones anteriores, guardamos tu línea tal cual (con tus grupos, canales y espacios)
+              lineas_personales.append(lineas_casa[idx])
+              idx += 1
 
-          # 3. Ensamblar todo respetando tu estructura exacta
-          cabecera_epg = (
-              '#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
+          # 3. Ensamblar el archivo final con las cabeceras estándar
+          cabecera_global = (
+              '#EXTM3U url-tvg="https://githubusercontent.com,'
               'https://epgshare01.online,'
               'https://githubusercontent.com" refresh="3600"\n'
               '#EXTVLCOPT:network-caching=1000\n'
+              '#EXTGRP: group-title="ELCANO" group-logo="https://githubusercontent.com"\n'
           )
 
-          texto_final = cabecera_epg + "\n" + "\n".join(bloque_elcano) + "\n\n" + "\n".join(lineas_personales) + "\n"
+          # Marcadores invisibles para que el script sepa qué borrar en la próxima hora sin tocar tus canales
+          zona_elcano_auto = "# ZONA AUTOMATICA: CARPETA ELCANO\n" + "\n".join(bloque_elcano) + "\n# FIN ZONA AUTOMATICA\n"
 
-          archivo_casa.write_text(texto_final, encoding="utf-8")
+          texto_final_casa = cabecera_global + "\n" + zona_elcano_auto + "\n" + "\n".join(lineas_personales) + "\n"
 
-          texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
-          archivo_tailscale.write_text(texto_ts, encoding="utf-8")
+          # Guardar lista local
+          archivo_casa.write_text(texto_final_casa, encoding="utf-8")
 
-          print("¡Lista sincronizada perfectamente sin tocar tus canales!")
+          # Generar lista para Tailscale reemplazando IPs locales
+          texto_final_ts = texto_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
+          archivo_tailscale.write_text(texto_final_ts, encoding="utf-8")
+
+          print("¡Lista sincronizada con éxito! Carpeta ELCANO creada arriba sin tocar el resto.")
           PY
 
       - name: Guardar cambios en GitHub
