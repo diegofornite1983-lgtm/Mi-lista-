@@ -44,7 +44,7 @@ http://100.90.204.66:6878/ace/getstream?id=79c9dbec46dfa7de3acea6e5e05118e17dc0f
 http://100.90.204.66:6878/ace/getstream?id=3097d7e7ff0fe414711ee067a841168b6f5671cb
 
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 1080p
-http://100.90.204.66:6878/ace/getstream?id=3a03dc436b15f1d5d7b285c80b982da02502c26d
+http://100.90.204.66:6878/ace/getstream?id=599fb52eba4bd937b2029210bdeca9f1a34a32da
 
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 9745
 http://100.90.204.66:6878/ace/getstream?id=5437f76710c6cf7769e4a101ee52a6f4d4b39745
@@ -53,16 +53,16 @@ http://100.90.204.66:6878/ace/getstream?id=5437f76710c6cf7769e4a101ee52a6f4d4b39
 http://100.90.204.66:6878/ace/getstream?id=7f9857c45764ef2c7cdfb619b89db3056a57a51f
 
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 1080p 
-http://100.90.204.66:6878/ace/getstream?id=3a03dc436b15f1d5d7b285c80b982da02502c26d
+http://100.90.204.66:6878/ace/getstream?id=599fb52eba4bd937b2029210bdeca9f1a34a32da
 
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 4a3a
 http://100.90.204.66:6878/ace/getstream?id=8a25653a2f774f4ae1062d38a30dcd714d304a3a
 
 #EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 1080p 
-http://100.90.204.66:6878/ace/getstream?id=147635d4205d3be55c67d10e9f25ad6d093e5264
+http://100.90.204.66:6878/ace/getstream?id=4ef8d5f781b709d479cfc3961de9c92f0f0dcb0c
 
 #EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 720p 
-http://100.90.204.66:6878/ace/getstream?id=db26cad444717c262dddb5ea37301ee779d4f5b9
+http://100.90.204.66:6878/ace/getstream?id=4ef8d5f781b709d479cfc3961de9c92f0f0dcb0c
 
 #EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 e61f
 http://100.90.204.66:6878/ace/getstream?id=4e8f13dfa3a7719ce7c0e381cce2c58afc5ce61f
@@ -100,7 +100,7 @@ http://100.90.204.66:6878/ace/getstream?id=fd869f34346154ca7cd78d46cbf7a6b8671be
 # ==========================================
 
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 1080p 
-http://100.90.204.66:6878/ace/getstream?id=30b9909b14b1924798573cace9f41369e1a334c5
+http://100.90.204.66:6878/ace/getstream?id=a2d33536b7d55727c8f6bea010624d6478c3ba2d
 
 
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 8bc8
@@ -250,7 +250,7 @@ http://100.90.204.66:6878/ace/getstream?id=cd0188292b6b3876ff66c99bd3d25eab88b41
 # ==========================================
 
 #EXTINF:-1 tvg-id="La 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 TVE 4K *
-http://100.90.204.66:6878/ace/getstream?id=2e44af345b1118be0844364b335a617364166849
+http://100.90.204.66:6878/ace/getstream?id=fff8654ad6ef3ddb4ce3998bda9056ab28a66a1a
 
 #EXTINF:-1 tvg-id="La 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 06dd
 http://100.90.204.66:6878/ace/getstream?id=9c079e1bbd01814c107e89187b8c24ba0ac306dd
@@ -259,13 +259,13 @@ http://100.90.204.66:6878/ace/getstream?id=9c079e1bbd01814c107e89187b8c24ba0ac30
 https://rtvelivestream.rtve.es/rtvesec/la1/la1_main_dvr.m3u8
 
 #EXTINF:-1 tvg-id="La 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 TVE 720p *
-http://100.90.204.66:6878/ace/getstream?id=71c0a154022167992d7752e0dd5d348df94618da
+http://100.90.204.66:6878/ace/getstream?id=fff8654ad6ef3ddb4ce3998bda9056ab28a66a1a
 
 #EXTINF:-1 tvg-id="La 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="MOVISTAR",La 2 HD
 https://rtvelivestream.rtve.es/rtvesec/la2/la2_main_dvr.m3u8
 
 #EXTINF:-1 tvg-id="La 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="MOVISTAR",La 2 TVE 1080p *
-http://100.90.204.66:6878/ace/getstream?id=187821a2527a92efdc872182012c208091b165aa
+http://100.90.204.66:6878/ace/getstream?id=fd4e2f0d5cd849a9f2f64f33c05aea5278031542
 
 #EXTINF:-1 tvg-id="Teledeporte" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="MOVISTAR",TELEDEPORTE f48e
 http://100.90.204.66:6878/ace/getstream?id=4048be88f84250719e864868e537612f389df48e
@@ -277,10 +277,10 @@ https://rtvelivestream.rtve.es/rtvesec/tdp/tdp_main_dvr.m3u8
 http://100.90.204.66:6878/ace/getstream?id=ea8e71ca4c755812bb753838a31f5357426f2876
 
 #EXTINF:-1 tvg-id="Cuatro HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Cuatro.png" group-title="MOVISTAR",CUATRO 1080p **
-http://100.90.204.66:6878/ace/getstream?id=9083f6411d8c6f41546d01f8fbeefb812e8ae1a9
+http://100.90.204.66:6878/ace/getstream?id=98ca3466e722d21487635e3b73b791edd348e67f
 
 #EXTINF:-1 tvg-id="Telecinco HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Telecinco.png" group-title="MOVISTAR",Telecinco 1080p **
-http://100.90.204.66:6878/ace/getstream?id=31dbf714ad40d93778c5b81790f6cb3a14b53bfb
+http://100.90.204.66:6878/ace/getstream?id=14b1f7bf6e42f9b7dbb3213cedc6086f7908ac28
 
 #EXTINF:-1 tvg-id="La Sexta HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%20Sexta.png" group-title="MOVISTAR",La Sexta 7ecf
 http://100.90.204.66:6878/ace/getstream?id=6fa8e5288e9b91c926134362f7c01320f3eb7ecf
@@ -329,7 +329,7 @@ http://100.90.204.66:6878/ace/getstream?id=e572a5178ff72eed7d1d751a18b4b3419699f
 #EXTINF:-1 tvg-id="M+ Liga de Campeones 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%202.png" group-title="CHAMPIONS",â­ï¸ M+ Liga de Campeones 2 ceea
 http://100.90.204.66:6878/ace/getstream?id=338b5de78b0b40a6f9ca3cc0cf9be93341b9ceea
 #EXTINF:-1 tvg-id="M+ Liga de Campeones HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",M+ Liga de Campeones 2 1080p *
-http://100.90.204.66:6878/ace/getstream?id=2edf107f0a39392308b6e11e8d4aedd38d8b4ac5
+http://100.90.204.66:6878/ace/getstream?id=1f740f14c7a5c02b6c6e64f089b6005498bfd217
 
 #EXTINF:-1 tvg-id="M+ Liga de Campeones 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%202.png" group-title="CHAMPIONS",M+ Liga de Campeones 2 4d5e
 http://100.90.204.66:6878/ace/getstream?id=38f7b2044e549df2039ff26cefa6f9a60c854d5e
@@ -510,7 +510,7 @@ http://100.90.204.66:6878/ace/getstream?id=3d44884484303f51879f93ddaff6e4c267df2
 http://100.90.204.66:6878/ace/getstream?id=3e1dba7d70192fee5925f798d7bc78b8a65ce80c
 
 #EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",M+ Deportes 1080p 
-http://100.90.204.66:6878/ace/getstream?id=f6b5d72663225d9369ebb48f5ff4735606672dc5
+http://100.90.204.66:6878/ace/getstream?id=403354bfa8ec7769589b18977c22b99f1cae5aca
 
 #EXTINF:-1 tvg-id="M+ Deportes 2 HD" tvg-logo="https://i.ibb.co/q95fBKV/deportes2.png" group-title="MOVISTAR DEP-VAMOS",â­ï¸ M+ Deportes 2 52b5
 http://100.90.204.66:6878/ace/getstream?id=3afe1af18f8ff78e9946856911b00c67477052b5
@@ -566,10 +566,10 @@ http://100.90.204.66:6878/ace/getstream?id=2d549bbcd898b09c4b736e6e3e83e8e8c19fc
 http://100.90.204.66:6878/ace/getstream?id=ad5661ef1b3da4b10156a8279d65c727d8ad2deb
 
 #EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos 2
-http://100.90.204.66:6878/ace/getstream?id=cb86f8bb48ae00fdaa6864257a67d2fc5e7d4a99
+http://100.90.204.66:6878/ace/getstream?id=973094e625613b693cffb05a3f98fabe2d59dafa
 
 #EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos 3
-http://100.90.204.66:6878/ace/getstream?id=a67d8015538d3c3f4ca4d2a06c9014c3085281da
+http://100.90.204.66:6878/ace/getstream?id=acc2d46eaf6a0b4c3dbd299ffcd67c2b946c2c3e
 
 #EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="MOVISTAR DEP-VAMOS",M+ Vamos 4
 http://100.90.204.66:6878/ace/getstream?id=854f71a248771aa8c64f36d3dfd820caa2e76f2f
@@ -666,3 +666,4 @@ http://100.90.204.66:6878/ace/getstream?id=853129258a5cb51f27829eddb934e58b45978
 
 #EXTINF:-1 tvg-id="DAZN Baloncesto 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20Baloncesto%202.png" group-title="BALONCESTO",M+ Baloncesto 2 3535
 http://100.90.204.66:6878/ace/getstream?id=c8c33b2673efe7f386790c5966643820578f3535
+
