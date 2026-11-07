@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización quirúrgica: actualizar ELCANO arriba y dejar tus listas intactas
+      - name: Sincronización limpia de Elcano y listas personales
         run: |
           python <<'PY'
           import re
@@ -48,7 +48,7 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 1. Parsear Elcano y ordenar los canales clave arriba (Ligas, DAZN, Campeones, etc.)
+          # 1. Parsear Elcano y procesar sus canales
           lineas_elcano = fuente_elcano.splitlines()
           canales_raw = []
           i = 0
@@ -71,18 +71,16 @@ jobs:
                       else:
                           url_local = url
 
-                      # Asegurar group-title ELCANO
+                      # Forzar grupo ELCANO exclusivamente para estos canales
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="ELCANO"', linea)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="ELCANO"')
 
-                      # REGLA DE ORO: Conservar tvg-id y nombre exactos
                       nombre_c = linea.rsplit(",", 1)[-1].upper()
                       canales_raw.append((nombre_c, extinf_mod, url_local))
                       i = j
               i += 1
 
-          # Criterio de ordenación para la carpeta ELCANO arriba
           def prioridad_elcano(item):
               n = item[0]
               if "M+ LALIGA" in n: return 1
@@ -97,46 +95,57 @@ jobs:
 
           canales_ordenados = sorted(canales_raw, key=prioridad_elcano)
 
-          # Construir el bloque exacto de ELCANO
-          bloque_elcano = [
-              "# ==========================================",
-              "# CARPETA: ELCANO",
-              "# =========================================="
-          ]
+          bloque_elcano = []
           for _, inf, u in canales_ordenados:
               bloque_elcano.append(inf)
               bloque_elcano.append(u)
 
-          texto_nuevo_elcano = "\n".join(bloque_elcano)
+          # 2. Filtrar el archivo antiguo para extraer SOLO tus canales personales de forma segura
+          lineas_casa = contenido_casa.splitlines()
+          lineas_personales = []
+          
+          # Recorremos tu lista línea por línea eliminando cabeceras antiguas y todo lo que pertenezca a ELCANO
+          idx = 0
+          while idx < len(lineas_casa):
+              linea = lineas_casa[idx].strip()
+              if not linea:
+                  idx += 1
+                  continue
+              if linea.startswith("#EXTM3U") or linea.startswith("#EXTVLCOPT"):
+                  idx += 1
+                  continue
+              if 'group-title="ELCANO"' in linea:
+                  # Si la línea es un #EXTINF de ELCANO, saltamos también su correspondiente enlace (la línea siguiente)
+                  if idx + 1 < len(lineas_casa) and not lineas_casa[idx+1].strip().startswith("#"):
+                      idx += 2
+                  else:
+                      idx += 1
+                  continue
+              if linea.startswith("# ==========================================") or "CARPETA: ELCANO" in linea or "TUS CATEGORÍAS ORIGINALES" in linea:
+                  idx += 1
+                  continue
+              
+              lineas_personales.append(lineas_casa[idx])
+              idx += 1
 
-          # 2. Reemplazar únicamente el bloque antiguo de Elcano dentro de tu lista manteniendo TODO lo demás intacto
-          # Buscamos el patrón desde "# CARPETA: ELCANO" hasta la primera categoría personal o separador de tus listas
-          patron_reemplazo = re.compile(
-              r'(#\s*={5,}\s*\n#\s*CARPETA:\s*ELCANO[\s\S]*?)(?=\n\s*#\s*={5,}\s*\n\s*#\s*(?:TUS CATEGORÍAS|CARPETA:\s*LA LIGA|LA LIGA Y DAZN))',
-              re.IGNORECASE
-          )
+          # 3. Reconstruir las cabeceras estándar con el grupo ELCANO registrado al principio
+          cabecera_completa = [
+              '#EXTM3U url-tvg="https://githubusercontent.com" refresh="3600"',
+              '#EXTVLCOPT:network-caching=1000',
+              '#EXTGRP: group-title="ELCANO" group-logo="https://githubusercontent.com"'
+          ]
 
-          if patron_reemplazo.search(contenido_casa):
-              texto_final = patron_reemplazo.sub(texto_nuevo_elcano, contenido_casa, count=1)
-          else:
-              # Si por formato estricto no encuentra la frontera exacta, ponemos ELCANO arriba del todo 
-              # conservando toda el agua de tu archivo original debajo
-              cabecera_epg_match = re.search(r'(#EXTM3U.*?\n#EXTVLCOPT:network-caching=1000\n)', contenido_casa)
-              if cabecera_epg_match:
-                  cuerpo_resto = contenido_casa.replace(cabecera_epg_match.group(1), "")
-                  # Quitamos un posible bloque viejo de ELCANO si estuviera suelto
-                  cuerpo_resto = re.sub(r'#\s*={5,}\s*\n#\s*CARPETA:\s*ELCANO[\s\S]*?(?=#\s*={5,}\s*\n#\s*CARPETA:|\Z)', '', cuerpo_resto, count=1)
-                  texto_final = cabecera_epg_match.group(1) + "\n" + texto_nuevo_elcano + "\n\n" + cuerpo_resto.strip() + "\n"
-              else:
-                  texto_final = texto_nuevo_elcano + "\n\n" + contenido_casa
+          # Agrupamos el archivo final poniendo la carpeta de ELCANO arriba y abajo tus categorías intactas
+          lineas_finales_casa = cabecera_completa + bloque_elcano + lineas_personales
+          texto_final_casa = "\n".join(lineas_finales_casa) + "\n"
 
-          archivo_casa.write_text(texto_final, encoding="utf-8")
+          archivo_casa.write_text(texto_final_casa, encoding="utf-8")
 
-          # Versión Tailscale cambiando la IP del motor AceStream
-          texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
-          archivo_tailscale.write_text(texto_ts, encoding="utf-8")
+          # Generar la versión para Tailscale reemplazando las IPs locales
+          texto_final_ts = texto_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
+          archivo_tailscale.write_text(texto_final_ts, encoding="utf-8")
 
-          print("¡Sincronización quirúrgica completada con éxito!")
+          print("¡Actualización completada con éxito sin mezclas!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -146,7 +155,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización quirúrgica ELCANO y listas personales intactas"
+            git commit -m "Actualización automática de listas y ELCANO"
             git push
           else
             echo "No hay cambios que guardar."
