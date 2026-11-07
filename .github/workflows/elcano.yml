@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización automática ELCANO Orden Estricto Diego
+      - name: Sincronización automática ELCANO Orden Estricto con Multis Abajo
         run: |
           python <<'PY'
           import re
@@ -83,37 +83,42 @@ jobs:
                       i = j
               i += 1
 
-          # Criterio de ordenación estricto según tu lista exacta
+          # Criterio de ordenación estricto: Principales arriba, multis abajo
           def prioridad_elcano(item):
               nombre = item[0]
               
-              # Asignar bloque exacto según tu orden de preferencia
-              if "M+ LALIGA" in nombre and " 2" not in nombre and " 3" not in nombre: 
-                  bloque = 1
-              elif "DAZN LALIGA" in nombre and " 2" not in nombre and " 3" not in nombre: 
-                  bloque = 2
-              elif "MOVISTAR PLUS" in nombre or "MOVISTAR+" in nombre: 
-                  bloque = 3
-              elif "CAMPEONES" in nombre: 
-                  bloque = 4
-              elif "F1" in nombre or "FORMULA 1" in nombre: 
-                  bloque = 5
-              elif "MOTOGP" in nombre: 
-                  bloque = 6
-              elif "DAZN 1" in nombre or "DAZN 2" in nombre or "DAZN 3" in nombre or "DAZN 4" in nombre: 
-                  bloque = 7
-              elif "DEPORTES 2" in nombre: 
-                  bloque = 9
-              elif "DEPORTES" in nombre: 
-                  bloque = 8
-              elif "VAMOS" in nombre: 
-                  bloque = 10
-              elif "HYPERMOTION" in nombre: 
-                  bloque = 11
-              elif "PRIMERA" in nombre: 
-                  bloque = 12
-              else: 
-                  bloque = 13  # Resto de canales (M+ LaLiga 2, DAZN LaLiga 2, etc.)
+              # Detección de canales secundarios / multis (que lleven 2, 3, 4, 5, 6, 7, 8...)
+              es_multi = bool(re.search(r'\b(2|3|4|5|6|7|8|9)\b', nombre))
+
+              # Si es multi, los mandamos al bloque 13 (abajo del todo junto con los demás)
+              if es_multi and not ("F1" in nombre or "MOTOGP" in nombre):
+                  bloque = 13
+              else:
+                  # Canales principales arriba en su orden exacto
+                  if "M+ LALIGA" in nombre: 
+                      bloque = 1
+                  elif "DAZN LALIGA" in nombre: 
+                      bloque = 2
+                  elif "MOVISTAR PLUS" in nombre or "MOVISTAR+" in nombre: 
+                      bloque = 3
+                  elif "CAMPEONES" in nombre: 
+                      bloque = 4
+                  elif "F1" in nombre or "FORMULA 1" in nombre: 
+                      bloque = 5
+                  elif "MOTOGP" in nombre: 
+                      bloque = 6
+                  elif "DAZN 1" in nombre: 
+                      bloque = 7
+                  elif "DEPORTES" in nombre: 
+                      bloque = 8
+                  elif "VAMOS" in nombre: 
+                      bloque = 10
+                  elif "HYPERMOTION" in nombre: 
+                      bloque = 11
+                  elif "PRIMERA" in nombre or "RFEF" in nombre: 
+                      bloque = 12
+                  else: 
+                      bloque = 14
 
               # REGLA DE ORO DE CALIDAD: 1080p y 4K siempre van los primerísimos (subnivel 0) dentro de su bloque
               if "1080" in nombre or "4K" in nombre:
@@ -178,7 +183,7 @@ jobs:
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
 
-          print("¡Sincronización completada con tu orden exacto de parrilla!")
+          print("¡Sincronización completada: principales arriba, multis abajo!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -188,7 +193,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización: Orden estricto de parrilla Diego para ELCANO"
+            git commit -m "Actualización: Orden con principales arriba y multis abajo para ELCANO"
             git push
           else
             echo "No hay cambios que guardar."
