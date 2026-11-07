@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización automática ELCANO 1080p primeros
+      - name: Sincronización automática ELCANO Orden Parrilla Movistar
         run: |
           python <<'PY'
           import re
@@ -83,21 +83,24 @@ jobs:
                       i = j
               i += 1
 
-          # Criterio de ordenación avanzado: Prioridad de canales Y obligar a que 1080p/4K vayan antes que 720p
+          # Criterio de ordenación exacto según tu parrilla de Movistar Plus+
           def prioridad_elcano(item):
               nombre = item[0]
               
+              # Bloques según el orden que me has indicado
               if "M+ LALIGA" in nombre: bloque = 1
               elif "DAZN LALIGA" in nombre: bloque = 2
-              elif "CAMPEONES" in nombre: bloque = 3
-              elif "DAZN 1" in nombre or "DAZN 2" in nombre or "DAZN 3" in nombre or "DAZN 4" in nombre: bloque = 4
+              elif "VAMOS" in nombre: bloque = 3
+              elif "CAMPEONES" in nombre: bloque = 4
               elif "F1" in nombre: bloque = 5
               elif "MOTOGP" in nombre: bloque = 6
-              elif "DEPORTES" in nombre or "VAMOS" in nombre: bloque = 7
-              elif "BALONCESTO" in nombre: bloque = 8
-              else: bloque = 9
+              elif "DAZN 1" in nombre or "DAZN 2" in nombre or "DAZN 3" in nombre or "DAZN 4" in nombre: bloque = 7
+              elif "DEPORTES" in nombre: bloque = 8
+              elif "HYPERMOTION" in nombre: bloque = 9
+              elif "PRIMERA" in nombre: bloque = 10
+              else: bloque = 20
 
-              # Obligar a que 1080p y 4K salgan primeros (subnivel 0) frente a 720p (subnivel 2)
+              # Sub-criterio de calidad: obligar siempre a que 1080p y 4K vayan antes que 720p
               if "1080" in nombre or "4K" in nombre:
                   calidad = 0
               elif "720" in nombre:
@@ -160,7 +163,7 @@ jobs:
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
 
-          print("¡Sincronización completada con éxito: 1080p primeros y cada 3 horas!")
+          print("¡Sincronización completada: Parrilla Movistar y 1080p primeros!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -170,7 +173,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización: 1080p prioritarios en ELCANO cada 3 horas"
+            git commit -m "Actualización: Orden de parrilla Movistar y 1080p en ELCANO"
             git push
           else
             echo "No hay cambios que guardar."
