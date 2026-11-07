@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización automática ELCANO Orden Estricto con Multis Abajo
+      - name: Sincronización automática ELCANO Orden Definitivo Diego
         run: |
           python <<'PY'
           import re
@@ -83,18 +83,18 @@ jobs:
                       i = j
               i += 1
 
-          # Criterio de ordenación estricto: Principales arriba, multis abajo
+          # Criterio de ordenación definitivo: Principales arriba, multis y TDT abajo desde Primera Federación
           def prioridad_elcano(item):
               nombre = item[0]
               
-              # Detección de canales secundarios / multis (que lleven 2, 3, 4, 5, 6, 7, 8...)
+              # Detección de multis (canales que llevan 2, 3, 4, 5, 6, 7, 8...)
               es_multi = bool(re.search(r'\b(2|3|4|5|6|7|8|9)\b', nombre))
 
-              # Si es multi, los mandamos al bloque 13 (abajo del todo junto con los demás)
+              # Si es multi o TDT/secundario, van abajo a partir del bloque 13
               if es_multi and not ("F1" in nombre or "MOTOGP" in nombre):
                   bloque = 13
               else:
-                  # Canales principales arriba en su orden exacto
+                  # Canales principales arriba en orden estricto
                   if "M+ LALIGA" in nombre: 
                       bloque = 1
                   elif "DAZN LALIGA" in nombre: 
@@ -183,7 +183,7 @@ jobs:
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
 
-          print("¡Sincronización completada: principales arriba, multis abajo!")
+          print("¡Sincronización completada con orden definitivo!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -193,7 +193,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización: Orden con principales arriba y multis abajo para ELCANO"
+            git commit -m "Actualización: Orden definitivo con principales arriba y multis abajo"
             git push
           else
             echo "No hay cambios que guardar."
