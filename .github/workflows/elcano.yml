@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización limpia y unificada por tus bloques
+      - name: Sincronización exacta respetando tu estructura
         run: |
           python <<'PY'
           import re
@@ -48,85 +48,80 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          def normalizar_nombre(nombre):
-              n = nombre.upper()
-              n = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTARPLUS', n)
-              n = re.sub(r'[^\w\s]', '', n)
-              return "".join(n.split())
+          # Normalizador fino para comparar nombres de canales con Elcano
+          def normalizar(texto):
+              t = texto.upper()
+              t = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTARPLUS', t)
+              t = re.sub(r'[^\w\s]', '', t)
+              return "".join(t.split())
 
-          def parsear_m3u(texto):
-              lineas = texto.splitlines()
-              entradas = []
-              i = 0
-              while i < len(lineas):
-                  linea = lineas[i].strip()
-                  if linea.startswith("#EXTINF:"):
-                      url = None
-                      j = i + 1
-                      while j < len(lineas):
-                          candidata = lineas[j].strip()
-                          if candidata and not candidata.startswith("#"):
-                              url = candidata
-                              break
-                          j += 1
-                      if url:
-                          match_hash = re.search(r'([0-9a-fA-F]{40})', url)
-                          if match_hash:
-                              h_id = match_hash.group(1)
-                              url_limpia = f"http://127.0.0.1:6878/ace/getstream?id={h_id}"
-                          else:
-                              url_limpia = url
-                          
-                          nombre = linea.rsplit(",", 1)[-1].strip()
-                          entradas.append({
-                              "extinf": linea,
-                              "url": url_limpia,
-                              "nombre": nombre,
-                              "raw_url": url
-                          })
-                          i = j
-                  i += 1
-              return entradas
-
-          canales_elcano = parsear_m3u(fuente_elcano)
-          mapa_elcano_por_nombre = {normalizar_nombre(c["nombre"]): c["url"] for c in canales_elcano}
-
-          lineas_casa = contenido_casa.splitlines()
-          lineas_actualizadas = []
-          urls_en_casa = set()
+          # Parsear Elcano para extraer mapa de nombres y hashes
+          lineas_elcano = fuente_elcano.splitlines()
+          mapa_elcano = {}
           i = 0
+          while i < len(lineas_elcano):
+              linea = lineas_elcano[i].strip()
+              if linea.startswith("#EXTINF:"):
+                  url = None
+                  j = i + 1
+                  while j < len(lineas_elcano):
+                      candidata = lineas_elcano[j].strip()
+                      if candidata and not candidata.startswith("#"):
+                        url = candidata
+                        break
+                      j += 1
+                  if url:
+                      match_h = re.search(r'([0-9a-fA-F]{40})', url)
+                      if match_h:
+                          h_id = match_h.group(1)
+                          nombre_c = linea.rsplit(",", 1)[-1].strip()
+                          mapa_elcano[normalizar(nombre_c)] = h_id
+                      i = j
+              i += 1
 
+          # Recorrer tu lista manteniendo el esqueleto exacto y actualizando solo el hash si coincide
+          lineas_casa = contenido_casa.splitlines()
+          nuevas_lineas = []
+          i = 0
           while i < len(lineas_casa):
               linea = lineas_casa[i]
-              lineas_actualizadas.append(linea)
+              nuevas_lineas.append(linea)
 
               if linea.startswith("#EXTINF:"):
                   nombre_canal = linea.rsplit(",", 1)[-1].strip()
-                  nombre_norm = normalizar_nombre(nombre_canal)
-                  
+                  nombre_norm = normalizar(nombre_canal)
+
                   if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
-                      url_actual = lineas_casa[i+1].strip()
-                      urls_en_casa.add(url_actual)
+                      url_linea = lineas_casa[i+1].strip()
                       
-                      if nombre_norm in mapa_elcano_por_nombre:
-                          nueva_url = mapa_elcano_por_nombre[nombre_norm]
-                          lineas_actualizadas.append(nueva_url)
-                          urls_en_casa.add(nueva_url)
+                      # Buscar si este canal está en Elcano para actualizar su hash manteniendo tu estructura
+                      encontrado_nuevo_hash = None
+                      for clave_elcano, h_val in mapa_elcano.items():
+                          if clave_elcano in nombre_norm or nombre_norm in clave_elcano:
+                              encontrado_nuevo_hash = h_val
+                              break
+
+                      if encontrado_nuevo_hash:
+                          if "manifest.m3u8" in url_linea:
+                              nueva_url = f"http://127.0.0.1:6878/ace/manifest.m3u8?id={encontrado_nuevo_hash}"
+                          elif "infohash=" in url_linea:
+                              nueva_url = f"http://127.0.0.1:6878/ace/getstream?infohash={encontrado_nuevo_hash}"
+                          else:
+                              nueva_url = f"http://127.0.0.1:6878/ace/getstream?id={encontrado_nuevo_hash}"
+                          nuevas_lineas.append(nueva_url)
                       else:
-                          lineas_actualizadas.append(url_actual)
+                          nuevas_lineas.append(url_linea)
                       i += 1
-              elif not linea.startswith("#") and linea.strip():
-                  urls_en_casa.add(linea.strip())
               i += 1
 
-          # Limpieza estricta de duplicados consecutivos y orden impecable
-          lista_final_casa = "\n".join(lineas_actualizadas) + ("\n" if not "".join(lineas_actualizadas).endswith("\n") else "")
+          lista_final_casa = "\n".join(nuevas_lineas) + "\n"
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
+          # Generar la versión de Tailscale cambiando la IP del motor AceStream
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización limpia completada con éxito.")
+          print("Sincronización exacta completada respetando tu lista al milímetro.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -136,7 +131,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion limpia respetando bloques originales"
+            git commit -m "Actualizacion exacta respetando estructura original"
             git push
           else
             echo "No hay cambios que guardar."
