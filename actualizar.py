@@ -31,39 +31,39 @@ if not fuente or "#EXTINF" not in fuente:
 fuente = fuente.replace("\r\n", "\n")
 orig_norm = orig.replace("\r\n", "\n")
 
-def extraer_base(nombre):
+def normalizar(nombre):
     n = nombre.upper()
+    n = re.sub(r'[\*\⭐️*]', '', n)
     n = re.sub(r'\b(720P|1080P|4K|HD|SD|FHD)\b', '', n)
-    n = re.sub(r'[\*⭐️*]', '', n)
     n = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTAR', n)
-    n = re.sub(r'\s+[0-9]+$', '', n)
     return "".join(n.split())
 
-hashes_por_base = {}
+# 1. Mapear los hashes nuevos de Elcano por nombre base normalizado
+remotos_por_base = {}
 lineas_f = fuente.split("\n")
 i = 0
 while i < len(lineas_f):
     linea = lineas_f[i].strip()
     if linea.startswith("#EXTINF:"):
         nombre_raw = linea.rsplit(",", 1)[-1].strip()
-        base = extraer_base(nombre_raw)
-        
+        base = normalizar(nombre_raw)
         j = i + 1
         while j < len(lineas_f):
             candidata = lineas_f[j].strip()
             if candidata and not candidata.startswith("#"):
                 match_hash = re.search(r'([0-9a-fA-F]{40})', candidata)
                 if match_hash:
-                    link_ace = f"http://127.0.0.1:6878/ace/getstream?id={match_hash.group(1)}"
-                    if base not in hashes_por_base:
-                        hashes_por_base[base] = []
-                    hashes_por_base[base].append(link_ace)
+                    h_val = match_hash.group(1)
+                    if base not in remotos_por_base:
+                        remotos_por_base[base] = []
+                    remotos_por_base[base].append(h_val)
                 break
             j += 1
     i += 1
 
-print(f"Bases de canales encontradas en la fuente remota: {len(hashes_por_base)}")
+print(f"Bases remotas encontradas: {len(remotos_por_base)}")
 
+# 2. Recorrer la lista local respetando estrictamente el orden y estructura del usuario
 lines = orig_norm.split("\n")
 new_lines = []
 i = 0
@@ -73,31 +73,41 @@ indices_uso = {}
 while i < len(lines):
     line = lines[i]
     new_lines.append(line)
+    
     if line.startswith("#EXTINF:"):
-        nombre_canal = line.rsplit(",", 1)[-1].strip()
-        base = extraer_base(nombre_canal)
+        # Extraer nombre del canal local actual
+        nombre_local = line.rsplit(",", 1)[-1].strip()
+        base_local = normalizar(nombre_local)
         
+        # Buscar si hay un enlace justo en la línea siguiente
         if i + 1 < len(lines) and not lines[i+1].startswith("#"):
-            lista_candidatos = []
-            if base in hashes_por_base:
-                lista_candidatos = hashes_por_base[base]
+            enlace_viejo = lines[i+1].strip()
+            
+            # Buscar coincidencia en la fuente remota
+            candidatos = []
+            if base_local in remotos_por_base:
+                candidatos = remotos_por_base[base_local]
             else:
-                for b_key, b_vals in hashes_por_base.items():
-                    if b_key in base or base in b_key:
-                        lista_candidatos = b_vals
+                # Coincidencia parcial por si el nombre difiere ligeramente
+                for b_key, b_vals in remotos_por_base.items():
+                    if b_key in base_local or base_local in b_key:
+                        candidatos = b_vals
                         break
-
-            if lista_candidatos:
-                idx = indices_uso.get(base, 0)
-                link_asignado = lista_candidatos[idx % len(lista_candidatos)]
-                indices_uso[base] = idx + 1
+            
+            if candidatos:
+                idx = indices_uso.get(base_local, 0)
+                nuevo_hash = candidatos[idx % len(candidatos)]
+                indices_uso[base_local] = idx + 1
                 
-                new_lines.append(link_asignado)
+                # Construir el enlace respetando la estructura local exacta
+                nuevo_enlace = re.sub(r'([0-9a-fA-F]{40})', nuevo_hash, enlace_viejo)
+                new_lines.append(nuevo_enlace)
                 actualizados += 1
             else:
-                new_lines.append(lines[i+1])
+                # Si no hay equivalente remoto, se deja el enlace original intacto
+                new_lines.append(enlace_viejo)
             i += 1
     i += 1
 
-print(f"¡Canales sincronizados y actualizados con éxito: {actualizados}!")
+print(f"¡Sincronización quirúrgica completada! Canales con hash actualizado: {actualizados}")
 path.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
