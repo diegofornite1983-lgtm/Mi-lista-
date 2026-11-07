@@ -1,4 +1,4 @@
-name: actualizador-lista
+name: Actualizador Automatico Elcano y Tailscale
 
 on:
   schedule:
@@ -9,22 +9,138 @@ permissions:
   contents: write
 
 jobs:
-  actualizar:
+  actualizar-lista:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-          
-      - name: Ejecutar script de actualización
-        run: python3 actualizar.py
 
-      - name: Tailscale y Git
+      - name: Sincronización quirúrgica respetando lista propia y añadiendo novedades de Elcano
         run: |
-          cp "Mi lista acestream" "Canales m3u"
-          sed -i 's/127\.0\.0\.1:6878/100.90.204.66:6878/g' "Canales m3u"
+          python <<'PY'
+          import re
+          import sys
+          import urllib.request
+          from pathlib import Path
+
+          URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          archivo_casa = Path("Mi lista acestream")
+          archivo_tailscale = Path("Canales m3u")
+
+          if not archivo_casa.is_file():
+              sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream'.")
+
+          try:
+              contenido_casa = archivo_casa.read_text(encoding="utf-8-sig")
+          except UnicodeDecodeError:
+              contenido_casa = archivo_casa.read_text(encoding="latin-1")
+
+          try:
+              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
+              with urllib.request.urlopen(peticion, timeout=60) as respuesta:
+                  fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
+          except Exception as error:
+              sys.exit(f"ERROR descargando Elcano: {error}")
+
+          def normalizar(nombre):
+              n = nombre.upper()
+              n = re.sub(r'[\*\⭐️*]', '', n)
+              n = re.sub(r'\b(720P|1080P|4K|HD|SD|FHD)\b', '', n)
+              n = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTAR', n)
+              return "".join(n.split())
+
+          # 1. Parsear los canales de Elcano para coger sus hashes nuevos y sus líneas completas con sus logos bonitos
+          canales_elcano = []
+          lineas_e = fuente_elcano.splitlines()
+          i = 0
+          while i < len(lineas_e):
+              linea = lineas_e[i].strip()
+              if linea.startswith("#EXTINF:"):
+                  url = None
+                  j = i + 1
+                  while j < len(lineas_e):
+                      candidata = lineas_e[j].strip()
+                      if candidata and not candidata.startswith("#"):
+                          url = candidata
+                          break
+                      j += 1
+                  if url:
+                      match_hash = re.search(r'([0-9a-fA-F]{40})', url)
+                      if match_hash:
+                          h_id = match_hash.group(1)
+                          url_limpia = f"http://127.0.0.1:6878/ace/getstream?id={h_id}"
+                          nombre_raw = linea.rsplit(",", 1)[-1].strip()
+                          canales_elcano.append({
+                              "extinf": linea,
+                              "url": url_limpia,
+                              "nombre": nombre_raw,
+                              "base": normalizar(nombre_raw),
+                              "hash": h_id
+                          })
+                          i = j
+              i += 1
+
+          # Diccionario para buscar hashes rápido por nombre base
+          mapa_hashes_elcano = {}
+          for c in canales_elcano:
+              if c["base"] not in mapa_hashes_elcano:
+                  mapa_hashes_elcano[c["base"]] = []
+              mapa_hashes_elcano[c["base"]].append(c["url"])
+
+          # 2. Actualizar nuestra lista respetando el orden y los nombres exactos de Diego
+          lineas_casa = contenido_casa.splitlines()
+          lineas_actualizadas = []
+          i = 0
+          actualizados = 0
+
+          while i < len(lineas_casa):
+              linea = lineas_casa[i]
+              lineas_actualizadas.append(linea)
+
+              if linea.startswith("#EXTINF:"):
+                  nombre_local = linea.rsplit(",", 1)[-1].strip()
+                  base_local = normalizar(nombre_local)
+
+                  if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
+                      enlace_viejo = lineas_casa[i+1].strip()
+                      
+                      # Si encontramos la base en Elcano, actualizamos únicamente el hash manteniendo el nombre y formato de Diego
+                      if base_local in mapa_hashes_elcano and mapa_hashes_elcano[base_local]:
+                          nuevo_link = mapa_hashes_elcano[base_local][0]
+                          lineas_actualizadas.append(nuevo_link)
+                          actualizados += 1
+                      else:
+                          lineas_actualizadas.append(enlace_viejo)
+                      i += 1
+              i += 1
+
+          print(f"Canales propios actualizados con hashes nuevos: {actualizados}")
+
+          lista_final_casa = "\n".join(lineas_actualizadas) + ("\n" if not "".join(lineas_actualizadas).endswith("\n") else "")
+          archivo_casa.write_text(lista_final_casa, encoding="utf-8")
+
+          # Generar versión Tailscale
+          lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
+          archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
+
+          print("Sincronización limpia completada con éxito.")
+          PY
+
+      - name: Guardar cambios en GitHub
+        run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
-          git add "Mi lista acestream" "Canales m3u" "actualizar.py"
-          git diff --cached --quiet || (git commit -m "Auto-sync Elcano: 141 canales OK" && git push)
+          git add "Mi lista acestream" "Canales m3u"
+          
+          if ! git diff --cached --quiet; then
+            git commit -m "Actualizacion limpia de hashes manteniendo estructura propia"
+            git push
+          else
+            echo "No hay cambios que guardar."
+          fi
