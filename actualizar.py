@@ -20,11 +20,13 @@ for url in urls:
     except Exception as e:
         print(f"Fallo: {e}")
 
-path = Path("Mi lista acestream")
-if not path.exists():
+archivo_casa = Path("Mi lista acestream")
+archivo_tailscale = Path("Canales m3u")
+
+if not archivo_casa.exists():
     exit(0)
 
-orig = path.read_text(encoding="utf-8-sig", errors="replace")
+orig = archivo_casa.read_text(encoding="utf-8-sig", errors="replace")
 if not fuente or "#EXTINF" not in fuente:
     exit(0)
 
@@ -63,51 +65,38 @@ while i < len(lineas_f):
 
 print(f"Bases remotas encontradas: {len(remotos_por_base)}")
 
-# 2. Recorrer la lista local respetando estrictamente el orden y estructura del usuario
+# 2. Recorrer la lista local respetando estrictamente el orden, nombres y estructura de Diego
 lines = orig_norm.split("\n")
 new_lines = []
 i = 0
 actualizados = 0
-indices_uso = {}
 
 while i < len(lines):
     line = lines[i]
     new_lines.append(line)
     
     if line.startswith("#EXTINF:"):
-        # Extraer nombre del canal local actual
         nombre_local = line.rsplit(",", 1)[-1].strip()
         base_local = normalizar(nombre_local)
         
-        # Buscar si hay un enlace justo en la línea siguiente
         if i + 1 < len(lines) and not lines[i+1].startswith("#"):
             enlace_viejo = lines[i+1].strip()
             
-            # Buscar coincidencia en la fuente remota
-            candidatos = []
-            if base_local in remotos_por_base:
-                candidatos = remotos_por_base[base_local]
-            else:
-                # Coincidencia parcial por si el nombre difiere ligeramente
-                for b_key, b_vals in remotos_por_base.items():
-                    if b_key in base_local or base_local in b_key:
-                        candidatos = b_vals
-                        break
-            
-            if candidatos:
-                idx = indices_uso.get(base_local, 0)
-                nuevo_hash = candidatos[idx % len(candidatos)]
-                indices_uso[base_local] = idx + 1
-                
-                # Construir el enlace respetando la estructura local exacta
+            if base_local in remotos_por_base and remotos_por_base[base_local]:
+                nuevo_hash = remotos_por_base[base_local][0]
                 nuevo_enlace = re.sub(r'([0-9a-fA-F]{40})', nuevo_hash, enlace_viejo)
                 new_lines.append(nuevo_enlace)
                 actualizados += 1
             else:
-                # Si no hay equivalente remoto, se deja el enlace original intacto
                 new_lines.append(enlace_viejo)
             i += 1
     i += 1
 
 print(f"¡Sincronización quirúrgica completada! Canales con hash actualizado: {actualizados}")
-path.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
+
+lista_final_casa = "\n".join(new_lines) + "\n"
+archivo_casa.write_text(lista_final_casa, encoding="utf-8")
+
+# Generar automáticamente el archivo para Tailscale
+lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
+archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
