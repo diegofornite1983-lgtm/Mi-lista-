@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización automática ELCANO Orden Definitivo Diego
+      - name: Sincronización automática ELCANO Orden Limpio Diego
         run: |
           python <<'PY'
           import re
@@ -83,15 +83,15 @@ jobs:
                       i = j
               i += 1
 
-          # Criterio de ordenación definitivo: Principales arriba, multis y TDT abajo desde Primera Federación
+          # Criterio de ordenación: Solo los principales puros arriba, el resto (multis, azteca, fox, tdt) abajo
           def prioridad_elcano(item):
               nombre = item[0]
               
-              # Detección de multis (canales que llevan 2, 3, 4, 5, 6, 7, 8...)
+              # Detección de canales externos, multis o secundarios que deben ir abajo
               es_multi = bool(re.search(r'\b(2|3|4|5|6|7|8|9)\b', nombre))
+              es_secundario_o_tdt = any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "EUROSPORT", "GOLF", "BALONCESTO", "NBA", "NBC", "ONETORO", "SKY SPORT", "SPORT TV3", "TENNIS", "À PUNT", "REAL MADRID"])
 
-              # Si es multi o TDT/secundario, van abajo a partir del bloque 13
-              if es_multi and not ("F1" in nombre or "MOTOGP" in nombre):
+              if (es_multi and not ("F1" in nombre or "MOTOGP" in nombre)) or es_secundario_o_tdt:
                   bloque = 13
               else:
                   # Canales principales arriba en orden estricto
@@ -183,7 +183,7 @@ jobs:
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
 
-          print("¡Sincronización completada con orden definitivo!")
+          print("¡Sincronización completada: Limpieza de externos y orden perfecto!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -193,7 +193,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización: Orden definitivo con principales arriba y multis abajo"
+            git commit -m "Actualización: Orden estricto sin canales raros arriba en ELCANO"
             git push
           else
             echo "No hay cambios que guardar."
