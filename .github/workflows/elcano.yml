@@ -1,4 +1,4 @@
-name: Actualizador Automatico Elcano y Tailscale
+name: Actualizador Automatico Elcano
 
 on:
   schedule:
@@ -21,115 +21,128 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización quirúrgica respetando lista propia y añadiendo novedades de Elcano
+      - name: Sintonizar y añadir canales nuevos de Elcano
+        id: update
         run: |
           python <<'PY'
+          import os
           import re
           import sys
+          import unicodedata
           import urllib.request
           from pathlib import Path
 
           URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          
+          # Ruta de tu archivo base local
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
 
           if not archivo_casa.is_file():
               sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream'.")
 
-          try:
-              contenido_casa = archivo_casa.read_text(encoding="utf-8-sig")
-          except UnicodeDecodeError:
-              contenido_casa = archivo_casa.read_text(encoding="latin-1")
+          def normalizar(nombre):
+              nombre = unicodedata.normalize("NFKD", nombre.lower())
+              nombre = "".join(c for c in nombre if not unicodedata.combining(c))
+              nombre = re.sub(r"[^a-z0-9]", "", nombre)
+              return nombre
 
+          def leer_m3u(texto):
+              lineas = texto.splitlines()
+              entradas = []
+              i = 0
+              while i < len(lineas):
+                  linea = lineas[i].strip()
+                  if linea.startswith("#EXTINF:"):
+                      url = None
+                      j = i + 1
+                      while j < len(lineas):
+                          candidata = lineas[j].strip()
+                          if candidata and not candidata.startswith("#"):
+                              url = candidata
+                              break
+                          j += 1
+                      if url:
+                          nombre = linea.rsplit(",", 1)[-1].strip()
+                          grupo = re.search(r'group-title="([^"]*)"', linea)
+                          entradas.append({
+                              "extinf": linea,
+                              "url": url,
+                              "nombre": nombre,
+                              "grupo": grupo.group(1) if grupo else ""
+                          })
+                          i = j
+                  i += 1
+              return entradas
+
+          # Descargar la lista actualizada de Elcano
           try:
-              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
+              peticion = urllib.request.Request(
+                  URL_ELCANO,
+                  headers={"User-Agent": "Mozilla/5.0"}
+              )
               with urllib.request.urlopen(peticion, timeout=60) as respuesta:
-                  fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
+                  fuente = respuesta.read().decode("utf-8-sig", errors="replace")
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          def normalizar(nombre):
-              n = nombre.upper()
-              n = re.sub(r'[\*\⭐️*]', '', n)
-              n = re.sub(r'\b(720P|1080P|4K|HD|SD|FHD)\b', '', n)
-              n = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTAR', n)
-              return "".join(n.split())
+          if "#EXTM3U" not in fuente or "#EXTINF:" not in fuente:
+              sys.exit("ERROR: La dirección de Elcano no ha devuelto una lista válida.")
 
-          # 1. Parsear los canales de Elcano para coger sus hashes nuevos y sus líneas completas con sus logos bonitos
-          canales_elcano = []
-          lineas_e = fuente_elcano.splitlines()
-          i = 0
-          while i < len(lineas_e):
-              linea = lineas_e[i].strip()
-              if linea.startswith("#EXTINF:"):
-                  url = None
-                  j = i + 1
-                  while j < len(lineas_e):
-                      candidata = lineas_e[j].strip()
-                      if candidata and not candidata.startswith("#"):
-                          url = candidata
-                          break
-                      j += 1
-                  if url:
-                      match_hash = re.search(r'([0-9a-fA-F]{40})', url)
-                      if match_hash:
-                          h_id = match_hash.group(1)
-                          url_limpia = f"http://127.0.0.1:6878/ace/getstream?id={h_id}"
-                          nombre_raw = linea.rsplit(",", 1)[-1].strip()
-                          canales_elcano.append({
-                              "extinf": linea,
-                              "url": url_limpia,
-                              "nombre": nombre_raw,
-                              "base": normalizar(nombre_raw),
-                              "hash": h_id
-                          })
-                          i = j
-              i += 1
+          try:
+              original = archivo_casa.read_text(encoding="utf-8-sig")
+          except UnicodeDecodeError:
+              original = archivo_casa.read_text(encoding="latin-1")
 
-          # Diccionario para buscar hashes rápido por nombre base
-          mapa_hashes_elcano = {}
-          for c in canales_elcano:
-              if c["base"] not in mapa_hashes_elcano:
-                  mapa_hashes_elcano[c["base"]] = []
-              mapa_hashes_elcano[c["base"]].append(c["url"])
+          canales_fuente = leer_m3u(fuente)
+          canales_mios = leer_m3u(original)
 
-          # 2. Actualizar nuestra lista respetando el orden y los nombres exactos de Diego
-          lineas_casa = contenido_casa.splitlines()
-          lineas_actualizadas = []
-          i = 0
-          actualizados = 0
+          nombres_existentes = {normalizar(c["nombre"]) for c in canales_mios}
+          grupos_existentes = {c["grupo"] for c in canales_mios if c["grupo"]}
 
-          while i < len(lineas_casa):
-              linea = lineas_casa[i]
-              lineas_actualizadas.append(linea)
+          equivalencias = {
+              "LA LIGA": "LA LIGA Y DAZN LIGA"
+          }
 
-              if linea.startswith("#EXTINF:"):
-                  nombre_local = linea.rsplit(",", 1)[-1].strip()
-                  base_local = normalizar(nombre_local)
+          nuevos = []
+          for canal in canales_fuente:
+              nombre_id = normalizar(canal["nombre"])
+              if not nombre_id or nombre_id in nombres_existentes:
+                  continue
 
-                  if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
-                      enlace_viejo = lineas_casa[i+1].strip()
-                      
-                      # Si encontramos la base en Elcano, actualizamos únicamente el hash manteniendo el nombre y formato de Diego
-                      if base_local in mapa_hashes_elcano and mapa_hashes_elcano[base_local]:
-                          nuevo_link = mapa_hashes_elcano[base_local][0]
-                          lineas_actualizadas.append(nuevo_link)
-                          actualizados += 1
-                      else:
-                          lineas_actualizadas.append(enlace_viejo)
-                      i += 1
-              i += 1
+              grupo_origen = canal["grupo"]
+              grupo_destino = equivalencias.get(grupo_origen, grupo_origen)
 
-          print(f"Canales propios actualizados con hashes nuevos: {actualizados}")
+              if not grupo_destino or grupo_destino not in grupos_existentes:
+                  continue
 
-          lista_final_casa = "\n".join(lineas_actualizadas) + ("\n" if not "".join(lineas_actualizadas).endswith("\n") else "")
-          archivo_casa.write_text(lista_final_casa, encoding="utf-8")
+              extinf = canal["extinf"]
+              if grupo_destino != grupo_origen:
+                  extinf = re.sub(
+                      r'group-title="[^"]*"',
+                      f'group-title="{grupo_destino}"',
+                      extinf,
+                      count=1
+                  )
 
-          # Generar versión Tailscale
+              nuevos.extend([extinf, canal["url"]])
+              nombres_existentes.add(nombre_id)
+
+          # Si hay canales nuevos, añadirlos al final respetando tu lista previa
+          lista_final_casa = original
+          if nuevos:
+              if not lista_final_casa.endswith("\n"):
+                  lista_final_casa += "\n"
+              lista_final_casa += "\n".join(nuevos) + "\n"
+              archivo_casa.write_text(lista_final_casa, encoding="utf-8")
+              print(f"Canales nuevos añadidos: {len(nuevos) // 2}")
+          else:
+              print("No hay canales nuevos que añadir.")
+
+          # Generar automáticamente la versión para Tailscale
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
-
-          print("Sincronización limpia completada con éxito.")
+          print("Archivo Tailscale actualizado correctamente.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -137,9 +150,9 @@ jobs:
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
           git add "Mi lista acestream" "Canales m3u"
-          
+
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion limpia de hashes manteniendo estructura propia"
+            git commit -m "Actualizacion automática de canales de Elcano"
             git push
           else
             echo "No hay cambios que guardar."
