@@ -1,5 +1,10 @@
-#EXTM3U url-tvg="https://githubusercontent.com" refresh="3600"
+#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,https://epgshare01.online,https://githubusercontent.com" refresh="3600"
 #EXTVLCOPT:network-caching=1000
+
+# ==========================================
+# CARPETA: ELCANO
+# ==========================================
+
 #EXTGRP: group-title="ELCANO" group-logo="https://githubusercontent.com"
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="ELCANO",M+ LaLiga 720p *
 http://100.90.204.66:6878/ace/getstream?id=1c00e6a5404f84e9bd22aa9d8f09e96ffa4ab319
