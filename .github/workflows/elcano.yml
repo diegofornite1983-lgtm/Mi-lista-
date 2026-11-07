@@ -49,13 +49,13 @@ jobs:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
           def normalizar(texto):
-              # Limpieza estricta para emparejar canales por su nombre base o tvg-id
+              if not texto:
+                  return ""
               t = texto.upper()
               t = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTARPLUS', t)
               t = re.sub(r'(HD|1080P|720P|4K|\⭐️|SHICKAT|[A-F0-9]{4,5})', '', t)
               return "".join(t.split())
 
-          # Parsear Elcano para sacar un mapa rápido de tvg-id / nombre limpio -> hash nuevo
           def parsear_elcano(texto):
               lineas = texto.splitlines()
               mapa = {}
@@ -70,16 +70,14 @@ jobs:
                           if candidata and not candidata.startswith("#"):
                               url = candidata
                               break
-                            j += 1
+                          j += 1
                       if url:
                           match_hash = re.search(r'([0-9a-fA-F]{40})', url)
                           if match_hash:
                               h_id = match_hash.group(1)
-                              # Extraer tvg-id si existe
                               m_tvg = re.search(r'tvg-id="([^"]*)"', linea)
                               if m_tvg:
                                   mapa[normalizar(m_tvg.group(1))] = h_id
-                              # Extraer nombre del canal
                               nombre_crudo = linea.rsplit(",", 1)[-1].strip()
                               mapa[normalizar(nombre_crudo)] = h_id
                       i = j
@@ -88,7 +86,6 @@ jobs:
 
           mapa_elcano = parsear_elcano(fuente_elcano)
 
-          # Recorrer tu lista de casa línea por línea para actualizar hashes manteniendo tu estructura intacta
           lineas_casa = contenido_casa.splitlines()
           lineas_actualizadas = []
           i = 0
@@ -98,18 +95,15 @@ jobs:
               lineas_actualizadas.append(linea)
 
               if linea.startswith("#EXTINF:"):
-                  # Intentar identificar el canal para buscar su nuevo hash si está obsoleto
                   m_tvg = re.search(r'tvg-id="([^"]*)"', linea)
                   nombre_crudo = linea.rsplit(",", 1)[-1].strip()
                   
                   norm_tvg = normalizar(m_tvg.group(1)) if m_tvg else ""
                   norm_nombre = normalizar(nombre_crudo)
 
-                  # Mirar si la siguiente línea es una URL local de acestream
                   if i + 1 < len(lineas_casa):
                       url_siguiente = lineas_casa[i + 1].strip()
                       if "127.0.0.1:6878" in url_siguiente and "id=" in url_siguiente:
-                          # Buscar si tenemos un hash fresco en Elcano para este canal
                           nuevo_hash = None
                           if norm_tvg in mapa_elcano:
                               nuevo_hash = mapa_elcano[norm_tvg]
@@ -117,28 +111,21 @@ jobs:
                               nuevo_hash = mapa_elcano[norm_nombre]
 
                           if nuevo_hash:
-                              # Sustituir manteniendo la estructura del enlace original (getstream o manifest)
                               url_actualizada = re.sub(r'id=[0-9a-fA-F]{40}', f'id={nuevo_hash}', url_siguiente)
                               lineas_actualizadas.append(url_actualizada)
                               i += 1
-                              print(f"Actualizado hash para: {nombre_crudo}")
                           else:
-                              # Si no hay nuevo hash, conservar el que ya tenía el usuario
                               lineas_actualizadas.append(url_siguiente)
                               i += 1
-                      else:
-                          # Si es un enlace web directo (como las TDT de RTVE), dejarlo intacto
-                          pass
               i += 1
 
           lista_final_casa = "\n".join(lineas_actualizadas) + "\n"
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
-          # Espejo para Tailscale cambiando la IP del motor local
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización de estructura y hashes completada con éxito.")
+          print("Sincronización completada con éxito.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -148,7 +135,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización de hashes manteniendo esqueleto y nombres de usuario"
+            git commit -m "Actualización limpia de hashes respetando esqueleto"
             git push
           else
             echo "No hay cambios que guardar."
