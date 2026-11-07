@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Generar lista con carpeta ELCANO al inicio y tu estructura intacta
+      - name: Sincronización perfecta con carpeta ELCANO arriba y listas intactas
         run: |
           python <<'PY'
           import re
@@ -48,13 +48,9 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 1. Parsear la lista de Elcano para armar la carpeta inicial "ELCANO"
+          # 1. Parsear Elcano y ordenar los canales clave arriba (Ligas, DAZN, Campeones, etc.)
           lineas_elcano = fuente_elcano.splitlines()
-          bloque_elcano_generado = []
-          bloque_elcano_generado.append("# ==========================================")
-          bloque_elcano_generado.append("# CARPETA: ELCANO")
-          bloque_elcano_generado.append("# ==========================================")
-          
+          canales_raw = []
           i = 0
           while i < len(lineas_elcano):
               linea = lineas_elcano[i].strip()
@@ -68,7 +64,6 @@ jobs:
                           break
                       j += 1
                   if url:
-                      # Limpiar el enlace para que use tu motor local 127.0.0.1:6878
                       match_h = re.search(r'([0-9a-fA-F]{40})', url)
                       if match_h:
                           h_id = match_h.group(1)
@@ -76,41 +71,60 @@ jobs:
                       else:
                           url_local = url
 
-                      # Asegurar que el group-title de estos canales sea ELCANO
-                      extinf_mod = re.sub(r'group-title="[^"]*"]*', 'group-title="ELCANO"', linea)
+                      # Asegurar group-title ELCANO
+                      extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="ELCANO"', linea)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="ELCANO"')
 
-                      bloque_elcano_generado.append(extinf_mod)
-                      bloque_elcano_generado.append(url_local)
+                      nombre_c = linea.rsplit(",", 1)[-1].upper()
+                      canales_raw.append((nombre_c, extinf_mod, url_local))
                       i = j
               i += 1
 
-          bloque_elcano_generado.append("\n# ==========================================")
-          bloque_elcano_generado.append("# TUS CATEGORÍAS ORIGINALES")
-          bloque_elcano_generado.append("# ==========================================\n")
+          # Criterio de ordenación para poner lo importante arriba dentro de ELCANO
+          def prioridad_elcano(item):
+              nombre = item[0]
+              if "M+ LALIGA" in nombre: return 1
+              if "DAZN LALIGA" in nombre: return 2
+              if "CAMPEONES" in nombre: return 3
+              if "DAZN 1" in nombre or "DAZN 2" in nombre or "DAZN 3" in nombre or "DAZN 4" in nombre: return 4
+              if "F1" in nombre: return 5
+              if "MOTOGP" in nombre: return 6
+              if "DEPORTES" in nombre or "VAMOS" in nombre: return 7
+              if "BALONCESTO" in nombre: return 8
+              return 9
 
-          # 2. Limpiar tu archivo base por si tuviera restos de pruebas anteriores y dejarlo puro
-          # Mantenemos la cabecera EPG original intacta
+          canales_ordenados = sorted(canales_raw, key=prioridad_elcano)
+
+          # Construir bloque ELCANO
+          bloque_elcano = []
+          bloque_elcano.append("# ==========================================")
+          bloque_elcano.append("# CARPETA: ELCANO")
+          bloque_elcano.append("# ==========================================")
+          for _, inf, u in canales_ordenados:
+              bloque_elcano.append(inf)
+              bloque_elcano.append(u)
+
+          # 2. Extraer limpiamente tus categorías originales del archivo base sin alterar su contenido interno
           lineas_casa = contenido_casa.splitlines()
-          cuerpo_original = []
-          capturando = False
+          cuerpo_tus_categorias = []
+          saltar_viejo_elcano = False
 
           for linea in lineas_casa:
               if linea.startswith("#EXTM3U") or linea.startswith("#EXTVLCOPT"):
-                cuerpo_original.append(linea)
-              elif "CARPETA: ELCANO" in linea:
-                  capturando = False # Ignoramos bloques viejos de elcano si los hubiera
-              elif linea.startswith("#EXTINF:") or linea.startswith("# =========================================="):
-                  capturando = True
-              
-              if capturando:
-                  cuerpo_original.append(linea)
+                  continue # Omitimos cabeceras viejas para poner la oficial
+              if "CARPETA: ELCANO" in linea:
+                  saltar_viejo_elcano = True
+                  continue
+              if saltar_viejo_elcano:
+                  if "CARPETA:" in linea or "TUS CATEGORÍAS" in linea:
+                      saltar_viejo_elcano = False
+                  else:
+                      continue
+              if not saltar_viejo_elcano:
+                  cuerpo_tus_categorias.append(linea)
 
-          # Si no se filtró bien por seguridad, usamos todo el contenido exceptuando las cabeceras repetidas
-          lineas_limpias_casa = [l for l in cuerpo_original if not l.startswith("#EXTM3U") and not l.startswith("#EXTVLCOPT")]
-
-          # Cabecera oficial EPG de David Muma solicitada
+          # Cabecera oficial EPG de David Muma
           cabecera_epg = (
               '#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
               'https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,'
@@ -118,16 +132,16 @@ jobs:
               '#EXTVLCOPT:network-caching=1000\n'
           )
 
-          # Unir todo: Cabecera EPG + Carpeta ELCANO al principio + Tus carpetas originales intactas
-          texto_final = cabecera_epg + "\n".join(bloque_elcano_generado) + "\n" + "\n".join(lineas_limpias_casa) + "\n"
+          # Unir todo perfectamente: Cabecera EPG + Carpeta ELCANO ordenada arriba + Tus listas intactas debajo
+          texto_final = cabecera_epg + "\n" + "\n".join(bloque_elcano) + "\n\n" + "\n".join(cuerpo_tus_categorias) + "\n"
 
           archivo_casa.write_text(texto_final, encoding="utf-8")
 
-          # Versión Tailscale cambiando la IP del motor
+          # Versión Tailscale cambiando la IP del motor AceStream
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
 
-          print("Lista sincronizada con carpeta ELCANO al inicio y estructura respetada.")
+          print("Sincronización completada: ELCANO arriba ordenado y tus listas originales intactas.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -137,7 +151,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Estructura limpia con carpeta ELCANO al inicio y EPG"
+            git commit -m "Orden exacto ELCANO arriba y categorias originales intactas"
             git push
           else
             echo "No hay cambios que guardar."
