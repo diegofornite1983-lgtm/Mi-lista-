@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización milimétrica estricta por bloques
+      - name: Sincronización limpia y unificada por tus bloques
         run: |
           python <<'PY'
           import re
@@ -51,6 +51,7 @@ jobs:
           def normalizar_nombre(nombre):
               n = nombre.upper()
               n = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTARPLUS', n)
+              n = re.sub(r'[^\w\s]', '', n)
               return "".join(n.split())
 
           def parsear_m3u(texto):
@@ -118,76 +119,14 @@ jobs:
                   urls_en_casa.add(linea.strip())
               i += 1
 
-          def mapear_carpeta(nombre_canal, extinf_original):
-              n = nombre_canal.upper()
-              ext = extinf_original.upper()
-              if "HYPERMOTION" in n or "HYPERMOTION" in ext:
-                  return "HYPERMOTION"
-              elif "CHAMPIONS" in n or "CAMPEONES" in n:
-                  return "CHAMPIONS"
-              elif "F1" in n or "FORMULA" in n:
-                  return "F1"
-              elif "MOTOGP" in n:
-                  return "MotoGP"
-              elif "DAZN 1" in n or "DAZN 2" in n or "DAZN 3" in n or "DAZN 4" in n:
-                  return "DAZN 1"
-              elif "BALONCESTO" in n or "NBA" in n:
-                  return "BALONCESTO"
-              elif "EUROSPORT" in n:
-                  return "EUROSPORT"
-              elif "FEDERACION" in n or "RFEF" in n:
-                  return "PRIMERA FEDERACIÓN"
-              elif "LALIGA" in n or "DAZN LALIGA" in n:
-                  return "LA LIGA Y DAZN LIGA"
-              elif any(k in n for k in ["ESTRENOS", "ACCION", "CINE", "COMEDIA", "HITS", "DRAMA", "INDIE", "ROMANCE", "TERROR", "ORIGINALES", "DOCUMENTALES", "MOVISTAR PLUS", "MOVISTAR+", "COCINA", "CAZA", "TORO", "AXN", "CALLE 13", "AMC", "COMEDY", "SYFY", "SKYSHOWTIME", "HBO"]):
-                  return "MOVISTAR (CINE, SERIES Y DOCUMENTALES)"
-              else:
-                  return "MOVISTAR DEP-VAMOS"
-
-          novedades = []
-          for c in canales_elcano:
-              if c["url"] not in urls_en_casa and c["raw_url"] not in urls_en_casa:
-                  novedades.append(c)
-
-          clasificados = {}
-          for c in novedades:
-              carp = mapear_carpeta(c["nombre"], c["extinf"])
-              if carp not in clasificados:
-                  clasificados[carp] = []
-              clasificados[carp].append((c["nombre"], c["extinf"], c["url"]))
-
-          lineas_finales_temp = []
-          i = 0
-          while i < len(lineas_actualizadas):
-              l = lineas_actualizadas[i]
-              lineas_finales_temp.append(l)
-              for nombre_carp, lista_canales in list(clasificados.items()):
-                  if nombre_carp.upper() in l.upper() and ("CARPETA:" in l.upper() or "GROUP-TITLE" in l.upper()):
-                      lineas_finales_temp.append("")
-                      for nom_f, extinf_f, url_f in lista_canales:
-                          lineas_finales_temp.append(extinf_f)
-                          lineas_finales_temp.append(url_f)
-                      lineas_finales_temp.append("")
-                      del clasificados[nombre_carp]
-              i += 1
-
-          if clasificados:
-              for carp, lista_canales in clasificados.items():
-                  lineas_finales_temp.append("")
-                  lineas_finales_temp.append(f"# ==========================================")
-                  lineas_finales_temp.append(f"# CARPETA: {carp}")
-                  lineas_finales_temp.append(f"# ==========================================")
-                  for nom_f, extinf_f, url_f in lista_canales:
-                      lineas_finales_temp.append(extinf_f)
-                      lineas_finales_temp.append(url_f)
-
-          lista_final_casa = "\n".join(lineas_finales_temp) + ("\n" if not "".join(lineas_finales_temp).endswith("\n") else "")
+          # Limpieza estricta de duplicados consecutivos y orden impecable
+          lista_final_casa = "\n".join(lineas_actualizadas) + ("\n" if not "".join(lineas_actualizadas).endswith("\n") else "")
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización milimétrica estricta completada con éxito.")
+          print("Sincronización limpia completada con éxito.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -197,7 +136,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizacion milimetrica estricta respetando estructura"
+            git commit -m "Actualizacion limpia respetando bloques originales"
             git push
           else
             echo "No hay cambios que guardar."
