@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización exacta respetando tu estructura y nombres
+      - name: Generar lista con carpeta ELCANO al inicio y tu estructura intacta
         run: |
           python <<'PY'
           import re
@@ -48,17 +48,13 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # Parsear la lista de Elcano para obtener un diccionario de nombre_normalizado -> hash
-          def limpiar_nombre(nombre):
-              n = nombre.upper()
-              # Quitar símbolos raros, estrellas o sufijos numéricos temporales para buscar concordancia
-              n = re.sub(r'[⭐️⭐]', '', n)
-              n = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTARPLUS', n)
-              n = re.sub(r'[^\w\s]', '', n)
-              return "".join(n.split())
-
+          # 1. Parsear la lista de Elcano para armar la carpeta inicial "ELCANO"
           lineas_elcano = fuente_elcano.splitlines()
-          mapa_elcano = {}
+          bloque_elcano_generado = []
+          bloque_elcano_generado.append("# ==========================================")
+          bloque_elcano_generado.append("# CARPETA: ELCANO")
+          bloque_elcano_generado.append("# ==========================================")
+          
           i = 0
           while i < len(lineas_elcano):
               linea = lineas_elcano[i].strip()
@@ -72,62 +68,66 @@ jobs:
                           break
                       j += 1
                   if url:
+                      # Limpiar el enlace para que use tu motor local 127.0.0.1:6878
                       match_h = re.search(r'([0-9a-fA-F]{40})', url)
                       if match_h:
                           h_id = match_h.group(1)
-                          nombre_canal_elcano = linea.rsplit(",", 1)[-1].strip()
-                          mapa_elcano[limpiar_nombre(nombre_canal_elcano)] = h_id
+                          url_local = f"http://127.0.0.1:6878/ace/getstream?id={h_id}"
+                      else:
+                          url_local = url
+
+                      # Asegurar que el group-title de estos canales sea ELCANO
+                      extinf_mod = re.sub(r'group-title="[^"]*"]*', 'group-title="ELCANO"', linea)
+                      if 'group-title=' not in extinf_mod:
+                          extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="ELCANO"')
+
+                      bloque_elcano_generado.append(extinf_mod)
+                      bloque_elcano_generado.append(url_local)
                       i = j
               i += 1
 
-          # Recorrer tu lista línea por línea respetando absolutamente todo el esqueleto
+          bloque_elcano_generado.append("\n# ==========================================")
+          bloque_elcano_generado.append("# TUS CATEGORÍAS ORIGINALES")
+          bloque_elcano_generado.append("# ==========================================\n")
+
+          # 2. Limpiar tu archivo base por si tuviera restos de pruebas anteriores y dejarlo puro
+          # Mantenemos la cabecera EPG original intacta
           lineas_casa = contenido_casa.splitlines()
-          nuevas_lineas = []
-          i = 0
+          cuerpo_original = []
+          capturando = False
 
-          while i < len(lineas_casa):
-              linea = lineas_casa[i]
-              nuevas_lineas.append(linea)
+          for linea in lineas_casa:
+              if linea.startswith("#EXTM3U") or linea.startswith("#EXTVLCOPT"):
+                cuerpo_original.append(linea)
+              elif "CARPETA: ELCANO" in linea:
+                  capturando = False # Ignoramos bloques viejos de elcano si los hubiera
+              elif linea.startswith("#EXTINF:") or linea.startswith("# =========================================="):
+                  capturando = True
+              
+              if capturando:
+                  cuerpo_original.append(linea)
 
-              # Si es una línea de canal, miramos la siguiente para actualizar el enlace si procede
-              if linea.startswith("#EXTINF:"):
-                  if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
-                      url_actual = lineas_casa[i+1].strip()
-                      
-                      # Extraer el nombre de tu canal desde la línea EXTINF
-                        partes_inf = linea.rsplit(",", 1)
-                      if len(partes_inf) > 1:
-                          nombre_tu_canal = partes_inf[1].strip()
-                          nombre_norm = limpiar_nombre(nombre_tu_canal)
-                          
-                          # Buscar coincidencia exacta o parcial limpia en Elcano
-                          nuevo_hash = None
-                          for k_elcano, h_val in mapa_elcano.items():
-                              # Si tu nombre contiene el de elcano o viceversa de forma lógica
-                              if k_elcano in nombre_norm or nombre_norm in k_elcano:
-                                  nuevo_hash = h_val
-                                  break
-                          
-                          if nuevo_hash and "127.0.0.1:6878" in url_actual:
-                              if "manifest.m3u8" in url_actual:
-                                  url_actual = f"http://127.0.0.1:6878/ace/manifest.m3u8?id={nuevo_hash}"
-                              elif "infohash=" in url_actual:
-                                  url_actual = f"http://127.0.0.1:6878/ace/getstream?infohash={nuevo_hash}"
-                              else:
-                                  url_actual = f"http://127.0.0.1:6878/ace/getstream?id={nuevo_hash}"
+          # Si no se filtró bien por seguridad, usamos todo el contenido exceptuando las cabeceras repetidas
+          lineas_limpias_casa = [l for l in cuerpo_original if not l.startswith("#EXTM3U") and not l.startswith("#EXTVLCOPT")]
 
-                      nuevas_lineas.append(url_actual)
-                      i += 1
-              i += 1
+          # Cabecera oficial EPG de David Muma solicitada
+          cabecera_epg = (
+              '#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
+              'https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,'
+              'https://raw.githubusercontent.com/davidmuma/EPG_dobleM/master/guiatv.xml" refresh="3600"\n'
+              '#EXTVLCOPT:network-caching=1000\n'
+          )
 
-          lista_final_casa = "\n".join(nuevas_lineas) + "\n"
-          archivo_casa.write_text(lista_final_casa, encoding="utf-8")
+          # Unir todo: Cabecera EPG + Carpeta ELCANO al principio + Tus carpetas originales intactas
+          texto_final = cabecera_epg + "\n".join(bloque_elcano_generado) + "\n" + "\n".join(lineas_limpias_casa) + "\n"
 
-          # Generar la versión de Tailscale manteniendo intacta tu estructura pero cambiando la IP
-          lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
-          archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
+          archivo_casa.write_text(texto_final, encoding="utf-8")
 
-          print("Sincronización finalizada respetando nombres y estructura al milímetro.")
+          # Versión Tailscale cambiando la IP del motor
+          texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
+          archivo_tailscale.write_text(texto_ts, encoding="utf-8")
+
+          print("Lista sincronizada con carpeta ELCANO al inicio y estructura respetada.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -137,7 +137,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion precisa respetando nombres personalizados de Diego"
+            git commit -m "Estructura limpia con carpeta ELCANO al inicio y EPG"
             git push
           else
             echo "No hay cambios que guardar."
