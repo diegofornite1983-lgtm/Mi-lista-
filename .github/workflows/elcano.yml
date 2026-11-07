@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización exacta respetando tu estructura
+      - name: Sincronización exacta respetando tu estructura y nombres
         run: |
           python <<'PY'
           import re
@@ -48,14 +48,15 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # Normalizador fino para comparar nombres de canales con Elcano
-          def normalizar(texto):
-              t = texto.upper()
-              t = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTARPLUS', t)
-              t = re.sub(r'[^\w\s]', '', t)
-              return "".join(t.split())
+          # Parsear la lista de Elcano para obtener un diccionario de nombre_normalizado -> hash
+          def limpiar_nombre(nombre):
+              n = nombre.upper()
+              # Quitar símbolos raros, estrellas o sufijos numéricos temporales para buscar concordancia
+              n = re.sub(r'[⭐️⭐]', '', n)
+              n = re.sub(r'M\+\s?|MOVISTAR\+\s?|MOVISTAR\s?PLUS\s?', 'MOVISTARPLUS', n)
+              n = re.sub(r'[^\w\s]', '', n)
+              return "".join(n.split())
 
-          # Parsear Elcano para extraer mapa de nombres y hashes
           lineas_elcano = fuente_elcano.splitlines()
           mapa_elcano = {}
           i = 0
@@ -67,61 +68,66 @@ jobs:
                   while j < len(lineas_elcano):
                       candidata = lineas_elcano[j].strip()
                       if candidata and not candidata.startswith("#"):
-                        url = candidata
-                        break
+                          url = candidata
+                          break
                       j += 1
                   if url:
                       match_h = re.search(r'([0-9a-fA-F]{40})', url)
                       if match_h:
                           h_id = match_h.group(1)
-                          nombre_c = linea.rsplit(",", 1)[-1].strip()
-                          mapa_elcano[normalizar(nombre_c)] = h_id
+                          nombre_canal_elcano = linea.rsplit(",", 1)[-1].strip()
+                          mapa_elcano[limpiar_nombre(nombre_canal_elcano)] = h_id
                       i = j
               i += 1
 
-          # Recorrer tu lista manteniendo el esqueleto exacto y actualizando solo el hash si coincide
+          # Recorrer tu lista línea por línea respetando absolutamente todo el esqueleto
           lineas_casa = contenido_casa.splitlines()
           nuevas_lineas = []
           i = 0
+
           while i < len(lineas_casa):
               linea = lineas_casa[i]
               nuevas_lineas.append(linea)
 
+              # Si es una línea de canal, miramos la siguiente para actualizar el enlace si procede
               if linea.startswith("#EXTINF:"):
-                  nombre_canal = linea.rsplit(",", 1)[-1].strip()
-                  nombre_norm = normalizar(nombre_canal)
-
                   if i + 1 < len(lineas_casa) and not lineas_casa[i+1].strip().startswith("#"):
-                      url_linea = lineas_casa[i+1].strip()
+                      url_actual = lineas_casa[i+1].strip()
                       
-                      # Buscar si este canal está en Elcano para actualizar su hash manteniendo tu estructura
-                      encontrado_nuevo_hash = None
-                      for clave_elcano, h_val in mapa_elcano.items():
-                          if clave_elcano in nombre_norm or nombre_norm in clave_elcano:
-                              encontrado_nuevo_hash = h_val
-                              break
+                      # Extraer el nombre de tu canal desde la línea EXTINF
+                        partes_inf = linea.rsplit(",", 1)
+                      if len(partes_inf) > 1:
+                          nombre_tu_canal = partes_inf[1].strip()
+                          nombre_norm = limpiar_nombre(nombre_tu_canal)
+                          
+                          # Buscar coincidencia exacta o parcial limpia en Elcano
+                          nuevo_hash = None
+                          for k_elcano, h_val in mapa_elcano.items():
+                              # Si tu nombre contiene el de elcano o viceversa de forma lógica
+                              if k_elcano in nombre_norm or nombre_norm in k_elcano:
+                                  nuevo_hash = h_val
+                                  break
+                          
+                          if nuevo_hash and "127.0.0.1:6878" in url_actual:
+                              if "manifest.m3u8" in url_actual:
+                                  url_actual = f"http://127.0.0.1:6878/ace/manifest.m3u8?id={nuevo_hash}"
+                              elif "infohash=" in url_actual:
+                                  url_actual = f"http://127.0.0.1:6878/ace/getstream?infohash={nuevo_hash}"
+                              else:
+                                  url_actual = f"http://127.0.0.1:6878/ace/getstream?id={nuevo_hash}"
 
-                      if encontrado_nuevo_hash:
-                          if "manifest.m3u8" in url_linea:
-                              nueva_url = f"http://127.0.0.1:6878/ace/manifest.m3u8?id={encontrado_nuevo_hash}"
-                          elif "infohash=" in url_linea:
-                              nueva_url = f"http://127.0.0.1:6878/ace/getstream?infohash={encontrado_nuevo_hash}"
-                          else:
-                              nueva_url = f"http://127.0.0.1:6878/ace/getstream?id={encontrado_nuevo_hash}"
-                          nuevas_lineas.append(nueva_url)
-                      else:
-                          nuevas_lineas.append(url_linea)
+                      nuevas_lineas.append(url_actual)
                       i += 1
               i += 1
 
           lista_final_casa = "\n".join(nuevas_lineas) + "\n"
           archivo_casa.write_text(lista_final_casa, encoding="utf-8")
 
-          # Generar la versión de Tailscale cambiando la IP del motor AceStream
+          # Generar la versión de Tailscale manteniendo intacta tu estructura pero cambiando la IP
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización exacta completada respetando tu lista al milímetro.")
+          print("Sincronización finalizada respetando nombres y estructura al milímetro.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -131,7 +137,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualizacion exacta respetando estructura original"
+            git commit -m "Actualizacion precisa respetando nombres personalizados de Diego"
             git push
           else
             echo "No hay cambios que guardar."
