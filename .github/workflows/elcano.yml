@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización limpia por carpetas y EPG blindada
+      - name: Sincronización milimétrica por carpetas y EPG blindada
         run: |
           python <<'PY'
           import re
@@ -139,7 +139,7 @@ jobs:
                   return "EUROSPORT"
               elif "FEDERACION" in n or "RFEF" in n:
                   return "PRIMERA FEDERACIÓN"
-              elif any(k in n for k in ["ESTRENOS", "ACCION", "CINE", "COMEDIA", "HITS", "DRAMA", "INDIE", "ROMANCE", "TERROR", "ORIGINALES", "DOCUMENTALES", "MOVISTAR PLUS", "MOVISTAR+"]):
+              elif any(k in n for k in ["ESTRENOS", "ACCION", "CINE", "COMEDIA", "HITS", "DRAMA", "INDIE", "ROMANCE", "TERROR", "ORIGINALES", "DOCUMENTALES", "MOVISTAR PLUS", "MOVISTAR+"]) and "TDT" not in ext:
                   return "MOVISTAR (CINE, SERIES Y DOCUMENTALES)"
               else:
                   return "MOVISTAR DEP-VAMOS"
@@ -162,7 +162,6 @@ jobs:
               l = lineas_actualizadas[i]
               lineas_finales_temp.append(l)
               for nombre_carp, lista_canales in list(clasificados.items()):
-                  # Coincidencia flexible con las carpetas existentes en tu lista
                   if nombre_carp.split()[0].upper() in l.upper() and ("CARPETA:" in l.upper() or nombre_carp.upper() in l.upper()):
                       lineas_finales_temp.append("")
                       for nom_f, extinf_f, url_f in lista_canales:
@@ -188,7 +187,7 @@ jobs:
           lista_final_ts = lista_final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(lista_final_ts, encoding="utf-8")
 
-          print("Sincronización ordenada por carpetas completada con éxito.")
+          print("Sincronización milimétrica completada con éxito.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -198,7 +197,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizacion limpia respetando carpetas y EPG original"
+            git commit -m "Sincronizacion milimetrica respetando carpetas y EPG original"
             git push
           else
             echo "No hay cambios que guardar."
