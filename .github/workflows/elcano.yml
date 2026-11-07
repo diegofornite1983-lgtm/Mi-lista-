@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización automática ELCANO con prioridad 1080p arriba
+      - name: Sincronización automática ELCANO 1080p primeros
         run: |
           python <<'PY'
           import re
@@ -87,7 +87,6 @@ jobs:
           def prioridad_elcano(item):
               nombre = item[0]
               
-              # Asignar peso principal por tipo de evento/liga
               if "M+ LALIGA" in nombre: bloque = 1
               elif "DAZN LALIGA" in nombre: bloque = 2
               elif "CAMPEONES" in nombre: bloque = 3
@@ -98,7 +97,7 @@ jobs:
               elif "BALONCESTO" in nombre: bloque = 8
               else: bloque = 9
 
-              # Sub-criterio de calidad: 1080p y 4K van antes (subnivel 0), los demás o 720p van después (subnivel 1)
+              # Obligar a que 1080p y 4K salgan primeros (subnivel 0) frente a 720p (subnivel 2)
               if "1080" in nombre or "4K" in nombre:
                   calidad = 0
               elif "720" in nombre:
@@ -147,7 +146,7 @@ jobs:
           # Unir todo de forma perfectamente estructurada
           texto_final = (
               cabecera_m3u + 
-              texto_nuevo_elicano + 
+              texto_nuevo_elcano + 
               "\n\n\n# ==========================================\n" +
               "# ZONA PERSONAL: TUS CATEGORÍAS Y LISTAS\n" +
               "# ==========================================\n\n" + 
@@ -161,7 +160,7 @@ jobs:
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
 
-          print("¡Sincronización completada: 1080p primeros y cada 3 horas!")
+          print("¡Sincronización completada con éxito: 1080p primeros y cada 3 horas!")
           PY
 
       - name: Guardar cambios en GitHub
