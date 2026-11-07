@@ -53,7 +53,7 @@ http://100.90.204.66:6878/ace/getstream?id=529f5abd2c87209f69c0727ade740ff6f160b
 http://100.90.204.66:6878/ace/getstream?id=529f5abd2c87209f69c0727ade740ff6f160be88
 
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 1080p 
-http://100.90.204.66:6878/ace/getstream?id=5bf898b0ffc2ca662b898a424a988a922ab88abd
+http://100.90.204.66:6878/ace/getstream?id=529f5abd2c87209f69c0727ade740ff6f160be88
 
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 4a3a
 http://100.90.204.66:6878/ace/getstream?id=529f5abd2c87209f69c0727ade740ff6f160be88
@@ -62,7 +62,7 @@ http://100.90.204.66:6878/ace/getstream?id=529f5abd2c87209f69c0727ade740ff6f160b
 http://100.90.204.66:6878/ace/getstream?id=4855b5c3263f207260e1c6cbd8c234df799cf7f2
 
 #EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 720p 
-http://100.90.204.66:6878/ace/getstream?id=34d4ed86aa5e56a84b151a80f6904605a0f77854
+http://100.90.204.66:6878/ace/getstream?id=4855b5c3263f207260e1c6cbd8c234df799cf7f2
 
 #EXTINF:-1 tvg-id="DAZN LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%202.png" group-title="LA LIGA Y DAZN LIGA",DAZN LaLiga 2 e61f
 http://100.90.204.66:6878/ace/getstream?id=529f5abd2c87209f69c0727ade740ff6f160be88
@@ -259,7 +259,7 @@ http://100.90.204.66:6878/ace/getstream?id=9c079e1bbd01814c107e89187b8c24ba0ac30
 http://100.90.204.66:6878/ace/getstream?id=4ce1d784cf9b1fda3f73a5a1eedcd342b952bc29
 
 #EXTINF:-1 tvg-id="La 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 TVE 720p *
-http://100.90.204.66:6878/ace/getstream?id=fff8654ad6ef3ddb4ce3998bda9056ab28a66a1a
+http://100.90.204.66:6878/ace/getstream?id=4ce1d784cf9b1fda3f73a5a1eedcd342b952bc29
 
 #EXTINF:-1 tvg-id="La 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="MOVISTAR",La 2 HD
 http://100.90.204.66:6878/ace/getstream?id=303502c689c33f8ff8539a036225c029e42e2bf8
