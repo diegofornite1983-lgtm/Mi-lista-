@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización automática ELCANO Orden Limpio Diego
+      - name: Sincronización automática ELCANO Multis Primero Diego
         run: |
           python <<'PY'
           import re
@@ -83,42 +83,37 @@ jobs:
                       i = j
               i += 1
 
-          # Criterio de ordenación: Solo los principales puros arriba, el resto (multis, azteca, fox, tdt) abajo
+          # Criterio de ordenación estricto: Principales -> Multis Deportivas -> TDT / Raros al final
           def prioridad_elcano(item):
               nombre = item[0]
               
-              # Detección de canales externos, multis o secundarios que deben ir abajo
               es_multi = bool(re.search(r'\b(2|3|4|5|6|7|8|9)\b', nombre))
-              es_secundario_o_tdt = any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "EUROSPORT", "GOLF", "BALONCESTO", "NBA", "NBC", "ONETORO", "SKY SPORT", "SPORT TV3", "TENNIS", "À PUNT", "REAL MADRID"])
 
-              if (es_multi and not ("F1" in nombre or "MOTOGP" in nombre)) or es_secundario_o_tdt:
-                  bloque = 13
+              # 1. CANALES PRINCIPALES (Arriba del todo)
+              if not es_multi or ("F1" in nombre or "MOTOGP" in nombre):
+                  if "M+ LALIGA" in nombre: bloque = 1
+                  elif "DAZN LALIGA" in nombre: bloque = 2
+                  elif "MOVISTAR PLUS" in nombre or "MOVISTAR+" in nombre: bloque = 3
+                  elif "CAMPEONES" in nombre: bloque = 4
+                  elif "F1" in nombre or "FORMULA 1" in nombre: bloque = 5
+                  elif "MOTOGP" in nombre: bloque = 6
+                  elif "DAZN 1" in nombre: bloque = 7
+                  elif "DEPORTES" in nombre: bloque = 8
+                  elif "VAMOS" in nombre: bloque = 10
+                  elif "HYPERMOTION" in nombre: bloque = 11
+                  elif "PRIMERA" in nombre or "RFEF" in nombre: bloque = 12
+                  else: bloque = 14  # Canales no principales
               else:
-                  # Canales principales arriba en orden estricto
-                  if "M+ LALIGA" in nombre: 
-                      bloque = 1
-                  elif "DAZN LALIGA" in nombre: 
-                      bloque = 2
-                  elif "MOVISTAR PLUS" in nombre or "MOVISTAR+" in nombre: 
-                      bloque = 3
-                  elif "CAMPEONES" in nombre: 
-                      bloque = 4
-                  elif "F1" in nombre or "FORMULA 1" in nombre: 
-                      bloque = 5
-                  elif "MOTOGP" in nombre: 
-                      bloque = 6
-                  elif "DAZN 1" in nombre: 
-                      bloque = 7
-                  elif "DEPORTES" in nombre: 
-                      bloque = 8
-                  elif "VAMOS" in nombre: 
-                      bloque = 10
-                  elif "HYPERMOTION" in nombre: 
-                      bloque = 11
-                  elif "PRIMERA" in nombre or "RFEF" in nombre: 
-                      bloque = 12
-                  else: 
-                      bloque = 14
+                  bloque = 14
+
+              # 2. MULTIS DEPORTIVAS (Van justo debajo de Primera Federación: Bloque 13)
+              # Si es una multi oficial (LaLiga 2, DAZN LaLiga 2, Campeones 2, Vamos 2, Hypermotion 2, etc.)
+              if es_multi and any(x in nombre for x in ["LALIGA", "CAMPEONES", "DAZN", "VAMOS", "HYPERMOTION", "DEPORTES"]):
+                  bloque = 13
+
+              # 3. CANALES EXTERNOS / RAROS / TDT (Van al fondo del todo: Bloque 15)
+              if any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO"]):
+                  bloque = 15
 
               # REGLA DE ORO DE CALIDAD: 1080p y 4K siempre van los primerísimos (subnivel 0) dentro de su bloque
               if "1080" in nombre or "4K" in nombre:
@@ -183,7 +178,7 @@ jobs:
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
 
-          print("¡Sincronización completada: Limpieza de externos y orden perfecto!")
+          print("¡Sincronización completada: Multis importantes arriba y raros al fondo!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -193,7 +188,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización: Orden estricto sin canales raros arriba en ELCANO"
+            git commit -m "Actualización: Multis de fútbol/deporte prioritarias en ELCANO"
             git push
           else
             echo "No hay cambios que guardar."
