@@ -72,18 +72,27 @@ jobs:
                       else:
                           url_local = url
 
+                      # Extraer el nombre del canal para analizarlo
+                      nombre_c = linea.rsplit(",", 1)[-1].upper()
+
+                      # REGLA PARA LA EPG: Forzar el tvg-id exacto para Movistar Plus+ para que no falle en Android
+                      extinf_mod = linea
+                      if "MOVISTAR PLUS" in nombre_c or "M+ PLUS" in nombre_c:
+                          if 'tvg-id=' in extinf_mod:
+                              extinf_mod = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus+"', extinf_mod)
+                          else:
+                              extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus+"')
+
                       # Forzar el group-title con el nombre exacto
-                      extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', linea)
+                      extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
 
-                      # REGLA DE ORO: Respetar tvg-id y nombre numérico final exactamente igual
-                      nombre_c = linea.rsplit(",", 1)[-1].upper()
                       canales_raw.append((nombre_c, extinf_mod, url_local))
                       i = j
               i += 1
 
-          # Criterio de ordenación estricto: Principales -> Multis Deportivas -> TDT / Raros al final
+          # Criterio de ordenación estricto: Principales -> Multis Deportivas -> TDT / Raros al fondo
           def prioridad_elcano(item):
               nombre = item[0]
               
@@ -93,7 +102,7 @@ jobs:
               if not es_multi or ("F1" in nombre or "MOTOGP" in nombre):
                   if "M+ LALIGA" in nombre: bloque = 1
                   elif "DAZN LALIGA" in nombre: bloque = 2
-                  elif "MOVISTAR PLUS" in nombre or "MOVISTAR+" in nombre: bloque = 3
+                  elif "MOVISTAR PLUS" in nombre or "MOVISTAR+" in nombre or "M+ PLUS" in nombre: bloque = 3
                   elif "CAMPEONES" in nombre: bloque = 4
                   elif "F1" in nombre or "FORMULA 1" in nombre: bloque = 5
                   elif "MOTOGP" in nombre: bloque = 6
@@ -102,20 +111,19 @@ jobs:
                   elif "VAMOS" in nombre: bloque = 10
                   elif "HYPERMOTION" in nombre: bloque = 11
                   elif "PRIMERA" in nombre or "RFEF" in nombre: bloque = 12
-                  else: bloque = 14  # Canales no principales
+                  else: bloque = 14
               else:
                   bloque = 14
 
-              # 2. MULTIS DEPORTIVAS (Van justo debajo de Primera Federación: Bloque 13)
-              # Si es una multi oficial (LaLiga 2, DAZN LaLiga 2, Campeones 2, Vamos 2, Hypermotion 2, etc.)
+              # 2. MULTIS DEPORTIVAS
               if es_multi and any(x in nombre for x in ["LALIGA", "CAMPEONES", "DAZN", "VAMOS", "HYPERMOTION", "DEPORTES"]):
                   bloque = 13
 
-              # 3. CANALES EXTERNOS / RAROS / TDT (Van al fondo del todo: Bloque 15)
+              # 3. CANALES EXTERNOS / RAROS / TDT (Al fondo del todo: Bloque 15)
               if any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO"]):
                   bloque = 15
 
-              # REGLA DE ORO DE CALIDAD: 1080p y 4K siempre van los primerísimos (subnivel 0) dentro de su bloque
+              # REGLA DE CALIDAD: 1080p y 4K primero
               if "1080" in nombre or "4K" in nombre:
                   calidad = 0
               elif "720" in nombre:
@@ -161,7 +169,6 @@ jobs:
 
           timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
           
-          # Unir todo de forma perfectamente estructurada
           texto_final = (
               cabecera_m3u + 
               texto_nuevo_elcano + 
@@ -174,11 +181,10 @@ jobs:
 
           archivo_casa.write_text(texto_final, encoding="utf-8")
 
-          # Versión Tailscale cambiando la IP de forma segura
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
 
-          print("¡Sincronización completada: Multis importantes arriba y raros al fondo!")
+          print("¡Sincronización completada con EPG corregida para Movistar Plus+!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -188,7 +194,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización: Multis de fútbol/deporte prioritarias en ELCANO"
+            git commit -m "Actualización: EPG de Movistar Plus+ forzada para Android"
             git push
           else
             echo "No hay cambios que guardar."
