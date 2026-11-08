@@ -1,4 +1,4 @@
-name: Actualizador Automatico Elcano y Tailscale
+name: Actualizador Lista Amigos Elcano
 
 on:
   schedule:
@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización automática ELCANO Multis Primero Diego
+      - name: Sincronización automática ELCANO
         run: |
           python <<'PY'
           import re
@@ -32,10 +32,9 @@ jobs:
 
           URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           archivo_casa = Path("Mi lista acestream")
-          archivo_tailscale = Path("Canales m3u")
 
           if not archivo_casa.is_file():
-              sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream'.")
+              sys.exit("ERROR: No se encuentra el archivo.")
 
           try:
               contenido_casa = archivo_casa.read_text(encoding="utf-8-sig")
@@ -49,7 +48,6 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 1. Parsear los canales de Elcano
           lineas_elcano = fuente_elcano.splitlines()
           canales_raw = []
           i = 0
@@ -74,7 +72,6 @@ jobs:
 
                       nombre_c = linea.rsplit(",", 1)[-1].upper()
 
-                      # REGLA EXACTA: Forzar el tvg-id idéntico al que te funciona abajo ("Movistar Plus HD")
                       extinf_mod = linea
                       if "MOVISTAR PLUS" in nombre_c:
                           if 'tvg-id=' in extinf_mod:
@@ -82,7 +79,6 @@ jobs:
                           else:
                               extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus HD"')
 
-                      # Forzar el group-title con el nombre exacto
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
@@ -91,11 +87,9 @@ jobs:
                       i = j
               i += 1
 
-          # Criterio de ordenación estricto
           def prioridad_elcano(item):
               nombre = item[0]
               es_multi = bool(re.search(r'\b(2|3|4|5|6|7|8|9)\b', nombre))
-
               if not es_multi or ("F1" in nombre or "MOTOGP" in nombre):
                   if "M+ LALIGA" in nombre: bloque = 1
                   elif "DAZN LALIGA" in nombre: bloque = 2
@@ -111,20 +105,13 @@ jobs:
                   else: bloque = 14
               else:
                   bloque = 14
-
               if es_multi and any(x in nombre for x in ["LALIGA", "CAMPEONES", "DAZN", "VAMOS", "HYPERMOTION", "DEPORTES"]):
                   bloque = 13
-
               if any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO"]):
                   bloque = 15
-
-              if "1080" in nombre or "4K" in nombre:
-                  calidad = 0
-              elif "720" in nombre:
-                  calidad = 2
-              else:
-                  calidad = 1
-
+              if "1080" in nombre or "4K" in nombre: calidad = 0
+              elif "720" in nombre: calidad = 2
+              else: calidad = 1
               return (bloque, calidad, nombre)
 
           canales_ordenados = sorted(canales_raw, key=prioridad_elcano)
@@ -141,7 +128,6 @@ jobs:
           texto_nuevo_elcano = "\n".join(bloque_automatico)
 
           partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*CARPETA:\s*LA LIGA', contenido_casa, maxsplit=1)
-          
           if len(partes) > 1:
               cuerpo_personal = "# CARPETA: LA LIGA" + partes[1]
           else:
@@ -159,7 +145,6 @@ jobs:
           )
 
           timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-          
           texto_final = (
               cabecera_m3u + 
               texto_nuevo_elcano + 
@@ -171,22 +156,17 @@ jobs:
           )
 
           archivo_casa.write_text(texto_final, encoding="utf-8")
-
-          texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
-          archivo_tailscale.write_text(texto_ts, encoding="utf-8")
-
-          print("¡Sincronización completada con el tvg-id exacto de Movistar Plus HD!")
+          print("¡Lista de amigos sincronizada correctamente!")
           PY
 
-      - name: Guardar cambios en GitHub
+      - name: Guardar cambios
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
-          git add "Mi lista acestream" "Canales m3u"
-          
+          git add "Mi lista acestream"
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización: EPG Movistar Plus HD sincronizada"
+            git commit -m "Actualización automática lista amigos"
             git push
           else
-            echo "No hay cambios que guardar."
+            echo "Sin cambios."
           fi
