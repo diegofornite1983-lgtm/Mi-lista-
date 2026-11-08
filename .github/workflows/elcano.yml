@@ -74,13 +74,16 @@ jobs:
 
                       nombre_c = linea.rsplit(",", 1)[-1].upper()
 
-                      # REGLA AUTOMÁTICA: Forzar el tvg-id correcto en Movistar Plus+ de arriba
+                      # REGLA BLINDADA: Forzar el tvg-id exacto para Movistar Plus+ arriba en Elcano
                       extinf_mod = linea
                       if "MOVISTAR PLUS" in nombre_c:
                           if 'tvg-id=' in extinf_mod:
                               extinf_mod = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus+"', extinf_mod)
                           else:
                               extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus+"')
+                      
+                      # Limpiar duplicados raros de tvg-id si vinieran mal formados de Elcano
+                      extinf_mod = re.sub(r'tvg-id="[^"]*"\s+tvg-id="[^"]*"', 'tvg-id="Movistar Plus+"', extinf_mod)
 
                       # Forzar el group-title con el nombre exacto
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
@@ -114,15 +117,15 @@ jobs:
               else:
                   bloque = 14
 
-              # 2. MULTIS DEPORTIVAS (Van justo debajo de Primera Federación: Bloque 13)
+              # 2. MULTIS DEPORTIVAS
               if es_multi and any(x in nombre for x in ["LALIGA", "CAMPEONES", "DAZN", "VAMOS", "HYPERMOTION", "DEPORTES"]):
                   bloque = 13
 
-              # 3. CANALES EXTERNOS / RAROS / TDT (Van al fondo del todo: Bloque 15)
+              # 3. CANALES EXTERNOS / RAROS / TDT (Al fondo del todo: Bloque 15)
               if any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO"]):
                   bloque = 15
 
-              # REGLA DE ORO DE CALIDAD: 1080p y 4K siempre van los primerísimos (subnivel 0) dentro de su bloque
+              # REGLA DE CALIDAD: 1080p y 4K primero
               if "1080" in nombre or "4K" in nombre:
                   calidad = 0
               elif "720" in nombre:
@@ -168,7 +171,6 @@ jobs:
 
           timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
           
-          # Unir todo de forma perfectamente estructurada
           texto_final = (
               cabecera_m3u + 
               texto_nuevo_elcano + 
@@ -181,11 +183,10 @@ jobs:
 
           archivo_casa.write_text(texto_final, encoding="utf-8")
 
-          # Versión Tailscale cambiando la IP de forma segura
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
 
-          print("¡Sincronización completada con EPG fija para Movistar Plus+!")
+          print("¡Sincronización completada con EPG forzada para Movistar Plus+!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -195,7 +196,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización automática y corrección de EPG en Movistar Plus"
+            git commit -m "Actualización: Forzar tvg-id en Movistar Plus de Elcano"
             git push
           else
             echo "No hay cambios que guardar."
