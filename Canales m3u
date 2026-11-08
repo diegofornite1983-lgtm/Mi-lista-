@@ -366,8 +366,7 @@ http://100.90.204.66:6878/ace/getstream?id=f3a6d058791f0818a3301f9d5eeb60cfb54d9
 #EXTINF:-1 tvg-id="M+ Cine Español" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Cine%20Espa%C3%B1ol.png" group-title="MOVISTAR",M+ Cine Español cb72
 http://100.90.204.66:6878/ace/getstream?id=dc044c79fcde8ed69ed4c878643b09f09e7ccb72
 
-#EXTINF:-1 tvg-id="M+ Cine Español" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Cine%20Espa%C3%B1ol.png" group-title="MOVISTAR",M+ Cine Español deca
-http://100.90.204.66:6878/ace/getstream?id=f4e37b63fb042d90528585741a39851af543deca
+
 
 
 #EXTINF:-1 tvg-id="M+ Comedia HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Comedia.png" group-title="MOVISTAR",M+ Comedia ffcb
