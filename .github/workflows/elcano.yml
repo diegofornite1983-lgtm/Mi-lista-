@@ -1,4 +1,4 @@
-name: Actualizador Automatico Elcano y Tailscale (Amigos)
+name: Actualizador Automatico Elcano, Tailscale y Amigos
 
 on:
   schedule:
@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización automática ELCANO y Tailscale Amigos
+      - name: Sincronización automática ELCANO, Tailscale y Amigos
         run: |
           python <<'PY'
           import re
@@ -33,6 +33,7 @@ jobs:
           URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
+          archivo_amigos = Path("lista-amigos")
 
           if not archivo_casa.is_file():
               sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream'.")
@@ -170,24 +171,27 @@ jobs:
               f"\n\n# Ultima sincronizacion: {timestamp_actual}\n"
           )
 
-          # Guardar archivo principal local
+          # 1. Guardar archivo principal local
           archivo_casa.write_text(texto_final, encoding="utf-8")
 
-          # Generar automáticamente la versión Tailscale también para este repo
+          # 2. Generar versión Tailscale
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
 
-          print("¡Sincronización completa de Elcano y Tailscale realizada!")
+          # 3. Generar archivo idéntico para los amigos (lista-amigos)
+          archivo_amigos.write_text(texto_final, encoding="utf-8")
+
+          print("¡Sincronización completa: Casa, Tailscale y Amigos actualizados!")
           PY
 
       - name: Guardar cambios en GitHub
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
-          git add "Mi lista acestream" "Canales m3u"
+          git add "Mi lista acestream" "Canales m3u" "lista-amigos"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización automática: Elcano y Tailscale"
+            git commit -m "Actualización automática: Casa, Tailscale y Lista Amigos"
             git push
           else
             echo "No hay cambios que guardar."
