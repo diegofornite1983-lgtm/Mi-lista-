@@ -13,9 +13,9 @@ http://100.90.204.66:6878/ace/getstream?id=d2b5299ed45cbaf35482bb0869b2c2f75fbed
 http://100.90.204.66:6878/ace/getstream?id=9e5da99bac88a4a3ed200d3bdf260b683145ca57
 #EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Vamos 1080p **
 http://100.90.204.66:6878/ace/getstream?id=1b0374aae74e9792034b21298d6b3dfa25bc60c1
-#EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",LaLiga TV Hypermotion 1080p *
+#EXTINF:-1 tvg-id="LaLiga TV Hypermotion 10 HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",LaLiga TV Hypermotion 1080p *
 http://100.90.204.66:6878/ace/getstream?id=a19cada553b895e719796741d9d86785c986fce0
-#EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",LaLiga TV Hypermotion 1080p **
+#EXTINF:-1 tvg-id="LaLiga TV Hypermotion 10 HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",LaLiga TV Hypermotion 1080p **
 http://100.90.204.66:6878/ace/getstream?id=de00099a1fc928f292bb92d62a0841ac7104e31c
 #EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",LaLiga TV Hypermotion 720p *
 http://100.90.204.66:6878/ace/getstream?id=9743a3b8d01520ec383434fd829340c9d53a7077
@@ -514,4 +514,4 @@ http://100.90.204.66:6878/ace/getstream?id=6b1fae4ad99474bd8dde2113c9a0d36bf6717
 #EXTINF:-1 tvg-id="Eurosport 2" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 HD (Sport TV)
 http://100.90.204.66:6878/ace/getstream?id=6176281b9c46a5621a0e88524f8dc621f173b8e0
 
-# Ultima sincronizacion: 2026-11-09 20:36:54
+# Ultima sincronizacion: 2026-11-09 20:54:40
