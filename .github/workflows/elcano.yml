@@ -50,7 +50,7 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 1. Parsear los canales de Elcano
+          # 1. Parsear los canales de Elcano con limpieza estricta de tvg-id
           lineas_elcano = fuente_elcano.splitlines()
           canales_raw = []
           i = 0
@@ -78,15 +78,13 @@ jobs:
 
                       extinf_mod = linea
 
-                      # --- LIMPIEZA INTELIGENTE Y ASIGNACIÓN DE EPG PARA TODOS LOS CANALES ---
-                      # Limpiamos calidades y asteriscos para sacar el nombre base del canal
+                      # --- LIMPIEZA INTELIGENTE PARA EL TVG-ID (Adiós asteriscos y resoluciones) ---
                       nombre_limpio = re.sub(r'\b(1080P|720P|4K|HDR|\*|\*\*)\b', '', nombre_c_upper).strip()
                       nombre_limpio = re.sub(r'\s+', ' ', nombre_limpio)
 
+                      # Asignación limpia del identificador para que empareje con David Muma
                       if "MOVISTAR PLUS" in nombre_limpio or "MOVISTAR+" in nombre_limpio:
                           id_final = "Movistar Plus HD"
-                      elif "M+ TERROR" in nombre_limpio or "TERROR" in nombre_limpio:
-                          id_final = "M+ Terror HD"
                       elif "FOX SPORTS 2" in nombre_limpio or "FS2" in nombre_limpio:
                           id_final = "465355"
                       elif "SPORT TV" in nombre_limpio:
@@ -99,17 +97,15 @@ jobs:
                       elif "TENNIS CHANNEL" in nombre_limpio:
                           id_final = "Tennis Channel"
                       else:
-                          # Para los demás canales (Rally TV, Esport3, A Punt, etc.), 
-                          # el nombre limpio se convierte automáticamente en su tvg-id
                           id_final = nombre_limpio
 
-                      # Inyectar el tvg-id correspondiente en la línea
+                      # Inyectar el tvg-id limpio en la línea
                       if 'tvg-id=' in extinf_mod:
                           extinf_mod = re.sub(r'tvg-id="[^"]*"', f'tvg-id="{id_final}"', extinf_mod)
                       else:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', f'#EXTINF:-1 tvg-id="{id_final}"')
 
-                      # Forzar el group-title con el nombre exacto
+                      # Forzar el group-title con el nombre exacto de la zona automática
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
