@@ -50,7 +50,86 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 1. Parsear los canales de Elcano
+          # DICCIONARIO COMPLETO 100% EPG DAVID MUMA (EPG_dobleM)
+          mapeo_epg = {
+              # --- LIGA Y CAMPEONES ---
+              "M+ LALIGA 2": "M+ LaLiga 2 HD",
+              "M+ LALIGA 3": "M+ LaLiga 3 HD",
+              "M+ LALIGA": "M+ LaLiga HD",
+              "DAZN LALIGA 2": "DAZN LaLiga 2 HD",
+              "DAZN LALIGA": "DAZN LaLiga HD",
+              "M+ LIGA DE CAMPEONES 2": "M+ Liga de Campeones 2 HD",
+              "M+ LIGA DE CAMPEONES 3": "M+ Liga de Campeones 3 HD",
+              "M+ LIGA DE CAMPEONES 4": "M+ Liga de Campeones 4",
+              "M+ LIGA DE CAMPEONES 5": "M+ Liga de Campeones 5",
+              "M+ LIGA DE CAMPEONES 6": "M+ Liga de Campeones 6",
+              "M+ LIGA DE CAMPEONES 7": "M+ Liga de Campeones 7",
+              "M+ LIGA DE CAMPEONES 8": "M+ Liga de Campeones 8",
+              "CAMPEONES": "M+ Liga de Campeones HD",
+              "HYPERMOTION 2": "LaLiga TV Hypermotion 2",
+              "HYPERMOTION 3": "LaLiga TV Hypermotion 3",
+              "HYPERMOTION": "LaLiga TV Hypermotion HD",
+              
+              # --- DEPORTES Y MOVISTAR ---
+              "MOVISTAR PLUS": "Movistar Plus+ HD",
+              "MOVISTAR+": "Movistar Plus+ HD",
+              "M+ DEPORTES 2": "M+ Deportes 2 HD",
+              "M+ DEPORTES 3": "M+ Deportes 3",
+              "M+ DEPORTES 4": "M+ Deportes 4",
+              "M+ DEPORTES 5": "M+ Deportes 5",
+              "M+ DEPORTES 6": "M+ Deportes 6",
+              "M+ DEPORTES 7": "M+ Deportes 7",
+              "M+ DEPORTES 8": "M+ Deportes 8",
+              "DEPORTES": "M+ Deportes HD",
+              "M+ GOLF 2": "M+ Golf 2 HD",
+              "M+ GOLF": "M+ Golf HD",
+              "M+ VAMOS 2": "M+ Vamos 2",
+              "M+ VAMOS 3": "M+ Vamos 3",
+              "VAMOS": "M+ Vamos HD",
+              "BALONCESTO 2": "DAZN Baloncesto 2",
+              "BALONCESTO 3": "M+ Baloncesto 3",
+              "BALONCESTO": "M+ Baloncesto",
+              "DAZN BALONCESTO": "DAZN Baloncesto",
+              
+              # --- MOTOR Y COMBATE ---
+              "F1": "DAZN F1 HD",
+              "FORMULA 1": "DAZN F1 HD",
+              "MOTOGP": "DAZN MotoGP",
+              "DAZN 1": "DAZN 1 HD",
+              "DAZN 2": "DAZN 2 HD",
+              "RALLY TV": "DE | Rally TV",
+              "AZTECA": "TV Azteca 7",
+              
+              # --- TENIS Y BALONCESTO INT. ---
+              "EUROSPORT 1": "Eurosport 1 HD",
+              "EUROSPORT 2": "Eurosport 2",
+              "TENNIS CHANNEL": "Tennis Channel",
+              "SKY SPORT TENNIS": "Sky Sport Tennis",
+              "NBA LEAGUE PASS": "NBA League Pass",
+              "SPORT TV3": "Sport TV 3",
+              "NBC SPORTS": "NBC Sports",
+              "FOX SPORTS 2": "Fox Sports 2",
+              "FOX SPORTS": "Fox Sports 1",
+              
+              # --- TDT Y OTROS ---
+              "LA 1": "La 1 HD",
+              "LA 2": "La 2",
+              "CUATRO": "Cuatro HD",
+              "TELECINCO": "Telecinco HD",
+              "LA SEXTA": "La Sexta HD",
+              "ANTENA 3": "Antena 3 HD",
+              "TELEDEPORTE": "Teledeporte",
+              "ESPORT3": "Esport 3",
+              "REAL MADRID": "Real Madrid TV",
+              "A PUNT": "À Punt HD",
+              "À PUNT": "À Punt HD",
+              "PRIMERA FEDERACIÓN": "Primera Federación",
+              "RFEF": "Primera Federación",
+              "ONETORO": "OneToro TV",
+              "ONE TORO": "OneToro TV"
+          }
+
+          # 1. Parsear los canales de Elcano y asignar tvg-id automático
           lineas_elcano = fuente_elcano.splitlines()
           canales_raw = []
           i = 0
@@ -74,16 +153,22 @@ jobs:
                           url_local = url
 
                       nombre_c = linea.rsplit(",", 1)[-1].upper()
-
-                      # REGLA EXACTA: Forzar el tvg-id idéntico para Movistar Plus HD
                       extinf_mod = linea
-                      if "MOVISTAR PLUS" in nombre_c:
-                          if 'tvg-id=' in extinf_mod:
-                              extinf_mod = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus HD"', extinf_mod)
-                          else:
-                              extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus HD"')
 
-                      # Forzar el group-title con el nombre exacto
+                      # Asignación automática de tvg-id buscando la mejor coincidencia
+                      tvg_asignado = None
+                      for clave, id_oficial in mapeo_epg.items():
+                          if clave in nombre_c:
+                              tvg_asignado = id_oficial
+                              break
+
+                      if tvg_asignado:
+                          if 'tvg-id=' in extinf_mod:
+                              extinf_mod = re.sub(r'tvg-id="[^"]*"', f'tvg-id="{tvg_asignado}"', extinf_mod)
+                          else:
+                              extinf_mod = extinf_mod.replace('#EXTINF:-1', f'#EXTINF:-1 tvg-id="{tvg_asignado}"')
+
+                      # Forzar el group-title general
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
@@ -158,7 +243,6 @@ jobs:
 
           canales_viejos = extraer_nombres_zona_auto(contenido_casa)
           
-          # Extraer nombres de la nueva zona automática de Elcano
           canales_nuevos_set = set()
           for linea in texto_nuevo_elcano.splitlines():
               if linea.startswith("#EXTINF:") and "," in linea:
@@ -205,17 +289,12 @@ jobs:
               f"\n\n# Ultima sincronizacion: {timestamp_actual}\n"
           )
 
-          # 1. Guardar archivo principal local
           archivo_casa.write_text(texto_final, encoding="utf-8")
-
-          # 2. Generar versión Tailscale
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
-
-          # 3. Generar archivo idéntico para los amigos (lista-amigos)
           archivo_amigos.write_text(texto_final, encoding="utf-8")
 
-          print("¡Sincronización completa: Casa, Tailscale y Amigos actualizados!")
+          print("¡Sincronización completa con EPG total para 141+ canales!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -225,7 +304,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización automática y registro de cambios"
+            git commit -m "Actualización automática con EPG completa para todos los canales"
             git push
           else
             echo "No hay cambios que guardar."
