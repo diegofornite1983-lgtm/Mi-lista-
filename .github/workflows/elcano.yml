@@ -50,7 +50,7 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # FUNCIÓN INTELIGENTE CON TVG-ID ESTRICTOS PARA LA EPG DE DAVID MUMA
+          # FUNCIÓN INTELIGENTE ULTRA-FLEXIBLE PARA CAPTURAR CUALQUIER VARIANTE CON ASTERISCOS
           def obtener_tvg_id(nombre):
               n = nombre.upper()
               if "M+ LALIGA HDR" in n: return "M+ LaLiga HDR"
@@ -109,37 +109,37 @@ jobs:
               if "VAMOS 2" in n: return "M+ Vamos 2"
               if "VAMOS 3" in n: return "M+ Vamos 3"
               if "VAMOS" in n: return "M+ Vamos HD"
-              if "UFC FIGHT PASS 1" in n: return "UFC Fight Pass 1"
-              if "UFC FIGHT PASS 2" in n: return "UFC Fight Pass 2"
+              if "UFC FIGHT PASS 1" in n or ("UFC" in n and "1" in n): return "UFC Fight Pass 1"
+              if "UFC FIGHT PASS 2" in n or ("UFC" in n and "2" in n): return "UFC Fight Pass 2"
               if "DAZN BALONCESTO 2" in n: return "DAZN Baloncesto 2"
               if "DAZN BALONCESTO" in n: return "DAZN Baloncesto"
               if "M+ BALONCESTO 2" in n: return "M+ Baloncesto 2"
               if "M+ BALONCESTO 3" in n: return "M+ Baloncesto 3"
-              if "M+ BALONCESTO" in n: return "M+ Baloncesto"
+              if "M+ BALONCESTO" in n: return "M+ BALONCESTO"
               if "FORMULA 1" in n or "F1" in n: return "DAZN F1 HD"
               if "MOTOGP" in n: return "DAZN MotoGP"
               if "DAZN 1" in n: return "DAZN 1 HD"
               if "DAZN 2" in n: return "DAZN 2 HD"
               if "DAZN 3" in n: return "DAZN 3 HD"
               if "DAZN 4" in n: return "DAZN 4 HD"
-              if "RALLY TV" in n: return "DE | Rally TV"
+              if "RALLY" in n: return "DE | Rally TV"
               if "AZTECA" in n: return "TV Azteca 7"
               if "EUROSPORT 1" in n: return "Eurosport 1 HD"
               if "EUROSPORT 2" in n: return "Eurosport 2"
               if "TENNIS CHANNEL" in n: return "Tennis Channel"
               if "SKY SPORT TENNIS" in n: return "Sky Sport Tennis"
-              if "NBA LEAGUE PASS" in n: return "NBA League Pass"
-              if "SPORT TV 3" in n or "SPORT TV3" in n or "SPORT TV+" in n: return "Sport TV 3"
+              if "NBA" in n: return "NBA League Pass"
               if "NBC SPORTS" in n: return "NBC Sports"
               if "FOX SPORTS 2" in n: return "Fox Sports 2"
               if "FOX SPORTS" in n: return "Fox Sports 1"
+              if "SPORT TV 3" in n or "SPORT TV3" in n or "SPORT TV+" in n or ("SPORT TV" in n and ("3" in n or "+" in n)): return "Sport TV 3"
               if "LA 1" in n: return "La 1 HD"
               if "LA 2" in n: return "La 2"
               if "CUATRO" in n: return "Cuatro HD"
               if "TELECINCO" in n: return "Telecinco HD"
               if "LA SEXTA" in n: return "La Sexta HD"
               if "ANTENA 3" in n: return "Antena 3 HD"
-              if "TELEDEPORTE" in n: return "Teledeporte"
+              if "TELEDEPORTE" in n or "TDP" in n: return "Teledeporte"
               if "ESPORT3" in n or "ESPORT 3" in n: return "Esport 3"
               if "REAL MADRID" in n: return "Real Madrid TV"
               if "A PUNT" in n or "À PUNT" in n: return "À Punt HD"
@@ -166,8 +166,8 @@ jobs:
                   while j < len(lineas_elcano):
                       candidata = lineas_elcano[j].strip()
                       if candidata and not candidata.startswith("#"):
-                        url = candidata
-                        break
+                          url = candidata
+                          break
                       j += 1
                   if url:
                       match_h = re.search(r'([0-9a-fA-F]{40})', url)
@@ -221,7 +221,7 @@ jobs:
               if es_multi and any(x in nombre for x in ["LALIGA", "CAMPEONES", "DAZN", "VAMOS", "HYPERMOTION", "DEPORTES", "BALONCESTO"]):
                   bloque = 13
 
-              if any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO", "NEOX", "NOVA", "MTV", "NICKELODEON", "BABY TV", "24 HORAS", "CLAN", "ESTRENOS", "ACCION", "ACCIÓN", "CINE ESPAÑOL", "COMEDIA", "HITS", "DRAMA", "INDIE", "ROMANCE", "TERROR", "DARK", "AXN MOVIES", "ORIGINALES", "CALLE 13", "AMC", "AXN", "COMEDY CENTRAL", "SYFY", "SKYSHOWTIME", "HBO MAX", "DOCUMENTALES", "COCINA", "CAZA Y PESCA", "NBA LEAGUE PASS", "NBC SPORTS", "SKY SPORT TENNIS", "TENNIS CHANNEL", "SPORT TV"]):
+              if any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY", "CUATRO", "TELEDEPORTE", "TDP", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO", "NEOX", "NOVA", "MTV", "NICKELODEON", "BABY TV", "24 HORAS", "CLAN", "ESTRENOS", "ACCION", "ACCIÓN", "CINE ESPAÑOL", "COMEDIA", "HITS", "DRAMA", "INDIE", "ROMANCE", "TERROR", "DARK", "AXN MOVIES", "ORIGINALES", "CALLE 13", "AMC", "AXN", "COMEDY CENTRAL", "SYFY", "SKYSHOWTIME", "HBO MAX", "DOCUMENTALES", "COCINA", "CAZA Y PESCA", "NBA", "NBC SPORTS", "SKY SPORT TENNIS", "TENNIS CHANNEL", "SPORT TV"]):
                       bloque = 15
 
               if "1080" in nombre or "4K" in nombre:
@@ -323,7 +323,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización automática: Inyección forzada de tvg-id para EPG"
+            git commit -m "Actualización automática: Inyección forzada de tvg-id flexible"
             git push
           else
             echo "No hay cambios que guardar."
