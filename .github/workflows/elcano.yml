@@ -1,4 +1,4 @@
-name: Actualizador Automatico Elcano, Tailscale y Amigos 
+name: Actualizador Automatico Elcano, Tailscale y Amigos
 
 on:
   schedule:
@@ -50,108 +50,56 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # FUNCIÓN INTELIGENTE ULTRA-FLEXIBLE PARA CAPTURAR CUALQUIER VARIANTE CON ASTERISCOS
+          # FUNCIÓN INTELIGENTE DE MAPEO DE EPG PARA TODOS LOS CANALES
           def obtener_tvg_id(nombre):
               n = nombre.upper()
-              if "M+ LALIGA HDR" in n: return "M+ LaLiga HDR"
-              if "M+ LALIGA 2" in n: return "M+ LaLiga 2 HD"
-              if "M+ LALIGA 3" in n: return "M+ LaLiga 3 HD"
-              if "M+ LALIGA 4" in n: return "M+ LaLiga 4 HD"
-              if "LALIGA" in n and "DAZN" in n and "2" in n: return "DAZN LaLiga 2 HD"
-              if "LALIGA" in n and "DAZN" in n: return "DAZN LaLiga HD"
-              if "M+ LALIGA" in n: return "M+ LaLiga HD"
-              if "CAMPEONES 2" in n: return "M+ Liga de Campeones 2 HD"
-              if "CAMPEONES 3" in n: return "M+ Liga de Campeones 3 HD"
-              if "CAMPEONES 4" in n: return "M+ Liga de Campeones 4"
-              if "CAMPEONES 5" in n: return "M+ Liga de Campeones 5"
-              if "CAMPEONES 6" in n: return "M+ Liga de Campeones 6"
-              if "CAMPEONES 7" in n: return "M+ Liga de Campeones 7"
-              if "CAMPEONES 8" in n: return "M+ Liga de Campeones 8"
-              if "CAMPEONES" in n: return "M+ Liga de Campeones HD"
-              if "HYPERMOTION 2" in n: return "LaLiga TV Hypermotion 2"
-              if "HYPERMOTION 3" in n: return "LaLiga TV Hypermotion 3"
-              if "HYPERMOTION 10" in n: return "LaLiga TV Hypermotion 10 HD"
-              if "HYPERMOTION" in n: return "LaLiga TV Hypermotion HD"
-              if "MOVISTAR PLUS" in n or "MOVISTAR+" in n: return "Movistar Plus+ HD"
+              
+              # Movistar Plus y Cine/Series
+              if "MOVISTAR PLUS" in n or "MOVISTAR+" in n: return "Movistar Plus HD"
+              if "TERROR" in n: return "Movistar Terror"
+              if "SKYSHOWTIME" in n: return "SkyShowtime 1"
+              if "HBO" in n: return "HBO Max Avances"
+              if "INDIE" in n: return "M+ Indie HD"
+              if "ROMANCE" in n: return "M+ Romance"
+              if "AXN MOVIES" in n: return "AXN Movies HD"
+              if "ORIGINALES" in n: return "M+ Originales HD"
+              if "AMC" in n: return "AMC HD"
               if "ESTRENOS" in n: return "M+ Estrenos HD"
               if "ACCION" in n or "ACCIÓN" in n: return "M+ Acción HD"
-              if "CINE ESPAÑOL" in n: return "M+ Cine Español"
               if "COMEDIA" in n: return "M+ Comedia HD"
               if "HITS" in n: return "M+ Hits HD"
               if "DRAMA" in n: return "M+ Drama HD"
-              if "INDIE" in n: return "M+ Indie HD"
-              if "ROMANCE" in n: return "M+ Romance"
-              if "TERROR" in n: return "Movistar Terror"
-              if "DARK" in n: return "Dark HD"
-              if "AXN MOVIES" in n: return "AXN Movies HD"
-              if "ORIGINALES" in n: return "M+ Originales HD"
-              if "CALLE 13" in n: return "Calle 13 HD"
-              if "AMC" in n: return "AMC HD"
-              if "AXN" in n and "MOVIES" not in n: return "AXN HD"
-              if "COMEDY CENTRAL" in n: return "Comedy Central HD"
-              if "SYFY" in n: return "Syfy"
-              if "SKYSHOWTIME" in n: return "SkyShowtime 1"
-              if "HBO MAX" in n: return "HBO Max Avances"
-              if "DOCUMENTALES" in n: return "M+ Documentales HD"
-              if "COCINA" in n: return "Canal Cocina HD"
-              if "CAZA Y PESCA" in n: return "Caza y Pesca HD"
-              if "ONETORO" in n or "ONE TORO" in n: return "OneToro HD"
-              if "DEPORTES 2" in n: return "M+ Deportes 2 HD"
-              if "DEPORTES 3" in n: return "M+ Deportes 3"
-              if "DEPORTES 4" in n: return "M+ Deportes 4"
-              if "DEPORTES 5" in n: return "M+ Deportes 5"
-              if "DEPORTES 6" in n: return "M+ Deportes 6"
-              if "DEPORTES 7" in n: return "M+ Deportes 7"
-              if "DEPORTES 8" in n: return "M+ Deportes 8"
-              if "DEPORTES" in n: return "M+ Deportes HD"
-              if "GOLF 2" in n: return "M+ Golf 2 HD"
-              if "GOLF" in n: return "M+ Golf HD"
-              if "VAMOS 2" in n: return "M+ Vamos 2"
-              if "VAMOS 3" in n: return "M+ Vamos 3"
-              if "VAMOS" in n: return "M+ Vamos HD"
-              if "UFC FIGHT PASS 1" in n or ("UFC" in n and "1" in n): return "UFC Fight Pass 1"
-              if "UFC FIGHT PASS 2" in n or ("UFC" in n and "2" in n): return "UFC Fight Pass 2"
-              if "DAZN BALONCESTO 2" in n: return "DAZN Baloncesto 2"
-              if "DAZN BALONCESTO" in n: return "DAZN Baloncesto"
-              if "M+ BALONCESTO 2" in n: return "M+ Baloncesto 2"
-              if "M+ BALONCESTO 3" in n: return "M+ Baloncesto 3"
-              if "M+ BALONCESTO" in n: return "M+ BALONCESTO"
-              if "FORMULA 1" in n or "F1" in n: return "DAZN F1 HD"
-              if "MOTOGP" in n: return "DAZN MotoGP"
-              if "DAZN 1" in n: return "DAZN 1 HD"
-              if "DAZN 2" in n: return "DAZN 2 HD"
-              if "DAZN 3" in n: return "DAZN 3 HD"
-              if "DAZN 4" in n: return "DAZN 4 HD"
+
+              # Deportes y Canales Extranjeros
               if "RALLY" in n: return "DE | Rally TV"
-              if "AZTECA" in n: return "TV Azteca 7"
-              if "EUROSPORT 1" in n: return "Eurosport 1 HD"
-              if "EUROSPORT 2" in n: return "Eurosport 2"
-              if "TENNIS CHANNEL" in n: return "Tennis Channel"
-              if "SKY SPORT TENNIS" in n: return "Sky Sport Tennis"
               if "NBA" in n: return "NBA League Pass"
               if "NBC SPORTS" in n: return "NBC Sports"
+              if "SKY SPORT TENNIS" in n: return "Sky Sport Tennis"
               if "FOX SPORTS 2" in n: return "Fox Sports 2"
               if "FOX SPORTS" in n: return "Fox Sports 1"
-              if "SPORT TV 3" in n or "SPORT TV3" in n or "SPORT TV+" in n or ("SPORT TV" in n and ("3" in n or "+" in n)): return "Sport TV 3"
-              if "LA 1" in n: return "La 1 HD"
-              if "LA 2" in n: return "La 2"
-              if "CUATRO" in n: return "Cuatro HD"
-              if "TELECINCO" in n: return "Telecinco HD"
-              if "LA SEXTA" in n: return "La Sexta HD"
-              if "ANTENA 3" in n: return "Antena 3 HD"
-              if "TELEDEPORTE" in n or "TDP" in n: return "Teledeporte"
+              if "AZTECA" in n: return "TV Azteca 7"
+              if "SPORT TV 3" in n or "SPORT TV3" in n: return "Sport TV 3"
+              if "SPORT TV+" in n or "SPORT TV +" in n: return "Sport TV+"
+
+              # Autonómicos y TDT Generalistas
+              if "A PUNT" in n or "À PUNT" in n: return "À Punt HD"
               if "ESPORT3" in n or "ESPORT 3" in n: return "Esport 3"
               if "REAL MADRID" in n: return "Real Madrid TV"
-              if "A PUNT" in n or "À PUNT" in n: return "À Punt HD"
-              if "PRIMERA" in n or "RFEF" in n or "1RFEF" in n: return "Primera Federación"
-              if "NEOX" in n: return "Neox"
-              if "NOVA" in n: return "Nova"
-              if "MTV" in n: return "MTV España"
-              if "NICKELODEON" in n: return "Nickelodeon HD"
-              if "BABY TV" in n: return "Baby TV"
-              if "24 HORAS" in n or "24H" in n: return "24 Horas"
-              if "CLAN" in n: return "Clan"
-              if "BEIN SPORTS XTRA" in n: return "beIN SPORTS XTRA ñ"
+              if "LA 1" in n: return "La 1 HD"
+              if "CUATRO" in n: return "Cuatro HD"
+              if "TELEDEPORTE" in n or "TDP" in n: return "Teledeporte"
+
+              # Fútbol y motor principal
+              if "M+ LALIGA HDR" in n: return "M+ LaLiga HDR"
+              if "M+ LALIGA 2" in n: return "M+ LaLiga 2 HD"
+              if "M+ LALIGA" in n: return "M+ LaLiga HD"
+              if "CAMPEONES" in n: return "M+ Liga de Campeones HD"
+              if "GOLF 2" in n: return "M+ Golf 2 HD"
+              if "GOLF" in n: return "M+ Golf HD"
+              if "VAMOS" in n: return "M+ Vamos HD"
+              if "FORMULA 1" in n or "F1" in n: return "DAZN F1 HD"
+              if "MOTOGP" in n: return "DAZN MotoGP"
+
               return None
 
           # 1. Parsear los canales de Elcano
@@ -178,9 +126,9 @@ jobs:
                           url_local = url
 
                       nombre_c = linea.rsplit(",", 1)[-1].upper()
-                      extinf_mod = linea
 
-                      # INYECCIÓN OBLIGATORIA DEL TVG-ID PARA LA EPG
+                      # INYECCIÓN AUTOMÁTICA DEL TVG-ID PARA CADA CANAL
+                      extinf_mod = linea
                       tvg_asignado = obtener_tvg_id(nombre_c)
                       if tvg_asignado:
                           if 'tvg-id=' in extinf_mod:
@@ -188,7 +136,7 @@ jobs:
                           else:
                               extinf_mod = extinf_mod.replace('#EXTINF:-1', f'#EXTINF:-1 tvg-id="{tvg_asignado}"')
 
-                      # Forzar el group-title general
+                      # Forzar el group-title con el nombre exacto
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
@@ -200,7 +148,7 @@ jobs:
           # Criterio de ordenación estricto
           def prioridad_elcano(item):
               nombre = item[0]
-              es_multi = bool(re.search(r'\b(2|3|4|5|6|7|8|9|10)\b', nombre))
+              es_multi = bool(re.search(r'\b(2|3|4|5|6|7|8|9)\b', nombre))
 
               if not es_multi or ("F1" in nombre or "MOTOGP" in nombre):
                   if "M+ LALIGA" in nombre: bloque = 1
@@ -213,16 +161,16 @@ jobs:
                   elif "DEPORTES" in nombre: bloque = 8
                   elif "VAMOS" in nombre: bloque = 10
                   elif "HYPERMOTION" in nombre: bloque = 11
-                  elif "PRIMERA" in nombre or "RFEF" in nombre or "1RFEF" in nombre: bloque = 12
+                  elif "PRIMERA" in nombre or "RFEF" in nombre: bloque = 12
                   else: bloque = 14
               else:
                   bloque = 14
 
-              if es_multi and any(x in nombre for x in ["LALIGA", "CAMPEONES", "DAZN", "VAMOS", "HYPERMOTION", "DEPORTES", "BALONCESTO"]):
+              if es_multi and any(x in nombre for x in ["LALIGA", "CAMPEONES", "DAZN", "VAMOS", "HYPERMOTION", "DEPORTES"]):
                   bloque = 13
 
-              if any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY", "CUATRO", "TELEDEPORTE", "TDP", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO", "NEOX", "NOVA", "MTV", "NICKELODEON", "BABY TV", "24 HORAS", "CLAN", "ESTRENOS", "ACCION", "ACCIÓN", "CINE ESPAÑOL", "COMEDIA", "HITS", "DRAMA", "INDIE", "ROMANCE", "TERROR", "DARK", "AXN MOVIES", "ORIGINALES", "CALLE 13", "AMC", "AXN", "COMEDY CENTRAL", "SYFY", "SKYSHOWTIME", "HBO MAX", "DOCUMENTALES", "COCINA", "CAZA Y PESCA", "NBA", "NBC SPORTS", "SKY SPORT TENNIS", "TENNIS CHANNEL", "SPORT TV"]):
-                      bloque = 15
+              if any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY", "CUATRO", "TELEDEPORTE", "TDP", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO", "NBA", "NBC", "TENNIS", "SPORT TV"]):
+                  bloque = 15
 
               if "1080" in nombre or "4K" in nombre:
                   calidad = 0
@@ -246,6 +194,7 @@ jobs:
 
           texto_nuevo_elcano = "\n".join(bloque_automatico)
 
+          # --- EXTRACCIÓN SOLO DE LA ZONA AUTOMÁTICA ANTIGUA ---
           def extraer_nombres_zona_auto(texto_m3u):
               nombres = set()
               en_zona_auto = False
@@ -262,6 +211,7 @@ jobs:
 
           canales_viejos = extraer_nombres_zona_auto(contenido_casa)
           
+          # Extraer nombres de la nueva zona automática de Elcano
           canales_nuevos_set = set()
           for linea in texto_nuevo_elcano.splitlines():
               if linea.startswith("#EXTINF:") and "," in linea:
@@ -308,12 +258,17 @@ jobs:
               f"\n\n# Ultima sincronizacion: {timestamp_actual}\n"
           )
 
+          # 1. Guardar archivo principal local
           archivo_casa.write_text(texto_final, encoding="utf-8")
+
+          # 2. Generar versión Tailscale
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
+
+          # 3. Generar archivo idéntico para los amigos (lista-amigos)
           archivo_amigos.write_text(texto_final, encoding="utf-8")
 
-          print("¡Sincronización completa con EPG inyectada correctamente para todos los canales!")
+          print("¡Sincronización completa: Casa, Tailscale y Amigos actualizados!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -323,7 +278,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización automática: Inyección forzada de tvg-id flexible"
+            git commit -m "Actualización automática y registro de cambios con EPG total"
             git push
           else
             echo "No hay cambios que guardar."
