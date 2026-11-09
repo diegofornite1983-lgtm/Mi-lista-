@@ -195,10 +195,9 @@ http://127.0.0.1:6878/ace/getstream?id=9ebc9eed6bd8d8a278b7aaab1513dd9ad2299bc7
 
 #EXTINF:-1 tvg-id="Movistar Terror" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Terror.png" group-title="MOVISTAR",M+ Terror d3ed
 http://127.0.0.1:6878/ace/getstream?id=b331dcd389eaf6d4af356245cc0a02a3c478d3ed
+
 #EXTINF:-1 tvg-id="Movistar Terror" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Terror.png" group-title="MOVISTAR",M+ Terror #1
 http://127.0.0.1:6878/ace/getstream?id=887ac58d9ede35d19364c1959d9e78a78f288c36
-#EXTINF:-1 tvg-id="Movistar Terror" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Terror.png" group-title="MOVISTAR",M+ Terror [HD] Operativo
-http://127.0.0.1:6878/ace/getstream?id=fd7e013b1827db32af3665d1ef5da7fc0cc6ae5d
 
 
 #EXTINF:-1 tvg-id="AXN Movies HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AXN%20Movies.png" group-title="MOVISTAR",AXN Movies 457c
