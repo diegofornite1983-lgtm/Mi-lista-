@@ -30,7 +30,6 @@ jobs:
           import urllib.request
           from pathlib import Path
 
-          # Pasarela IPFS oficial y estable de Elcano
           URL_ELCANO = "https://tokyo.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
@@ -51,7 +50,7 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 1. Parsear los canales de Elcano con precisión milimétrica
+          # 1. Parsear los canales de Elcano limpiamente
           lineas_elcano = fuente_elcano.splitlines()
           canales_raw = []
           i = 0
@@ -76,7 +75,6 @@ jobs:
 
                       nombre_c = linea.rsplit(",", 1)[-1].upper()
 
-                      # REGLA EXACTA: Forzar el tvg-id idéntico para Movistar Plus HD
                       extinf_mod = linea
                       if "MOVISTAR PLUS" in nombre_c:
                           if 'tvg-id=' in extinf_mod:
@@ -84,7 +82,6 @@ jobs:
                           else:
                               extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus HD"')
 
-                      # Forzar el group-title con el nombre exacto
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
@@ -95,7 +92,6 @@ jobs:
 
           print(f"Canales totales leídos de Elcano: {len(canales_raw)}")
 
-          # Criterio de ordenación estricto
           def prioridad_elcano(item):
               nombre = item[0]
               es_multi = bool(re.search(r'\b(2|3|4|5|6|7|8|9)\b', nombre))
@@ -144,15 +140,50 @@ jobs:
 
           texto_nuevo_elcano = "\n".join(bloque_automatico)
 
-          # Extracción ultra-segura de la zona personal basada en el separador general
-          marcador_personal = "# =========================================="
-          if marcador_personal in contenido_casa:
-              partes = contenido_casa.split(marcador_personal)
-              cuerpo_personal = marcador_personal.join(partes[2:]).strip() if len(partes) > 2 else partes[-1].strip()
-          else:
-              cuerpo_personal = contenido_casa
+          # --- DETECTOR DE CAMBIOS (COMPARAR VIEJOS VS NUEVOS) ---
+          def extraer_nombres_zona_auto(texto_m3u):
+              nombres = set()
+              en_zona_auto = False
+              for linea in texto_m3u.splitlines():
+                  if "ZONA AUTOMATICA" in linea:
+                      en_zona_auto = True
+                      continue
+                  if "ZONA PERSONAL" in linea:
+                      en_zona_auto = False
+                  if en_zona_auto and linea.startswith("#EXTINF:"):
+                      if "," in linea:
+                          nombres.add(linea.rsplit(",", 1)[-1].strip().upper())
+              return nombres
 
-          cuerpo_personal = re.sub(r'#\s*Ultima sincronizacion:.*', '', cuerpo_personal).strip()
+          canales_viejos = extraer_nombres_zona_auto(contenido_casa)
+          
+          canales_nuevos_set = set()
+          for _, inf, _ in canales_ordenados:
+              if "," in inf:
+                  canales_nuevos_set.add(inf.rsplit(",", 1)[-1].strip().upper())
+
+          agregados = sorted(list(canales_nuevos_set - canales_viejos))
+          eliminados = sorted(list(canales_viejos - canales_nuevos_set))
+
+          timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+          # Generar archivo de reporte con los cambios
+          reporte_md = f"# 🔄 Resumen de cambios en ELCANO - {timestamp_actual}\n\n"
+          reporte_md += f"### 🟢 Canales Nuevos ({len(agregados)}):\n"
+          reporte_md += "\n".join([f"- {c}" for c in agregados]) if agregados else "- Ninguno en esta actualización."
+          reporte_md += f"\n\n### 🔴 Canales Eliminados ({len(eliminados)}):\n"
+          reporte_md += "\n".join([f"- {c}" for c in eliminados]) if eliminados else "- Ninguno."
+
+          Path("ultimos_cambios.md").write_text(reporte_md, encoding="utf-8")
+
+          # --- AISLAMIENTO DE LA ZONA PERSONAL ---
+          marcador_personal_tag = "# ==========================================\n# ZONA PERSONAL"
+          if marcador_personal_tag in contenido_casa:
+              cuerpo_personal = contenido_casa.split(marcador_personal_tag)[1]
+              cuerpo_personal = re.sub(r'#\s*Ultima sincronizacion:.*', '', cuerpo_personal).strip()
+          else:
+              partes = contenido_casa.split("# ==========================================")
+              cuerpo_personal = partes[-1].strip() if len(partes) > 4 else ""
 
           cabecera_m3u = (
               '#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
@@ -161,8 +192,6 @@ jobs:
               '#EXTVLCOPT:network-caching=1000\n'
               '#EXTGRP: group-title="⭐ ELCANO [MÁXIMA CALIDAD]" group-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png"\n\n'
           )
-
-          timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
           
           texto_final = (
               cabecera_m3u + 
@@ -174,27 +203,23 @@ jobs:
               f"\n\n# Ultima sincronizacion: {timestamp_actual}\n"
           )
 
-          # 1. Guardar archivo principal local
+          # Guardar archivos
           archivo_casa.write_text(texto_final, encoding="utf-8")
-
-          # 2. Generar versión Tailscale
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
-
-          # 3. Generar archivo idéntico para los amigos (lista-amigos)
           archivo_amigos.write_text(texto_final, encoding="utf-8")
 
-          print("¡Sincronización completa y blindada!")
+          print(f"¡Sincronización completa! Canales totales: {len(canales_ordenados)} | Nuevos: {len(agregados)}")
           PY
 
       - name: Guardar cambios en GitHub
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
-          git add "Mi lista acestream" "Canales m3u" "lista-amigos"
+          git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronización automática perfecta: Casa, Tailscale y Amigos"
+            git commit -m "Actualización automática: Sincronización y registro de cambios"
             git push
           else
             echo "No hay cambios que guardar."
