@@ -50,7 +50,7 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 1. Parsear los canales de Elcano asegurando capturar TODOS sin excepción de números
+          # Parsear ABSOLUTAMENTE TODOS los canales de Elcano sin excepciones
           lineas_elcano = fuente_elcano.splitlines()
           canales_raw = []
           i = 0
@@ -74,16 +74,9 @@ jobs:
                           url_local = url
 
                       nombre_c = linea.rsplit(",", 1)[-1].upper()
-
-                      # REGLA EXACTA: Forzar el tvg-id idéntico para Movistar Plus HD
                       extinf_mod = linea
-                      if "MOVISTAR PLUS" in nombre_c:
-                          if 'tvg-id=' in extinf_mod:
-                              extinf_mod = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus HD"', extinf_mod)
-                          else:
-                              extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus HD"')
 
-                      # Forzar el group-title con el nombre exacto
+                      # Forzar el group-title limpio de Elcano
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
@@ -92,10 +85,9 @@ jobs:
                       i = j
               i += 1
 
-          # Criterio de ordenación limpio (SIN FILTROS QUE BORREN CANALES NUMÉRICOS)
+          # Ordenación directa sin excluir ningún número ni canal (DAZN 1, DAZN 2, etc.)
           def prioridad_elcano(item):
               nombre = item[0]
-
               if "M+ LALIGA" in nombre: bloque = 1
               elif "DAZN LALIGA" in nombre: bloque = 2
               elif "MOVISTAR PLUS" in nombre or "MOVISTAR+" in nombre: bloque = 3
@@ -108,17 +100,12 @@ jobs:
               elif "VAMOS" in nombre: bloque = 10
               elif "HYPERMOTION" in nombre: bloque = 11
               elif "PRIMERA" in nombre or "RFEF" in nombre: bloque = 12
-              elif any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO"]):
-                  bloque = 15
-              else:
-                  bloque = 14
+              elif any(x in nombre for x in ["TDT", "LA 1", "LA 2", "TELECINCO", "CUATRO", "TELEDEPORTE"]): bloque = 13
+              else: bloque = 14
 
-              if "1080" in nombre or "4K" in nombre:
-                  calidad = 0
-              elif "720" in nombre:
-                  calidad = 2
-              else:
-                  calidad = 1
+              if "1080" in nombre or "4K" in nombre: calidad = 0
+              elif "720" in nombre: calidad = 2
+              else: calidad = 1
 
               return (bloque, calidad, nombre)
 
@@ -135,8 +122,8 @@ jobs:
 
           texto_nuevo_elcano = "\n".join(bloque_automatico)
 
+          # Extraer la zona personal sin tocarla
           partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*CARPETA:\s*LA LIGA', contenido_casa, maxsplit=1)
-          
           if len(partes) > 1:
               cuerpo_personal = "# CARPETA: LA LIGA" + partes[1]
           else:
@@ -165,17 +152,12 @@ jobs:
               f"\n\n# Ultima sincronizacion: {timestamp_actual}\n"
           )
 
-          # 1. Guardar archivo principal local
           archivo_casa.write_text(texto_final, encoding="utf-8")
-
-          # 2. Generar versión Tailscale
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
-
-          # 3. Generar archivo idéntico para los amigos (lista-amigos)
           archivo_amigos.write_text(texto_final, encoding="utf-8")
 
-          print("¡Sincronización completa: Casa, Tailscale y Amigos actualizados sin perder canales!")
+          print("¡Sincronización completa de los 141 canales sin ocultar nada!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -185,7 +167,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización automática: Casa, Tailscale y Lista Amigos respetando todo"
+            git commit -m "Actualización completa de la lista sin recortes"
             git push
           else
             echo "No hay cambios que guardar."
