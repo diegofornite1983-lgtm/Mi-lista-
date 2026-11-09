@@ -50,7 +50,7 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 1. Parsear los canales de Elcano limpiamente
+          # 1. Parsear los canales de Elcano
           lineas_elcano = fuente_elcano.splitlines()
           canales_raw = []
           i = 0
@@ -75,6 +75,7 @@ jobs:
 
                       nombre_c = linea.rsplit(",", 1)[-1].upper()
 
+                      # REGLA EXACTA: Forzar el tvg-id idéntico para Movistar Plus HD
                       extinf_mod = linea
                       if "MOVISTAR PLUS" in nombre_c:
                           if 'tvg-id=' in extinf_mod:
@@ -82,6 +83,7 @@ jobs:
                           else:
                               extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus HD"')
 
+                      # Forzar el group-title con el nombre exacto
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
@@ -90,8 +92,7 @@ jobs:
                       i = j
               i += 1
 
-          print(f"Canales totales leídos de Elcano: {len(canales_raw)}")
-
+          # Criterio de ordenación estricto
           def prioridad_elcano(item):
               nombre = item[0]
               es_multi = bool(re.search(r'\b(2|3|4|5|6|7|8|9)\b', nombre))
@@ -140,7 +141,7 @@ jobs:
 
           texto_nuevo_elcano = "\n".join(bloque_automatico)
 
-          # --- DETECTOR DE CAMBIOS (COMPARAR VIEJOS VS NUEVOS) ---
+          # --- EXTRACCIÓN SOLO DE LA ZONA AUTOMÁTICA ANTIGUA ---
           def extraer_nombres_zona_auto(texto_m3u):
               nombres = set()
               en_zona_auto = False
@@ -148,7 +149,7 @@ jobs:
                   if "ZONA AUTOMATICA" in linea:
                       en_zona_auto = True
                       continue
-                  if "ZONA PERSONAL" in linea:
+                  if "ZONA PERSONAL" in linea or "CARPETA:" in linea or "SECCIÓN:" in linea:
                       en_zona_auto = False
                   if en_zona_auto and linea.startswith("#EXTINF:"):
                       if "," in linea:
@@ -158,32 +159,32 @@ jobs:
           canales_viejos = extraer_nombres_zona_auto(contenido_casa)
           
           canales_nuevos_set = set()
-          for _, inf, _ in canales_ordenados:
-              if "," in inf:
-                  canales_nuevos_set.add(inf.rsplit(",", 1)[-1].strip().upper())
+          for linea in texto_nuevo_elcano.splitlines():
+              if linea.startswith("#EXTINF:") and "," in linea:
+                  canales_nuevos_set.add(linea.rsplit(",", 1)[-1].strip().upper())
 
           agregados = sorted(list(canales_nuevos_set - canales_viejos))
           eliminados = sorted(list(canales_viejos - canales_nuevos_set))
 
           timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-          # Generar archivo de reporte con los cambios
           reporte_md = f"# 🔄 Resumen de cambios en ELCANO - {timestamp_actual}\n\n"
           reporte_md += f"### 🟢 Canales Nuevos ({len(agregados)}):\n"
           reporte_md += "\n".join([f"- {c}" for c in agregados]) if agregados else "- Ninguno en esta actualización."
-          reporte_md += f"\n\n### 🔴 Canales Eliminados ({len(eliminados)}):\n"
+          reporte_md += f"\n\n### 🔴 Canales Eliminados por Elcano ({len(eliminados)}):\n"
           reporte_md += "\n".join([f"- {c}" for c in eliminados]) if eliminados else "- Ninguno."
 
           Path("ultimos_cambios.md").write_text(reporte_md, encoding="utf-8")
 
-          # --- AISLAMIENTO DE LA ZONA PERSONAL ---
-          marcador_personal_tag = "# ==========================================\n# ZONA PERSONAL"
-          if marcador_personal_tag in contenido_casa:
-              cuerpo_personal = contenido_casa.split(marcador_personal_tag)[1]
-              cuerpo_personal = re.sub(r'#\s*Ultima sincronizacion:.*', '', cuerpo_personal).strip()
+          partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*CARPETA:\s*LA LIGA', contenido_casa, maxsplit=1)
+          
+          if len(partes) > 1:
+              cuerpo_personal = "# CARPETA: LA LIGA" + partes[1]
           else:
-              partes = contenido_casa.split("# ==========================================")
-              cuerpo_personal = partes[-1].strip() if len(partes) > 4 else ""
+              partes_alt = re.split(r'(?i)#\s*={5,}\s*\n#\s*SECCIÓN:', contenido_casa, maxsplit=1)
+              cuerpo_personal = partes_alt[1] if len(partes_alt) > 1 else contenido_casa
+
+          cuerpo_personal = re.sub(r'#\s*Ultima sincronizacion:.*', '', cuerpo_personal).strip()
 
           cabecera_m3u = (
               '#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
@@ -203,13 +204,17 @@ jobs:
               f"\n\n# Ultima sincronizacion: {timestamp_actual}\n"
           )
 
-          # Guardar archivos
+          # 1. Guardar archivo principal local
           archivo_casa.write_text(texto_final, encoding="utf-8")
+
+          # 2. Generar versión Tailscale
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
+
+          # 3. Generar archivo idéntico para los amigos (lista-amigos)
           archivo_amigos.write_text(texto_final, encoding="utf-8")
 
-          print(f"¡Sincronización completa! Canales totales: {len(canales_ordenados)} | Nuevos: {len(agregados)}")
+          print("¡Sincronización completa: Casa, Tailscale y Amigos actualizados con tus carpetas!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -219,7 +224,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización automática: Sincronización y registro de cambios"
+            git commit -m "Actualización automática y registro de cambios"
             git push
           else
             echo "No hay cambios que guardar."
