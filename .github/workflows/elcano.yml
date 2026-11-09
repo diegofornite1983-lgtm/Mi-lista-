@@ -50,59 +50,7 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # FUNCIÓN INTELIGENTE DE MAPEO DE EPG PARA TODOS LOS CANALES
-          def obtener_tvg_id(nombre):
-              n = nombre.upper()
-              
-              # Movistar Plus y Cine/Series
-              if "MOVISTAR PLUS" in n or "MOVISTAR+" in n: return "Movistar Plus HD"
-              if "TERROR" in n: return "Movistar Terror"
-              if "SKYSHOWTIME" in n: return "SkyShowtime 1"
-              if "HBO" in n: return "HBO Max Avances"
-              if "INDIE" in n: return "M+ Indie HD"
-              if "ROMANCE" in n: return "M+ Romance"
-              if "AXN MOVIES" in n: return "AXN Movies HD"
-              if "ORIGINALES" in n: return "M+ Originales HD"
-              if "AMC" in n: return "AMC HD"
-              if "ESTRENOS" in n: return "M+ Estrenos HD"
-              if "ACCION" in n or "ACCIÓN" in n: return "M+ Acción HD"
-              if "COMEDIA" in n: return "M+ Comedia HD"
-              if "HITS" in n: return "M+ Hits HD"
-              if "DRAMA" in n: return "M+ Drama HD"
-
-              # Deportes y Canales Extranjeros
-              if "RALLY" in n: return "DE | Rally TV"
-              if "NBA" in n: return "NBA League Pass"
-              if "NBC SPORTS" in n: return "NBC Sports"
-              if "SKY SPORT TENNIS" in n: return "Sky Sport Tennis"
-              if "FOX SPORTS 2" in n: return "Fox Sports 2"
-              if "FOX SPORTS" in n: return "Fox Sports 1"
-              if "AZTECA" in n: return "TV Azteca 7"
-              if "SPORT TV 3" in n or "SPORT TV3" in n: return "Sport TV 3"
-              if "SPORT TV+" in n or "SPORT TV +" in n: return "Sport TV+"
-
-              # Autonómicos y TDT Generalistas
-              if "A PUNT" in n or "À PUNT" in n: return "À Punt HD"
-              if "ESPORT3" in n or "ESPORT 3" in n: return "Esport 3"
-              if "REAL MADRID" in n: return "Real Madrid TV"
-              if "LA 1" in n: return "La 1 HD"
-              if "CUATRO" in n: return "Cuatro HD"
-              if "TELEDEPORTE" in n or "TDP" in n: return "Teledeporte"
-
-              # Fútbol y motor principal
-              if "M+ LALIGA HDR" in n: return "M+ LaLiga HDR"
-              if "M+ LALIGA 2" in n: return "M+ LaLiga 2 HD"
-              if "M+ LALIGA" in n: return "M+ LaLiga HD"
-              if "CAMPEONES" in n: return "M+ Liga de Campeones HD"
-              if "GOLF 2" in n: return "M+ Golf 2 HD"
-              if "GOLF" in n: return "M+ Golf HD"
-              if "VAMOS" in n: return "M+ Vamos HD"
-              if "FORMULA 1" in n or "F1" in n: return "DAZN F1 HD"
-              if "MOTOGP" in n: return "DAZN MotoGP"
-
-              return None
-
-          # 1. Parsear los canales de Elcano
+          # 1. Parsear los canales de Elcano asegurando capturar TODOS sin excepción
           lineas_elcano = fuente_elcano.splitlines()
           canales_raw = []
           i = 0
@@ -126,17 +74,99 @@ jobs:
                           url_local = url
 
                       nombre_c = linea.rsplit(",", 1)[-1].upper()
-
-                      # INYECCIÓN AUTOMÁTICA DEL TVG-ID PARA CADA CANAL
                       extinf_mod = linea
-                      tvg_asignado = obtener_tvg_id(nombre_c)
-                      if tvg_asignado:
-                          if 'tvg-id=' in extinf_mod:
-                              extinf_mod = re.sub(r'tvg-id="[^"]*"', f'tvg-id="{tvg_asignado}"', extinf_mod)
-                          else:
-                              extinf_mod = extinf_mod.replace('#EXTINF:-1', f'#EXTINF:-1 tvg-id="{tvg_asignado}"')
 
-                      # Forzar el group-title con el nombre exacto
+                      # Mapeo inteligente y flexible de tvg-id para la EPG de David Muma
+                      if "MOVISTAR PLUS" in nombre_c or "MOVISTAR+" in nombre_c:
+                          tvg_id_target = "Movistar Plus+ HD"
+                      elif "DAZN LALIGA 2" in nombre_c:
+                          tvg_id_target = "DAZN LaLiga 2 HD"
+                      elif "DAZN LALIGA" in nombre_c:
+                          tvg_id_target = "DAZN LaLiga HD"
+                      elif "M+ LALIGA 2" in nombre_c:
+                          tvg_id_target = "M+ LaLiga 2 HD"
+                      elif "M+ LALIGA 3" in nombre_c:
+                          tvg_id_target = "M+ LaLiga 3 HD"
+                      elif "M+ LALIGA" in nombre_c:
+                          tvg_id_target = "M+ LaLiga HD"
+                      elif "CAMPEONES 2" in nombre_c:
+                          tvg_id_target = "M+ Liga de Campeones 2 HD"
+                      elif "CAMPEONES 3" in nombre_c:
+                          tvg_id_target = "M+ Liga de Campeones 3 HD"
+                      elif "CAMPEONES 4" in nombre_c:
+                          tvg_id_target = "M+ Liga de Campeones 4"
+                      elif "CAMPEONES 5" in nombre_c:
+                          tvg_id_target = "M+ Liga de Campeones 5"
+                      elif "CAMPEONES" in nombre_c:
+                          tvg_id_target = "M+ Liga de Campeones HD"
+                      elif "M+ DEPORTES 2" in nombre_c:
+                          tvg_id_target = "M+ Deportes 2 HD"
+                      elif "M+ DEPORTES 3" in nombre_c:
+                          tvg_id_target = "M+ Deportes 3"
+                      elif "M+ DEPORTES 4" in nombre_c:
+                          tvg_id_target = "M+ Deportes 4"
+                      elif "M+ DEPORTES 5" in nombre_c:
+                          tvg_id_target = "M+ Deportes 5"
+                      elif "M+ DEPORTES 6" in nombre_c:
+                          tvg_id_target = "M+ Deportes 6"
+                      elif "M+ DEPORTES 7" in nombre_c:
+                          tvg_id_target = "M+ Deportes 7"
+                      elif "M+ DEPORTES 8" in nombre_c:
+                          tvg_id_target = "M+ Deportes 8"
+                      elif "M+ DEPORTES" in nombre_c:
+                          tvg_id_target = "M+ Deportes HD"
+                      elif "VAMOS 2" in nombre_c:
+                          tvg_id_target = "M+ Vamos 2"
+                      elif "VAMOS 3" in nombre_c:
+                          tvg_id_target = "M+ Vamos 3"
+                      elif "VAMOS" in nombre_c:
+                          tvg_id_target = "M+ Vamos HD"
+                      elif "M+ GOLF 2" in nombre_c:
+                          tvg_id_target = "M+ Golf 2 HD"
+                      elif "M+ GOLF" in nombre_c:
+                          tvg_id_target = "M+ Golf HD"
+                      elif "DAZN F1" in nombre_c or "FORMULA 1" in nombre_c:
+                          tvg_id_target = "DAZN F1 HD"
+                      elif "MOTOGP" in nombre_c:
+                          tvg_id_target = "DAZN MotoGP"
+                      elif "DAZN 1" in nombre_c:
+                          tvg_id_target = "DAZN 1 HD"
+                      elif "DAZN 2" in nombre_c:
+                          tvg_id_target = "DAZN 2 HD"
+                      elif "DAZN BALONCESTO 2" in nombre_c:
+                          tvg_id_target = "DAZN Baloncesto 2"
+                      elif "DAZN BALONCESTO" in nombre_c:
+                          tvg_id_target = "DAZN Baloncesto"
+                      elif "M+ BALONCESTO" in nombre_c:
+                          tvg_id_target = "M+ Baloncesto"
+                      elif "EUROSPORT 1" in nombre_c:
+                          tvg_id_target = "Eurosport 1 HD"
+                      elif "EUROSPORT 2" in nombre_c:
+                          tvg_id_target = "Eurosport 2"
+                      elif "LA 1" in nombre_c:
+                          tvg_id_target = "La 1 HD"
+                      elif "LA 2" in nombre_c:
+                          tvg_id_target = "La 2"
+                      elif "TELECINCO" in nombre_c:
+                          tvg_id_target = "Telecinco HD"
+                      elif "ESPORT 3" in nombre_c or "ESPORT3" in nombre_c:
+                          tvg_id_target = "Esport 3"
+                      elif "RALLY TV" in nombre_c:
+                          tvg_id_target = "DE | Rally TV"
+                      elif "REAL MADRID" in nombre_c:
+                          tvg_id_target = "Real Madrid TV"
+                      elif "PRIMERA" in nombre_c:
+                          tvg_id_target = "Primera Federación"
+                      else:
+                          tvg_id_target = None
+
+                      if tvg_id_target:
+                          if 'tvg-id=' in extinf_mod:
+                              extinf_mod = re.sub(r'tvg-id="[^"]*"', f'tvg-id="{tvg_id_target}"', extinf_mod)
+                          else:
+                              extinf_mod = extinf_mod.replace('#EXTINF:-1', f'#EXTINF:-1 tvg-id="{tvg_id_target}"')
+
+                      # Forzar el group-title limpio de Elcano
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
@@ -145,39 +175,27 @@ jobs:
                       i = j
               i += 1
 
-          # Criterio de ordenación estricto
+          # Criterio de ordenación permisivo para que entren todos los canales sin descartar nada
           def prioridad_elcano(item):
               nombre = item[0]
-              es_multi = bool(re.search(r'\b(2|3|4|5|6|7|8|9)\b', nombre))
+              if "M+ LALIGA" in nombre: bloque = 1
+              elif "DAZN LALIGA" in nombre: bloque = 2
+              elif "MOVISTAR PLUS" in nombre: bloque = 3
+              elif "CAMPEONES" in nombre: bloque = 4
+              elif "F1" in nombre or "FORMULA 1" in nombre: bloque = 5
+              elif "MOTOGP" in nombre: bloque = 6
+              elif "DAZN" in nombre: bloque = 7
+              elif "DEPORTES" in nombre: bloque = 8
+              elif "BALONCESTO" in nombre: bloque = 9
+              elif "VAMOS" in nombre: bloque = 10
+              elif "HYPERMOTION" in nombre: bloque = 11
+              elif "PRIMERA" in nombre or "RFEF" in nombre: bloque = 12
+              elif any(x in nombre for x in ["TDT", "LA 1", "LA 2", "TELECINCO", "CUATRO"]): bloque = 13
+              else: bloque = 14
 
-              if not es_multi or ("F1" in nombre or "MOTOGP" in nombre):
-                  if "M+ LALIGA" in nombre: bloque = 1
-                  elif "DAZN LALIGA" in nombre: bloque = 2
-                  elif "MOVISTAR PLUS" in nombre or "MOVISTAR+" in nombre: bloque = 3
-                  elif "CAMPEONES" in nombre: bloque = 4
-                  elif "F1" in nombre or "FORMULA 1" in nombre: bloque = 5
-                  elif "MOTOGP" in nombre: bloque = 6
-                  elif "DAZN 1" in nombre: bloque = 7
-                  elif "DEPORTES" in nombre: bloque = 8
-                  elif "VAMOS" in nombre: bloque = 10
-                  elif "HYPERMOTION" in nombre: bloque = 11
-                  elif "PRIMERA" in nombre or "RFEF" in nombre: bloque = 12
-                  else: bloque = 14
-              else:
-                  bloque = 14
-
-              if es_multi and any(x in nombre for x in ["LALIGA", "CAMPEONES", "DAZN", "VAMOS", "HYPERMOTION", "DEPORTES"]):
-                  bloque = 13
-
-              if any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY", "CUATRO", "TELEDEPORTE", "TDP", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO", "NBA", "NBC", "TENNIS", "SPORT TV"]):
-                  bloque = 15
-
-              if "1080" in nombre or "4K" in nombre:
-                  calidad = 0
-              elif "720" in nombre:
-                  calidad = 2
-              else:
-                  calidad = 1
+              if "1080" in nombre or "4K" in nombre: calidad = 0
+              elif "720" in nombre: calidad = 2
+              else: calidad = 1
 
               return (bloque, calidad, nombre)
 
@@ -194,7 +212,6 @@ jobs:
 
           texto_nuevo_elcano = "\n".join(bloque_automatico)
 
-          # --- EXTRACCIÓN SOLO DE LA ZONA AUTOMÁTICA ANTIGUA ---
           def extraer_nombres_zona_auto(texto_m3u):
               nombres = set()
               en_zona_auto = False
@@ -211,7 +228,6 @@ jobs:
 
           canales_viejos = extraer_nombres_zona_auto(contenido_casa)
           
-          # Extraer nombres de la nueva zona automática de Elcano
           canales_nuevos_set = set()
           for linea in texto_nuevo_elcano.splitlines():
               if linea.startswith("#EXTINF:") and "," in linea:
@@ -258,17 +274,12 @@ jobs:
               f"\n\n# Ultima sincronizacion: {timestamp_actual}\n"
           )
 
-          # 1. Guardar archivo principal local
           archivo_casa.write_text(texto_final, encoding="utf-8")
-
-          # 2. Generar versión Tailscale
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
-
-          # 3. Generar archivo idéntico para los amigos (lista-amigos)
           archivo_amigos.write_text(texto_final, encoding="utf-8")
 
-          print("¡Sincronización completa: Casa, Tailscale y Amigos actualizados!")
+          print(f"¡Sincronización completa! Canales procesados correctamente.")
           PY
 
       - name: Guardar cambios en GitHub
@@ -278,7 +289,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización automática y registro de cambios con EPG total"
+            git commit -m "Actualización automática y registro de cambios"
             git push
           else
             echo "No hay cambios que guardar."
