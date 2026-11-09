@@ -50,7 +50,7 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 1. Parsear los canales de Elcano
+          # 1. Parsear los canales de Elcano con limpieza automática de EPG
           lineas_elcano = fuente_elcano.splitlines()
           canales_raw = []
           i = 0
@@ -73,22 +73,47 @@ jobs:
                       else:
                           url_local = url
 
-                      nombre_c = linea.rsplit(",", 1)[-1].upper()
+                      nombre_c = linea.rsplit(",", 1)[-1].strip()
+                      nombre_c_upper = nombre_c.upper()
 
-                      # REGLA EXACTA: Forzar el tvg-id idéntico para Movistar Plus HD
                       extinf_mod = linea
-                      if "MOVISTAR PLUS" in nombre_c:
-                          if 'tvg-id=' in extinf_mod:
-                              extinf_mod = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus HD"', extinf_mod)
+
+                      # Limpieza inteligente para extraer el nombre base limpio de resoluciones y asteriscos
+                      nombre_limpio = re.sub(r'\b(1080P|720P|4K|HDR|\*|\*\*)\b', '', nombre_c_upper).strip()
+                      nombre_limpio = re.sub(r'\s+', ' ', nombre_limpio)
+
+                      # Reglas de coincidencia exacta para los que lo requieran
+                      if "MOVISTAR PLUS" in nombre_limpio or "MOVISTAR+" in nombre_limpio:
+                          id_final = "Movistar Plus HD"
+                      elif "M+ TERROR" in nombre_limpio or "TERROR" in nombre_limpio:
+                          id_final = "M+ Terror HD"
+                      elif "FOX SPORTS 2" in nombre_limpio or "FS2" in nombre_limpio:
+                          id_final = "465355"
+                      elif "SPORT TV" in nombre_limpio:
+                          if "3" in nombre_limpio:
+                              id_final = "Sport TV 3"
                           else:
-                              extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus HD"')
+                              id_final = "Sport TV+"
+                      elif "SKY SPORT TENNIS" in nombre_limpio:
+                          id_final = "Sky Sport Tennis HD"
+                      elif "TENNIS CHANNEL" in nombre_limpio:
+                          id_final = "Tennis Channel"
+                      else:
+                          # Para el resto de canales de la lista, usamos su nombre limpio como tvg-id automático
+                          id_final = nombre_limpio
+
+                      # Inyectar el tvg-id limpio
+                      if 'tvg-id=' in extinf_mod:
+                          extinf_mod = re.sub(r'tvg-id="[^"]*"', f'tvg-id="{id_final}"', extinf_mod)
+                      else:
+                          extinf_mod = extinf_mod.replace('#EXTINF:-1', f'#EXTINF:-1 tvg-id="{id_final}"')
 
                       # Forzar el group-title con el nombre exacto
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
 
-                      canales_raw.append((nombre_c, extinf_mod, url_local))
+                      canales_raw.append((nombre_c_upper, extinf_mod, url_local))
                       i = j
               i += 1
 
@@ -190,7 +215,7 @@ jobs:
           cabecera_m3u = (
               '#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
               'https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,'
-              'https://raw.githubusercontent.com/davidmuma/EPG_dobleM/master/guiatv.xml" refresh="3600"\n'
+              'https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml" refresh="3600"\n'
               '#EXTVLCOPT:network-caching=1000\n'
               '#EXTGRP: group-title="⭐ ELCANO [MÁXIMA CALIDAD]" group-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png"\n\n'
           )
