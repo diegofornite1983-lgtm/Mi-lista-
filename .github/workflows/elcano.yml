@@ -141,6 +141,36 @@ jobs:
 
           texto_nuevo_elcano = "\n".join(bloque_automatico)
 
+          # --- REGISTRO DE CAMBIOS LIMPIO ---
+          def extraer_nombres_canales(texto_m3u):
+              nombres = set()
+              for linea in texto_m3u.splitlines():
+                  if linea.startswith("#EXTINF:"):
+                      if "," in linea:
+                          nombres.add(linea.rsplit(",", 1)[-1].strip().upper())
+              return nombres
+
+          canales_viejos = set()
+          if archivo_casa.is_file():
+              try:
+                  canales_viejos = extraer_nombres_canales(archivo_casa.read_text(encoding="utf-8-sig"))
+              except:
+                  pass
+
+          canales_nuevos_set = extraer_nombres_canales(texto_nuevo_elcano)
+          agregados = sorted(list(canales_nuevos_set - canales_viejos))
+          eliminados = sorted(list(canales_viejos - canales_nuevos_set))
+
+          timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+          reporte_md = f"# 🔄 Resumen de cambios - {timestamp_actual}\n\n"
+          reporte_md += f"### 🟢 Canales Nuevos ({len(agregados)}):\n"
+          reporte_md += "\n".join([f"- {c}" for c in agregados]) if agregados else "- Ninguno en esta actualización."
+          reporte_md += f"\n\n### 🔴 Canales Eliminados ({len(eliminados)}):\n"
+          reporte_md += "\n".join([f"- {c}" for c in eliminados]) if eliminados else "- Ninguno."
+
+          Path("ultimos_cambios.md").write_text(reporte_md, encoding="utf-8")
+
           partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*CARPETA:\s*LA LIGA', contenido_casa, maxsplit=1)
           
           if len(partes) > 1:
@@ -158,8 +188,6 @@ jobs:
               '#EXTVLCOPT:network-caching=1000\n'
               '#EXTGRP: group-title="⭐ ELCANO [MÁXIMA CALIDAD]" group-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png"\n\n'
           )
-
-          timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
           
           texto_final = (
               cabecera_m3u + 
@@ -188,10 +216,10 @@ jobs:
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
-          git add "Mi lista acestream" "Canales m3u" "lista-amigos"
+          git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización automática: Casa, Tailscale y Lista Amigos"
+            git commit -m "Actualización automática y registro de cambios"
             git push
           else
             echo "No hay cambios que guardar."
