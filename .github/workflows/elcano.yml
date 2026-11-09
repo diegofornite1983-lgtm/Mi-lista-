@@ -50,7 +50,7 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 1. PARSEAR TODOS LOS CANALES SIN DESCHUSCAR NINGUNO POR NÚMEROS O FORMATO
+          # 1. Parsear los canales de Elcano asegurando capturar TODOS sin excepción de números
           lineas_elcano = fuente_elcano.splitlines()
           canales_raw = []
           i = 0
@@ -73,111 +73,29 @@ jobs:
                       else:
                           url_local = url
 
-                      nombre_c = linea.rsplit(",", 1)[-1].strip()
-                      nombre_upper = nombre_c.upper()
+                      nombre_c = linea.rsplit(",", 1)[-1].upper()
+
+                      # REGLA EXACTA: Forzar el tvg-id idéntico para Movistar Plus HD
                       extinf_mod = linea
-
-                      # 2. ASIGNACIÓN MASIVA DE TVG-ID PARA QUE CUALQUIER CANAL CABLEE CON LA EPG
-                      if "MOVISTAR PLUS" in nombre_upper or "MOVISTAR+" in nombre_upper:
-                          tvg_id_target = "Movistar Plus+ HD"
-                      elif "DAZN LALIGA 2" in nombre_upper:
-                          tvg_id_target = "DAZN LaLiga 2 HD"
-                      elif "DAZN LALIGA" in nombre_upper:
-                          tvg_id_target = "DAZN LaLiga HD"
-                      elif "M+ LALIGA 2" in nombre_upper:
-                          tvg_id_target = "M+ LaLiga 2 HD"
-                      elif "M+ LALIGA 3" in nombre_upper:
-                          tvg_id_target = "M+ LaLiga 3 HD"
-                      elif "M+ LALIGA" in nombre_upper:
-                          tvg_id_target = "M+ LaLiga HD"
-                      elif "CAMPEONES 2" in nombre_upper:
-                          tvg_id_target = "M+ Liga de Campeones 2 HD"
-                      elif "CAMPEONES 3" in nombre_upper:
-                          tvg_id_target = "M+ Liga de Campeones 3 HD"
-                      elif "CAMPEONES 4" in nombre_upper:
-                          tvg_id_target = "M+ Liga de Campeones 4"
-                      elif "CAMPEONES 5" in nombre_upper:
-                          tvg_id_target = "M+ Liga de Campeones 5"
-                      elif "CAMPEONES" in nombre_upper:
-                          tvg_id_target = "M+ Liga de Campeones HD"
-                      elif "M+ DEPORTES 2" in nombre_upper:
-                          tvg_id_target = "M+ Deportes 2 HD"
-                      elif "M+ DEPORTES 3" in nombre_upper:
-                          tvg_id_target = "M+ Deportes 3"
-                      elif "M+ DEPORTES 4" in nombre_upper:
-                          tvg_id_target = "M+ Deportes 4"
-                      elif "M+ DEPORTES 5" in nombre_upper:
-                          tvg_id_target = "M+ Deportes 5"
-                      elif "M+ DEPORTES 6" in nombre_upper:
-                          tvg_id_target = "M+ Deportes 6"
-                      elif "M+ DEPORTES 7" in nombre_upper:
-                          tvg_id_target = "M+ Deportes 7"
-                      elif "M+ DEPORTES 8" in nombre_upper:
-                          tvg_id_target = "M+ Deportes 8"
-                      elif "M+ DEPORTES" in nombre_upper:
-                          tvg_id_target = "M+ Deportes HD"
-                      elif "VAMOS 2" in nombre_upper:
-                          tvg_id_target = "M+ Vamos 2"
-                      elif "VAMOS 3" in nombre_upper:
-                          tvg_id_target = "M+ Vamos 3"
-                      elif "VAMOS" in nombre_upper:
-                          tvg_id_target = "M+ Vamos HD"
-                      elif "M+ GOLF 2" in nombre_upper:
-                          tvg_id_target = "M+ Golf 2 HD"
-                      elif "M+ GOLF" in nombre_upper:
-                          tvg_id_target = "M+ Golf HD"
-                      elif "DAZN F1" in nombre_upper or "FORMULA 1" in nombre_upper:
-                          tvg_id_target = "DAZN F1 HD"
-                      elif "MOTOGP" in nombre_upper:
-                          tvg_id_target = "DAZN MotoGP"
-                      elif "DAZN 1" in nombre_upper:
-                          tvg_id_target = "DAZN 1 HD"
-                      elif "DAZN 2" in nombre_upper:
-                          tvg_id_target = "DAZN 2 HD"
-                      elif "DAZN BALONCESTO 2" in nombre_upper:
-                          tvg_id_target = "DAZN Baloncesto 2"
-                      elif "DAZN BALONCESTO" in nombre_upper:
-                          tvg_id_target = "DAZN Baloncesto"
-                      elif "M+ BALONCESTO" in nombre_upper:
-                          tvg_id_target = "M+ Baloncesto"
-                      elif "EUROSPORT 1" in nombre_upper:
-                          tvg_id_target = "Eurosport 1 HD"
-                      elif "EUROSPORT 2" in nombre_upper:
-                          tvg_id_target = "Eurosport 2"
-                      elif "LA 1" in nombre_upper:
-                          tvg_id_target = "La 1 HD"
-                      elif "LA 2" in nombre_upper:
-                          tvg_id_target = "La 2"
-                      elif "TELECINCO" in nombre_upper:
-                          tvg_id_target = "Telecinco HD"
-                      elif "ESPORT 3" in nombre_upper or "ESPORT3" in nombre_upper:
-                          tvg_id_target = "Esport 3"
-                      elif "RALLY TV" in nombre_upper:
-                          tvg_id_target = "DE | Rally TV"
-                      elif "REAL MADRID" in nombre_upper:
-                          tvg_id_target = "Real Madrid TV"
-                      elif "PRIMERA" in nombre_upper:
-                          tvg_id_target = "Primera Federación"
-                      else:
-                          tvg_id_target = nombre_c
-
-                      if tvg_id_target:
+                      if "MOVISTAR PLUS" in nombre_c:
                           if 'tvg-id=' in extinf_mod:
-                              extinf_mod = re.sub(r'tvg-id="[^"]*"', f'tvg-id="{tvg_id_target}"', extinf_mod)
+                              extinf_mod = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus HD"', extinf_mod)
                           else:
-                              extinf_mod = extinf_mod.replace('#EXTINF:-1', f'#EXTINF:-1 tvg-id="{tvg_id_target}"')
+                              extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus HD"')
 
+                      # Forzar el group-title con el nombre exacto
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
 
-                      canales_raw.append((nombre_upper, extinf_mod, url_local))
+                      canales_raw.append((nombre_c, extinf_mod, url_local))
                       i = j
               i += 1
 
-          # 3. ORDENACIÓN LIMPIA: NINGÚN CANAL SE QUEDA FUERA POR LLEVAR NÚMEROS O MULTIS
+          # Criterio de ordenación limpio (SIN FILTROS QUE BORREN CANALES NUMÉRICOS)
           def prioridad_elcano(item):
               nombre = item[0]
+
               if "M+ LALIGA" in nombre: bloque = 1
               elif "DAZN LALIGA" in nombre: bloque = 2
               elif "MOVISTAR PLUS" in nombre or "MOVISTAR+" in nombre: bloque = 3
@@ -190,12 +108,17 @@ jobs:
               elif "VAMOS" in nombre: bloque = 10
               elif "HYPERMOTION" in nombre: bloque = 11
               elif "PRIMERA" in nombre or "RFEF" in nombre: bloque = 12
-              elif any(x in nombre for x in ["TDT", "LA 1", "LA 2", "TELECINCO", "CUATRO", "TELEDEPORTE"]): bloque = 13
-              else: bloque = 14
+              elif any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO"]):
+                  bloque = 15
+              else:
+                  bloque = 14
 
-              if "1080" in nombre or "4K" in nombre: calidad = 0
-              elif "720" in nombre: calidad = 2
-              else: calidad = 1
+              if "1080" in nombre or "4K" in nombre:
+                  calidad = 0
+              elif "720" in nombre:
+                  calidad = 2
+              else:
+                  calidad = 1
 
               return (bloque, calidad, nombre)
 
@@ -211,40 +134,6 @@ jobs:
               bloque_automatico.append(u)
 
           texto_nuevo_elcano = "\n".join(bloque_automatico)
-
-          def extraer_nombres_zona_auto(texto_m3u):
-              nombres = set()
-              en_zona_auto = False
-              for linea in texto_m3u.splitlines():
-                  if "ZONA AUTOMATICA" in linea:
-                      en_zona_auto = True
-                      continue
-                  if "ZONA PERSONAL" in linea or "CARPETA:" in linea or "SECCIÓN:" in linea:
-                      en_zona_auto = False
-                  if en_zona_auto and linea.startswith("#EXTINF:"):
-                      if "," in linea:
-                          nombres.add(linea.rsplit(",", 1)[-1].strip().upper())
-              return nombres
-
-          canales_viejos = extraer_nombres_zona_auto(contenido_casa)
-          
-          canales_nuevos_set = set()
-          for linea in texto_nuevo_elcano.splitlines():
-              if linea.startswith("#EXTINF:") and "," in linea:
-                  canales_nuevos_set.add(linea.rsplit(",", 1)[-1].strip().upper())
-
-          agregados = sorted(list(canales_nuevos_set - canales_viejos))
-          eliminados = sorted(list(canales_viejos - canales_nuevos_set))
-
-          timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-          reporte_md = f"# 🔄 Resumen de cambios en ELCANO - {timestamp_actual}\n\n"
-          reporte_md += f"### 🟢 Canales Nuevos ({len(agregados)}):\n"
-          reporte_md += "\n".join([f"- {c}" for c in agregados]) if agregados else "- Ninguno en esta actualización."
-          reporte_md += f"\n\n### 🔴 Canales Eliminados por Elcano ({len(eliminados)}):\n"
-          reporte_md += "\n".join([f"- {c}" for c in eliminados]) if eliminados else "- Ninguno."
-
-          Path("ultimos_cambios.md").write_text(reporte_md, encoding="utf-8")
 
           partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*CARPETA:\s*LA LIGA', contenido_casa, maxsplit=1)
           
@@ -263,6 +152,8 @@ jobs:
               '#EXTVLCOPT:network-caching=1000\n'
               '#EXTGRP: group-title="⭐ ELCANO [MÁXIMA CALIDAD]" group-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png"\n\n'
           )
+
+          timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
           
           texto_final = (
               cabecera_m3u + 
@@ -274,22 +165,27 @@ jobs:
               f"\n\n# Ultima sincronizacion: {timestamp_actual}\n"
           )
 
+          # 1. Guardar archivo principal local
           archivo_casa.write_text(texto_final, encoding="utf-8")
+
+          # 2. Generar versión Tailscale
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
+
+          # 3. Generar archivo idéntico para los amigos (lista-amigos)
           archivo_amigos.write_text(texto_final, encoding="utf-8")
 
-          print("¡Sincronización completa: Casa, Tailscale y Amigos actualizados!")
+          print("¡Sincronización completa: Casa, Tailscale y Amigos actualizados sin perder canales!")
           PY
 
       - name: Guardar cambios en GitHub
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
-          git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
+          git add "Mi lista acestream" "Canales m3u" "lista-amigos"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización automática y registro de cambios"
+            git commit -m "Actualización automática: Casa, Tailscale y Lista Amigos respetando todo"
             git push
           else
             echo "No hay cambios que guardar."
