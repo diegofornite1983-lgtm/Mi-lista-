@@ -141,42 +141,6 @@ jobs:
 
           texto_nuevo_elcano = "\n".join(bloque_automatico)
 
-          # --- EXTRACCIÓN SOLO DE LA ZONA AUTOMÁTICA ANTIGUA ---
-          def extraer_nombres_zona_auto(texto_m3u):
-              nombres = set()
-              en_zona_auto = False
-              for linea in texto_m3u.splitlines():
-                  if "ZONA AUTOMATICA" in linea:
-                      en_zona_auto = True
-                      continue
-                  if "ZONA PERSONAL" in linea or "CARPETA:" in linea or "SECCIÓN:" in linea:
-                      en_zona_auto = False
-                  if en_zona_auto and linea.startswith("#EXTINF:"):
-                      if "," in linea:
-                          nombres.add(linea.rsplit(",", 1)[-1].strip().upper())
-              return nombres
-
-          canales_viejos = extraer_nombres_zona_auto(contenido_casa)
-          
-          # Extraer nombres de la nueva zona automática de Elcano
-          canales_nuevos_set = set()
-          for linea in texto_nuevo_elcano.splitlines():
-              if linea.startswith("#EXTINF:") and "," in linea:
-                  canales_nuevos_set.add(linea.rsplit(",", 1)[-1].strip().upper())
-
-          agregados = sorted(list(canales_nuevos_set - canales_viejos))
-          eliminados = sorted(list(canales_viejos - canales_nuevos_set))
-
-          timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-          reporte_md = f"# 🔄 Resumen de cambios en ELCANO - {timestamp_actual}\n\n"
-          reporte_md += f"### 🟢 Canales Nuevos ({len(agregados)}):\n"
-          reporte_md += "\n".join([f"- {c}" for c in agregados]) if agregados else "- Ninguno en esta actualización."
-          reporte_md += f"\n\n### 🔴 Canales Eliminados por Elcano ({len(eliminados)}):\n"
-          reporte_md += "\n".join([f"- {c}" for c in eliminados]) if eliminados else "- Ninguno."
-
-          Path("ultimos_cambios.md").write_text(reporte_md, encoding="utf-8")
-
           partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*CARPETA:\s*LA LIGA', contenido_casa, maxsplit=1)
           
           if len(partes) > 1:
@@ -194,6 +158,8 @@ jobs:
               '#EXTVLCOPT:network-caching=1000\n'
               '#EXTGRP: group-title="⭐ ELCANO [MÁXIMA CALIDAD]" group-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png"\n\n'
           )
+
+          timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
           
           texto_final = (
               cabecera_m3u + 
@@ -222,10 +188,10 @@ jobs:
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
-          git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
+          git add "Mi lista acestream" "Canales m3u" "lista-amigos"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización automática y registro de cambios"
+            git commit -m "Actualización automática: Casa, Tailscale y Lista Amigos"
             git push
           else
             echo "No hay cambios que guardar."
