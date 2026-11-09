@@ -1,4 +1,4 @@
-name: Actualizador Automatico Elcano, Tailscale y Amigos
+name: Actualizador Automatico Elcano y Tailscale
 
 on:
   schedule:
@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización automática ELCANO, Tailscale y Amigos
+      - name: Sincronización automática ELCANO Multis Primero Diego
         run: |
           python <<'PY'
           import re
@@ -33,7 +33,6 @@ jobs:
           URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
-          archivo_amigos = Path("lista-amigos")
 
           if not archivo_casa.is_file():
               sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream'.")
@@ -73,30 +72,24 @@ jobs:
                       else:
                           url_local = url
 
-                      nombre_c = linea.rsplit(",", 1)[-1].upper()
-
-                      # REGLA EXACTA: Forzar el tvg-id idéntico para Movistar Plus HD
-                      extinf_mod = linea
-                      if "MOVISTAR PLUS" in nombre_c:
-                          if 'tvg-id=' in extinf_mod:
-                              extinf_mod = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus HD"', extinf_mod)
-                          else:
-                              extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus HD"')
-
                       # Forzar el group-title con el nombre exacto
-                      extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
+                      extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', linea)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
 
+                      # REGLA DE ORO: Respetar tvg-id y nombre numérico final exactamente igual
+                      nombre_c = linea.rsplit(",", 1)[-1].upper()
                       canales_raw.append((nombre_c, extinf_mod, url_local))
                       i = j
               i += 1
 
-          # Criterio de ordenación estricto
+          # Criterio de ordenación estricto: Principales -> Multis Deportivas -> TDT / Raros al final
           def prioridad_elcano(item):
               nombre = item[0]
+              
               es_multi = bool(re.search(r'\b(2|3|4|5|6|7|8|9)\b', nombre))
 
+              # 1. CANALES PRINCIPALES (Arriba del todo)
               if not es_multi or ("F1" in nombre or "MOTOGP" in nombre):
                   if "M+ LALIGA" in nombre: bloque = 1
                   elif "DAZN LALIGA" in nombre: bloque = 2
@@ -109,16 +102,20 @@ jobs:
                   elif "VAMOS" in nombre: bloque = 10
                   elif "HYPERMOTION" in nombre: bloque = 11
                   elif "PRIMERA" in nombre or "RFEF" in nombre: bloque = 12
-                  else: bloque = 14
+                  else: bloque = 14  # Canales no principales
               else:
                   bloque = 14
 
+              # 2. MULTIS DEPORTIVAS (Van justo debajo de Primera Federación: Bloque 13)
+              # Si es una multi oficial (LaLiga 2, DAZN LaLiga 2, Campeones 2, Vamos 2, Hypermotion 2, etc.)
               if es_multi and any(x in nombre for x in ["LALIGA", "CAMPEONES", "DAZN", "VAMOS", "HYPERMOTION", "DEPORTES"]):
                   bloque = 13
 
+              # 3. CANALES EXTERNOS / RAROS / TDT (Van al fondo del todo: Bloque 15)
               if any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO"]):
                   bloque = 15
 
+              # REGLA DE ORO DE CALIDAD: 1080p y 4K siempre van los primerísimos (subnivel 0) dentro de su bloque
               if "1080" in nombre or "4K" in nombre:
                   calidad = 0
               elif "720" in nombre:
@@ -130,6 +127,7 @@ jobs:
 
           canales_ordenados = sorted(canales_raw, key=prioridad_elcano)
 
+          # Construir el bloque automático limpio
           bloque_automatico = [
               "# ==========================================",
               "# ZONA AUTOMATICA: ⭐ ELCANO [MÁXIMA CALIDAD]",
@@ -141,6 +139,7 @@ jobs:
 
           texto_nuevo_elcano = "\n".join(bloque_automatico)
 
+          # 2. Extraer el cuerpo de tus categorías personales de abajo sin alterarlas
           partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*CARPETA:\s*LA LIGA', contenido_casa, maxsplit=1)
           
           if len(partes) > 1:
@@ -151,6 +150,7 @@ jobs:
 
           cuerpo_personal = re.sub(r'#\s*Ultima sincronizacion:.*', '', cuerpo_personal).strip()
 
+          # Cabecera exacta respetando la EPG de David Muma
           cabecera_m3u = (
               '#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
               'https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,'
@@ -161,6 +161,7 @@ jobs:
 
           timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
           
+          # Unir todo de forma perfectamente estructurada
           texto_final = (
               cabecera_m3u + 
               texto_nuevo_elcano + 
@@ -171,27 +172,23 @@ jobs:
               f"\n\n# Ultima sincronizacion: {timestamp_actual}\n"
           )
 
-          # 1. Guardar archivo principal local
           archivo_casa.write_text(texto_final, encoding="utf-8")
 
-          # 2. Generar versión Tailscale
+          # Versión Tailscale cambiando la IP de forma segura
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
 
-          # 3. Generar archivo idéntico para los amigos (lista-amigos)
-          archivo_amigos.write_text(texto_final, encoding="utf-8")
-
-          print("¡Sincronización completa: Casa, Tailscale y Amigos actualizados!")
+          print("¡Sincronización completada: Multis importantes arriba y raros al fondo!")
           PY
 
       - name: Guardar cambios en GitHub
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
-          git add "Mi lista acestream" "Canales m3u" "lista-amigos"
+          git add "Mi lista acestream" "Canales m3u"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización automática: Casa, Tailscale y Lista Amigos"
+            git commit -m "Actualización: Multis de fútbol/deporte prioritarias en ELCANO"
             git push
           else
             echo "No hay cambios que guardar."
