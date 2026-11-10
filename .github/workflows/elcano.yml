@@ -1,4 +1,4 @@
-name: Actualizador Exacto Elcano
+name: Actualizador Minimo Elcano
 
 on:
   schedule:
@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización exacta ELCANO
+      - name: Sincronización minima
         run: |
           python <<'PY'
           import re
@@ -50,9 +50,10 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # Parsear absolutamente todos los canales que traiga Elcano
+          # Extraer canales de Elcano tal cual vienen
           lineas_elcano = fuente_elcano.splitlines()
-          canales_raw = []
+          bloque_automatico = ["# ==========================================", "# ZONA AUTOMATICA: ELCANO", "# =========================================="]
+          
           i = 0
           while i < len(lineas_elcano):
               linea = lineas_elcano[i].strip()
@@ -68,63 +69,17 @@ jobs:
                   if url:
                       match_h = re.search(r'([0-9a-fA-F]{40})', url)
                       if match_h:
-                          h_id = match_h.group(1)
-                          url_local = f"http://127.0.0.1:6878/ace/getstream?id={h_id}"
+                          url_local = f"http://127.0.0.1:6878/ace/getstream?id={match_h.group(1)}"
                       else:
                           url_local = url
-
-                      nombre_c = linea.rsplit(",", 1)[-1].upper()
-                      
-                      # Mantener la línea original de Elcano pero asegurando el grupo visual
-                      extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', linea)
-                      if 'group-title=' not in extinf_mod:
-                          extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
-
-                      canales_raw.append((nombre_c, extinf_mod, url_local))
+                      bloque_automatico.append(linea)
+                      bloque_automatico.append(url_local)
                       i = j
               i += 1
 
-          print(f"Canales totales leídos de Elcano: {len(canales_raw)}")
-          if len(canales_raw) == 0:
-              sys.exit("ERROR: No se han encontrado canales en la fuente.")
-
-          # Ordenar dejando los principales arriba y por calidad (1080p/4K primero)
-          def prioridad_elcano(item):
-              nombre = item[0]
-              if "M+ LALIGA" in nombre: bloque = 1
-              elif "DAZN LALIGA" in nombre: bloque = 2
-              elif "MOVISTAR PLUS" in nombre or "MOVISTAR+" in nombre: bloque = 3
-              elif "CAMPEONES" in nombre: bloque = 4
-              elif "F1" in nombre or "FORMULA 1" in nombre: bloque = 5
-              elif "MOTOGP" in nombre: bloque = 6
-              elif "DAZN 1" in nombre: bloque = 7
-              elif "DEPORTES" in nombre: bloque = 8
-              elif "VAMOS" in nombre: bloque = 10
-              else: bloque = 12
-
-              if "1080" in nombre or "4K" in nombre:
-                  calidad = 0
-              elif "720" in nombre:
-                  calidad = 2
-              else:
-                  calidad = 1
-
-              return (bloque, calidad, nombre)
-
-          canales_ordenados = sorted(canales_raw, key=prioridad_elcano)
-
-          bloque_automatico = [
-              "# ==========================================",
-              "# ZONA AUTOMATICA: ⭐ ELCANO [MÁXIMA CALIDAD]",
-              "# =========================================="
-          ]
-          for _, inf, u in canales_ordenados:
-              bloque_automatico.append(inf)
-              bloque_automatico.append(u)
-
           texto_nuevo_elcano = "\n".join(bloque_automatico)
 
-          # Extraer tu zona personal inferior respetando todo lo tuyo
+          # Respetar la zona personal inferior (tus carpetas)
           partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*CARPETA:\s*LA LIGA', contenido_casa, maxsplit=1)
           if len(partes) > 1:
               cuerpo_personal = "# CARPETA: LA LIGA" + partes[1]
@@ -135,7 +90,6 @@ jobs:
           cuerpo_personal = re.sub(r'#\s*Ultima sincronizacion:.*', '', cuerpo_personal).strip()
 
           cabecera_m3u = '#EXTM3U\n#EXTVLCOPT:network-caching=1000\n\n'
-
           timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
           
           texto_final = (
@@ -148,15 +102,11 @@ jobs:
               f"\n\n# Ultima sincronizacion: {timestamp_actual}\n"
           )
 
-          # Guardar en todos tus archivos correspondientes
           archivo_casa.write_text(texto_final, encoding="utf-8")
-          
-          texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
-          archivo_tailscale.write_text(texto_ts, encoding="utf-8")
-          
+          archivo_tailscale.write_text(texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878"), encoding="utf-8")
           archivo_amigos.write_text(texto_final, encoding="utf-8")
 
-          print("¡Sincronización exacta completada con éxito!")
+          print("¡Sincronización mínima completada!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -166,8 +116,8 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización exacta: Todos los canales de Elcano sin recortes"
+            git commit -m "Actualizacion minima de canales"
             git push
           else
-            echo "No hay cambios que guardar."
+            echo "Sin cambios."
           fi
