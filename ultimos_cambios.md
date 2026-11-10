@@ -1,7 +1,17 @@
-# 🔄 Resumen de cambios en ELCANO - 2026-11-10 15:44:55
+# 🔄 Resumen de cambios en ELCANO - 2026-11-10 18:45:08
 
-### 🟢 Canales Nuevos (0):
-- Ninguno en esta actualización.
+### 🟢 Canales Nuevos (7):
+- ESPORT3 1080P **
+- ESPORT3 720P **
+- EUROSPORT 2 1080P **
+- EUROSPORT 2 720P **
+- M+ BALONCESTO 1080P **
+- TELEDEPORTE 1080P **
+- TELEDEPORTE 720P **
 
-### 🔴 Canales Eliminados por Elcano (1):
-- M+ GOLF 720P *
+### 🔴 Canales Eliminados por Elcano (5):
+- DAZN BALONCESTO 3 1080P **
+- DAZN BALONCESTO 3 720P *
+- LALIGA TV HYPERMOTION 1080P **
+- M+ VAMOS 2 720P *
+- M+ VAMOS 3 1080P *
