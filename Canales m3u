@@ -412,7 +412,6 @@ http://100.90.204.66:6878/ace/getstream?id=2a05a020dfe97aaa0665bb7551022868b2a88
 # CARPETA: MOVISTAR DEP-VAMOS
 # ==========================================
 
-
 #EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",⭐️ M+ Deportes 3d44
 http://100.90.204.66:6878/ace/getstream?id=3d44884484303f51879f93ddaff6e4c267df2e3e
 
@@ -477,4 +476,4 @@ http://100.90.204.66:6878/ace/getstream?id=6b1fae4ad99474bd8dde2113c9a0d36bf6717
 #EXTINF:-1 tvg-id="Eurosport 2" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 HD (Sport TV)
 http://100.90.204.66:6878/ace/getstream?id=6176281b9c46a5621a0e88524f8dc621f173b8e0
 
-# Ultima sincronizacion: 2026-11-10 03:46:50
+# Ultima sincronizacion: 2026-11-10 06:59:47
