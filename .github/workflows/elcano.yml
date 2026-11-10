@@ -50,7 +50,7 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 1. Parsear los canales de Elcano
+          # 1. Parsear los canales de Elcano manteniendo la regla de oro de la EPG
           lineas_elcano = fuente_elcano.splitlines()
           canales_raw = []
           i = 0
@@ -75,7 +75,7 @@ jobs:
 
                       nombre_c = linea.rsplit(",", 1)[-1].upper()
 
-                      # REGLA EXACTA: Forzar el tvg-id idéntico para Movistar Plus HD
+                      # REGLA DE ORO: Respetar tvg-id y nombre numérico final exactamente igual para la EPG de David Muma
                       extinf_mod = linea
                       if "MOVISTAR PLUS" in nombre_c:
                           if 'tvg-id=' in extinf_mod:
@@ -83,7 +83,7 @@ jobs:
                           else:
                               extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus HD"')
 
-                      # Forzar el group-title con el nombre exacto
+                      # Forzar el group-title con el nombre exacto de la zona automática
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
@@ -158,7 +158,6 @@ jobs:
 
           canales_viejos = extraer_nombres_zona_auto(contenido_casa)
           
-          # Extraer nombres de la nueva zona automática de Elcano
           canales_nuevos_set = set()
           for linea in texto_nuevo_elcano.splitlines():
               if linea.startswith("#EXTINF:") and "," in linea:
