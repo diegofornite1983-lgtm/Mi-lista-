@@ -1,4 +1,4 @@
-name: Actualizador Directo Elcano Puro
+name: Actualizador Elcano Desde Cero
 
 on:
   schedule:
@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización directa y limpia
+      - name: Sincronizar desde cero
         run: |
           python <<'PY'
           import re
@@ -36,13 +36,14 @@ jobs:
           archivo_amigos = Path("lista-amigos")
 
           if not archivo_casa.is_file():
-              sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream'.")
+              sys.exit("ERROR: No se encuentra el archivo principal 'Mi lista acestream'.")
 
           try:
               contenido_casa = archivo_casa.read_text(encoding="utf-8-sig")
           except UnicodeDecodeError:
               contenido_casa = archivo_casa.read_text(encoding="latin-1")
 
+          # 1. Descargar la lista directamente de Elcano
           try:
               peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
               with urllib.request.urlopen(peticion, timeout=60) as respuesta:
@@ -50,7 +51,7 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # Leer y parsear de forma limpia cada canal tal cual viene de Elcano
+          # 2. Parsear canales y forzar la carpeta superior exacta con estrella
           lineas_elcano = fuente_elcano.splitlines()
           bloque_automatico = [
               "# ==========================================",
@@ -78,7 +79,7 @@ jobs:
                       else:
                           url_local = url
 
-                      # Asegurar que la línea pertenezca a la carpeta con estrella pero manteniendo sus datos originales
+                      # Forzar el group-title para que vaya directo a la carpeta con estrella
                       if 'group-title=' in linea:
                           linea_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', linea)
                       else:
@@ -90,13 +91,13 @@ jobs:
                       i = j
               i += 1
 
-          print(f"Canales puros cargados desde Elcano: {contador}")
+          print(f"Canales sincronizados desde Elcano: {contador}")
           if contador == 0:
-              sys.exit("ERROR: No se han encontrado canales.")
+              sys.exit("ERROR: La fuente de Elcano no devolvió ningún canal.")
 
           texto_nuevo_elcano = "\n".join(bloque_automatico)
 
-          # Extraer la zona personal inferior (tus carpetas intactas)
+          # 3. Respetar y extraer la zona personal inferior (tus carpetas intactas)
           partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*CARPETA:', contenido_casa, maxsplit=1)
           if len(partes) > 1:
               cuerpo_personal = "# CARPETA:" + partes[1]
@@ -106,7 +107,7 @@ jobs:
 
           cuerpo_personal = re.sub(r'#\s*Ultima sincronizacion:.*', '', cuerpo_personal).strip()
 
-          # Cabecera limpia con la EPG de David Muma para que coja la programación sin líos
+          # 4. Cabecera limpia con la EPG de David Muma para los logos y la programación
           cabecera_m3u = (
               '#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
               'https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,'
@@ -116,6 +117,7 @@ jobs:
 
           timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
           
+          # 5. Unir todo en el texto final
           texto_final = (
               cabecera_m3u + 
               texto_nuevo_elcano + 
@@ -126,12 +128,12 @@ jobs:
               f"\n\n# Ultima sincronizacion: {timestamp_actual}\n"
           )
 
-          # Guardar en todos los archivos necesarios
+          # Guardar en los tres archivos
           archivo_casa.write_text(texto_final, encoding="utf-8")
           archivo_tailscale.write_text(texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878"), encoding="utf-8")
           archivo_amigos.write_text(texto_final, encoding="utf-8")
 
-          print("¡Sincronización pura completada con éxito!")
+          print("¡Sincronización desde cero completada con éxito!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -141,7 +143,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización directa de Elcano sin alteraciones"
+            git commit -m "Sincronización limpia desde cero con Elcano"
             git push
           else
             echo "No hay cambios que guardar."
