@@ -1,4 +1,4 @@
-name: Actualizador Limpio Elcano y Tailscale
+name: Actualizador Exacto Elcano
 
 on:
   schedule:
@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronización limpia ELCANO
+      - name: Sincronización exacta ELCANO
         run: |
           python <<'PY'
           import re
@@ -33,6 +33,7 @@ jobs:
           URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
+          archivo_amigos = Path("lista-amigos")
 
           if not archivo_casa.is_file():
               sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream'.")
@@ -49,16 +50,10 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # Leer y parsear exactamente lo que trae Elcano en este momento
+          # Parsear absolutamente todos los canales que traiga Elcano
           lineas_elcano = fuente_elcano.splitlines()
-          bloque_automatico = [
-              "# ==========================================",
-              "# ZONA AUTOMATICA: ELCANO LIMPIO",
-              "# =========================================="
-          ]
-          
+          canales_raw = []
           i = 0
-          contador = 0
           while i < len(lineas_elcano):
               linea = lineas_elcano[i].strip()
               if linea.startswith("#EXTINF:"):
@@ -78,20 +73,58 @@ jobs:
                       else:
                           url_local = url
 
-                      # Metemos la línea original y el enlace local adaptado
-                      bloque_automatico.append(linea)
-                      bloque_automatico.append(url_local)
-                      contador += 1
+                      nombre_c = linea.rsplit(",", 1)[-1].upper()
+                      
+                      # Mantener la línea original de Elcano pero asegurando el grupo visual
+                      extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', linea)
+                      if 'group-title=' not in extinf_mod:
+                          extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
+
+                      canales_raw.append((nombre_c, extinf_mod, url_local))
                       i = j
               i += 1
 
-          print(f"Canales totales cargados desde Elcano: {contador}")
-          if contador == 0:
-              sys.exit("ERROR: No se ha encontrado ningun canal en la fuente.")
+          print(f"Canales totales leídos de Elcano: {len(canales_raw)}")
+          if len(canales_raw) == 0:
+              sys.exit("ERROR: No se han encontrado canales en la fuente.")
+
+          # Ordenar dejando los principales arriba y por calidad (1080p/4K primero)
+          def prioridad_elcano(item):
+              nombre = item[0]
+              if "M+ LALIGA" in nombre: bloque = 1
+              elif "DAZN LALIGA" in nombre: bloque = 2
+              elif "MOVISTAR PLUS" in nombre or "MOVISTAR+" in nombre: bloque = 3
+              elif "CAMPEONES" in nombre: bloque = 4
+              elif "F1" in nombre or "FORMULA 1" in nombre: bloque = 5
+              elif "MOTOGP" in nombre: bloque = 6
+              elif "DAZN 1" in nombre: bloque = 7
+              elif "DEPORTES" in nombre: bloque = 8
+              elif "VAMOS" in nombre: bloque = 10
+              else: bloque = 12
+
+              if "1080" in nombre or "4K" in nombre:
+                  calidad = 0
+              elif "720" in nombre:
+                  calidad = 2
+              else:
+                  calidad = 1
+
+              return (bloque, calidad, nombre)
+
+          canales_ordenados = sorted(canales_raw, key=prioridad_elcano)
+
+          bloque_automatico = [
+              "# ==========================================",
+              "# ZONA AUTOMATICA: ⭐ ELCANO [MÁXIMA CALIDAD]",
+              "# =========================================="
+          ]
+          for _, inf, u in canales_ordenados:
+              bloque_automatico.append(inf)
+              bloque_automatico.append(u)
 
           texto_nuevo_elcano = "\n".join(bloque_automatico)
 
-          # Extraer tu zona personal inferior para que no se pierda nada de lo tuyo
+          # Extraer tu zona personal inferior respetando todo lo tuyo
           partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*CARPETA:\s*LA LIGA', contenido_casa, maxsplit=1)
           if len(partes) > 1:
               cuerpo_personal = "# CARPETA: LA LIGA" + partes[1]
@@ -101,7 +134,6 @@ jobs:
 
           cuerpo_personal = re.sub(r'#\s*Ultima sincronizacion:.*', '', cuerpo_personal).strip()
 
-          # Cabecera limpia básica
           cabecera_m3u = '#EXTM3U\n#EXTVLCOPT:network-caching=1000\n\n'
 
           timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -116,23 +148,25 @@ jobs:
               f"\n\n# Ultima sincronizacion: {timestamp_actual}\n"
           )
 
+          # Guardar en todos tus archivos correspondientes
           archivo_casa.write_text(texto_final, encoding="utf-8")
           
-          # Versión Tailscale
           texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
+          
+          archivo_amigos.write_text(texto_final, encoding="utf-8")
 
-          print("¡Sincronización limpia completada con éxito!")
+          print("¡Sincronización exacta completada con éxito!")
           PY
 
       - name: Guardar cambios en GitHub
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
-          git add "Mi lista acestream" "Canales m3u"
+          git add "Mi lista acestream" "Canales m3u" "lista-amigos"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización limpia: Canales directos de Elcano"
+            git commit -m "Actualización exacta: Todos los canales de Elcano sin recortes"
             git push
           else
             echo "No hay cambios que guardar."
