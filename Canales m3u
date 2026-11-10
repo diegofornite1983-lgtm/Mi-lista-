@@ -114,6 +114,39 @@ http://100.90.204.66:6878/ace/getstream?id=ff162bf69c1579edf953bf76933c80b1c7e89
 # CARPETA: LA LIGA Y DAZN LIGA
 # ==========================================
 
+#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA",M+ LaLiga 720p *
+http://100.90.204.66:6878/ace/getstream?id=34d4ed86aa5e56a84b151a80f6904605a0f77854
+
+#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA",M+ LaLiga 720p **
+http://100.90.204.66:6878/ace/getstream?id=4ef8d5f781b709d479cfc3961de9c92f0f0dcb0c
+
+#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA",M+ LaLiga **
+http://100.90.204.66:6878/ace/getstream?id=599fb52eba4bd937b2029210bdeca9f1a34a32da
+
+#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA",M+ LaLiga 720p *
+http://100.90.204.66:6878/ace/getstream?id=e1825dc2deae9f24ef55e6ff11fe780201ae758d
+
+#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA",M+ LaLiga 720p *
+http://100.90.204.66:6878/ace/getstream?id=1c00e6a5404f84e9bd22aa9d8f09e96ffa4ab319
+
+#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA",M+ LaLiga 720p **
+http://100.90.204.66:6878/ace/getstream?id=69f76f6516620d91612e7509077b5ac3bb4d3c0b
+
+#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA",M+ LaLiga 1080p *
+http://100.90.204.66:6878/ace/getstream?id=aae8bcb9b00c4505ccfa5981b860da012e8cf23e
+
+#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA",M+ LaLiga 1080p **
+http://100.90.204.66:6878/ace/getstream?id=3d4c3b9d44af0658a9ec6b29c92033f732b65422
+
+#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="LA LIGA",M+ LaLiga 1080p **
+http://100.90.204.66:6878/ace/getstream?id=72626ce6e2f0dc8f0a71ac1d9b960d3cc166c86e
+
+#EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/Tc97zSb/liga2.png" group-title="LA LIGA",M+ LaLiga 2 720p **
+
+
+
+
+
 
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",⭐️ M+ LaLiga 9e38
 http://100.90.204.66:6878/ace/getstream?id=31c19ffb3472c289c5bbbbc174449c8ed0d19e38
