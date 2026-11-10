@@ -1,4 +1,4 @@
-name: Actualizador Super Limpio
+name: Actualizador Elcano con Carpeta
 
 on:
   schedule:
@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Sincronizar
+      - name: Sincronizar con carpeta
         run: |
           python <<'PY'
           import re
@@ -44,9 +44,13 @@ jobs:
           with urllib.request.urlopen(req, timeout=60) as resp:
               fuente = resp.read().decode("utf-8-sig", errors="replace")
 
-          # Extraer canales limpios
+          # Extraer canales y meterles la etiqueta de grupo visual exacta
           lineas = fuente.splitlines()
-          nuevo_auto = ["# ==========================================", "# ZONA AUTOMATICA: ELCANO", "# =========================================="]
+          nuevo_auto = [
+              "# ==========================================",
+              "# ZONA AUTOMATICA: ⭐ ELCANO [MÁXIMA CALIDAD]",
+              "# =========================================="
+          ]
           
           i = 0
           while i < len(lineas):
@@ -63,7 +67,14 @@ jobs:
                   if u:
                       m = re.search(r'([0-9a-fA-F]{40})', u)
                       link = f"http://127.0.0.1:6878/ace/getstream?id={m.group(1)}" if m else u
-                      nuevo_auto.append(l)
+                      
+                      # Forzar group-title limpio para que la app lo meta en su carpeta con estrella
+                      if 'group-title=' in l:
+                          l_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', l)
+                      else:
+                          l_mod = l.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
+
+                      nuevo_auto.append(l_mod)
                       nuevo_auto.append(link)
                       i = j
               i += 1
@@ -80,13 +91,13 @@ jobs:
 
           cuerpo_per = re.sub(r'#\s*Ultima sincronizacion:.*', '', cuerpo_per).strip()
 
-          # Montar archivo final
+          # Montar archivo final con la cabecera limpia
           final = "#EXTM3U\n#EXTVLCOPT:network-caching=1000\n\n" + texto_auto + "\n\n\n# ==========================================\n# ZONA PERSONAL\n# ==========================================\n\n" + cuerpo_per + "\n"
 
           f_casa.write_text(final, encoding="utf-8")
           f_ts.write_text(final.replace("127.0.0.1:6878", "100.90.204.66:6878"), encoding="utf-8")
           f_amigos.write_text(final, encoding="utf-8")
-          print("¡Listo!")
+          print("¡Sincronización con carpeta completada!")
           PY
 
       - name: Guardar en GitHub
@@ -94,4 +105,4 @@ jobs:
           git config user.name "Bot"
           git config user.email "bot@github.com"
           git add "Mi lista acestream" "Canales m3u" "lista-amigos"
-          git diff --cached --quiet || git commit -m "Actualizacion limpia" && git push
+          git diff --cached --quiet || git commit -m "Actualizacion con carpeta ELCANO" && git push
