@@ -1,4 +1,4 @@
-name: Prueba Elcano Pura en Tiempo Real
+name: Sincronizar Elcano Directo
 
 on:
   schedule:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  sincronizar-elcano:
+  sincronizar:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Descarga Pura de Elcano
+      - name: Actualizar lista desde la URL de Elcano
         run: |
           python <<'PY'
           import re
@@ -30,30 +30,30 @@ jobs:
           from pathlib import Path
 
           URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
-          f_casa = Path("Mi lista acestream")
-          f_ts = Path("Canales m3u")
-          f_amigos = Path("lista-amigos")
+          archivo_lista = Path("Mi lista acestream")
+          archivo_tailscale = Path("Canales m3u")
+          archivo_amigos = Path("lista-amigos")
 
-          if not f_casa.is_file():
-              sys.exit("ERROR: No existe el archivo 'Mi lista acestream'")
+          if not archivo_lista.is_file():
+              sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream'.")
 
-          # 1. Leer el archivo local para conservar la Zona Personal de abajo
+          # 1. Leer tu archivo actual para conservar tu Zona Personal de abajo
           try:
-              contenido_local = f_casa.read_text(encoding="utf-8-sig")
+              contenido_actual = archivo_lista.read_text(encoding="utf-8-sig")
           except UnicodeDecodeError:
-              contenido_local = f_casa.read_text(encoding="latin-1")
+              contenido_actual = archivo_lista.read_text(encoding="latin-1")
 
-          # 2. Descargar la lista directamente de la web de Elcano en vivo
+          # 2. Descargar la lista en vivo directamente de la URL de Elcano
           try:
-              req = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
+              req = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "VLC/3.0.18"})
               with urllib.request.urlopen(req, timeout=60) as resp:
                   fuente_elcano = resp.read().decode("utf-8-sig", errors="replace")
           except Exception as e:
-              sys.exit(f"ERROR conectando a Elcano: {e}")
+              sys.exit(f"ERROR descargando la URL de Elcano: {e}")
 
-          # 3. Procesar SOLO lo que viene en la web de Elcano tal cual
+          # 3. Extraer y formatear los canales de la web de Elcano
           lineas = fuente_elcano.splitlines()
-          bloque_elcano = [
+          bloque_nuevo = [
               "# ==========================================",
               "# ZONA AUTOMATICA: ⭐ ELCANO [MÁXIMA CALIDAD]",
               "# =========================================="
@@ -73,61 +73,70 @@ jobs:
                           break
                       j += 1
                   if url:
-                      # Extraer Hash y convertir a IP local AceStream
+                      # Extraer el hash de 40 caracteres de Elcano y adaptarlo a tu reproductor local
                       match_h = re.search(r'([0-9a-fA-F]{40})', url)
-                      url_local = f"http://127.0.0.1:6878/ace/getstream?id={match_h.group(1)}" if match_h else url
+                      if match_h:
+                          url_local = f"http://127.0.0.1:6878/ace/getstream?id={match_h.group(1)}"
+                      else:
+                          url_local = url
 
-                      # Asignar a la carpeta estrella sin alterar el nombre que haya puesto Elcano
+                      # Asegurar que la categoría sea la estrella arriba del todo
                       if 'group-title=' in linea:
                           linea_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', linea)
                       else:
                           linea_mod = linea.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
 
-                      bloque_elcano.append(linea_mod)
-                      bloque_elcano.append(url_local)
+                      bloque_nuevo.append(linea_mod)
+                      bloque_nuevo.append(url_local)
                       contador += 1
                       i = j
               i += 1
 
-          print(f"Canales leídos EN VIVO desde Elcano: {contador}")
+          print(f"Canales importados directamente desde la URL: {contador}")
           if contador == 0:
-              sys.exit("ERROR: Elcano no ha devuelto ningún canal.")
+              sys.exit("ERROR: La URL de Elcano no devolvió canales.")
 
-          texto_elcano = "\n".join(bloque_elcano)
+          texto_elcano_generado = "\n".join(bloque_nuevo)
 
-          # 4. Respetar tus carpetas personales de abajo
-          partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*CARPETA:', contenido_local, maxsplit=1)
+          # 4. Separar tu zona personal inferior (respetando tus carpetas hechas a mano)
+          partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*(?:CARPETA|SECCIÓN):', contenido_actual, maxsplit=1)
           if len(partes) > 1:
               cuerpo_personal = "# CARPETA:" + partes[1]
           else:
-              partes_alt = re.split(r'(?i)#\s*={5,}\s*\n#\s*SECCIÓN:', contenido_local, maxsplit=1)
-              cuerpo_personal = partes_alt[1] if len(partes_alt) > 1 else contenido_local
+              # Si no encuentra el separador exacto, intenta buscar el inicio de la zona personal
+              partes_alt = re.split(r'(?i)#\s*={5,}\s*\n#\s*ZONA PERSONAL.*', contenido_actual, maxsplit=1)
+              cuerpo_personal = partes_alt[1] if len(partes_alt) > 1 else ""
 
+          # Limpiar marcas viejas de sincronización para que quede impecable
           cuerpo_personal = re.sub(r'#\s*Ultima sincronizacion:.*', '', cuerpo_personal).strip()
 
-          # 5. Cabecera básica de la lista
-          cabecera = "#EXTM3U\n#EXTVLCOPT:network-caching=1000\n\n"
-
-          final_casa = (
-              cabecera + 
-              texto_elcano + 
+          # 5. Estructura final del archivo M3U (Con la EPG de David Muma arriba)
+          cabecera_m3u = (
+              '#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
+              'https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,'
+              'https://raw.githubusercontent.com/davidmuma/EPG_dobleM/master/guiatv.xml" refresh="3600"\n'
+              '#EXTVLCOPT:network-caching=1000\n\n'
+          )
+          
+          texto_final = (
+              cabecera_m3u + 
+              texto_elcano_generado + 
               "\n\n\n# ==========================================\n" +
               "# ZONA PERSONAL\n" +
               "# ==========================================\n\n" + 
               cuerpo_personal + "\n"
           )
 
-          # 6. Escribir archivos de Casa, Tailscale y Amigos
-          f_casa.write_text(final_casa, encoding="utf-8")
-          f_ts.write_text(final_casa.replace("127.0.0.1:6878", "100.90.204.66:6878"), encoding="utf-8")
-          f_amigos.write_text(final_casa, encoding="utf-8")
-          
-          print("¡Vuelco directo finalizado con éxito!")
+          # 6. Guardar en tus tres archivos automáticamente
+          archivo_lista.write_text(texto_final, encoding="utf-8")
+          archivo_tailscale.write_text(texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878"), encoding="utf-8")
+          archivo_amigos.write_text(texto_final, encoding="utf-8")
+          print("¡Proceso completado con éxito!")
           PY
 
-      - name: Guardar en GitHub
+      - name: Subir cambios a GitHub
         run: |
           git config user.name "GitHub Action Bot"
           git config user.email "actions@github.com"
           git add "Mi lista acestream" "Canales m3u" "lista-amigos"
-          git diff --cached --quiet || git commit -m "Vuelco 100% puro directo de Elcano" && git push
+          git diff --cached --quiet || git commit -m "Sincronizacion automatica desde la URL de Elcano" && git push
