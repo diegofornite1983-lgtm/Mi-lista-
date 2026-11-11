@@ -95,7 +95,8 @@ http://127.0.0.1:6878/ace/getstream?id=c7d8405bdef3650b9bac58042c3708440ef286a8
 # ==========================================
 
 #EXTINF:-1 tvg-id="" tvg-name="El Día Después" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/LaLiga.png" group-title="ELCANO [MÁXIMA CALIDAD]",El Día Después
-http://127.0.0.1:32400/library/metadata/1824/file?X-Token=-Ue7nswrsptKaHAkAW_i
+http://127.0.0.1:8080/El_d_a_despu_s_T26_27_E10_2026.11.10/index.ts
+
 
 
 
