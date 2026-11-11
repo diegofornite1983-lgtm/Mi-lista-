@@ -63,7 +63,10 @@ http://127.0.0.1:6878/ace/getstream?id=c7d8405bdef3650b9bac58042c3708440ef286a8
 # ============================================================
 
 #EXTINF:-1 tvg-logo="https://kick.com" group-title="SERIES 24H",Aquí No Hay Quien Viva / LQSA 24h
+#EXTVLCOPT:http-referrer=https://kick.com
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36
 https://live-video.net
+
 
 
 
