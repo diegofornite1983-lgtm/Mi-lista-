@@ -1,19 +1,7 @@
-# 🔄 Resumen de cambios en ELCANO - 2026-11-11 22:02:09
+# 🔄 Resumen de cambios en ELCANO - 2026-11-11 22:02:18
 
-### 🟢 Canales Nuevos (13):
-- DAZN BALONCESTO 3 1080P **
-- DAZN BALONCESTO 3 720P *
-- EUROSPORT 1 1080P **
-- EUROSPORT 2 1080P *
-- EUROSPORT 2 1080P **
-- EUROSPORT 2 720P **
-- M+ BALONCESTO 2 1080P **
-- M+ BALONCESTO 3 1080P *
-- M+ VAMOS 2 1080P *
-- M+ VAMOS 2 720P *
-- M+ VAMOS 3 1080P *
-- M+ VAMOS 720P *
-- NBA LEAGUE PASS 1080P **
+### 🟢 Canales Nuevos (0):
+- Ninguno en esta actualización.
 
-### 🔴 Canales Eliminados por Elcano (1):
-- EUROSPORT 1 720P **
+### 🔴 Canales Eliminados por Elcano (0):
+- Ninguno.
