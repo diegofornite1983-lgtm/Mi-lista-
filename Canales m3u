@@ -7,8 +7,6 @@
 # ==========================================
 #EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Vamos 1080p *
 http://100.90.204.66:6878/ace/getstream?id=9e5da99bac88a4a3ed200d3bdf260b683145ca57
-#EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Vamos 1080p **
-http://100.90.204.66:6878/ace/getstream?id=1b0374aae74e9792034b21298d6b3dfa25bc60c1
 #EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Vamos 720p *
 http://100.90.204.66:6878/ace/getstream?id=9311a4590f5966acbb77e4c2d13e1be17fd258b4
 #EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Vamos 720p **
@@ -430,4 +428,4 @@ http://100.90.204.66:6878/ace/getstream?id=6b1fae4ad99474bd8dde2113c9a0d36bf6717
 #EXTINF:-1 tvg-id="Eurosport 2" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 HD (Sport TV)
 http://100.90.204.66:6878/ace/getstream?id=6176281b9c46a5621a0e88524f8dc621f173b8e0
 
-# Ultima sincronizacion: 2026-11-11 09:55:45
+# Ultima sincronizacion: 2026-11-11 12:59:54
