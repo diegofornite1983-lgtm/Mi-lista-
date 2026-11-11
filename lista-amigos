@@ -94,8 +94,9 @@ http://127.0.0.1:6878/ace/getstream?id=c7d8405bdef3650b9bac58042c3708440ef286a8
 # CARPETA: LA LIGA Y DAZN LIGA
 # ==========================================
 
-#EXTINF:-1 tvg-id="ElDiaDespues" tvg-name="El Dia Despues" tvg-logo="" group-title="Programas",El Dia Despues (10-11-2026)
-http://100.90.204.66:32400/library/parts/1823/1794343807/file.mp4
+#EXTINF:-1,El Día Después
+http://127.0.0.1:32400/library/parts/1823/1794343807/file.ts?X-Plex-Token=-Ue7nswrsptKaHAkAW_i
+
 
 
 
