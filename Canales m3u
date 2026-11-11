@@ -60,6 +60,10 @@ http://100.90.204.66:6878/ace/getstream?id=ff162bf69c1579edf953bf76933c80b1c7e89
 #EXTINF:-1 tvg-id="Teledeporte" tvg-logo="https://img2.rtve.es/n/15966755" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Teledeporte 720p **
 http://100.90.204.66:6878/ace/getstream?id=c7d8405bdef3650b9bac58042c3708440ef286a8
 
+#EXTINF:-1 tvg-id="Kick" tvg-name="Anthony Strong" tvg-logo="" group-title="Directos",Anthony Strong (Kick)
+https://r.jup.to/hls/https://kick.com/anthonystrong/master.m3u8
+
+
 
 # ==========================================
 # ZONA PERSONAL: TUS CATEGORÍAS Y LISTAS
