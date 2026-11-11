@@ -57,6 +57,15 @@ http://127.0.0.1:6878/ace/getstream?id=ff162bf69c1579edf953bf76933c80b1c7e893d0
 http://127.0.0.1:6878/ace/getstream?id=c7d8405bdef3650b9bac58042c3708440ef286a8
 
 
+
+# ============================================================
+# CARPETA: AQUÍ NO HAY QUIEN VIVA Y LA QUE SE AVECINA 24H
+# ============================================================
+
+#EXTINF:-1 tvg-logo="https://kick.com" group-title="SERIES 24H",Aquí No Hay Quien Viva / LQSA 24h
+https://live-video.net
+
+
 # ==========================================
 # ZONA PERSONAL: TUS CATEGORÍAS Y LISTAS
 # ==========================================
