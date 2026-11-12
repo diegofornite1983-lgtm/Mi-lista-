@@ -371,10 +371,12 @@ http://127.0.0.1:6878/ace/getstream?id=3fc7a941ed2c1459dfd55f74ed72640e946f213d
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS 0056
 http://127.0.0.1:6878/ace/getstream?id=fa931cbc87dc9d66fdd30a9644e054b403960056
 
-#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://i.ibb.co/hFYPWbpJ/plus.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",MOVISTAR PLUS 1080p *
-http://127.0.0.1:6878/ace/getstream?id=a2d33536b7d55727c8f6bea010624d6478c3ba2d
-#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://i.ibb.co/hFYPWbpJ/plus.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",MOVISTAR PLUS 720p *
-http://127.0.0.1:6878/ace/getstream?id=d2b5299ed45cbaf35482bb0869b2c2f75fbed64a
+#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS D2b5
+http://127.0.0.1:6878/ace/getstream?id=D2b5299ed45cbaf35482bb0869b2c2f75fbed64a
+
+#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="MOVISTAR",MOVISTAR PLUS A2d3
+http://127.0.0.1:6878/ace/getstream?id=A2d33536b7d55727c8f6bea010624d6478c3ba2d
+
 #EXTINF:-1 tvg-id="M+ Estrenos HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Estrenos.png" group-title="MOVISTAR",M+ Estrenos 0803
 http://127.0.0.1:6878/ace/getstream?id=007a97a0aff68eb9a76f7fb9d9643b1532ab0803
 
