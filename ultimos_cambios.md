@@ -1,16 +1,8 @@
-# 🔄 Resumen de cambios en ELCANO - 2026-11-13 18:48:26
+# 🔄 Resumen de cambios en ELCANO - 2026-11-13 21:44:23
 
-### 🟢 Canales Nuevos (2):
-- LALIGA TV HYPERMOTION 720P **
-- M+ BALONCESTO 1080P **
+### 🟢 Canales Nuevos (0):
+- Ninguno en esta actualización.
 
-### 🔴 Canales Eliminados por Elcano (9):
-- DAZN 2 1080P *
-- DAZN LALIGA 1080P *
-- LA 1 TVE 1080P **
-- LA 2 TVE 1080P *
-- LALIGA TV HYPERMOTION 1080P *
-- LALIGA TV HYPERMOTION 720P *
-- M+ DEPORTES 2 720P *
-- M+ GOLF 1080P *
-- ONETORO TV 1080P *
+### 🔴 Canales Eliminados por Elcano (2):
+- LA 1 TVE 720P **
+- RFEF TV 1080P *
