@@ -1,7 +1,37 @@
-# 🔄 Resumen de cambios en ELCANO - 2026-11-13 03:50:24
+# 🔄 Resumen de cambios en ELCANO - 2026-11-13 07:06:46
 
 ### 🟢 Canales Nuevos (0):
 - Ninguno en esta actualización.
 
-### 🔴 Canales Eliminados por Elcano (0):
-- Ninguno.
+### 🔴 Canales Eliminados por Elcano (31):
+- DAZN 1 1080P **
+- DAZN 2 1080P **
+- DAZN F1 1080P **
+- DAZN LALIGA 1080P **
+- DAZN LALIGA 2 720P *
+- DAZN LALIGA 720P **
+- DAZN MOTOGP 1080P **
+- ESPORT3 1080P **
+- ESPORT3 720P **
+- EUROSPORT 1 720P **
+- LA 1 TVE 1080P **
+- LA 1 TVE 720P **
+- LA 2 TVE 1080P **
+- LALIGA TV HYPERMOTION 1080P **
+- LALIGA TV HYPERMOTION 3 1080P **
+- M+ DEPORTES 2 1080P **
+- M+ DEPORTES 6 1080P **
+- M+ DEPORTES 7 1080P **
+- M+ LALIGA 1080P **
+- M+ LALIGA 3 1080P **
+- M+ LALIGA 3 720P **
+- M+ LIGA DE CAMPEONES 1080P **
+- M+ LIGA DE CAMPEONES 5 1080P **
+- M+ LIGA DE CAMPEONES 7 1080P **
+- M+ VAMOS 720P **
+- NBA LEAGUE PASS 1080P **
+- RFEF TV 1080P **
+- SKY SPORT MOTOGP 1080P **
+- TELEDEPORTE 1080P **
+- TELEDEPORTE 720P **
+- TENNIS CHANNEL 1080P **
