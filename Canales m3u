@@ -10,9 +10,9 @@ http://100.90.204.66:6878/ace/getstream?id=aae8bcb9b00c4505ccfa5981b860da012e8cf
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 1080p **
 http://100.90.204.66:6878/ace/getstream?id=3d4c3b9d44af0658a9ec6b29c92033f732b65422
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 1080p **
-http://100.90.204.66:6878/ace/getstream?id=72626ce6e2f0dc8f0a71ac1d9b960d3cc166c86e
-#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 1080p **
 http://100.90.204.66:6878/ace/getstream?id=25ba36fb3ff78d37b304177cb5b9f9f84348d2ad
+#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 1080p **
+http://100.90.204.66:6878/ace/getstream?id=72626ce6e2f0dc8f0a71ac1d9b960d3cc166c86e
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 720p *
 http://100.90.204.66:6878/ace/getstream?id=1c00e6a5404f84e9bd22aa9d8f09e96ffa4ab319
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 720p **
@@ -33,8 +33,6 @@ http://100.90.204.66:6878/ace/getstream?id=d2b5299ed45cbaf35482bb0869b2c2f75fbed
 http://100.90.204.66:6878/ace/getstream?id=cc1e589254acacb246733233397d50e3ab3591a7
 #EXTINF:-1 tvg-id="DAZN MotoGP" tvg-logo="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1772006365-dazn-motogp-699eaba85423e.jpg" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Dazn MotoGP 1080p *
 http://100.90.204.66:6878/ace/getstream?id=aaf8f939186264a31449c5e31ebf424965b0369f
-#EXTINF:-1 tvg-id="DAZN MotoGP" tvg-logo="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1772006365-dazn-motogp-699eaba85423e.jpg" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Dazn MotoGP 720p *
-http://100.90.204.66:6878/ace/getstream?id=218137b5dc6bb17ec3df65019225ceb7ddeb37e6
 #EXTINF:-1 tvg-id="DAZN 1 HD" tvg-logo="https://i.ibb.co/FVzKq1y/dazn1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN 1 1080p **
 http://100.90.204.66:6878/ace/getstream?id=43572587b8e9fd112d43b66a36f8ab2c591d87d1
 #EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://i.ibb.co/CV4CLjz/deportes.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Deportes 1080p *
@@ -128,9 +126,9 @@ http://100.90.204.66:6878/ace/getstream?id=eadc069bbd45d77cb33ca3bac6f6d86281597
 #EXTINF:-1 tvg-id="M+ Vamos 3" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ VAMOS 3 720p **
 http://100.90.204.66:6878/ace/getstream?id=354a0fac478c2887a6e0382b1f39a54a5f7f7de1
 #EXTINF:-1 tvg-id="DAZN Baloncesto" tvg-logo="https://www.adslzone.net/app/uploads-adslzone.net/2025/12/dazn-baloncesto-movistar-plus.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 1080p **
-http://100.90.204.66:6878/ace/getstream?id=f460b9c1b77222ac21b0e148f2b2c07791ce2d5d
-#EXTINF:-1 tvg-id="DAZN Baloncesto" tvg-logo="https://www.adslzone.net/app/uploads-adslzone.net/2025/12/dazn-baloncesto-movistar-plus.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 1080p **
 http://100.90.204.66:6878/ace/getstream?id=e5b57c3919b1714f01cb6e5f1812d22aa87bae2b
+#EXTINF:-1 tvg-id="DAZN Baloncesto" tvg-logo="https://www.adslzone.net/app/uploads-adslzone.net/2025/12/dazn-baloncesto-movistar-plus.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 1080p **
+http://100.90.204.66:6878/ace/getstream?id=f460b9c1b77222ac21b0e148f2b2c07791ce2d5d
 #EXTINF:-1 tvg-id="Eurosport 1 HD" tvg-logo="https://i.ibb.co/r2Yd7xD/euro1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Eurosport 1 1080p *
 http://100.90.204.66:6878/ace/getstream?id=3b2bd7daedec3ef9fb72de78ea05b58a26fd452b
 #EXTINF:-1 tvg-id="Eurosport 1 HD" tvg-logo="https://i.ibb.co/r2Yd7xD/euro1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Eurosport 1 1080p **
@@ -164,11 +162,11 @@ http://100.90.204.66:6878/ace/getstream?id=6859825ca896f1d6d1fb558292cf0de35d194
 #EXTINF:-1 tvg-logo="https://espnpressroom.com/us/files/2023/02/New-NBA-Logo.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA ESPN 1080p *
 http://100.90.204.66:6878/ace/getstream?id=5b40c99863fb0d912953974d96c1d2485cdeb5e7
 #EXTINF:-1 tvg-logo="https://www.vhv.rs/dpng/d/431-4310509_nba-league-pass-logo-png-transparent-nba-league.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA League Pass 1080p *
+http://100.90.204.66:6878/ace/getstream?id=0d8baa9c49a73dc9310adeec38d2c2df03271180
+#EXTINF:-1 tvg-logo="https://www.vhv.rs/dpng/d/431-4310509_nba-league-pass-logo-png-transparent-nba-league.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA League Pass 1080p *
 http://100.90.204.66:6878/ace/getstream?id=8698d62f3b2a35aabb599c420b06945ea006400b
 #EXTINF:-1 tvg-logo="https://www.vhv.rs/dpng/d/431-4310509_nba-league-pass-logo-png-transparent-nba-league.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA League Pass 1080p *
 http://100.90.204.66:6878/ace/getstream?id=2eedcbcc7173d3622804609460687d3e5a19e1ff
-#EXTINF:-1 tvg-logo="https://www.vhv.rs/dpng/d/431-4310509_nba-league-pass-logo-png-transparent-nba-league.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA League Pass 1080p *
-http://100.90.204.66:6878/ace/getstream?id=0d8baa9c49a73dc9310adeec38d2c2df03271180
 #EXTINF:-1 tvg-logo="https://www.vhv.rs/dpng/d/431-4310509_nba-league-pass-logo-png-transparent-nba-league.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA League Pass 1080p **
 http://100.90.204.66:6878/ace/getstream?id=09368635b716c33a43695a48e6cfe903eac25e20
 #EXTINF:-1 tvg-logo="https://www.sportspro.com/wp-content/uploads/2023/03/606px-NBC_Sports_logo_2012.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBC Sports 1080p *
@@ -187,14 +185,10 @@ http://100.90.204.66:6878/ace/getstream?id=6945bf402126a38905b2645d61f9915a3b5a8
 http://100.90.204.66:6878/ace/getstream?id=c1e3479282920d097550ce68edbfb17888ea9474
 #EXTINF:-1 tvg-logo="https://cdn-bgp.bluestacks.com/BGP/us/gametiles_com.digiturk.ligtv.jpg" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Bein Sports 3 TR 720p *
 http://100.90.204.66:6878/ace/getstream?id=a782c192e3b091ca9ecdd84a566ca06da4d6c1e1
-#EXTINF:-1 tvg-logo="https://cdn-bgp.bluestacks.com/BGP/us/gametiles_com.digiturk.ligtv.jpg" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Bein Sports TR 720p *
-http://100.90.204.66:6878/ace/getstream?id=6f9f2661c77e3d6fefcc59aa4354eafce7711903
 #EXTINF:-1 tvg-id="DAZN Baloncesto" tvg-logo="https://www.adslzone.net/app/uploads-adslzone.net/2025/12/dazn-baloncesto-movistar-plus.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 720p *
 http://100.90.204.66:6878/ace/getstream?id=dd23f050bfa06aa868adbead83abbde73d1bc7b9
 #EXTINF:-1 tvg-id="DAZN Baloncesto" tvg-logo="https://www.adslzone.net/app/uploads-adslzone.net/2025/12/dazn-baloncesto-movistar-plus.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 720p **
 http://100.90.204.66:6878/ace/getstream?id=8033aae52386138bac76bd7a16b8c1ab67bcd679
-#EXTINF:-1 tvg-id="Eurosport 1 HD" tvg-logo="https://i.ibb.co/r2Yd7xD/euro1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Eurosport 1 720p **
-http://100.90.204.66:6878/ace/getstream?id=818735480ae40a4207ece5153ef9a3e798cef7aa
 #EXTINF:-1 tvg-id="Eurosport 2" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Eurosport 2 720p **
 http://100.90.204.66:6878/ace/getstream?id=be1ab9f792dac014fc3ce8e7a52e6bdd92bea6c6
 #EXTINF:-1 tvg-id="M+ Golf HD" tvg-logo="https://www.vhv.rs/dpng/d/424-4244985_file-movistar-golf-svg-logo-movistar-golf-hd.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Golf 720p *
@@ -612,4 +606,4 @@ http://100.90.204.66:6878/ace/getstream?id=6b1fae4ad99474bd8dde2113c9a0d36bf6717
 #EXTINF:-1 tvg-id="Eurosport 2" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="EUROSPORT",Eurosport 2 HD (Sport TV)
 http://100.90.204.66:6878/ace/getstream?id=6176281b9c46a5621a0e88524f8dc621f173b8e0
 
-# Ultima sincronizacion: 2026-11-13 21:44:23
+# Ultima sincronizacion: 2026-11-13 22:09:19
