@@ -195,8 +195,16 @@ jobs:
               '#EXTGRP: group-title="⭐ ELCANO [MÁXIMA CALIDAD]" group-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png"\n\n'
           )
           
+          # Creación del canal informativo con el recuento exacto arriba del todo
+          aviso_nombre = f"📢 ACTUALIZACIÓN: {len(agregados)} Añadidos / {len(eliminados)} Quitados"
+          canal_aviso = (
+              f'#EXTINF:-1 tvg-id="" tvg-logo="" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",{aviso_nombre}\n'
+              'http://127.0.0.1:6878/ace/getstream?id=aviso_cambios\n\n'
+          )
+
           texto_final = (
               cabecera_m3u + 
+              canal_aviso + 
               texto_nuevo_elcano + 
               "\n\n\n# ==========================================\n" +
               "# ZONA PERSONAL: TUS CATEGORÍAS Y LISTAS\n" +
@@ -215,7 +223,7 @@ jobs:
           # 3. Generar archivo idéntico para los amigos (lista-amigos)
           archivo_amigos.write_text(texto_final, encoding="utf-8")
 
-          print("¡Sincronización completa: Casa, Tailscale y Amigos actualizados!")
+          print("¡Sincronización completa: Casa, Tailscale y Amigos actualizados con aviso!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -225,7 +233,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización automática y registro de cambios"
+            git commit -m "Actualización automática con canal de aviso de cambios"
             git push
           else
             echo "No hay cambios que guardar."
