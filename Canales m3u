@@ -356,6 +356,7 @@ http://100.90.204.66:6878/ace/getstream?id=d2b5299ed45cbaf35482bb0869b2c2f75fbed
 
 
 
+
 #EXTINF:-1 tvg-id="M+ Estrenos HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Estrenos.png" group-title="MOVISTAR",M+ Estrenos 0803
 http://100.90.204.66:6878/ace/getstream?id=007a97a0aff68eb9a76f7fb9d9643b1532ab0803
 
