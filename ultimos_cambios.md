@@ -1,10 +1,8 @@
-# 🔄 Resumen de cambios en ELCANO - 2026-11-14 12:43:36
+# 🔄 Resumen de cambios en ELCANO - 2026-11-14 15:34:53
 
-### 🟢 Canales Nuevos (3):
-- DAZN 1 720P **
-- DAZN BALONCESTO 2 1080P **
-- EUROSPORT 1 720P **
+### 🟢 Canales Nuevos (0):
+- Ninguno en esta actualización.
 
 ### 🔴 Canales Eliminados por Elcano (2):
-- DAZN F1 1080P *
-- M+ GOLF 720P *
+- M+ DEPORTES 5 1080P *
+- M+ LIGA DE CAMPEONES 4 720P **
