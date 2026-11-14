@@ -1,7 +1,8 @@
-# 🔄 Resumen de cambios en ELCANO - 2026-11-14 08:22:46
+# 🔄 Resumen de cambios en ELCANO - 2026-11-14 09:43:11
 
-### 🟢 Canales Nuevos (0):
-- Ninguno en esta actualización.
+### 🟢 Canales Nuevos (1):
+- PARAMOUNT+ UFC **
 
-### 🔴 Canales Eliminados por Elcano (0):
-- Ninguno.
+### 🔴 Canales Eliminados por Elcano (2):
+- FOX SPORTS 2 *
+- NBC SPORTS 1080P *
