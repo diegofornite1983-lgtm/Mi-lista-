@@ -45,10 +45,8 @@ jobs:
           archivo_tailscale = Path("Canales m3u")
           archivo_amigos = Path("lista-amigos")
 
-          URL_LOGO_M0 = (
-              "https://raw.githubusercontent.com/davidmuma/"
-              "picons_dobleM/master/icon/M%2B%200.png"
-          )
+          # LOGOTIPO PERSONALIZADO FIJO PARA M+ 0 Y MOVISTAR
+          URL_LOGO_PERSONAL = "https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png"
 
           TGV_ID_M0 = "#0 HD"
           TGV_ID_MOVISTAR_PLUS = "Movistar Plus HD"
@@ -175,7 +173,8 @@ jobs:
               linea = re.sub(r'\s+', ' ', linea)
               linea = linea.replace('#EXTINF:-1 ', '#EXTINF:-1 ')
               
-              nuevo_sufijo = f'tvg-id="{TGV_ID_M0}" tvg-logo="{URL_LOGO_M0}"'
+              # FUERZA EL ID DE GUÍA Y TU LOGOTIPO PERSONALIZADO EN EL CANAL M+ 0
+              nuevo_sufijo = f'tvg-id="{TGV_ID_M0}" tvg-logo="{URL_LOGO_PERSONAL}"'
               return linea.replace('#EXTINF:-1', f'#EXTINF:-1 {nuevo_sufijo}', 1)
 
 
@@ -386,14 +385,14 @@ jobs:
               extinf_mod = linea
 
               # ------------------------------------------------------
-              # M+ 0: ID EPG Y LOGOTIPO OFICIAL
+              # M+ 0: ID EPG Y TU LOGOTIPO PERSONALIZADO
               # ------------------------------------------------------
 
               if re.search(r"\bM\+\s*0\b", nombre_normalizado):
                   extinf_mod = limpiar_y_forzar_m0(extinf_mod)
 
               # ------------------------------------------------------
-              # MOVISTAR PLUS CLÁSICO: SU ID EPG PROPIO Y LOGO
+              # MOVISTAR PLUS CLÁSICO: SU ID EPG PROPIO Y TU LOGO
               # ------------------------------------------------------
 
               elif (
@@ -408,7 +407,7 @@ jobs:
                   extinf_mod = poner_atributo(
                       extinf_mod,
                       "tvg-logo",
-                      "https://i.ibb.co/hFYPWbpJ/plus.png"
+                      URL_LOGO_PERSONAL
                   )
 
               # ------------------------------------------------------
@@ -456,7 +455,7 @@ jobs:
               )
 
           # ==========================================================
-          # ORDENAR SIN ELIMINAR CANALES NI DUPLICADOS
+          # ORDEN SIN ELIMINAR CANALES NI DUPLICADOS
           # ==========================================================
 
           canales_ordenados = sorted(
@@ -499,10 +498,10 @@ jobs:
           zona_anterior = "".join(lineas_casa[:inicio_personal])
 
           canales_viejos = extraer_nombres(zona_anterior)
-          canales_nuevos = extraer_nombres(texto_nuevo_elcano)
+          canales_new = extraer_nombres(texto_nuevo_elcano)
 
-          agregados = sorted(canales_nuevos - canales_viejos)
-          eliminados = sorted(canales_viejos - canales_nuevos)
+          agregados = sorted(canales_new - canales_viejos)
+          eliminados = sorted(canales_viejos - canales_new)
 
           timestamp_actual = datetime.datetime.now().strftime(
               "%Y-%m-%d %H:%M:%S"
@@ -566,8 +565,6 @@ jobs:
               + cuerpo_personal
           )
 
-          # La copia Tailscale solo cambia las URL de la zona automática.
-          # Las carpetas personales se añaden exactamente como estaban.
           bloque_tailscale = texto_nuevo_elcano.replace(
               "127.0.0.1:6878",
               "100.90.204.66:6878"
@@ -580,7 +577,6 @@ jobs:
               + cuerpo_personal
           )
 
-          # La lista de amigos conserva las mismas URL locales que la principal.
           texto_amigos = texto_final
 
           # ==========================================================
@@ -640,7 +636,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "M+ 0 colocado debajo de Movistar Plus y logos Movistar añadidos"
+            git commit -m "M+ 0 forzado con tu logotipo personalizado y EPG"
             git push
           else
             echo "No hay cambios que guardar."
