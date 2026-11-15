@@ -45,11 +45,11 @@ jobs:
           archivo_tailscale = Path("Canales m3u")
           archivo_amigos = Path("lista-amigos")
 
-          # LOGOTIPO PERSONALIZADO FIJO PARA M+ 0 Y MOVISTAR
+          # TU LOGOTIPO PERSONALIZADO MODERNO
           URL_LOGO_PERSONAL = "https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png"
 
-          TGV_ID_M0 = "#0 HD"
-          TGV_ID_MOVISTAR_PLUS = "Movistar Plus HD"
+          # UNIFICAMOS EL TVG-ID PARA QUE COJA LA MISMA EPG QUE TUS CANALES MANUALES
+          TGV_ID_MOVISTAR_UNIFICADO = "Movistar Plus HD"
 
           GROUP_TITLE = "⭐ ELCANO [MÁXIMA CALIDAD]"
 
@@ -173,8 +173,8 @@ jobs:
               linea = re.sub(r'\s+', ' ', linea)
               linea = linea.replace('#EXTINF:-1 ', '#EXTINF:-1 ')
               
-              # AQUÍ ESTÁ LA CLAVE: Forzamos el tvg-id exácto para la EPG de David Muma y tu logotipo
-              nuevo_sufijo = f'tvg-id="{TGV_ID_M0}" tvg-logo="{URL_LOGO_PERSONAL}"'
+              # FUERZA EL MISMO TVG-ID DE LOS MOVISTAR Y TU LOGOTIPO MODERNO
+              nuevo_sufijo = f'tvg-id="{TGV_ID_MOVISTAR_UNIFICADO}" tvg-logo="{URL_LOGO_PERSONAL}"'
               return linea.replace('#EXTINF:-1', f'#EXTINF:-1 {nuevo_sufijo}', 1)
 
 
@@ -385,14 +385,14 @@ jobs:
               extinf_mod = linea
 
               # ------------------------------------------------------
-              # M+ 0: ID EPG Y TU LOGOTIPO PERSONALIZADO
+              # M+ 0: ID EPG UNIFICADO Y TU LOGOTIPO MODERNO
               # ------------------------------------------------------
 
               if re.search(r"\bM\+\s*0\b", nombre_normalizado):
                   extinf_mod = limpiar_y_forzar_m0(extinf_mod)
 
               # ------------------------------------------------------
-              # MOVISTAR PLUS CLÁSICO: SU ID EPG PROPIO Y TU LOGO
+              # MOVISTAR PLUS CLÁSICO: SU ID EPG Y TU LOGOTIPO MODERNO
               # ------------------------------------------------------
 
               elif (
@@ -402,7 +402,7 @@ jobs:
                   extinf_mod = poner_atributo(
                       extinf_mod,
                       "tvg-id",
-                      TGV_ID_MOVISTAR_PLUS
+                      TGV_ID_MOVISTAR_UNIFICADO
                   )
                   extinf_mod = poner_atributo(
                       extinf_mod,
@@ -595,9 +595,9 @@ jobs:
                   "No se guardan los archivos."
               )
 
-          if 'tvg-id="#0 HD"' not in texto_final:
+          if f'tvg-id="{TGV_ID_MOVISTAR_UNIFICADO}"' not in texto_final:
               sys.exit(
-                  'ERROR: No se ha aplicado tvg-id="#0 HD" al M+ 0. '
+                  'ERROR: No se ha aplicado el tvg-id unificado a Movistar. '
                   "No se guardan los archivos."
               )
 
@@ -623,9 +623,9 @@ jobs:
           print(f"Canales procesados: {len(canales_ordenados)}")
           print(f"Canales nuevos: {len(agregados)}")
           print(f"Canales eliminados: {len(eliminados)}")
-          print('M+ 0 colocado debajo de Movistar Plus')
+          print('M+ 0 y Movistar Plus unificados con logo moderno y EPG')
           print("Carpetas personales: conservadas sin cambios")
-          print("Casa, Tailscale y Amigos: actualizado con EPG y logo")
+          print("Casa, Tailscale y Amigos: actualizados")
           print("==========================================")
           PY
 
@@ -636,7 +636,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "M+ 0 forzado con tu logotipo personalizado y EPG de David Muma"
+            git commit -m "M+ 0 y Movistar unificados con tu logo moderno y EPG"
             git push
           else
             echo "No hay cambios que guardar."
