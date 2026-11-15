@@ -1,7 +1,7 @@
-# 🔄 Resumen de cambios en ELCANO - 2026-11-15 11:51:12
+# 🔄 Resumen de cambios en ELCANO - 2026-11-15 11:59:20
 
-### 🟢 Canales Nuevos (1):
-- DAZN 3 1080P *
+### 🟢 Canales Nuevos (0):
+- Ninguno en esta actualización.
 
 ### 🔴 Canales Eliminados por Elcano (0):
 - Ninguno.
