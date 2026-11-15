@@ -92,33 +92,47 @@ jobs:
                       i = j
               i += 1
 
-          # Criterio de ordenación estricto
+          # Criterio de ordenación agrupado por familias y canal principal primero
           def prioridad_elcano(item):
               nombre = item[0]
-              es_multi = bool(re.search(r'\b(2|3|4|5|6|7|8|9)\b', nombre))
 
-              if not es_multi or ("F1" in nombre or "MOTOGP" in nombre):
-                  if "M+ LALIGA" in nombre: bloque = 1
-                  elif "DAZN LALIGA" in nombre: bloque = 2
-                  elif "MOVISTAR PLUS" in nombre or "MOVISTAR+" in nombre: bloque = 3
-                  elif "CAMPEONES" in nombre: bloque = 4
-                  elif "F1" in nombre or "FORMULA 1" in nombre: bloque = 5
-                  elif "MOTOGP" in nombre: bloque = 6
-                  elif "DAZN 1" in nombre: bloque = 7
-                  elif "DEPORTES" in nombre: bloque = 8
-                  elif "VAMOS" in nombre: bloque = 10
-                  elif "HYPERMOTION" in nombre: bloque = 11
-                  elif "PRIMERA" in nombre or "RFEF" in nombre: bloque = 12
-                  else: bloque = 14
+              # 1. Movistar Plus HD arriba del todo
+              if "MOVISTAR PLUS" in nombre or nombre == "MOVISTAR+":
+                  bloque = 1
+              # 2. LaLiga y sus multis
+              elif "M+ LALIGA" in nombre:
+                  bloque = 2
+              elif "DAZN LALIGA" in nombre:
+                  bloque = 3
+              # 3. Campeones y sus multis
+              elif "CAMPEONES" in nombre:
+                  bloque = 4
+              # 4. Deportes y sus multis
+              elif "DEPORTES" in nombre:
+                  bloque = 5
+              # 5. Motor (F1 y MotoGP)
+              elif "F1" in nombre or "FORMULA 1" in nombre:
+                  bloque = 6
+              elif "MOTOGP" in nombre:
+                  bloque = 7
+              # 6. DAZN general
+              elif "DAZN" in nombre:
+                  bloque = 8
+              # 7. Vamos y Hypermotion
+              elif "VAMOS" in nombre:
+                  bloque = 9
+              elif "HYPERMOTION" in nombre:
+                  bloque = 10
+              # 8. Primera / RFEF
+              elif "PRIMERA" in nombre or "RFEF" in nombre:
+                  bloque = 11
+              # 9. TDT y abiertos
+              elif any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO"]):
+                  bloque = 15
               else:
                   bloque = 14
 
-              if es_multi and any(x in nombre for x in ["LALIGA", "CAMPEONES", "DAZN", "VAMOS", "HYPERMOTION", "DEPORTES"]):
-                  bloque = 13
-
-              if any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO"]):
-                  bloque = 15
-
+              # Ordenar por calidad (1080p/4K primero, luego normal, luego 720p)
               if "1080" in nombre or "4K" in nombre:
                   calidad = 0
               elif "720" in nombre:
