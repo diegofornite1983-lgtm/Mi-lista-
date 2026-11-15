@@ -393,7 +393,7 @@ jobs:
                   extinf_mod = limpiar_y_forzar_m0(extinf_mod)
 
               # ------------------------------------------------------
-              # MOVISTAR PLUS CLÁSICO: SU ID EPG PROPIO
+              # MOVISTAR PLUS CLÁSICO: SU ID EPG PROPIO Y LOGO
               # ------------------------------------------------------
 
               elif (
@@ -404,6 +404,11 @@ jobs:
                       extinf_mod,
                       "tvg-id",
                       TGV_ID_MOVISTAR_PLUS
+                  )
+                  extinf_mod = poner_atributo(
+                      extinf_mod,
+                      "tvg-logo",
+                      "https://i.ibb.co/hFYPWbpJ/plus.png"
                   )
 
               # ------------------------------------------------------
@@ -635,7 +640,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "M+ 0 colocado debajo de Movistar Plus"
+            git commit -m "M+ 0 colocado debajo de Movistar Plus y logos Movistar añadidos"
             git push
           else
             echo "No hay cambios que guardar."
