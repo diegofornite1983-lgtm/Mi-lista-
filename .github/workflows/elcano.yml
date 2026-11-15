@@ -50,7 +50,7 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 1. Parsear los canales de Elcano
+          # 1. Parsear los canales de Elcano de forma limpia
           lineas_elcano = fuente_elcano.splitlines()
           canales_raw = []
           i = 0
@@ -75,7 +75,6 @@ jobs:
 
                       nombre_c = linea.rsplit(",", 1)[-1].upper()
 
-                      # REGLA EXACTA: Forzar el tvg-id idéntico para Movistar Plus HD
                       extinf_mod = linea
                       if "MOVISTAR PLUS" in nombre_c:
                           if 'tvg-id=' in extinf_mod:
@@ -83,7 +82,6 @@ jobs:
                           else:
                               extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus HD"')
 
-                      # Forzar el group-title con el nombre exacto
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
@@ -92,51 +90,57 @@ jobs:
                       i = j
               i += 1
 
-          # Criterio de ordenación estricto y corregido
+          # Criterio de ordenación estricto y ordenado para la Zona Automática
           def prioridad_elcano(item):
               nombre = item[0]
 
               # 1. Movistar Plus HD / M+ 0 arriba del todo
               if "MOVISTAR PLUS" in nombre or nombre == "MOVISTAR+" or "M+ 0" in nombre:
                   bloque = 1
-              # 2. LaLiga principal y sus multis
+              # 2. LaLiga y multis
               elif "M+ LALIGA" in nombre:
                   bloque = 2
               elif "DAZN LALIGA" in nombre:
                   bloque = 3
-              # 3. Campeones principal y sus multis
+              # 4. Campeones y multis
               elif "CAMPEONES" in nombre:
                   bloque = 4
-              # 4. Deportes principal y sus multis (incluyendo M+ Deportes 1, 2, 3...)
-              elif "M+ DEPORTES" in nombre or "DEPORTES" in nombre:
+              # 5. Deportes y TODOS sus números juntos (Deportes, Deportes 2, 3, 4, 5, 6, 7, 8...)
+              elif "DEPORTES" in nombre and not "BALONCESTO" in nombre:
                   bloque = 5
-              # 5. Motor (F1 y MotoGP)
+              # 6. Motor (F1 y MotoGP)
               elif "F1" in nombre or "FORMULA 1" in nombre:
                   bloque = 6
               elif "MOTOGP" in nombre:
                   bloque = 7
-              # 6. DAZN general (DAZN 1, DAZN 2, etc.)
-              elif "DAZN 1" in nombre or "DAZN 2" in nombre or nombre.startswith("DAZN"):
+              # 7. DAZN generales (DAZN 1, 2, 3...)
+              elif any(nombre.startswith(d) for d in ["DAZN 1", "DAZN 2", "DAZN 3", "DAZN 4"]):
                   bloque = 8
-              # 7. Vamos y Hypermotion
+              # 8. Vamos y Hypermotion
               elif "VAMOS" in nombre:
                   bloque = 9
               elif "HYPERMOTION" in nombre:
                   bloque = 10
-              # 8. Primera / RFEF
+              # 9. Primera / RFEF
               elif "PRIMERA" in nombre or "RFEF" in nombre:
                   bloque = 11
-              # 9. Baloncesto bien abajo para que no moleste arriba
+              # 10. Baloncesto abajo
               elif "BALONCESTO" in nombre or "NBA" in nombre:
                   bloque = 12
-              # 10. Golf y otros temáticos intermedios
+              # 11. Golf, Eurosport, Tenis
               elif "GOLF" in nombre or "EUROSPORT" in nombre or "TENNIS" in nombre or "SPORT TV" in nombre:
                   bloque = 13
-              # 11. TDT y abiertos al final del todo (La 1, Cuatro, Telecinco, Teledeporte, Esport3, Real Madrid, etc.)
-              elif any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO", "PARAMOUNT", "BEIN"]):
+              # 12. TDT y abiertos al final de la zona automática
+              elif any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO", "PARAMOUNT", "BEIN", "OFF"]):
                   bloque = 15
               else:
                   bloque = 14
+
+              # Ordenar por sub-bloque numérico si es Deportes (para que M+ Deportes vaya antes que Deportes 2, 3, etc. de forma limpia)
+              sub_num = 0
+              match_num = re.search(r'DEPORTES\s+(\d+)', nombre)
+              if match_num:
+                  sub_num = int(match_num.group(1))
 
               # Ordenar por calidad (1080p/4K primero, luego normal, luego 720p)
               if "1080" in nombre or "4K" in nombre:
@@ -146,7 +150,7 @@ jobs:
               else:
                   calidad = 1
 
-              return (bloque, calidad, nombre)
+              return (bloque, sub_num, calidad, nombre)
 
           canales_ordenados = sorted(canales_raw, key=prioridad_elcano)
 
@@ -161,7 +165,26 @@ jobs:
 
           texto_nuevo_elcano = "\n".join(bloque_automatico)
 
-          # --- EXTRACCIÓN SOLO DE LA ZONA AUTOMÁTICA ANTIGUA ---
+          # --- EXTRACCIÓN ESTRICTA DE LAS CARPETAS PERSONALES (TUS CANALES INTOCABLES) ---
+          def extraer_zona_personal(texto_m3u):
+              partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*CARPETA:', texto_m3u, maxsplit=1)
+              if len(partes) > 1:
+                  return "# CARPETA:" + partes[1]
+              
+              partes_alt = re.split(r'(?i)#\s*={5,}\s*\n#\s*SECCIÓN:', texto_m3u, maxsplit=1)
+              if len(partes_alt) > 1:
+                  return "# SECCIÓN:" + partes_alt[1]
+                  
+              partes_zona = re.split(r'(?i)#\s*ZONA PERSONAL', texto_m3u, maxsplit=1)
+              if len(partes_zona) > 1:
+                  return partes_zona[1]
+
+              return ""
+
+          cuerpo_personal = extraer_zona_personal(contenido_casa)
+          cuerpo_personal = re.sub(r'#\s*Ultima sincronizacion:.*', '', cuerpo_personal).strip()
+
+          # Extraer nombres para el reporte de cambios
           def extraer_nombres_zona_auto(texto_m3u):
               nombres = set()
               en_zona_auto = False
@@ -178,7 +201,6 @@ jobs:
 
           canales_viejos = extraer_nombres_zona_auto(contenido_casa)
           
-          # Extraer nombres de la nueva zona automática de Elcano
           canales_nuevos_set = set()
           for linea in texto_nuevo_elcano.splitlines():
               if linea.startswith("#EXTINF:") and "," in linea:
@@ -196,16 +218,6 @@ jobs:
           reporte_md += "\n".join([f"- {c}" for c in eliminados]) if eliminados else "- Ninguno."
 
           Path("ultimos_cambios.md").write_text(reporte_md, encoding="utf-8")
-
-          partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*CARPETA:\s*LA LIGA', contenido_casa, maxsplit=1)
-          
-          if len(partes) > 1:
-              cuerpo_personal = "# CARPETA: LA LIGA" + partes[1]
-          else:
-              partes_alt = re.split(r'(?i)#\s*={5,}\s*\n#\s*SECCIÓN:', contenido_casa, maxsplit=1)
-              cuerpo_personal = partes_alt[1] if len(partes_alt) > 1 else contenido_casa
-
-          cuerpo_personal = re.sub(r'#\s*Ultima sincronizacion:.*', '', cuerpo_personal).strip()
 
           cabecera_m3u = (
               '#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
@@ -245,7 +257,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización automática y registro de cambios"
+            git commit -m "Actualización automática y orden estricto de deportes"
             git push
           else
             echo "No hay cambios que guardar."
