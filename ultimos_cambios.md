@@ -1,9 +1,14 @@
-# Resumen de cambios ELCANO - 2026-11-15 18:34:02
+# Resumen de cambios ELCANO - 2026-11-15 21:29:26
 
-## Canales nuevos (1)
-- M+ BALONCESTO 2 1080P **
-
-## Canales eliminados (3)
+## Canales nuevos (3)
 - LALIGA TV HYPERMOTION 1080P *
 - LALIGA TV HYPERMOTION 720P *
-- M+ VAMOS 2 720P *
+- LALIGA TV HYPERMOTION 720P **
+
+## Canales eliminados (6)
+- DAZN 1 1080P *
+- M+ GOLF 2 1080P *
+- MOVISTAR PLUS 1080P *
+- NBA ESPN 1080P *
+- NBA ESPN 720P *
+- RFEF TV 1080P *
