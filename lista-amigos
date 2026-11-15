@@ -5,14 +5,14 @@
 # ==========================================
 # ZONA AUTOMATICA: ⭐ ELCANO [MÁXIMA CALIDAD]
 # ==========================================
-#EXTINF:-1 tvg-id="#0 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%200.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ 0 1080p **
-http://127.0.0.1:6878/ace/getstream?id=24e29dc1ea31fb0c6f634a99093f60a1bbbf2497
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://i.ibb.co/hFYPWbpJ/plus.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",MOVISTAR PLUS 1080p *
 http://127.0.0.1:6878/ace/getstream?id=a2d33536b7d55727c8f6bea010624d6478c3ba2d
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://i.ibb.co/hFYPWbpJ/plus.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",MOVISTAR PLUS 1080p **
 http://127.0.0.1:6878/ace/getstream?id=0b05fa66cfd62f9d4f686ff42f0c52ff3196a9fa
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://i.ibb.co/hFYPWbpJ/plus.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",MOVISTAR PLUS 720p *
 http://127.0.0.1:6878/ace/getstream?id=d2b5299ed45cbaf35482bb0869b2c2f75fbed64a
+#EXTINF:-1 tvg-id="#0 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%200.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ 0 1080p **
+http://127.0.0.1:6878/ace/getstream?id=24e29dc1ea31fb0c6f634a99093f60a1bbbf2497
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%205.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Liga de Campeones 8 1080p *
 http://127.0.0.1:6878/ace/getstream?id=0fac49adf9451d3c0442cbbf12aa3483d4435b45
 #EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://i.ibb.co/CV4CLjz/deportes.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Deportes 1080p *
@@ -229,6 +229,7 @@ http://127.0.0.1:6878/ace/getstream?id=f608f9cb7099d94172739494e8864e8b5b6a4360
 http://127.0.0.1:6878/ace/getstream?id=f80b9184bdd16a335d523ea3ea15b8e9a1c3bbcc
 #EXTINF:-1 tvg-id="Teledeporte" tvg-logo="https://img2.rtve.es/n/15966755" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Teledeporte 720p **
 http://127.0.0.1:6878/ace/getstream?id=c7d8405bdef3650b9bac58042c3708440ef286a8
+
 
 
 
