@@ -1,10 +1,7 @@
-# Resumen de cambios ELCANO - 2026-11-15 12:54:44
+# Resumen de cambios ELCANO - 2026-11-15 12:59:18
 
-## Canales nuevos (1)
-- DAZN 1 1080P *
+## Canales nuevos (0)
+- Ninguno.
 
-## Canales eliminados (4)
-- DAZN F1 1080P *
-- DAZN F1 720P *
-- DAZN MOTOGP 1080P *
-- DAZN MOTOGP 720P *
+## Canales eliminados (0)
+- Ninguno.
