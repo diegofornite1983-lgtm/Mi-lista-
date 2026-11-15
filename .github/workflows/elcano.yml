@@ -27,219 +27,585 @@ jobs:
           import re
           import sys
           import datetime
+          import unicodedata
           import urllib.request
           from pathlib import Path
 
-          URL_ELCANO = "https://tokyo2.elcano-ipfs.workers.dev/k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/hashes_acestream.m3u"
+          # ==========================================================
+          # CONFIGURACION
+          # ==========================================================
+
+          URL_ELCANO = (
+              "https://tokyo2.elcano-ipfs.workers.dev/"
+              "k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/"
+              "hashes_acestream.m3u"
+          )
+
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
           archivo_amigos = Path("lista-amigos")
 
+          URL_LOGO_M0 = (
+              "https://raw.githubusercontent.com/davidmuma/"
+              "picons_dobleM/master/icon/Movistar%20Plus%2B.png"
+          )
+
+          TGV_ID_M0 = "#0 HD"
+          TGV_ID_MOVISTAR_PLUS = "Movistar Plus HD"
+
+          GROUP_TITLE = "⭐ ELCANO [MÁXIMA CALIDAD]"
+
+          # ==========================================================
+          # COMPROBAR ARCHIVO PRINCIPAL
+          # ==========================================================
+
           if not archivo_casa.is_file():
-              sys.exit("ERROR: No se encuentra el archivo 'Mi lista acestream'.")
+              sys.exit(
+                  "ERROR: No se encuentra el archivo "
+                  "'Mi lista acestream'. No se modifica ningún archivo."
+              )
 
           try:
-              contenido_casa = archivo_casa.read_text(encoding="utf-8-sig")
+              contenido_casa = archivo_casa.read_bytes().decode("utf-8-sig")
           except UnicodeDecodeError:
-              contenido_casa = archivo_casa.read_text(encoding="latin-1")
+              try:
+                  contenido_casa = archivo_casa.read_bytes().decode("latin-1")
+              except Exception as error:
+                  sys.exit(f"ERROR leyendo la lista principal: {error}")
+
+          salto = "\r\n" if "\r\n" in contenido_casa else "\n"
+
+          # ==========================================================
+          # LOCALIZAR Y PROTEGER LAS CARPETAS PERSONALES
+          # ==========================================================
+
+          lineas_casa = contenido_casa.splitlines(keepends=True)
+
+          marcador_personal = re.compile(
+              r"^\s*#?\s*(CARPETA:|ZONA PERSONAL:|SECCI[ÓO]N:)",
+              re.IGNORECASE
+          )
+
+          indice_personal = None
+
+          for indice, linea in enumerate(lineas_casa):
+              if marcador_personal.search(linea):
+                  indice_personal = indice
+                  break
+
+          if indice_personal is None:
+              sys.exit(
+                  "ERROR DE SEGURIDAD: No se ha encontrado el comienzo "
+                  "de tus carpetas personales (CARPETA:, ZONA PERSONAL: "
+                  "o SECCIÓN:). No se modifica ni sobrescribe ningún archivo."
+              )
+
+          inicio_personal = indice_personal
+
+          while inicio_personal > 0:
+              anterior = lineas_casa[inicio_personal - 1].strip()
+
+              if not anterior or re.fullmatch(r"#\s*=+", anterior):
+                  inicio_personal -= 1
+              else:
+                  break
+
+          cuerpo_personal = "".join(lineas_casa[inicio_personal:])
+
+          # ==========================================================
+          # DESCARGAR ELCANO
+          # ==========================================================
 
           try:
-              peticion = urllib.request.Request(URL_ELCANO, headers={"User-Agent": "Mozilla/5.0"})
+              peticion = urllib.request.Request(
+                  URL_ELCANO,
+                  headers={
+                      "User-Agent": "Mozilla/5.0",
+                      "Accept": "*/*"
+                  }
+              )
+
               with urllib.request.urlopen(peticion, timeout=60) as respuesta:
-                  fuente_elcano = respuesta.read().decode("utf-8-sig", errors="replace")
+                  fuente_elcano = respuesta.read().decode(
+                      "utf-8-sig",
+                      errors="replace"
+                  )
+
           except Exception as error:
-              sys.exit(f"ERROR descargando Elcano: {error}")
+              sys.exit(
+                  f"ERROR descargando Elcano: {error}. "
+                  "No se modifica ningún archivo."
+              )
+
+          # ==========================================================
+          # FUNCIONES AUXILIARES
+          # ==========================================================
+
+          def normalizar(texto):
+              texto = unicodedata.normalize("NFD", texto)
+              texto = "".join(
+                  caracter for caracter in texto
+                  if unicodedata.category(caracter) != "Mn"
+              )
+              return texto.upper().strip()
+
+
+          def poner_atributo(linea, atributo, valor):
+              patron = rf'{re.escape(atributo)}="[^"]*"'
+
+              if re.search(patron, linea, flags=re.IGNORECASE):
+                  return re.sub(
+                      patron,
+                      f'{atributo}="{valor}"',
+                      linea,
+                      count=1,
+                      flags=re.IGNORECASE
+                  )
+
+              return linea.replace(
+                  "#EXTINF:-1",
+                  f'#EXTINF:-1 {atributo}="{valor}"',
+                  1
+              )
+
+
+          def numero_canal(nombre):
+              coincidencia = re.search(
+                  r"\b([1-9])\b",
+                  nombre
+              )
+
+              if coincidencia:
+                  return int(coincidencia.group(1))
+
+              return 0
+
+
+          def calidad_canal(nombre):
+              if "4K" in nombre:
+                  return 0
+
+              if "1080" in nombre:
+                  return 1
+
+              if "720" in nombre:
+                  return 2
+
+              return 3
+
+
+          # ==========================================================
+          # ORDEN ESTRICTO DE CANALES
+          # ==========================================================
+
+          def prioridad_canal(canal):
+              nombre_original = canal["nombre"]
+              nombre = normalizar(nombre_original)
+
+              numero = numero_canal(nombre)
+              calidad = calidad_canal(nombre)
+
+              # 1. M+ 0: siempre el primero.
+              if re.search(r"\bM\+\s*0\b", nombre):
+                  return (0, 0, calidad, canal["indice"])
+
+              # 2. Movistar Plus clásico.
+              if (
+                  nombre.startswith("MOVISTAR PLUS")
+                  or nombre.startswith("MOVISTAR+")
+              ):
+                  return (1, 0, calidad, canal["indice"])
+
+              # 3. LaLiga y sus multis.
+              if (
+                  "LALIGA" in nombre
+                  or "LA LIGA" in nombre
+                  or "DAZN LALIGA" in nombre
+              ):
+                  if nombre.startswith("M+"):
+                      suborden = 0
+                  elif "DAZN" in nombre:
+                      suborden = 1
+                  else:
+                      suborden = 2
+
+                  return (2, suborden, numero, calidad, canal["indice"])
+
+              # 4. Liga de Campeones, del 1 al 8.
+              if "CAMPEONES" in nombre or "CHAMPIONS" in nombre:
+                  return (3, numero, calidad, canal["indice"])
+
+              # 5. Movistar Deportes: principal y del 2 al 8 juntos.
+              if "DEPORTES" in nombre:
+                  return (4, numero, calidad, canal["indice"])
+
+              # 6. DAZN F1 y DAZN MotoGP.
+              if "F1" in nombre or "FORMULA 1" in nombre:
+                  return (5, 0, calidad, canal["indice"])
+
+              if "MOTOGP" in nombre:
+                  return (5, 1, calidad, canal["indice"])
+
+              # 7. DAZN generales: del 1 al 4.
+              if (
+                  "DAZN" in nombre
+                  and not any(
+                      palabra in nombre
+                      for palabra in (
+                          "F1",
+                          "FORMULA",
+                          "MOTOGP",
+                          "LALIGA",
+                          "BALONCESTO"
+                      )
+                  )
+              ):
+                  return (6, numero, calidad, canal["indice"])
+
+              # 8. M+ Vamos y LaLiga Hypermotion.
+              if "VAMOS" in nombre:
+                  return (7, 0, numero, calidad, canal["indice"])
+
+              if "HYPERMOTION" in nombre:
+                  return (7, 1, numero, calidad, canal["indice"])
+
+              # 9. Golf, Eurosport, Tenis y Sport TV.
+              if "GOLF" in nombre:
+                  return (8, 0, numero, calidad, canal["indice"])
+
+              if "EUROSPORT" in nombre:
+                  return (8, 1, numero, calidad, canal["indice"])
+
+              if (
+                  "TENIS" in nombre
+                  or "TENNIS" in nombre
+              ):
+                  return (8, 2, numero, calidad, canal["indice"])
+
+              if "SPORT TV" in nombre:
+                  return (8, 3, numero, calidad, canal["indice"])
+
+              # 10. Otros canales generales de Elcano.
+              if (
+                  "BALONCESTO" not in nombre
+                  and not nombre.startswith("NBA")
+                  and "RFEF" not in nombre
+                  and "PRIMERA FEDERACION" not in nombre
+                  and not es_tdt_abierto(nombre)
+              ):
+                  return (9, 0, nombre, calidad, canal["indice"])
+
+              # 11. Baloncesto y NBA, justo antes de RFEF y TDT.
+              if (
+                  "BALONCESTO" in nombre
+                  or nombre.startswith("NBA")
+              ):
+                  return (10, numero, calidad, canal["indice"])
+
+              # 12. Primera Federación / RFEF.
+              if (
+                  "RFEF" in nombre
+                  or "PRIMERA FEDERACION" in nombre
+              ):
+                  return (11, 0, nombre, calidad, canal["indice"])
+
+              # 13. TDT y canales abiertos, al final absoluto.
+              if es_tdt_abierto(nombre):
+                  return (12, 0, nombre, calidad, canal["indice"])
+
+              return (9, 0, nombre, calidad, canal["indice"])
+
+
+          def es_tdt_abierto(nombre):
+              canales_abiertos = (
+                  "CUATRO",
+                  "TELECINCO",
+                  "TELEDEPORTE",
+                  "ESPORT3",
+                  "A PUNT",
+                  "APUNT",
+                  "LA 1",
+                  "LA 2",
+                  "LA 3",
+                  "TVE",
+                  "ANTENA 3",
+                  "ANTENA3",
+                  "LA SEXTA",
+                  "LASEXTA",
+                  "REAL MADRID TV",
+                  "ONETORO",
+                  "ONE TORO"
+              )
+
+              return any(canal in nombre for canal in canales_abiertos)
+
+
+          # ==========================================================
+          # LEER Y PROCESAR LOS CANALES DE ELCANO
+          # ==========================================================
 
           lineas_elcano = fuente_elcano.splitlines()
-          canales_raw = []
-          i = 0
-          while i < len(lineas_elcano):
-              linea = lineas_elcano[i].strip()
-              if linea.startswith("#EXTINF:"):
-                  url = None
-                  j = i + 1
-                  while j < len(lineas_elcano):
-                      candidata = lineas_elcano[j].strip()
-                      if candidata and not candidata.startswith("#"):
-                          url = candidata
-                          break
-                      j += 1
-                  if url:
-                      match_h = re.search(r'([0-9a-fA-F]{40})', url)
-                      if match_h:
-                          h_id = match_h.group(1)
-                          url_local = f"http://127.0.0.1:6878/ace/getstream?id={h_id}"
-                      else:
-                          url_local = url
+          canales = []
 
-                      nombre_c = linea.rsplit(",", 1)[-1].upper()
+          indice = 0
 
-                      extinf_mod = linea
-                      
-                      if "MOVISTAR PLUS" in nombre_c:
-                          if 'tvg-id=' in extinf_mod:
-                              extinf_mod = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus HD"', extinf_mod)
-                          else:
-                              extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus HD"')
+          while indice < len(lineas_elcano):
+              linea = lineas_elcano[indice].strip()
 
-                      if "M+ 0" in nombre_c:
-                          if 'tvg-id=' in extinf_mod:
-                              extinf_mod = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus+"', extinf_mod)
-                          else:
-                              extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus+"')
-                          if 'tvg-logo=' in extinf_mod:
-                              extinf_mod = re.sub(r'tvg-logo="[^"]*"', 'tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Movistar%20Plus%2B.png"', extinf_mod)
-                          else:
-                              extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Movistar%20Plus%2B.png"')
+              if not linea.startswith("#EXTINF:"):
+                  indice += 1
+                  continue
 
-                      extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
-                      if 'group-title=' not in extinf_mod:
-                          extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
+              url = None
+              siguiente = indice + 1
 
-                      canales_raw.append((nombre_c, extinf_mod, url_local))
-                      i = j
-              i += 1
+              while siguiente < len(lineas_elcano):
+                  candidata = lineas_elcano[siguiente].strip()
 
-          def prioridad_elcano(item):
-              nombre = item[0]
+                  if candidata and not candidata.startswith("#"):
+                      url = candidata
+                      break
 
-              if "M+ 0" in nombre:
-                  bloque = 1
-              elif "MOVISTAR PLUS" in nombre or nombre == "MOVISTAR+":
-                  bloque = 2
-              elif "LALIGA" in nombre and "HYPERMOTION" not in nombre:
-                  bloque = 3
-              elif "CAMPEONES" in nombre:
-                  bloque = 4
-              elif "DEPORTES" in nombre and "BALONCESTO" not in nombre:
-                  bloque = 5
-              elif "F1" in nombre or "FORMULA 1" in nombre:
-                  bloque = 6
-              elif "MOTOGP" in nombre:
-                  bloque = 7
-              elif any(x in nombre for x in ["DAZN 1", "DAZN 2", "DAZN 3", "DAZN 4"]) and "BALONCESTO" not in nombre:
-                  bloque = 8
-              elif "DAZN" in nombre and "BALONCESTO" not in nombre and "F1" not in nombre and "MOTOGP" not in nombre and "LALIGA" not in nombre:
-                  bloque = 9
-              elif "VAMOS" in nombre:
-                  bloque = 10
-              elif "HYPERMOTION" in nombre:
-                  bloque = 11
-              elif any(x in nombre for x in ["GOLF", "EUROSPORT", "TENNIS", "SPORT TV", "SKY SPORT"]):
-                  bloque = 12
-              elif "BALONCESTO" in nombre or "NBA" in nombre:
-                  bloque = 13
-              elif "PRIMERA" in nombre or "RFEF" in nombre:
-                  bloque = 14
-              elif any(x in nombre for x in ["CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO", "PARAMOUNT", "BEIN", "OFF"]):
-                  bloque = 16
+                  siguiente += 1
+
+              if not url:
+                  indice += 1
+                  continue
+
+              nombre = linea.rsplit(",", 1)[-1].strip()
+              nombre_normalizado = normalizar(nombre)
+
+              extinf_mod = linea
+
+              if re.search(r"\bM\+\s*0\b", nombre_normalizado):
+                  extinf_mod = poner_atributo(
+                      extinf_mod,
+                      "tvg-id",
+                      TGV_ID_M0
+                  )
+
+                  extinf_mod = poner_atributo(
+                      extinf_mod,
+                      "tvg-logo",
+                      URL_LOGO_M0
+                  )
+
+              elif (
+                  nombre_normalizado.startswith("MOVISTAR PLUS")
+                  or nombre_normalizado.startswith("MOVISTAR+")
+              ):
+                  extinf_mod = poner_atributo(
+                      extinf_mod,
+                      "tvg-id",
+                      TGV_ID_MOVISTAR_PLUS
+                  )
+
+              extinf_mod = poner_atributo(
+                      extinf_mod,
+                      "group-title",
+                      GROUP_TITLE
+                  )
+
+              coincidencia_hash = re.search(
+                  r"([0-9a-fA-F]{40})",
+                  url
+              )
+
+              if coincidencia_hash:
+                  hash_id = coincidencia_hash.group(1)
+
+                  url_final = (
+                      "http://127.0.0.1:6878/ace/getstream?id="
+                      + hash_id
+                  )
               else:
-                  bloque = 15
+                  url_final = url
 
-              num_deporte = 0
-              if "DEPORTES" in nombre:
-                  match_d = re.search(r'DEPORTES\s+(\d+)', nombre)
-                  if match_d:
-                      num_deporte = int(match_d.group(1))
+              canales.append({
+                  "nombre": nombre,
+                  "extinf": extinf_mod,
+                  "url": url_final,
+                  "indice": len(canales)
+              })
 
-              if "1080" in nombre or "4K" in nombre:
-                  calidad = 0
-              elif "720" in nombre:
-                  calidad = 2
-              else:
-                  calidad = 1
+              indice = siguiente + 1
 
-              return (bloque, num_deporte, calidad, nombre)
+          if not canales:
+              sys.exit(
+                  "ERROR: Elcano no ha proporcionado canales válidos. "
+                  "No se modifica ningún archivo."
+              )
 
-          canales_ordenados = sorted(canales_raw, key=prioridad_elcano)
+          canales_ordenados = sorted(
+              canales,
+              key=prioridad_canal
+          )
+
+          # ==========================================================
+          # CONSTRUIR LA ZONA AUTOMÁTICA
+          # ==========================================================
 
           bloque_automatico = [
               "# ==========================================",
               "# ZONA AUTOMATICA: ⭐ ELCANO [MÁXIMA CALIDAD]",
               "# =========================================="
           ]
-          for _, inf, u in canales_ordenados:
-              bloque_automatico.append(inf)
-              bloque_automatico.append(u)
 
-          texto_nuevo_elcano = "\n".join(bloque_automatico)
+          for canal in canales_ordenados:
+              bloque_automatico.append(canal["extinf"])
+              bloque_automatico.append(canal["url"])
 
-          def extraer_zona_personal(texto_m3u):
-              partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*CARPETA:', texto_m3u, maxsplit=1)
-              if len(partes) > 1:
-                  return "# CARPETA:" + partes[1]
-              
-              partes_alt = re.split(r'(?i)#\s*={5,}\s*\n#\s*SECCIÓN:', texto_m3u, maxsplit=1)
-              if len(partes_alt) > 1:
-                  return "# SECCIÓN:" + partes_alt[1]
-                  
-              partes_zona = re.split(r'(?i)#\s*ZONA PERSONAL', texto_m3u, maxsplit=1)
-              if len(partes_zona) > 1:
-                  return partes_zona[1]
+          texto_nuevo_elcano = salto.join(bloque_automatico)
 
-              return ""
+          # ==========================================================
+          # COMPARAR CANALES PARA EL INFORME
+          # ==========================================================
 
-          cuerpo_personal = extraer_zona_personal(contenido_casa)
-          cuerpo_personal = re.sub(r'#\s*Ultima sincronizacion:.*', '', cuerpo_personal).strip()
-
-          def extraer_nombres_zona_auto(texto_m3u):
+          def extraer_nombres(texto):
               nombres = set()
-              en_zona_auto = False
-              for linea in texto_m3u.splitlines():
-                  if "ZONA AUTOMATICA" in linea:
-                      en_zona_auto = True
-                      continue
-                  if "ZONA PERSONAL" in linea or "CARPETA:" in linea or "SECCIÓN:" in linea:
-                      en_zona_auto = False
-                  if en_zona_auto and linea.startswith("#EXTINF:"):
-                      if "," in linea:
-                          nombres.add(linea.rsplit(",", 1)[-1].strip().upper())
+
+              for linea in texto.splitlines():
+                  if linea.startswith("#EXTINF:") and "," in linea:
+                      nombres.add(
+                          linea.rsplit(",", 1)[-1].strip().upper()
+                      )
+
               return nombres
 
-          canales_viejos = extraer_nombres_zona_auto(contenido_casa)
-          
-          canales_nuevos_set = set()
-          for linea in texto_nuevo_elcano.splitlines():
-              if linea.startswith("#EXTINF:") and "," in linea:
-                  canales_nuevos_set.add(linea.rsplit(",", 1)[-1].strip().upper())
 
-          agregados = sorted(list(canales_nuevos_set - canales_viejos))
-          eliminados = sorted(list(canales_viejos - canales_nuevos_set))
+          zona_anterior = "".join(lineas_casa[:inicio_personal])
 
-          timestamp_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+          canales_viejos = extraer_nombres(zona_anterior)
+          canales_nuevos = extraer_nombres(texto_nuevo_elcano)
 
-          reporte_md = f"# 🔄 Resumen de cambios en ELCANO - {timestamp_actual}\n\n"
-          reporte_md += f"### 🟢 Canales Nuevos ({len(agregados)}):\n"
-          reporte_md += "\n".join([f"- {c}" for c in agregados]) if agregados else "- Ninguno en esta actualización."
-          reporte_md += f"\n\n### 🔴 Canales Eliminados por Elcano ({len(eliminados)}):\n"
-          reporte_md += "\n".join([f"- {c}" for c in eliminados]) if eliminados else "- Ninguno."
+          agregados = sorted(canales_nuevos - canales_viejos)
+          eliminados = sorted(canales_viejos - canales_nuevos)
 
-          Path("ultimos_cambios.md").write_text(reporte_md, encoding="utf-8")
+          timestamp_actual = datetime.datetime.now().strftime(
+              "%Y-%m-%d %H:%M:%S"
+          )
+
+          reporte = [
+              f"# Resumen de cambios ELCANO - {timestamp_actual}",
+              "",
+              f"## Canales nuevos ({len(agregados)})"
+          ]
+
+          if agregados:
+              reporte.extend(f"- {canal}" for canal in agregados)
+          else:
+              reporte.append("- Ninguno.")
+
+          reporte.extend([
+              "",
+              f"## Canales eliminados ({len(eliminados)})"
+          ])
+
+          if eliminados:
+              reporte.extend(f"- {canal}" for canal in eliminados)
+          else:
+              reporte.append("- Ninguno.")
+
+          Path("ultimos_cambios.md").write_text(
+              "\n".join(reporte),
+              encoding="utf-8"
+          )
+
+          # ==========================================================
+          # CABECERA M3U
+          # ==========================================================
 
           cabecera_m3u = (
-              '#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
+              '#EXTM3U url-tvg="'
+              'https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
               'https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,'
-              'https://raw.githubusercontent.com/davidmuma/EPG_dobleM/master/guiatv.xml" refresh="3600"\n'
-              '#EXTVLCOPT:network-caching=1000\n'
-              '#EXTGRP: group-title="⭐ ELCANO [MÁXIMA CALIDAD]" group-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png"\n\n'
+              'https://raw.githubusercontent.com/davidmuma/EPG_dobleM/master/guiatv.xml" '
+              'refresh="3600"'
+              + salto
+              + '#EXTVLCOPT:network-caching=1000'
+              + salto
+              + '#EXTGRP: group-title="⭐ ELCANO [MÁXIMA CALIDAD]" '
+              'group-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png"'
+              + salto
+              + salto
           )
-          
+
+          # ==========================================================
+          # MONTAR ARCHIVO SIN TOCAR LA ZONA PERSONAL
+          # ==========================================================
+
+          separador = salto + salto
+
           texto_final = (
-              cabecera_m3u + 
-              texto_nuevo_elcano + 
-              "\n\n\n# ==========================================\n" +
-              "# ZONA PERSONAL: TUS CATEGORÍAS Y LISTAS\n" +
-              "# ==========================================\n\n" + 
-              cuerpo_personal + 
-              f"\n\n# Ultima sincronizacion: {timestamp_actual}\n"
+              cabecera_m3u
+              + texto_nuevo_elcano
+              + separador
+              + cuerpo_personal
           )
 
-          archivo_casa.write_text(texto_final, encoding="utf-8")
-          texto_ts = texto_final.replace("127.0.0.1:6878", "100.90.204.66:6878")
-          archivo_tailscale.write_text(texto_ts, encoding="utf-8")
-          archivo_amigos.write_text(texto_final, encoding="utf-8")
+          bloque_tailscale = texto_nuevo_elcano.replace(
+              "127.0.0.1:6878",
+              "100.90.204.66:6878"
+          )
 
-          print("¡Sincronización completa con éxito!")
+          texto_tailscale = (
+              cabecera_m3u
+              + bloque_tailscale
+              + separador
+              + cuerpo_personal
+          )
+
+          texto_amigos = texto_final
+
+          # ==========================================================
+          # COMPROBACIONES FINALES ANTES DE ESCRIBIR
+          # ==========================================================
+
+          if cuerpo_personal not in texto_final:
+              sys.exit(
+                  "ERROR: La comprobación de la zona personal ha fallado. "
+                  "No se guardan los archivos."
+              )
+
+          if cuerpo_personal not in texto_tailscale:
+              sys.exit(
+                  "ERROR: La zona personal de Tailscale no coincide. "
+                  "No se guardan los archivos."
+              )
+
+          if 'tvg-id="#0 HD"' not in texto_final:
+              sys.exit(
+                  'ERROR: No se ha aplicado tvg-id="#0 HD" al M+ 0. '
+                  "No se guardan los archivos."
+              )
+
+          # ==========================================================
+          # GUARDAR ARCHIVOS
+          # ==========================================================
+
+          archivo_casa.write_bytes(
+              texto_final.encode("utf-8")
+          )
+
+          archivo_tailscale.write_bytes(
+              texto_tailscale.encode("utf-8")
+          )
+
+          archivo_amigos.write_bytes(
+              texto_amigos.encode("utf-8")
+          )
+
+          print("==========================================")
+          print("SINCRONIZACIÓN COMPLETADA")
+          print("==========================================")
+          print(f"Canales procesados: {len(canales_ordenados)}")
+          print(f"Canales nuevos: {len(agregados)}")
+          print(f"Canales eliminados: {len(eliminados)}")
+          print('M+ 0: tvg-id="#0 HD"')
+          print('Movistar Plus clásico: tvg-id="Movistar Plus HD"')
+          print("Carpetas personales: conservadas sin cambios")
+          print("Casa, Tailscale y Amigos: actualizados")
+          print("==========================================")
           PY
 
       - name: Guardar cambios en GitHub
@@ -249,7 +615,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizacion perfecta y corregida"
+            git commit -m "Sincronizacion perfecta y ordenada"
             git push
           else
             echo "No hay cambios que guardar."
