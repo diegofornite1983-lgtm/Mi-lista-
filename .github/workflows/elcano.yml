@@ -50,7 +50,6 @@ jobs:
           except Exception as error:
               sys.exit(f"ERROR descargando Elcano: {error}")
 
-          # 1. Parsear los canales ignorando los grupos de la fuente
           lineas_elcano = fuente_elcano.splitlines()
           canales_raw = []
           i = 0
@@ -77,14 +76,12 @@ jobs:
 
                       extinf_mod = linea
                       
-                      # Forzar tvg-id para Movistar Plus HD clásico
                       if "MOVISTAR PLUS" in nombre_c:
                           if 'tvg-id=' in extinf_mod:
                               extinf_mod = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus HD"', extinf_mod)
                           else:
                               extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus HD"')
 
-                      # Forzar tvg-id y logo perfecto para M+ 0 para que cargue la EPG y la picon de David Muma
                       if "M+ 0" in nombre_c:
                           if 'tvg-id=' in extinf_mod:
                               extinf_mod = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus+"', extinf_mod)
@@ -95,7 +92,6 @@ jobs:
                           else:
                               extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Movistar%20Plus%2B.png"')
 
-                      # Asignar grupo limpio y unificado de ELCANO
                       extinf_mod = re.sub(r'group-title="[^"]*"', 'group-title="⭐ ELCANO [MÁXIMA CALIDAD]"', extinf_mod)
                       if 'group-title=' not in extinf_mod:
                           extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]"')
@@ -104,70 +100,54 @@ jobs:
                       i = j
               i += 1
 
-          # Criterio de ordenación ciego por nombre con bloques ajustados
           def prioridad_elcano(item):
               nombre = item[0]
 
-              # 1. M+ 0 arriba del todo
               if "M+ 0" in nombre:
                   bloque = 1
-              # 2. Movistar Plus clásico justo debajo
               elif "MOVISTAR PLUS" in nombre or nombre == "MOVISTAR+":
                   bloque = 2
-              # 3. LaLiga y sus multis
               elif "LALIGA" in nombre and "HYPERMOTION" not in nombre:
                   bloque = 3
-              # 4. Campeones y sus multis
               elif "CAMPEONES" in nombre:
                   bloque = 4
-              # 5. Deportes: Agrupados arriba con los numerados
               elif "DEPORTES" in nombre and "BALONCESTO" not in nombre:
                   bloque = 5
-              # 6. F1
               elif "F1" in nombre or "FORMULA 1" in nombre:
                   bloque = 6
-              # 7. MotoGP
               elif "MOTOGP" in nombre:
                   bloque = 7
-              # 8. DAZN generales (1, 2, 3, 4)
               elif any(x in nombre for x in ["DAZN 1", "DAZN 2", "DAZN 3", "DAZN 4"]) and "BALONCESTO" not in nombre:
                   bloque = 8
               elif "DAZN" in nombre and "BALONCESTO" not in nombre and "F1" not in nombre and "MOTOGP" not in nombre and "LALIGA" not in nombre:
                   bloque = 9
-              # 9. Vamos y Hypermotion
               elif "VAMOS" in nombre:
                   bloque = 10
               elif "HYPERMOTION" in nombre:
                   bloque = 11
-              # 10. Golf, Eurosport, Tenis, Sport TV
               elif any(x in nombre for x in ["GOLF", "EUROSPORT", "TENNIS", "SPORT TV", "SKY SPORT"]):
                   bloque = 12
-              # 11. Baloncesto y NBA (abajo junto a RFEF)
               elif "BALONCESTO" in nombre or "NBA" in nombre:
                   bloque = 13
-              # 12. Primera Federación / RFEF
               elif "PRIMERA" in nombre or "RFEF" in nombre:
                   bloque = 14
-              # 13. TDT y abiertos al final absoluto de la zona automática
               elif any(x in nombre for x in ["CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO", "PARAMOUNT", "BEIN", "OFF"]):
                   bloque = 16
               else:
                   bloque = 15
 
-              # Sub-orden numérico estricto para Deportes
               num_deporte = 0
               if "DEPORTES" in nombre:
                   match_d = re.search(r'DEPORTES\s+(\d+)', nombre)
                   if match_d:
                       num_deporte = int(match_d.group(1))
 
-              # Sub-orden por calidad (1080p/4K primero, normal después, 720p al final)
               if "1080" in nombre or "4K" in nombre:
                   calidad = 0
               elif "720" in nombre:
                   calidad = 2
               else:
-              v    calidad = 1
+                  calidad = 1
 
               return (bloque, num_deporte, calidad, nombre)
 
@@ -184,7 +164,6 @@ jobs:
 
           texto_nuevo_elcano = "\n".join(bloque_automatico)
 
-          # --- EXTRACCIÓN DE TUS CARPETAS PERSONALES (INTOCABLES) ---
           def extraer_zona_personal(texto_m3u):
               partes = re.split(r'(?i)#\s*={5,}\s*\n#\s*CARPETA:', texto_m3u, maxsplit=1)
               if len(partes) > 1:
@@ -260,7 +239,7 @@ jobs:
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
           archivo_amigos.write_text(texto_final, encoding="utf-8")
 
-          print("¡Sincronización completa con M+ 0 arreglado y orden maestro aplicado!")
+          print("¡Sincronización completa con éxito!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -270,7 +249,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Correccion de EPG y logo para M+ 0 y orden de deportes"
+            git commit -m "Sincronizacion perfecta y corregida"
             git push
           else
             echo "No hay cambios que guardar."
