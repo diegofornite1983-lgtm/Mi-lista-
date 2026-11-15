@@ -92,31 +92,31 @@ jobs:
                       i = j
               i += 1
 
-          # Criterio de ordenación agrupado por familias y canal principal primero
+          # Criterio de ordenación estricto y corregido
           def prioridad_elcano(item):
               nombre = item[0]
 
-              # 1. Movistar Plus HD arriba del todo
-              if "MOVISTAR PLUS" in nombre or nombre == "MOVISTAR+":
+              # 1. Movistar Plus HD / M+ 0 arriba del todo
+              if "MOVISTAR PLUS" in nombre or nombre == "MOVISTAR+" or "M+ 0" in nombre:
                   bloque = 1
-              # 2. LaLiga y sus multis
+              # 2. LaLiga principal y sus multis
               elif "M+ LALIGA" in nombre:
                   bloque = 2
               elif "DAZN LALIGA" in nombre:
                   bloque = 3
-              # 3. Campeones y sus multis
+              # 3. Campeones principal y sus multis
               elif "CAMPEONES" in nombre:
                   bloque = 4
-              # 4. Deportes y sus multis
-              elif "DEPORTES" in nombre:
+              # 4. Deportes principal y sus multis (incluyendo M+ Deportes 1, 2, 3...)
+              elif "M+ DEPORTES" in nombre or "DEPORTES" in nombre:
                   bloque = 5
               # 5. Motor (F1 y MotoGP)
               elif "F1" in nombre or "FORMULA 1" in nombre:
                   bloque = 6
               elif "MOTOGP" in nombre:
                   bloque = 7
-              # 6. DAZN general
-              elif "DAZN" in nombre:
+              # 6. DAZN general (DAZN 1, DAZN 2, etc.)
+              elif "DAZN 1" in nombre or "DAZN 2" in nombre or nombre.startswith("DAZN"):
                   bloque = 8
               # 7. Vamos y Hypermotion
               elif "VAMOS" in nombre:
@@ -126,8 +126,14 @@ jobs:
               # 8. Primera / RFEF
               elif "PRIMERA" in nombre or "RFEF" in nombre:
                   bloque = 11
-              # 9. TDT y abiertos
-              elif any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO"]):
+              # 9. Baloncesto bien abajo para que no moleste arriba
+              elif "BALONCESTO" in nombre or "NBA" in nombre:
+                  bloque = 12
+              # 10. Golf y otros temáticos intermedios
+              elif "GOLF" in nombre or "EUROSPORT" in nombre or "TENNIS" in nombre or "SPORT TV" in nombre:
+                  bloque = 13
+              # 11. TDT y abiertos al final del todo (La 1, Cuatro, Telecinco, Teledeporte, Esport3, Real Madrid, etc.)
+              elif any(x in nombre for x in ["AZTECA", "FOX SPORTS", "RALLY TV", "CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO", "PARAMOUNT", "BEIN"]):
                   bloque = 15
               else:
                   bloque = 14
