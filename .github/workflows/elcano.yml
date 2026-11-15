@@ -84,13 +84,15 @@ jobs:
                           else:
                               extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus HD"')
 
-                      # Forzar tvg-id y logo para M+ 0 para que funcione la EPG perfectamente
+                      # Forzar tvg-id y logo perfecto para M+ 0 para que cargue la EPG y la picon de David Muma
                       if "M+ 0" in nombre_c:
                           if 'tvg-id=' in extinf_mod:
-                              extinf_mod = re.sub(r'tvg-id="[^"]*"', 'tvg-id="#0 HD"', extinf_mod)
+                              extinf_mod = re.sub(r'tvg-id="[^"]*"', 'tvg-id="Movistar Plus+"', extinf_mod)
                           else:
-                              extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="#0 HD"')
-                          if 'tvg-logo=' not in extinf_mod:
+                              extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-id="Movistar Plus+"')
+                          if 'tvg-logo=' in extinf_mod:
+                              extinf_mod = re.sub(r'tvg-logo="[^"]*"', 'tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Movistar%20Plus%2B.png"', extinf_mod)
+                          else:
                               extinf_mod = extinf_mod.replace('#EXTINF:-1', '#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Movistar%20Plus%2B.png"')
 
                       # Asignar grupo limpio y unificado de ELCANO
@@ -102,7 +104,7 @@ jobs:
                       i = j
               i += 1
 
-          # Criterio de ordenación ciego por nombre (ignora grupos externos)
+          # Criterio de ordenación ciego por nombre con bloques ajustados
           def prioridad_elcano(item):
               nombre = item[0]
 
@@ -118,48 +120,39 @@ jobs:
               # 4. Campeones y sus multis
               elif "CAMPEONES" in nombre:
                   bloque = 4
-              # 5. Deportes (M+ Deportes principal primero, luego del 2 al 8 juntos)
+              # 5. Deportes: Agrupados arriba con los numerados
               elif "DEPORTES" in nombre and "BALONCESTO" not in nombre:
-                  if any(n in nombre for n in [" 2", " 3", " 4", " 5", " 6", " 7", " 8"]):
-                      bloque = 6
-                  else:
-                      bloque = 5
+                  bloque = 5
               # 6. F1
               elif "F1" in nombre or "FORMULA 1" in nombre:
-                  bloque = 7
+                  bloque = 6
               # 7. MotoGP
               elif "MOTOGP" in nombre:
+                  bloque = 7
+              # 8. DAZN generales (1, 2, 3, 4)
+              elif any(x in nombre for x in ["DAZN 1", "DAZN 2", "DAZN 3", "DAZN 4"]) and "BALONCESTO" not in nombre:
                   bloque = 8
-              # 8. DAZN generales ordenados del 1 al 4
-              elif "DAZN 1" in nombre:
+              elif "DAZN" in nombre and "BALONCESTO" not in nombre and "F1" not in nombre and "MOTOGP" not in nombre and "LALIGA" not in nombre:
                   bloque = 9
-              elif "DAZN 2" in nombre:
-                  bloque = 10
-              elif "DAZN 3" in nombre:
-                  bloque = 11
-              elif "DAZN 4" in nombre:
-                  bloque = 12
-              elif "DAZN" in nombre:
-                  bloque = 13
               # 9. Vamos y Hypermotion
               elif "VAMOS" in nombre:
-                  bloque = 14
+                  bloque = 10
               elif "HYPERMOTION" in nombre:
-                  bloque = 15
-              # 10. Primera Federación / RFEF
-              elif "PRIMERA" in nombre or "RFEF" in nombre:
-                  bloque = 16
-              # 11. Baloncesto y NBA abajo
-              elif "BALONCESTO" in nombre or "NBA" in nombre:
-                  bloque = 17
-              # 12. Golf, Eurosport, Tenis, Sport TV
+                  bloque = 11
+              # 10. Golf, Eurosport, Tenis, Sport TV
               elif any(x in nombre for x in ["GOLF", "EUROSPORT", "TENNIS", "SPORT TV", "SKY SPORT"]):
-                  bloque = 18
+                  bloque = 12
+              # 11. Baloncesto y NBA (abajo junto a RFEF)
+              elif "BALONCESTO" in nombre or "NBA" in nombre:
+                  bloque = 13
+              # 12. Primera Federación / RFEF
+              elif "PRIMERA" in nombre or "RFEF" in nombre:
+                  bloque = 14
               # 13. TDT y abiertos al final absoluto de la zona automática
               elif any(x in nombre for x in ["CUATRO", "TELEDEPORTE", "TELECINCO", "LA 1", "LA 2", "ESPORT3", "A PUNT", "À PUNT", "REAL MADRID", "ONE TORO", "ONETORO", "PARAMOUNT", "BEIN", "OFF"]):
-                  bloque = 20
+                  bloque = 16
               else:
-                  bloque = 19
+                  bloque = 15
 
               # Sub-orden numérico estricto para Deportes
               num_deporte = 0
@@ -174,7 +167,7 @@ jobs:
               elif "720" in nombre:
                   calidad = 2
               else:
-                  calidad = 1
+              v    calidad = 1
 
               return (bloque, num_deporte, calidad, nombre)
 
@@ -267,7 +260,7 @@ jobs:
           archivo_tailscale.write_text(texto_ts, encoding="utf-8")
           archivo_amigos.write_text(texto_final, encoding="utf-8")
 
-          print("¡Sincronización completa: orden absoluto independiente de Elcano!")
+          print("¡Sincronización completa con M+ 0 arreglado y orden maestro aplicado!")
           PY
 
       - name: Guardar cambios en GitHub
@@ -277,7 +270,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Orden maestro independiente de etiquetas fuente"
+            git commit -m "Correccion de EPG y logo para M+ 0 y orden de deportes"
             git push
           else
             echo "No hay cambios que guardar."
