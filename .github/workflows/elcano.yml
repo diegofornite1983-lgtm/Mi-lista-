@@ -170,13 +170,16 @@ jobs:
 
 
           def limpiar_y_forzar_m0(linea):
-              linea = re.sub(r'tvg-id="[^"]*"', f'tvg-id="{TGV_ID_M0}"', linea, flags=re.IGNORECASE)
-              linea = re.sub(r'tvg-logo="[^"]*"', f'tvg-logo="{URL_LOGO_M0}"', linea, flags=re.IGNORECASE)
-              if 'tvg-id=' not in linea:
-                  linea = linea.replace('#EXTINF:-1', f'#EXTINF:-1 tvg-id="{TGV_ID_M0}"')
-              if 'tvg-logo=' not in linea:
-                  linea = linea.replace('#EXTINF:-1', f'#EXTINF:-1 tvg-logo="{URL_LOGO_M0}"')
-              return linea
+              # Limpiamos tvg-id y tvg-logo antiguos
+              linea = re.sub(r'tvg-id="[^"]*"', '', linea, flags=re.IGNORECASE)
+              linea = re.sub(r'tvg-logo="[^"]*"', '', linea, flags=re.IGNORECASE)
+              # Limpiamos espacios dobles que hayan podido quedar
+              linea = re.sub(r'\s+', ' ', linea)
+              linea = linea.replace('#EXTINF:-1 ', '#EXTINF:-1 ')
+              
+              # Inyectamos primero tvg-id y luego tvg-logo exactamente igual que los demás
+              nuevo_sufijo = f'tvg-id="{TGV_ID_M0}" tvg-logo="{URL_LOGO_M0}"'
+              return linea.replace('#EXTINF:-1', f'#EXTINF:-1 {nuevo_sufijo}', 1)
 
 
           def numero_canal(nombre):
@@ -386,7 +389,7 @@ jobs:
               extinf_mod = linea
 
               # ------------------------------------------------------
-              # M+ 0: ID EPG PROPIO Y LOGOTIPO DAVID MUMA
+              # M+ 0: ID EPG PROPIO Y LOGOTIPO DAVID MUMA EN ORDEN
               # ------------------------------------------------------
 
               if re.search(r"\bM\+\s*0\b", nombre_normalizado):
