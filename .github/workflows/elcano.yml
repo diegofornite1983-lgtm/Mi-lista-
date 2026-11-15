@@ -45,7 +45,6 @@ jobs:
           archivo_tailscale = Path("Canales m3u")
           archivo_amigos = Path("lista-amigos")
 
-          # Logotipo oficial exacto para M+ 0 en los picons de David Muma
           URL_LOGO_M0 = (
               "https://raw.githubusercontent.com/davidmuma/"
               "picons_dobleM/master/icon/M%2B%200.png"
@@ -206,7 +205,7 @@ jobs:
 
 
           # ==========================================================
-          # ORDEN ESTRICTO DE CANALES
+          # ORDEN ESTRICTO DE CANALES (M+ 0 BAJO LOS MOVISTAR PLUS)
           # ==========================================================
 
           def prioridad_canal(canal):
@@ -216,15 +215,15 @@ jobs:
               numero = numero_canal(nombre)
               calidad = calidad_canal(nombre)
 
-              # 1. M+ 0: siempre el primero absoluto.
-              if re.search(r"\bM\+\s*0\b", nombre):
-                  return (0, 0, calidad, canal["indice"])
-
-              # 2. Movistar Plus clásico.
+              # 1. Movistar Plus clásico (arriba del todo).
               if (
                   nombre.startswith("MOVISTAR PLUS")
                   or nombre.startswith("MOVISTAR+")
               ):
+                  return (0, 0, calidad, canal["indice"])
+
+              # 2. M+ 0: justo debajo del último Movistar Plus, antes de la Champions.
+              if re.search(r"\bM\+\s*0\b", nombre):
                   return (1, 0, calidad, canal["indice"])
 
               # 3. LaLiga y sus multis (excluyendo Hypermotion).
@@ -387,7 +386,7 @@ jobs:
               extinf_mod = linea
 
               # ------------------------------------------------------
-              # M+ 0: ID EPG Y LOGOTIPO OFICIAL EN ORDEN
+              # M+ 0: ID EPG Y LOGOTIPO OFICIAL
               # ------------------------------------------------------
 
               if re.search(r"\bM\+\s*0\b", nombre_normalizado):
@@ -623,8 +622,7 @@ jobs:
           print(f"Canales procesados: {len(canales_ordenados)}")
           print(f"Canales nuevos: {len(agregados)}")
           print(f"Canales eliminados: {len(eliminados)}")
-          print('M+ 0: tvg-id="#0 HD"')
-          print('Movistar Plus clásico: tvg-id="Movistar Plus HD"')
+          print('M+ 0 colocado debajo de Movistar Plus')
           print("Carpetas personales: conservadas sin cambios")
           print("Casa, Tailscale y Amigos: actualizados")
           print("==========================================")
@@ -637,7 +635,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronizacion perfecta y ordenada"
+            git commit -m "M+ 0 colocado debajo de Movistar Plus"
             git push
           else
             echo "No hay cambios que guardar."
