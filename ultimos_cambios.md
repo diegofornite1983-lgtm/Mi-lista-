@@ -1,7 +1,11 @@
-# 🔄 Resumen de cambios en ELCANO - 2026-11-15 12:26:55
+# Resumen de cambios ELCANO - 2026-11-15 12:35:58
 
-### 🟢 Canales Nuevos (0):
-- Ninguno en esta actualización.
+## Canales nuevos (3)
+- DAZN 1 720P *
+- DAZN 4 1080P *
+- DAZN F1 720P *
 
-### 🔴 Canales Eliminados por Elcano (0):
-- Ninguno.
+## Canales eliminados (3)
+- DAZN 1 1080P *
+- DAZN 3 1080P *
+- DAZN BALONCESTO 2 720P *
