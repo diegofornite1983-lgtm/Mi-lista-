@@ -45,9 +45,10 @@ jobs:
           archivo_tailscale = Path("Canales m3u")
           archivo_amigos = Path("lista-amigos")
 
+          # Logotipo oficial exacto para M+ 0 en los picons de David Muma
           URL_LOGO_M0 = (
               "https://raw.githubusercontent.com/davidmuma/"
-              "picons_dobleM/master/icon/Movistar%20Plus%2B.png"
+              "picons_dobleM/master/icon/M%2B%200.png"
           )
 
           TGV_ID_M0 = "#0 HD"
@@ -170,14 +171,11 @@ jobs:
 
 
           def limpiar_y_forzar_m0(linea):
-              # Limpiamos tvg-id y tvg-logo antiguos
               linea = re.sub(r'tvg-id="[^"]*"', '', linea, flags=re.IGNORECASE)
               linea = re.sub(r'tvg-logo="[^"]*"', '', linea, flags=re.IGNORECASE)
-              # Limpiamos espacios dobles que hayan podido quedar
               linea = re.sub(r'\s+', ' ', linea)
               linea = linea.replace('#EXTINF:-1 ', '#EXTINF:-1 ')
               
-              # Inyectamos primero tvg-id y luego tvg-logo exactamente igual que los demás
               nuevo_sufijo = f'tvg-id="{TGV_ID_M0}" tvg-logo="{URL_LOGO_M0}"'
               return linea.replace('#EXTINF:-1', f'#EXTINF:-1 {nuevo_sufijo}', 1)
 
@@ -389,7 +387,7 @@ jobs:
               extinf_mod = linea
 
               # ------------------------------------------------------
-              # M+ 0: ID EPG PROPIO Y LOGOTIPO DAVID MUMA EN ORDEN
+              # M+ 0: ID EPG Y LOGOTIPO OFICIAL EN ORDEN
               # ------------------------------------------------------
 
               if re.search(r"\bM\+\s*0\b", nombre_normalizado):
