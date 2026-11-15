@@ -173,7 +173,7 @@ jobs:
               linea = re.sub(r'\s+', ' ', linea)
               linea = linea.replace('#EXTINF:-1 ', '#EXTINF:-1 ')
               
-              # FUERZA EL ID DE GUÍA Y TU LOGOTIPO PERSONALIZADO EN EL CANAL M+ 0
+              # AQUÍ ESTÁ LA CLAVE: Forzamos el tvg-id exácto para la EPG de David Muma y tu logotipo
               nuevo_sufijo = f'tvg-id="{TGV_ID_M0}" tvg-logo="{URL_LOGO_PERSONAL}"'
               return linea.replace('#EXTINF:-1', f'#EXTINF:-1 {nuevo_sufijo}', 1)
 
@@ -625,7 +625,7 @@ jobs:
           print(f"Canales eliminados: {len(eliminados)}")
           print('M+ 0 colocado debajo de Movistar Plus')
           print("Carpetas personales: conservadas sin cambios")
-          print("Casa, Tailscale y Amigos: actualizados")
+          print("Casa, Tailscale y Amigos: actualizado con EPG y logo")
           print("==========================================")
           PY
 
@@ -636,7 +636,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "M+ 0 forzado con tu logotipo personalizado y EPG"
+            git commit -m "M+ 0 forzado con tu logotipo personalizado y EPG de David Muma"
             git push
           else
             echo "No hay cambios que guardar."
