@@ -341,19 +341,20 @@ https://rtvelivestream.rtve.es/rtvesec/clan/clan_main_dvr.m3u8
 
 
 #EXTINF:-1 tvg-id="La1.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 HD
-https://rtve-live.buit.workers.dev/rtve/la1/index.m3u8
+https://hlslive-l1-ctve.grupomedia.com/hls-live/livepkgr/_definst_/live/la1_hls/la1_hls_ipad.m3u8
 
 #EXTINF:-1 tvg-id="La 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="MOVISTAR",La 2 HD
-https://rtve-live.buit.workers.dev/rtve/la2/index.m3u8
+https://hlslive-l2-ctve.grupomedia.com/hls-live/livepkgr/_definst_/live/la2_hls/la2_hls_ipad.m3u8
 
 #EXTINF:-1 tvg-id="TDP.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="MOVISTAR",Teledeporte HD
-https://rtve-live.buit.workers.dev/rtve/tdp/index.m3u8
+https://hlslive-tdp-ctve.grupomedia.com/hls-live/livepkgr/_definst_/live/tdp_hls/tdp_hls_ipad.m3u8
 
 #EXTINF:-1 tvg-id="24 Horas" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/24%20Horas.png" group-title="MOVISTAR",24h TVE HD
-https://rtve-live.buit.workers.dev/rtve/24h/index.m3u8
+https://hlslive-24h-ctve.grupomedia.com/hls-live/livepkgr/_definst_/live/24h_hls/24h_hls_ipad.m3u8
 
 #EXTINF:-1 tvg-id="Clan" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Clan.png" group-title="MOVISTAR",Clan TV HD
-https://rtve-live.buit.workers.dev/rtve/clan/index.m3u8
+https://hlslive-clan-ctve.grupomedia.com/hls-live/livepkgr/_definst_/live/clan_hls/clan_hls_ipad.m3u8
+
 
 # ==========================================
 # CARPETA: CHAMPIONS
