@@ -387,6 +387,18 @@ jobs:
                       URL_LOGO_PERSONAL
                   )
 
+              elif "ONETORO" in nombre_normalizado or "ONE TORO" in nombre_normalizado:
+                  extinf_mod = poner_atributo(
+                      extinf_mod,
+                      "tvg-id",
+                      "Onetoro"
+                  )
+                  extinf_mod = poner_atributo(
+                      extinf_mod,
+                      "tvg-logo",
+                      "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Onetoro.png"
+                  )
+
               extinf_mod = poner_atributo(
                   extinf_mod,
                   "group-title",
@@ -468,7 +480,7 @@ jobs:
           )
 
           # ==========================================================
-          # 2. ARCHIVO TAILSCALE (¡AHORA SÍ! Cambia la IP tanto en Elcano como en TUS carpetas)
+          # 2. ARCHIVO TAILSCALE (Cambia la IP TANTO en Elcano COMO en tus carpetas)
           # ==========================================================
           bloque_tailscale_elcano = re.sub(
               r'127\.0\.0\.1:6878|localhost:6878',
@@ -524,7 +536,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización completa: Elcano y canales personales adaptados a Tailscale"
+            git commit -m "Sincronización completa con Onetoro y Tailscale blindado"
             git push
           else
             echo "No hay cambios que guardar."
