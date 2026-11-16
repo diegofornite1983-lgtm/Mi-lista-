@@ -411,20 +411,28 @@ jobs:
                   )
 
               # ------------------------------------------------------
-              # ONETORO: FORZAR SU EPG Y LOGOTIPO PERSONALIZADO
+              # REGLAS AUTOMÁTICAS PARA OTROS CANALES SIN EPG/LOGO
               # ------------------------------------------------------
 
               elif "ONETORO" in nombre_normalizado or "ONE TORO" in nombre_normalizado:
-                  extinf_mod = poner_atributo(
-                      extinf_mod,
-                      "tvg-id",
-                      "Onetoro"
-                  )
-                  extinf_mod = poner_atributo(
-                      extinf_mod,
-                      "tvg-logo",
-                      "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Onetoro.png"
-                  )
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-id", "Onetoro")
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Onetoro.png")
+
+              elif "NBA LEAGUE PASS" in nombre_normalizado:
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-id", "NBA League Pass")
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://www.vhv.rs/dpng/d/431-4310509_nba-league-pass-logo-png-transparent-nba-league.png")
+
+              elif "SPORT TV" in nombre_normalizado:
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-id", "Sport TV+")
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://r2.thesportsdb.com/images/media/channel/logo/fjy5d31700902671.png")
+
+              elif "PARAMOUNT" in nombre_normalizado and "UFC" in nombre_normalizado:
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-id", "Paramount+ UFC")
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://cdn2.downdetector.com/static/uploads/logo/download-2_kvCjesa.png")
+
+              elif "M+ DEPORTES 8" in nombre_normalizado:
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-id", "M+ Deportes 8")
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/spain/deportes-8-por-movistar-plus-es.png")
 
               # ------------------------------------------------------
               # GROUP-TITLE DE LA ZONA AUTOMÁTICA
@@ -639,7 +647,7 @@ jobs:
           print(f"Canales procesados: {len(canales_ordenados)}")
           print(f"Canales nuevos: {len(agregados)}")
           print(f"Canales eliminados: {len(eliminados)}")
-          print('M+ 0 y Movistar Plus unificados con logo moderno y EPG')
+          print('M+ 0, Movistar y canales especiales unificados con logo y EPG')
           print("Carpetas personales: conservadas sin cambios")
           print("Casa, Tailscale y Amigos: actualizados")
           print("==========================================")
@@ -652,7 +660,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "M+ 0, Movistar y Onetoro unificados con logo y EPG"
+            git commit -m "Actualización EPG y logos para Onetoro, NBA, Sport TV y Deportes 8"
             git push
           else
             echo "No hay cambios que guardar."
