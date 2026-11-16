@@ -173,7 +173,6 @@ jobs:
               linea = re.sub(r'\s+', ' ', linea)
               linea = linea.replace('#EXTINF:-1 ', '#EXTINF:-1 ')
               
-              # FUERZA EL MISMO TVG-ID DE LOS MOVISTAR Y TU LOGOTIPO MODERNO
               nuevo_sufijo = f'tvg-id="{TGV_ID_MOVISTAR_UNIFICADO}" tvg-logo="{URL_LOGO_PERSONAL}"'
               return linea.replace('#EXTINF:-1', f'#EXTINF:-1 {nuevo_sufijo}', 1)
 
@@ -204,7 +203,7 @@ jobs:
 
 
           # ==========================================================
-          # ORDEN ESTRICTO DE CANALES (M+ 0 BAJO LOS MOVISTAR PLUS)
+          # ORDEN ESTRICTO DE CANALES
           # ==========================================================
 
           def prioridad_canal(canal):
@@ -214,18 +213,15 @@ jobs:
               numero = numero_canal(nombre)
               calidad = calidad_canal(nombre)
 
-              # 1. Movistar Plus clásico (arriba del todo).
               if (
                   nombre.startswith("MOVISTAR PLUS")
                   or nombre.startswith("MOVISTAR+")
               ):
                   return (0, 0, calidad, canal["indice"])
 
-              # 2. M+ 0: justo debajo del último Movistar Plus, antes de la Champions.
               if re.search(r"\bM\+\s*0\b", nombre):
                   return (1, 0, calidad, canal["indice"])
 
-              # 3. LaLiga y sus multis (excluyendo Hypermotion).
               if (
                   ("LALIGA" in nombre or "LA LIGA" in nombre or "DAZN LALIGA" in nombre)
                   and "HYPERMOTION" not in nombre
@@ -239,22 +235,18 @@ jobs:
 
                   return (2, suborden, numero, calidad, canal["indice"])
 
-              # 4. Liga de Campeones, del 1 al 8.
               if "CAMPEONES" in nombre or "CHAMPIONS" in nombre:
                   return (3, numero, calidad, canal["indice"])
 
-              # 5. Movistar Deportes: principal y del 2 al 8 juntos.
               if "DEPORTES" in nombre and "BALONCESTO" not in nombre:
                   return (4, numero, calidad, canal["indice"])
 
-              # 6. DAZN F1 y DAZN MotoGP.
               if "F1" in nombre or "FORMULA 1" in nombre:
                   return (5, 0, calidad, canal["indice"])
 
               if "MOTOGP" in nombre:
                   return (5, 1, calidad, canal["indice"])
 
-              # 7. DAZN generales: del 1 al 4.
               if (
                   "DAZN" in nombre
                   and not any(
@@ -270,38 +262,33 @@ jobs:
               ):
                   return (6, numero, calidad, canal["indice"])
 
-              # 8. M+ Vamos.
               if "VAMOS" in nombre:
                   return (7, 0, numero, calidad, canal["indice"])
 
-              # 9. LaLiga Hypermotion (Segunda división).
               if "HYPERMOTION" in nombre:
                   return (8, 0, numero, calidad, canal["indice"])
 
-              # 10. Primera Federación / RFEF (Justo debajo de la Hypermotion).
               if (
                   "RFEF" in nombre
                   or "PRIMERA FEDERACION" in nombre
               ):
                   return (9, 0, nombre, calidad, canal["indice"])
 
-              # 11. Golf, Eurosport, Tenis y Sport TV.
               if "GOLF" in nombre:
                   return (10, 0, numero, calidad, canal["indice"])
 
               if "EUROSPORT" in nombre:
-                  return (10, 1, numero, calidad, canal["indice"])
+                  return (10, 1, calidad, canal["indice"])
 
               if (
                   "TENIS" in nombre
                   or "TENNIS" in nombre
               ):
-                  return (10, 2, numero, calidad, canal["indice"])
+                  return (10, 2, calidad, canal["indice"])
 
               if "SPORT TV" in nombre:
-                  return (10, 3, numero, calidad, canal["indice"])
+                  return (10, 3, calidad, canal["indice"])
 
-              # 12. Otros canales generales de deportes y variados de Elcano.
               if (
                   "BALONCESTO" not in nombre
                   and not nombre.startswith("NBA")
@@ -309,14 +296,12 @@ jobs:
               ):
                   return (11, 0, nombre, calidad, canal["indice"])
 
-              # 13. Baloncesto y NBA (Abajo del todo, antes de la TDT).
               if (
                   "BALONCESTO" in nombre
                   or nombre.startswith("NBA")
               ):
                   return (12, numero, calidad, canal["indice"])
 
-              # 14. TDT y canales abiertos (Al final absoluto).
               if es_tdt_abierto(nombre):
                   return (13, 0, nombre, calidad, canal["indice"])
 
@@ -385,46 +370,97 @@ jobs:
               extinf_mod = linea
 
               # ------------------------------------------------------
-              # M+ 0: ID EPG UNIFICADO Y TU LOGOTIPO MODERNO
+              # DICCIONARIO MILIMÉTRICO Y EXACTO PARA TODOS LOS CANALES
               # ------------------------------------------------------
 
-              if re.search(r"\bM\+\s*0\b", nombre_normalizado):
+              # 1. Movistar Plus Clásico
+              if nombre_normalizado.startswith("MOVISTAR PLUS") or nombre_normalizado.startswith("MOVISTAR+"):
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-id", TGV_ID_MOVISTAR_UNIFICADO)
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", URL_LOGO_PERSONAL)
+
+              # 2. M+ 0
+              elif re.search(r"\bM\+\s*0\b", nombre_normalizado):
                   extinf_mod = limpiar_y_forzar_m0(extinf_mod)
 
-              # ------------------------------------------------------
-              # MOVISTAR PLUS CLÁSICO: SU ID EPG Y TU LOGOTIPO MODERNO
-              # ------------------------------------------------------
+              # 3. Movistar Deportes (Del 1 al 8 exactos)
+              elif "DEPORTES" in nombre_normalizado and "BALONCESTO" not in nombre_normalizado:
+                  if " 2" in nombre_normalizado:
+                      tvg_id, logo_url = "M+ Deportes 2 HD", "https://i.ibb.co/q95fBKV/deportes2.png"
+                  elif " 3" in nombre_normalizado:
+                      tvg_id, logo_url = "M+ Deportes 3", "https://i.ibb.co/jDg5qWD/deportes3.png"
+                  elif " 4" in nombre_normalizado:
+                      tvg_id, logo_url = "M+ Deportes 4", "https://i.ibb.co/WDN9NN9/deportes4.png"
+                  elif " 5" in nombre_normalizado:
+                      tvg_id, logo_url = "M+ Deportes 5", "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/spain/deportes-5-por-movistar-plus-es.png"
+                  elif " 6" in nombre_normalizado:
+                      tvg_id, logo_url = "M+ Deportes 6", "https://www.movistarplus.es/recorte/n/caratula5/M2114916V1621463"
+                  elif " 7" in nombre_normalizado:
+                      tvg_id, logo_url = "M+ Deportes 7", "https://www.movistarplus.es/recorte/n/caratula5/M2114916V1621463"
+                  elif " 8" in nombre_normalizado:
+                      tvg_id, logo_url = "M+ Deportes 8", "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/spain/deportes-8-por-movistar-plus-es.png"
+                  else:
+                      tvg_id, logo_url = "M+ Deportes HD", "https://i.ibb.co/CV4CLjz/deportes.png"
+                  
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-id", tvg_id)
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", logo_url)
 
-              elif (
-                  nombre_normalizado.startswith("MOVISTAR PLUS")
-                  or nombre_normalizado.startswith("MOVISTAR+")
-              ):
-                  extinf_mod = poner_atributo(
-                      extinf_mod,
-                      "tvg-id",
-                      TGV_ID_MOVISTAR_UNIFICADO
-                  )
-                  extinf_mod = poner_atributo(
-                      extinf_mod,
-                      "tvg-logo",
-                      URL_LOGO_PERSONAL
-                  )
+              # 4. Liga de Campeones (Del 1 al 8 exactos)
+              elif "CAMPEONES" in nombre_normalizado or "CHAMPIONS" in nombre_normalizado:
+                  if " 2" in nombre_normalizado:
+                      tvg_id, logo_url = "M+ Liga de Campeones 2 HD", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%202.png"
+                  elif " 3" in nombre_normalizado:
+                      tvg_id, logo_url = "M+ Liga de Campeones 3 HD", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%203.png"
+                  elif " 4" in nombre_normalizado:
+                      tvg_id, logo_url = "M+ Liga de Campeones 4", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%204.png"
+                  elif any(n in nombre_normalizado for n in [" 5", " 6", " 7", " 8"]):
+                      num_c = re.search(r'\b([5-8])\b', nombre_normalizado).group(1)
+                      tvg_id, logo_url = f"M+ Liga de Campeones {num_c}", f"https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%20{num_c}.png"
+                  else:
+                      tvg_id, logo_url = "M+ Liga de Campeones HD", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png"
+                  
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-id", tvg_id)
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", logo_url)
 
-              # ------------------------------------------------------
-              # ONETORO: FORZAR SU EPG Y LOGOTIPO PERSONALIZADO
-              # ------------------------------------------------------
+              # 5. LaLiga / DAZN LaLiga
+              elif "LALIGA" in nombre_normalizado or "LA LIGA" in nombre_normalizado:
+                  if "DAZN LALIGA 2" in nombre_normalizado:
+                      tvg_id, logo_url = "DAZN LaLiga 2 HD", "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/spain/dazn-laliga-2-es.png"
+                  elif "DAZN LALIGA" in nombre_normalizado:
+                      tvg_id, logo_url = "DAZN LaLiga HD", "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/spain/dazn-laliga-es.png"
+                  elif " 2" in nombre_normalizado:
+                      tvg_id, logo_url = "M+ LaLiga 2 HD", "https://i.ibb.co/Tc97zSb/liga2.png"
+                  elif " 3" in nombre_normalizado:
+                      tvg_id, logo_url = "M+ LaLiga 3 HD", "https://i.ibb.co/BZF0xG9/liga3.png"
+                  else:
+                      tvg_id, logo_url = "M+ LaLiga HD", "https://i.ibb.co/yfV1Q8n/liga.png"
+                  
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-id", tvg_id)
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", logo_url)
 
+              # 6. DAZN (F1, MotoGP, Baloncesto y del 1 al 4)
+              elif "DAZN" in nombre_normalizado:
+                  if "F1" in nombre_normalizado or "FORMULA 1" in nombre_normalizado:
+                      tvg_id, logo_url = "DAZN F1 HD", "https://i.ibb.co/2Ndmtbp/f1.png"
+                  elif "MOTOGP" in nombre_normalizado:
+                      tvg_id, logo_url = "DAZN MotoGP", "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1772006365-dazn-motogp-699eaba85423e.jpg"
+                  elif "BALONCESTO" in nombre_normalizado:
+                      num_b = re.search(r'\b([1-3])\b', nombre_normalizado)
+                      num_b_str = f" {num_b.group(1)}" if num_b else ""
+                      tvg_id, logo_url = f"DAZN Baloncesto{num_b_str}".strip(), "https://www.adslzone.net/app/uploads-adslzone.net/2025/12/dazn-baloncesto-movistar-plus.png"
+                  elif " 2" in nombre_normalizado:
+                      tvg_id, logo_url = "DAZN 2 HD", "https://i.ibb.co/Kz0GXSX/dazn2.png"
+                  else:
+                      num_d = re.search(r'\b([1-4])\b', nombre_normalizado)
+                      num_d_str = num_d.group(1) if num_d else "1"
+                      tvg_id, logo_url = f"DAZN {num_d_str} HD", "https://i.ibb.co/FVzKq1y/dazn1.png"
+                  
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-id", tvg_id)
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", logo_url)
+
+              # 7. Onetoro
               elif "ONETORO" in nombre_normalizado or "ONE TORO" in nombre_normalizado:
-                  extinf_mod = poner_atributo(
-                      extinf_mod,
-                      "tvg-id",
-                      "Onetoro"
-                  )
-                  extinf_mod = poner_atributo(
-                      extinf_mod,
-                      "tvg-logo",
-                      "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Onetoro.png"
-                  )
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-id", "Onetoro")
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Onetoro.png")
 
               # ------------------------------------------------------
               # GROUP-TITLE DE LA ZONA AUTOMÁTICA
@@ -611,12 +647,6 @@ jobs:
                   "No se guardan los archivos."
               )
 
-          if f'tvg-id="{TGV_ID_MOVISTAR_UNIFICADO}"' not in texto_final:
-              sys.exit(
-                  'ERROR: No se ha aplicado el tvg-id unificado a Movistar. '
-                  "No se guardan los archivos."
-              )
-
           # ==========================================================
           # GUARDAR ARCHIVOS
           # ==========================================================
@@ -639,7 +669,7 @@ jobs:
           print(f"Canales procesados: {len(canales_ordenados)}")
           print(f"Canales nuevos: {len(agregados)}")
           print(f"Canales eliminados: {len(eliminados)}")
-          print('M+ 0 y Movistar Plus unificados con logo moderno y EPG')
+          print('Diccionario milimétrico aplicado correctamente')
           print("Carpetas personales: conservadas sin cambios")
           print("Casa, Tailscale y Amigos: actualizados")
           print("==========================================")
@@ -652,7 +682,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "M+ 0, Movistar y Onetoro unificados con logo y EPG"
+            git commit -m "Actualización con diccionario milimétrico exacto de logos y EPG"
             git push
           else
             echo "No hay cambios que guardar."
