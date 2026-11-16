@@ -392,60 +392,39 @@ jobs:
                   extinf_mod = limpiar_y_forzar_m0(extinf_mod)
 
               # ------------------------------------------------------
-              # DICCIONARIO MASIVO INTELIGENTE PARA TODOS LOS MOVISTAR Y M+
+              # MOVISTAR PLUS CLÁSICO: SU ID EPG Y TU LOGOTIPO MODERNO
               # ------------------------------------------------------
 
-              elif "MOVISTAR" in nombre_normalizado or nombre_normalizado.startswith("M+"):
-                  num_match = re.search(r'\b([1-9])\b', nombre_normalizado)
-                  num_str = num_match.group(1) if num_match else ""
-
-                  if "DEPORTES" in nombre_normalizado:
-                      tvg_id = f"M+ Deportes {num_str}" if num_str else "M+ Deportes HD"
-                      logo_url = "https://i.ibb.co/CV4CLjz/deportes.png"
-                  elif "ESTRENOS" in nombre_normalizado:
-                      tvg_id = "M+ Estrenos HD"
-                      logo_url = "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Estrenos.png"
-                  elif "ACCION" in nombre_normalizado:
-                      tvg_id = "M+ Acción HD"
-                      logo_url = "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Acci%C3%B3n.png"
-                  elif "COMEDIA" in nombre_normalizado:
-                      tvg_id = "M+ Comedia HD"
-                      logo_url = "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Comedia.png"
-                  elif "DRAMA" in nombre_normalizado:
-                      tvg_id = "M+ Drama HD"
-                      logo_url = "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Drama.png"
-                  elif "DOCUMENTALES" in nombre_normalizado:
-                      tvg_id = "M+ Documentales HD"
-                      logo_url = "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Documentales.png"
-                  elif "VAMOS" in nombre_normalizado:
-                      tvg_id = f"M+ Vamos {num_str}" if num_str else "M+ Vamos HD"
-                      logo_url = "https://i.ibb.co/gWMRpFB/vamos.png"
-                  elif "GOLF" in nombre_normalizado:
-                      tvg_id = f"M+ Golf {num_str}" if num_str else "M+ Golf HD"
-                      logo_url = "https://www.vhv.rs/dpng/d/424-4244985_file-movistar-golf-svg-logo-movistar-golf-hd.png"
-                  elif "LALIGA" in nombre_normalizado or "LA LIGA" in nombre_normalizado:
-                      tvg_id = f"M+ LaLiga {num_str}" if num_str else "M+ LaLiga HD"
-                      logo_url = "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png"
-                  elif "CAMPEONES" in nombre_normalizado or "CHAMPIONS" in nombre_normalizado:
-                      tvg_id = f"M+ Liga de Campeones {num_str}" if num_str else "M+ Liga de Campeones"
-                      logo_url = "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%205.png"
-                  elif "BALONCESTO" in nombre_normalizado:
-                      tvg_id = f"M+ Baloncesto {num_str}" if num_str else "M+ Baloncesto"
-                      logo_url = "https://www.adslzone.net/app/uploads-adslzone.net/2026/04/baloncesto-movistar-plus-canales.jpg"
-                  else:
-                      tvg_id = "Movistar Plus HD"
-                      logo_url = URL_LOGO_PERSONAL
-
-                  extinf_mod = poner_atributo(extinf_mod, "tvg-id", tvg_id)
-                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", logo_url)
+              elif (
+                  nombre_normalizado.startswith("MOVISTAR PLUS")
+                  or nombre_normalizado.startswith("MOVISTAR+")
+              ):
+                  extinf_mod = poner_atributo(
+                      extinf_mod,
+                      "tvg-id",
+                      TGV_ID_MOVISTAR_UNIFICADO
+                  )
+                  extinf_mod = poner_atributo(
+                      extinf_mod,
+                      "tvg-logo",
+                      URL_LOGO_PERSONAL
+                  )
 
               # ------------------------------------------------------
-              # ONETORO
+              # ONETORO: FORZAR SU EPG Y LOGOTIPO PERSONALIZADO
               # ------------------------------------------------------
 
               elif "ONETORO" in nombre_normalizado or "ONE TORO" in nombre_normalizado:
-                  extinf_mod = poner_atributo(extinf_mod, "tvg-id", "Onetoro")
-                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Onetoro.png")
+                  extinf_mod = poner_atributo(
+                      extinf_mod,
+                      "tvg-id",
+                      "Onetoro"
+                  )
+                  extinf_mod = poner_atributo(
+                      extinf_mod,
+                      "tvg-logo",
+                      "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Onetoro.png"
+                  )
 
               # ------------------------------------------------------
               # GROUP-TITLE DE LA ZONA AUTOMÁTICA
@@ -660,7 +639,7 @@ jobs:
           print(f"Canales procesados: {len(canales_ordenados)}")
           print(f"Canales nuevos: {len(agregados)}")
           print(f"Canales eliminados: {len(eliminados)}")
-          print('Diccionario masivo aplicado a todos los Movistar y M+')
+          print('M+ 0 y Movistar Plus unificados con logo moderno y EPG')
           print("Carpetas personales: conservadas sin cambios")
           print("Casa, Tailscale y Amigos: actualizados")
           print("==========================================")
@@ -673,7 +652,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Actualización masiva de logos y EPG para todos los Movistar y M+"
+            git commit -m "M+ 0, Movistar y Onetoro unificados con logo y EPG"
             git push
           else
             echo "No hay cambios que guardar."
