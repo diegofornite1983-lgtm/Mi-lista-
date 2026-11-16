@@ -35,11 +35,18 @@ jobs:
           # CONFIGURACION
           # ==========================================================
 
-          URL_ELCANO = (
-              "https://tokyo2.elcano-ipfs.workers.dev/"
-              "k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/"
-              "hashes_acestream.m3u"
-          )
+          URLS_ELCANO = [
+              (
+                  "https://tokyo2.elcano-ipfs.workers.dev/"
+                  "k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/"
+                  "hashes_acestream.m3u"
+              ),
+              (
+                  "https://ipfs.io/ipns/"
+                  "k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs/"
+                  "hashes_acestream.m3u"
+              )
+          ]
 
           archivo_casa = Path("Mi lista acestream")
           archivo_tailscale = Path("Canales m3u")
@@ -111,27 +118,41 @@ jobs:
           cuerpo_personal = "".join(lineas_casa[inicio_personal:])
 
           # ==========================================================
-          # DESCARGAR ELCANO
+          # DESCARGAR ELCANO (CON ALTERNATIVAS)
           # ==========================================================
 
-          try:
-              peticion = urllib.request.Request(
-                  URL_ELCANO,
-                  headers={
-                      "User-Agent": "Mozilla/5.0",
-                      "Accept": "*/*"
-                  }
-              )
+          fuente_elcano = None
+          errores_descarga = []
 
-              with urllib.request.urlopen(peticion, timeout=60) as respuesta:
-                  fuente_elcano = respuesta.read().decode(
-                      "utf-8-sig",
-                      errors="replace"
+          for url_actual in URLS_ELCANO:
+              try:
+                  peticion = urllib.request.Request(
+                      url_actual,
+                      headers={
+                          "User-Agent": "Mozilla/5.0",
+                          "Accept": "*/*"
+                      }
                   )
 
-          except Exception as error:
+                  with urllib.request.urlopen(peticion, timeout=60) as respuesta:
+                      contenido_descargado = respuesta.read().decode(
+                          "utf-8-sig",
+                          errors="replace"
+                      )
+                      if "#EXTINF:" in contenido_descargado:
+                          fuente_elcano = contenido_descargado
+                          print(f"Descargado correctamente desde: {url_actual}")
+                          break
+                      else:
+                          errores_descarga.append(f"{url_actual}: No contiene canales válidos")
+
+              except Exception as error:
+                  errores_descarga.append(f"{url_actual}: {error}")
+
+          if not fuente_elcano:
+              detalle_errores = " | ".join(errores_descarga)
               sys.exit(
-                  f"ERROR descargando Elcano: {error}. "
+                  f"ERROR descargando Elcano en todas las URLs: {detalle_errores}. "
                   "No se modifica ningún archivo."
               )
 
