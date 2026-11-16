@@ -411,6 +411,22 @@ jobs:
                   )
 
               # ------------------------------------------------------
+              # ONETORO: FORZAR SU EPG Y LOGOTIPO PERSONALIZADO
+              # ------------------------------------------------------
+
+              elif "ONETORO" in nombre_normalizado or "ONE TORO" in nombre_normalizado:
+                  extinf_mod = poner_atributo(
+                      extinf_mod,
+                      "tvg-id",
+                      "Onetoro"
+                  )
+                  extinf_mod = poner_atributo(
+                      extinf_mod,
+                      "tvg-logo",
+                      "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Onetoro.png"
+                  )
+
+              # ------------------------------------------------------
               # GROUP-TITLE DE LA ZONA AUTOMÁTICA
               # ------------------------------------------------------
 
@@ -636,7 +652,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "M+ 0 y Movistar unificados con tu logo moderno y EPG"
+            git commit -m "M+ 0, Movistar y Onetoro unificados con logo y EPG"
             git push
           else
             echo "No hay cambios que guardar."
