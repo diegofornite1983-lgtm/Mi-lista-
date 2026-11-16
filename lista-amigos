@@ -288,18 +288,6 @@ http://127.0.0.1:6878/ace/getstream?id=2e44af345b1118be0844364b335a617364166849
 #EXTINF:-1 tvg-id="La 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 06dd
 http://127.0.0.1:6878/ace/getstream?id=9c079e1bbd01814c107e89187b8c24ba0ac306dd
 
-#EXTINF:-1 tvg-id="La1.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 HD
-https://rtvelivestream.rtve.es/rtvesec/la1/la1_main_dvr.m3u8
-
-
-#EXTINF:-1 tvg-id="La 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="MOVISTAR",La 2 HD
-https://rtvelivestream.rtve.es/rtvesec/la2/la2_main_dvr.m3u8
-
-
-
-#EXTINF:-1 tvg-id="TDP.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="MOVISTAR",Teledeporte HD
-https://rtvelivestream.rtve.es/rtvesec/tdp/tdp_main_dvr.m3u8
-
 
 
 #EXTINF:-1 tvg-id="Cuatro HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Cuatro.png" group-title="MOVISTAR",CUATRO 1080p **
@@ -316,31 +304,6 @@ http://127.0.0.1:6878/ace/getstream?id=9a84a44833e4b8dc39a296584d4f587b7ae3163c
 
 #EXTINF:-1 tvg-id="Baby TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Baby%20TV.png" group-title="MOVISTAR",Baby TV 28fb
 http://127.0.0.1:6878/ace/getstream?id=d865b49d6ec5844e0bcf8e596ab90a7be8bb28fb
-
-#EXTINF:-1 tvg-id="24 Horas" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/24%20Horas.png" group-title="MOVISTAR",24h TVE HD
-https://rtvelivestream.rtve.es/rtvesec/24h/24h_main_dvr.m3u8
-
-#EXTINF:-1 tvg-id="Clan" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Clan.png" group-title="MOVISTAR",Clan TV HD
-https://rtvelivestream.rtve.es/rtvesec/clan/clan_main_dvr.m3u8
-
-
-
-#EXTINF:-1 tvg-id="La 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 HD
-http://127.0.0.1:6878/ace/getstream?id=2e44af345b1118be0844364b335a617364166849
-
-#EXTINF:-1 tvg-id="La 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="MOVISTAR",La 2 HD
-http://127.0.0.1:6878/ace/getstream?id=49bc1a3782ea255e2b0271bf386a64f434241777
-
-#EXTINF:-1 tvg-id="TDP.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="MOVISTAR",Teledeporte HD
-http://127.0.0.1:6878/ace/getstream?id=7c975a612501a11883be783921133a8251e6015b
-
-#EXTINF:-1 tvg-id="24 Horas" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/24%20Horas.png" group-title="MOVISTAR",24h TVE HD
-http://127.0.0.1:6878/ace/getstream?id=12a99e843321589d01884392182a6375129b01aa
-
-#EXTINF:-1 tvg-id="Clan" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Clan.png" group-title="MOVISTAR",Clan TV HD
-http://127.0.0.1:6878/ace/getstream?id=83b110294821a01773629471182390a18420177f
-
-
 
 
 
