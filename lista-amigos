@@ -197,8 +197,6 @@ http://127.0.0.1:6878/ace/getstream?id=f608f9cb7099d94172739494e8864e8b5b6a4360
 http://127.0.0.1:6878/ace/getstream?id=c7d8405bdef3650b9bac58042c3708440ef286a8
 
 
-
-
 # ==========================================
 # ZONA PERSONAL: TUS CATEGORÍAS Y LISTAS
 # ==========================================
@@ -355,11 +353,8 @@ http://127.0.0.1:6878/ace/getstream?id=3c1b00267a398093848ded743cfdb547e2232216
 http://127.0.0.1:6878/ace/getstream?id=6317bdcbe852dce829e5c647cce4da04a7dcb7f5
 #EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml" refresh="3600"
 
-#EXTINF:-1 tvg-id="Onetoro TV" tvg-name="Onetoro TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Onetoro.png" group-title="MOVISTAR",Onetoro TV 1080p *
+#EXTINF:-1 tvg-id="Onetoro" tvg-name="Onetoro TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Onetoro.png" group-title="MOVISTAR",Onetoro TV 1080p *
 http://127.0.0.1:6878/ace/getstream?id=8b6daf481a4c2eed0c1b6a473a841aea980d188c
-
-
-
 
 
 #EXTINF:-1 tvg-id="Caza y Pesca HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Caza%20y%20Pesca.png" group-title="MOVISTAR",Caza y Pesca FHD
