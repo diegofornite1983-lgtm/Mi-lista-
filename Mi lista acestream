@@ -339,6 +339,22 @@ https://rtvelivestream.rtve.es/rtvesec/24h/24h_main_dvr.m3u8
 https://rtvelivestream.rtve.es/rtvesec/clan/clan_main_dvr.m3u8
 
 
+
+#EXTINF:-1 tvg-id="La1.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%201.png" group-title="MOVISTAR",La 1 HD
+https://rtve-live.buit.workers.dev/rtve/la1/index.m3u8
+
+#EXTINF:-1 tvg-id="La 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%202.png" group-title="MOVISTAR",La 2 HD
+https://rtve-live.buit.workers.dev/rtve/la2/index.m3u8
+
+#EXTINF:-1 tvg-id="TDP.TV" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="MOVISTAR",Teledeporte HD
+https://rtve-live.buit.workers.dev/rtve/tdp/index.m3u8
+
+#EXTINF:-1 tvg-id="24 Horas" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/24%20Horas.png" group-title="MOVISTAR",24h TVE HD
+https://rtve-live.buit.workers.dev/rtve/24h/index.m3u8
+
+#EXTINF:-1 tvg-id="Clan" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Clan.png" group-title="MOVISTAR",Clan TV HD
+https://rtve-live.buit.workers.dev/rtve/clan/index.m3u8
+
 # ==========================================
 # CARPETA: CHAMPIONS
 # ==========================================
