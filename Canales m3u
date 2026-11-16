@@ -179,7 +179,7 @@ http://100.90.204.66:6878/ace/getstream?id=1133d7e0abeab42508ddcfc1ed2c3f974d2f1
 http://100.90.204.66:6878/ace/getstream?id=303502c689c33f8ff8539a036225c029e42e2bf8
 #EXTINF:-1 tvg-id="La 2" tvg-logo="https://img2.rtve.es/n/2220921" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",La 2 TVE 1080p **
 http://100.90.204.66:6878/ace/getstream?id=fd4e2f0d5cd849a9f2f64f33c05aea5278031542
-#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Onetoro TV 1080p *
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Onetoro.png" tvg-id="Onetoro" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Onetoro TV 1080p *
 http://100.90.204.66:6878/ace/getstream?id=8b6daf481a4c2eed0c1b6a473a841aea980d188c
 #EXTINF:-1 tvg-id="Real Madrid TV" tvg-logo="https://cdn.sincroguia.tv/uploads/channels/xlogo-real-madrid-tv-158.jpg.pagespeed.ic.MN53oqBu9E.jpg" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Real Madrid TV 1080p *
 http://100.90.204.66:6878/ace/getstream?id=b1a862efaf38730ffdb5a016a5d1d06dbca0ef6a
@@ -191,6 +191,7 @@ http://100.90.204.66:6878/ace/getstream?id=14b1f7bf6e42f9b7dbb3213cedc6086f7908a
 http://100.90.204.66:6878/ace/getstream?id=f608f9cb7099d94172739494e8864e8b5b6a4360
 #EXTINF:-1 tvg-id="Teledeporte" tvg-logo="https://img2.rtve.es/n/15966755" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Teledeporte 720p **
 http://100.90.204.66:6878/ace/getstream?id=c7d8405bdef3650b9bac58042c3708440ef286a8
+
 
 
 
