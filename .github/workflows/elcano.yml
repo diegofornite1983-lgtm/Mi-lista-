@@ -173,6 +173,7 @@ jobs:
               linea = re.sub(r'\s+', ' ', linea)
               linea = linea.replace('#EXTINF:-1 ', '#EXTINF:-1 ')
               
+              # FUERZA EL MISMO TVG-ID DE LOS MOVISTAR Y TU LOGOTIPO MODERNO
               nuevo_sufijo = f'tvg-id="{TGV_ID_MOVISTAR_UNIFICADO}" tvg-logo="{URL_LOGO_PERSONAL}"'
               return linea.replace('#EXTINF:-1', f'#EXTINF:-1 {nuevo_sufijo}', 1)
 
@@ -203,7 +204,7 @@ jobs:
 
 
           # ==========================================================
-          # ORDEN ESTRICTO DE CANALES
+          # ORDEN ESTRICTO DE CANALES (M+ 0 BAJO LOS MOVISTAR PLUS)
           # ==========================================================
 
           def prioridad_canal(canal):
@@ -213,15 +214,18 @@ jobs:
               numero = numero_canal(nombre)
               calidad = calidad_canal(nombre)
 
+              # 1. Movistar Plus clásico (arriba del todo).
               if (
                   nombre.startswith("MOVISTAR PLUS")
                   or nombre.startswith("MOVISTAR+")
               ):
                   return (0, 0, calidad, canal["indice"])
 
+              # 2. M+ 0: justo debajo del último Movistar Plus, antes de la Champions.
               if re.search(r"\bM\+\s*0\b", nombre):
                   return (1, 0, calidad, canal["indice"])
 
+              # 3. LaLiga y sus multis (excluyendo Hypermotion).
               if (
                   ("LALIGA" in nombre or "LA LIGA" in nombre or "DAZN LALIGA" in nombre)
                   and "HYPERMOTION" not in nombre
@@ -235,18 +239,22 @@ jobs:
 
                   return (2, suborden, numero, calidad, canal["indice"])
 
+              # 4. Liga de Campeones, del 1 al 8.
               if "CAMPEONES" in nombre or "CHAMPIONS" in nombre:
                   return (3, numero, calidad, canal["indice"])
 
+              # 5. Movistar Deportes: principal y del 2 al 8 juntos.
               if "DEPORTES" in nombre and "BALONCESTO" not in nombre:
                   return (4, numero, calidad, canal["indice"])
 
+              # 6. DAZN F1 y DAZN MotoGP.
               if "F1" in nombre or "FORMULA 1" in nombre:
                   return (5, 0, calidad, canal["indice"])
 
               if "MOTOGP" in nombre:
                   return (5, 1, calidad, canal["indice"])
 
+              # 7. DAZN generales: del 1 al 4.
               if (
                   "DAZN" in nombre
                   and not any(
@@ -262,18 +270,22 @@ jobs:
               ):
                   return (6, numero, calidad, canal["indice"])
 
+              # 8. M+ Vamos.
               if "VAMOS" in nombre:
                   return (7, 0, numero, calidad, canal["indice"])
 
+              # 9. LaLiga Hypermotion (Segunda división).
               if "HYPERMOTION" in nombre:
                   return (8, 0, numero, calidad, canal["indice"])
 
+              # 10. Primera Federación / RFEF (Justo debajo de la Hypermotion).
               if (
                   "RFEF" in nombre
                   or "PRIMERA FEDERACION" in nombre
               ):
                   return (9, 0, nombre, calidad, canal["indice"])
 
+              # 11. Golf, Eurosport, Tenis y Sport TV.
               if "GOLF" in nombre:
                   return (10, 0, numero, calidad, canal["indice"])
 
@@ -289,6 +301,7 @@ jobs:
               if "SPORT TV" in nombre:
                   return (10, 3, numero, calidad, canal["indice"])
 
+              # 12. Otros canales generales de deportes y variados de Elcano.
               if (
                   "BALONCESTO" not in nombre
                   and not nombre.startswith("NBA")
@@ -296,12 +309,14 @@ jobs:
               ):
                   return (11, 0, nombre, calidad, canal["indice"])
 
+              # 13. Baloncesto y NBA (Abajo del todo, antes de la TDT).
               if (
                   "BALONCESTO" in nombre
                   or nombre.startswith("NBA")
               ):
                   return (12, numero, calidad, canal["indice"])
 
+              # 14. TDT y canales abiertos (Al final absoluto).
               if es_tdt_abierto(nombre):
                   return (13, 0, nombre, calidad, canal["indice"])
 
@@ -369,8 +384,16 @@ jobs:
 
               extinf_mod = linea
 
+              # ------------------------------------------------------
+              # M+ 0: ID EPG UNIFICADO Y TU LOGOTIPO MODERNO
+              # ------------------------------------------------------
+
               if re.search(r"\bM\+\s*0\b", nombre_normalizado):
                   extinf_mod = limpiar_y_forzar_m0(extinf_mod)
+
+              # ------------------------------------------------------
+              # MOVISTAR PLUS CLÁSICO: SU ID EPG Y TU LOGOTIPO MODERNO
+              # ------------------------------------------------------
 
               elif (
                   nombre_normalizado.startswith("MOVISTAR PLUS")
@@ -387,11 +410,19 @@ jobs:
                       URL_LOGO_PERSONAL
                   )
 
+              # ------------------------------------------------------
+              # GROUP-TITLE DE LA ZONA AUTOMÁTICA
+              # ------------------------------------------------------
+
               extinf_mod = poner_atributo(
                   extinf_mod,
                   "group-title",
                   GROUP_TITLE
               )
+
+              # ------------------------------------------------------
+              # CONVERTIR HASH ACESTREAM A DIRECCIÓN LOCAL
+              # ------------------------------------------------------
 
               coincidencia_hash = re.search(
                   r"([0-9a-fA-F]{40})",
@@ -423,10 +454,18 @@ jobs:
                   "No se modifica ningún archivo."
               )
 
+          # ==========================================================
+          # ORDEN SIN ELIMINAR CANALES NI DUPLICADOS
+          # ==========================================================
+
           canales_ordenados = sorted(
               canales,
               key=prioridad_canal
           )
+
+          # ==========================================================
+          # CONSTRUIR LA ZONA AUTOMÁTICA
+          # ==========================================================
 
           bloque_automatico = [
               "# ==========================================",
@@ -439,6 +478,64 @@ jobs:
               bloque_automatico.append(canal["url"])
 
           texto_nuevo_elcano = salto.join(bloque_automatico)
+
+          # ==========================================================
+          # COMPARAR CANALES PARA EL INFORME
+          # ==========================================================
+
+          def extraer_nombres(texto):
+              nombres = set()
+
+              for linea in texto.splitlines():
+                  if linea.startswith("#EXTINF:") and "," in linea:
+                      nombres.add(
+                          linea.rsplit(",", 1)[-1].strip().upper()
+                      )
+
+              return nombres
+
+
+          zona_anterior = "".join(lineas_casa[:inicio_personal])
+
+          canales_viejos = extraer_nombres(zona_anterior)
+          canales_new = extraer_nombres(texto_nuevo_elcano)
+
+          agregados = sorted(canales_new - canales_viejos)
+          eliminados = sorted(canales_viejos - canales_new)
+
+          timestamp_actual = datetime.datetime.now().strftime(
+              "%Y-%m-%d %H:%M:%S"
+          )
+
+          reporte = [
+              f"# Resumen de cambios ELCANO - {timestamp_actual}",
+              "",
+              f"## Canales nuevos ({len(agregados)})"
+          ]
+
+          if agregados:
+              reporte.extend(f"- {canal}" for canal in agregados)
+          else:
+              reporte.append("- Ninguno.")
+
+          reporte.extend([
+              "",
+              f"## Canales eliminados ({len(eliminados)})"
+          ])
+
+          if eliminados:
+              reporte.extend(f"- {canal}" for canal in eliminados)
+          else:
+              reporte.append("- Ninguno.")
+
+          Path("ultimos_cambios.md").write_text(
+              "\n".join(reporte),
+              encoding="utf-8"
+          )
+
+          # ==========================================================
+          # CABECERA M3U
+          # ==========================================================
 
           cabecera_m3u = (
               '#EXTM3U url-tvg="'
@@ -455,6 +552,10 @@ jobs:
               + salto
           )
 
+          # ==========================================================
+          # MONTAR ARCHIVO SIN TOCAR LA ZONA PERSONAL
+          # ==========================================================
+
           separador = salto + salto
 
           texto_final = (
@@ -464,9 +565,13 @@ jobs:
               + cuerpo_personal
           )
 
-          # FORZAMOS EL REEMPLAZO DE LA IP DE TAILSCALE DE FORMA SEGURA
-          bloque_tailscale = texto_nuevo_elcano.replace("127.0.0.1:6878", "100.90.204.66:6878")
-          bloque_tailscale = bloque_tailscale.replace("http://localhost:6878", "http://100.90.204.66:6878")
+          # BLINDAJE DE TAILSCALE: Reemplaza cualquier variante de IP local por la de Tailscale
+          bloque_tailscale = re.sub(
+              r'127\.0\.0\.1:6878|localhost:6878',
+              '100.90.204.66:6878',
+              texto_nuevo_elcano,
+              flags=re.IGNORECASE
+          )
 
           texto_tailscale = (
               cabecera_m3u
@@ -476,6 +581,32 @@ jobs:
           )
 
           texto_amigos = texto_final
+
+          # ==========================================================
+          # COMPROBACIONES FINALES ANTES DE ESCRIBIR
+          # ==========================================================
+
+          if cuerpo_personal not in texto_final:
+              sys.exit(
+                  "ERROR: La comprobación de la zona personal ha fallado. "
+                  "No se guardan los archivos."
+              )
+
+          if cuerpo_personal not in texto_tailscale:
+              sys.exit(
+                  "ERROR: La zona personal de Tailscale no coincide. "
+                  "No se guardan los archivos."
+              )
+
+          if f'tvg-id="{TGV_ID_MOVISTAR_UNIFICADO}"' not in texto_final:
+              sys.exit(
+                  'ERROR: No se ha aplicado el tvg-id unificado a Movistar. '
+                  "No se guardan los archivos."
+              )
+
+          # ==========================================================
+          # GUARDAR ARCHIVOS
+          # ==========================================================
 
           archivo_casa.write_bytes(
               texto_final.encode("utf-8")
@@ -490,7 +621,14 @@ jobs:
           )
 
           print("==========================================")
-          print("SINCRONIZACIÓN COMPLETADA CON TAILSCALE")
+          print("SINCRONIZACIÓN COMPLETADA CON TAILSCALE BLINDADO")
+          print("==========================================")
+          print(f"Canales procesados: {len(canales_ordenados)}")
+          print(f"Canales nuevos: {len(agregados)}")
+          print(f"Canales eliminados: {len(eliminados)}")
+          print('M+ 0 y Movistar Plus unificados con logo moderno y EPG')
+          print("Carpetas personales: conservadas sin cambios")
+          print("Casa, Tailscale y Amigos: actualizados")
           print("==========================================")
           PY
 
@@ -501,7 +639,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "Sincronización completa con Tailscale corregida"
+            git commit -m "Sincronización automática con IP Tailscale blindada"
             git push
           else
             echo "No hay cambios que guardar."
