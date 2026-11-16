@@ -411,6 +411,22 @@ jobs:
                   )
 
               # ------------------------------------------------------
+              # ONETORO: FORZAR SU EPG Y LOGOTIPO PERSONALIZADO
+              # ------------------------------------------------------
+
+              elif "ONETORO" in nombre_normalizado or "ONE TORO" in nombre_normalizado:
+                  extinf_mod = poner_atributo(
+                      extinf_mod,
+                      "tvg-id",
+                      "Onetoro"
+                  )
+                  extinf_mod = poner_atributo(
+                      extinf_mod,
+                      "tvg-logo",
+                      "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Onetoro.png"
+                  )
+
+              # ------------------------------------------------------
               # GROUP-TITLE DE LA ZONA AUTOMÁTICA
               # ------------------------------------------------------
 
@@ -553,7 +569,7 @@ jobs:
           )
 
           # ==========================================================
-          # MONTAR ARCHIVO SIN TOCAR LA ZONA PERSONAL
+          # MONTAR ARCHIVO CASA (Mantiene IP local 127.0.0.1 abajo)
           # ==========================================================
 
           separador = salto + salto
@@ -565,16 +581,25 @@ jobs:
               + cuerpo_personal
           )
 
-          bloque_tailscale = texto_nuevo_elcano.replace(
+          # ==========================================================
+          # MONTAR ARCHIVO TAILSCALE (CAMBIA LA IP ARRIBA Y ABAJO)
+          # ==========================================================
+
+          bloque_tailscale_elcano = texto_nuevo_elcano.replace(
+              "127.0.0.1:6878",
+              "100.90.204.66:6878"
+          )
+
+          cuerpo_tailscale_personal = cuerpo_personal.replace(
               "127.0.0.1:6878",
               "100.90.204.66:6878"
           )
 
           texto_tailscale = (
               cabecera_m3u
-              + bloque_tailscale
+              + bloque_tailscale_elcano
               + separador
-              + cuerpo_personal
+              + cuerpo_tailscale_personal
           )
 
           texto_amigos = texto_final
@@ -589,7 +614,7 @@ jobs:
                   "No se guardan los archivos."
               )
 
-          if cuerpo_personal not in texto_tailscale:
+          if cuerpo_tailscale_personal not in texto_tailscale:
               sys.exit(
                   "ERROR: La zona personal de Tailscale no coincide. "
                   "No se guardan los archivos."
@@ -618,13 +643,13 @@ jobs:
           )
 
           print("==========================================")
-          print("SINCRONIZACIÓN COMPLETADA")
+          print("SINCRONIZACIÓN COMPLETADA CON TAILSCALE")
           print("==========================================")
           print(f"Canales procesados: {len(canales_ordenados)}")
           print(f"Canales nuevos: {len(agregados)}")
           print(f"Canales eliminados: {len(eliminados)}")
           print('M+ 0 y Movistar Plus unificados con logo moderno y EPG')
-          print("Carpetas personales: conservadas sin cambios")
+          print("Carpetas personales: adaptadas a Tailscale en Canales m3u")
           print("Casa, Tailscale y Amigos: actualizados")
           print("==========================================")
           PY
@@ -636,7 +661,7 @@ jobs:
           git add "Mi lista acestream" "Canales m3u" "lista-amigos" "ultimos_cambios.md"
           
           if ! git diff --cached --quiet; then
-            git commit -m "M+ 0 y Movistar unificados con tu logo moderno y EPG"
+            git commit -m "Sincronización completa con IP Tailscale en Elcano y carpetas manuales"
             git push
           else
             echo "No hay cambios que guardar."
