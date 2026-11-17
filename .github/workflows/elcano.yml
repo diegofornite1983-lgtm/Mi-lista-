@@ -29,6 +29,7 @@ jobs:
           import datetime
           import unicodedata
           import urllib.request
+          import time
           from pathlib import Path
 
           # ==========================================================
@@ -125,23 +126,36 @@ jobs:
           errores_descarga = []
 
           for url_intento in URLS_ELCANO:
-              try:
-                  peticion = urllib.request.Request(
-                      url_intento,
-                      headers={
-                          "User-Agent": "Mozilla/5.0",
-                          "Accept": "*/*"
-                      }
-                  )
-
-                  with urllib.request.urlopen(peticion, timeout=30) as respuesta:
-                      fuente_elcano = respuesta.read().decode(
-                          "utf-8-sig",
-                          errors="replace"
+              for intento in range(2):
+                  try:
+                      peticion = urllib.request.Request(
+                          url_intento,
+                          headers={
+                              "User-Agent": "Mozilla/5.0",
+                              "Accept": "*/*"
+                          }
                       )
+
+                      with urllib.request.urlopen(peticion, timeout=30) as respuesta:
+                          fuente_elcano = respuesta.read().decode(
+                              "utf-8-sig",
+                              errors="replace"
+                          )
+
+                      print(f"ELCANO descargado correctamente desde: {url_intento}")
                       break
-              except Exception as error:
-                  errores_descarga.append(f"{url_intento} -> {error}")
+
+                  except Exception as error:
+                      errores_descarga.append(
+                          f"{url_intento} (intento {intento + 1}/2) -> {error}"
+                      )
+
+                      if intento == 0:
+                          print(f"Fallo en la URL. Reintentando en 5 segundos: {url_intento}")
+                          time.sleep(5)
+
+              if fuente_elcano:
+                  break
 
           if not fuente_elcano:
               sys.exit(
