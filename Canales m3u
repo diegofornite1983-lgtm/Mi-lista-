@@ -1,4 +1,4 @@
-j#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,https://raw.githubusercontent.com/davidmuma/EPG_dobleM/master/guiatv.xml" refresh="3600"
+#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,https://raw.githubusercontent.com/davidmuma/EPG_dobleM/master/guiatv.xml" refresh="3600"
 #EXTVLCOPT:network-caching=1000
 #EXTGRP: group-title="⭐ ELCANO [MÁXIMA CALIDAD]" group-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png"
 
@@ -12,9 +12,9 @@ http://100.90.204.66:6878/ace/getstream?id=44dea2aa000e29b059f9c42471204d70e7436
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 1080p *
 http://100.90.204.66:6878/ace/getstream?id=913a520ccaf1ef4a1ab73e146d0319d80d0c39da
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 720p *
-http://100.90.204.66:6878/ace/getstream?id=4243ec2599770c2ed62c174c946def54dcd24980
-#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 720p *
 http://100.90.204.66:6878/ace/getstream?id=73b9678f76017acc06e6f9402a975517f3a9bd05
+#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 720p *
+http://100.90.204.66:6878/ace/getstream?id=4243ec2599770c2ed62c174c946def54dcd24980
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://i.ibb.co/Tc97zSb/liga2.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 2 *
 http://100.90.204.66:6878/ace/getstream?id=f32207b978456daa7e7c93b27a7758e6025990ea
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/spain/dazn-laliga-es.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN LaLiga 1080p *
@@ -89,6 +89,7 @@ http://100.90.204.66:6878/ace/getstream?id=76ec588158958781fab321816bbb3502416ed
 http://100.90.204.66:6878/ace/getstream?id=81aead134bb63a51291d23e793fcddca981ee834
 #EXTINF:-1 tvg-id="Teledeporte" tvg-logo="https://img2.rtve.es/n/15966755" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Teledeporte 720p **
 http://100.90.204.66:6878/ace/getstream?id=c7d8405bdef3650b9bac58042c3708440ef286a8
+
 
 
 
