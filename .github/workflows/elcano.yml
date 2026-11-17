@@ -32,12 +32,14 @@ jobs:
           from pathlib import Path
 
           # ==========================================================
-          # CONFIGURACION (MÚLTIPLES PASARELAS IPFS DE RESPALDO)
+          # CONFIGURACION
           # ==========================================================
 
           IPNS_HASH = "k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs"
-          
+
           URLS_ELCANO = [
+              f"https://ipfs.bytokyo.dpdns.org/{IPNS_HASH}/hashes_acestream.m3u",
+              f"https://ipfs2.bytokyo.dpdns.org/{IPNS_HASH}/hashes_acestream.m3u",
               f"https://tokyo2.elcano-ipfs.workers.dev/{IPNS_HASH}/hashes_acestream.m3u",
               f"https://ipfs.io/ipns/{IPNS_HASH}/hashes_acestream.m3u",
               f"https://gateway.pinata.cloud/ipns/{IPNS_HASH}/hashes_acestream.m3u",
@@ -116,44 +118,36 @@ jobs:
           cuerpo_personal = "".join(lineas_casa[inicio_personal:])
 
           # ==========================================================
-          # DESCARGAR ELCANO (PROBANDO PASARELAS EN BUCLE)
+          # DESCARGAR ELCANO (PROBANDO VARIAS URLS)
           # ==========================================================
 
           fuente_elcano = None
           errores_descarga = []
 
-          for url_actual in URLS_ELCANO:
+          for url_intento in URLS_ELCANO:
               try:
-                  print(f"Intentando descargar desde: {url_actual}")
                   peticion = urllib.request.Request(
-                      url_actual,
+                      url_intento,
                       headers={
-                          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+                          "User-Agent": "Mozilla/5.0",
                           "Accept": "*/*"
                       }
                   )
 
                   with urllib.request.urlopen(peticion, timeout=30) as respuesta:
-                      contenido_descargado = respuesta.read().decode(
+                      fuente_elcano = respuesta.read().decode(
                           "utf-8-sig",
                           errors="replace"
                       )
-                      if "#EXTINF:" in contenido_descargado:
-                          fuente_elcano = contenido_descargado
-                          print(f"¡Éxito descargando desde {url_actual}!")
-                          break
-                      else:
-                          errores_descarga.append(f"{url_actual}: Contenido no válido")
-
+                      break
               except Exception as error:
-                  print(f"Fallo en {url_actual}: {error}")
-                  errores_descarga.append(f"{url_actual}: {error}")
+                  errores_descarga.append(f"{url_intento} -> {error}")
 
           if not fuente_elcano:
-              detalle_errores = " | ".join(errores_descarga)
               sys.exit(
-                  f"ERROR: Todas las pasarelas IPFS han fallado. Detalle: {detalle_errores}. "
-                  "No se modifica ningún archivo."
+                  "ERROR descargando Elcano desde todas las URLs disponibles:\n"
+                  + "\n".join(errores_descarga)
+                  + "\nNo se modifica ningún archivo."
               )
 
           # ==========================================================
@@ -225,7 +219,7 @@ jobs:
 
 
           # ==========================================================
-          # ORDEN ESTRICTO DE CANALES
+          # ORDEN ESTRICTO DE CANALES (M+ 0 BAJO LOS MOVISTAR PLUS)
           # ==========================================================
 
           def prioridad_canal(canal):
@@ -235,15 +229,18 @@ jobs:
               numero = numero_canal(nombre)
               calidad = calidad_canal(nombre)
 
+              # 1. Movistar Plus clásico (arriba del todo).
               if (
                   nombre.startswith("MOVISTAR PLUS")
                   or nombre.startswith("MOVISTAR+")
               ):
                   return (0, 0, calidad, canal["indice"])
 
+              # 2. M+ 0: justo debajo del último Movistar Plus, antes de la Champions.
               if re.search(r"\bM\+\s*0\b", nombre):
                   return (1, 0, calidad, canal["indice"])
 
+              # 3. LaLiga y sus multis (excluyendo Hypermotion).
               if (
                   ("LALIGA" in nombre or "LA LIGA" in nombre or "DAZN LALIGA" in nombre)
                   and "HYPERMOTION" not in nombre
@@ -257,18 +254,22 @@ jobs:
 
                   return (2, suborden, numero, calidad, canal["indice"])
 
+              # 4. Liga de Campeones, del 1 al 8.
               if "CAMPEONES" in nombre or "CHAMPIONS" in nombre:
                   return (3, numero, calidad, canal["indice"])
 
+              # 5. Movistar Deportes: principal y del 2 al 8 juntos.
               if "DEPORTES" in nombre and "BALONCESTO" not in nombre:
                   return (4, numero, calidad, canal["indice"])
 
+              # 6. DAZN F1 y DAZN MotoGP.
               if "F1" in nombre or "FORMULA 1" in nombre:
                   return (5, 0, calidad, canal["indice"])
 
               if "MOTOGP" in nombre:
                   return (5, 1, calidad, canal["indice"])
 
+              # 7. DAZN generales: del 1 al 4.
               if (
                   "DAZN" in nombre
                   and not any(
@@ -284,18 +285,22 @@ jobs:
               ):
                   return (6, numero, calidad, canal["indice"])
 
+              # 8. M+ Vamos.
               if "VAMOS" in nombre:
                   return (7, 0, numero, calidad, canal["indice"])
 
+              # 9. LaLiga Hypermotion (Segunda división).
               if "HYPERMOTION" in nombre:
                   return (8, 0, numero, calidad, canal["indice"])
 
+              # 10. Primera Federación / RFEF (Justo debajo de la Hypermotion).
               if (
                   "RFEF" in nombre
                   or "PRIMERA FEDERACION" in nombre
               ):
                   return (9, 0, nombre, calidad, canal["indice"])
 
+              # 11. Golf, Eurosport, Tenis y Sport TV.
               if "GOLF" in nombre:
                   return (10, 0, numero, calidad, canal["indice"])
 
@@ -311,6 +316,7 @@ jobs:
               if "SPORT TV" in nombre:
                   return (10, 3, numero, calidad, canal["indice"])
 
+              # 12. Otros canales generales de deportes y variados de Elcano.
               if (
                   "BALONCESTO" not in nombre
                   and not nombre.startswith("NBA")
@@ -318,12 +324,14 @@ jobs:
               ):
                   return (11, 0, nombre, calidad, canal["indice"])
 
+              # 13. Baloncesto y NBA (Abajo del todo, antes de la TDT).
               if (
                   "BALONCESTO" in nombre
                   or nombre.startswith("NBA")
               ):
                   return (12, numero, calidad, canal["indice"])
 
+              # 14. TDT y canales abiertos (Al final absoluto).
               if es_tdt_abierto(nombre):
                   return (13, 0, nombre, calidad, canal["indice"])
 
@@ -391,8 +399,16 @@ jobs:
 
               extinf_mod = linea
 
+              # ------------------------------------------------------
+              # M+ 0: ID EPG UNIFICADO Y TU LOGOTIPO MODERNO
+              # ------------------------------------------------------
+
               if re.search(r"\bM\+\s*0\b", nombre_normalizado):
                   extinf_mod = limpiar_y_forzar_m0(extinf_mod)
+
+              # ------------------------------------------------------
+              # MOVISTAR PLUS CLÁSICO: SU ID EPG Y TU LOGOTIPO MODERNO
+              # ------------------------------------------------------
 
               elif (
                   nombre_normalizado.startswith("MOVISTAR PLUS")
@@ -409,6 +425,10 @@ jobs:
                       URL_LOGO_PERSONAL
                   )
 
+              # ------------------------------------------------------
+              # ONETORO: FORZAR SU EPG Y LOGOTIPO PERSONALIZADO
+              # ------------------------------------------------------
+
               elif "ONETORO" in nombre_normalizado or "ONE TORO" in nombre_normalizado:
                   extinf_mod = poner_atributo(
                       extinf_mod,
@@ -421,11 +441,19 @@ jobs:
                       "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Onetoro.png"
                   )
 
+              # ------------------------------------------------------
+              # GROUP-TITLE DE LA ZONA AUTOMÁTICA
+              # ------------------------------------------------------
+
               extinf_mod = poner_atributo(
                   extinf_mod,
                   "group-title",
                   GROUP_TITLE
               )
+
+              # ------------------------------------------------------
+              # CONVERTIR HASH ACESTREAM A DIRECCIÓN LOCAL
+              # ------------------------------------------------------
 
               coincidencia_hash = re.search(
                   r"([0-9a-fA-F]{40})",
@@ -457,10 +485,18 @@ jobs:
                   "No se modifica ningún archivo."
               )
 
+          # ==========================================================
+          # ORDEN SIN ELIMINAR CANALES NI DUPLICADOS
+          # ==========================================================
+
           canales_ordenados = sorted(
               canales,
               key=prioridad_canal
           )
+
+          # ==========================================================
+          # CONSTRUIR LA ZONA AUTOMÁTICA
+          # ==========================================================
 
           bloque_automatico = [
               "# ==========================================",
@@ -473,6 +509,10 @@ jobs:
               bloque_automatico.append(canal["url"])
 
           texto_nuevo_elcano = salto.join(bloque_automatico)
+
+          # ==========================================================
+          # COMPARAR CANALES PARA EL INFORME
+          # ==========================================================
 
           def extraer_nombres(texto):
               nombres = set()
@@ -524,6 +564,10 @@ jobs:
               encoding="utf-8"
           )
 
+          # ==========================================================
+          # CABECERA M3U
+          # ==========================================================
+
           cabecera_m3u = (
               '#EXTM3U url-tvg="'
               'https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
@@ -539,6 +583,10 @@ jobs:
               + salto
           )
 
+          # ==========================================================
+          # MONTAR ARCHIVO CASA (Mantiene IP local 127.0.0.1 abajo)
+          # ==========================================================
+
           separador = salto + salto
 
           texto_final = (
@@ -547,6 +595,10 @@ jobs:
               + separador
               + cuerpo_personal
           )
+
+          # ==========================================================
+          # MONTAR ARCHIVO TAILSCALE (CAMBIA LA IP ARRIBA Y ABAJO)
+          # ==========================================================
 
           bloque_tailscale_elcano = texto_nuevo_elcano.replace(
               "127.0.0.1:6878",
@@ -567,6 +619,10 @@ jobs:
 
           texto_amigos = texto_final
 
+          # ==========================================================
+          # COMPROBACIONES FINALES ANTES DE ESCRIBIR
+          # ==========================================================
+
           if cuerpo_personal not in texto_final:
               sys.exit(
                   "ERROR: La comprobación de la zona personal ha fallado. "
@@ -584,6 +640,10 @@ jobs:
                   'ERROR: No se ha aplicado el tvg-id unificado a Movistar. '
                   "No se guardan los archivos."
               )
+
+          # ==========================================================
+          # GUARDAR ARCHIVOS
+          # ==========================================================
 
           archivo_casa.write_bytes(
               texto_final.encode("utf-8")
