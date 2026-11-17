@@ -39,19 +39,17 @@ http://100.90.204.66:6878/ace/getstream?id=de00099a1fc928f292bb92d62a0841ac7104e
 http://100.90.204.66:6878/ace/getstream?id=e3cb35599c8908ae94163fdf1164784bd547b1b6
 #EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",LaLiga TV Hypermotion 720p **
 http://100.90.204.66:6878/ace/getstream?id=c1b4a8596b0b1ec04741aec78a61e9052da2ec57
-#EXTINF:-1 tvg-logo="https://espnpressroom.com/us/files/2023/02/New-NBA-Logo.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA ESPN 1080p *
-http://100.90.204.66:6878/ace/getstream?id=5b40c99863fb0d912953974d96c1d2485cdeb5e7
 #EXTINF:-1 tvg-logo="https://www.vhv.rs/dpng/d/431-4310509_nba-league-pass-logo-png-transparent-nba-league.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA League Pass 1080p *
 http://100.90.204.66:6878/ace/getstream?id=8698d62f3b2a35aabb599c420b06945ea006400b
 #EXTINF:-1 tvg-logo="https://www.vhv.rs/dpng/d/431-4310509_nba-league-pass-logo-png-transparent-nba-league.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA League Pass 1080p *
 http://100.90.204.66:6878/ace/getstream?id=2eedcbcc7173d3622804609460687d3e5a19e1ff
 #EXTINF:-1 tvg-logo="https://www.vhv.rs/dpng/d/431-4310509_nba-league-pass-logo-png-transparent-nba-league.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA League Pass 1080p **
 http://100.90.204.66:6878/ace/getstream?id=09368635b716c33a43695a48e6cfe903eac25e20
-#EXTINF:-1 tvg-logo="https://espnpressroom.com/us/files/2023/02/New-NBA-Logo.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA ESPN 720p *
-http://100.90.204.66:6878/ace/getstream?id=cb5a1f48efe2c30db178955bdc2fddf89d547ab4
 #EXTINF:-1 tvg-id="Teledeporte" tvg-logo="https://img2.rtve.es/n/15966755" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Teledeporte 1080p *
 http://100.90.204.66:6878/ace/getstream?id=81aead134bb63a51291d23e793fcddca981ee834
 #EXTINF:-1 tvg-id="Teledeporte" tvg-logo="https://img2.rtve.es/n/15966755" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Teledeporte 720p **
+http://100.90.204.66:6878/ace/getstream?id=c7d8405bdef3650b9bac58042c3708440ef286a8
+
 
 
 
