@@ -54,25 +54,25 @@ http://127.0.0.1:6878/ace/getstream?id=b649d084ca326e77a26ce78d172a003e320bc4d7
 #EXTINF:-1 tvg-id="DAZN 2 HD" tvg-logo="https://i.ibb.co/Kz0GXSX/dazn2.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN 2 1080p **
 http://127.0.0.1:6878/ace/getstream?id=55616eb11715c5ce83659f28e3aa191f95ff7cef
 
-#EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Vamos 720p *
+#EXTINF:-1 tvg-id="Movistar Vamos+" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Vamos 720p *
 http://127.0.0.1:6878/ace/getstream?id=27197daae8ce31d03ad69c1ac189333ec608150b
 
-#EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Vamos 720p **
+#EXTINF:-1 tvg-id="Movistar Vamos+" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Vamos 720p **
 http://127.0.0.1:6878/ace/getstream?id=b20b467fae6af2983ee5163ebcb469eeca9146ee
 
-#EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Vamos 1080p **
+#EXTINF:-1 tvg-id="Movistar Vamos+" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Vamos 1080p **
 http://127.0.0.1:6878/ace/getstream?id=9b7fc5f95b281a9a3370f71a8fe5a375c4655abb
 
-#EXTINF:-1 tvg-id="M+ Vamos 3" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ VAMOS 2 720p *
+#EXTINF:-1 tvg-id="Movistar Vamos+ 2" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ VAMOS 2 720p *
 http://127.0.0.1:6878/ace/getstream?id=75898c06f71b867b147654912bb0db8a19d6086e
 
-#EXTINF:-1 tvg-id="M+ Vamos 3" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ VAMOS 2 1080p *
+#EXTINF:-1 tvg-id="Movistar Vamos+ 2" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ VAMOS 2 1080p *
 http://127.0.0.1:6878/ace/getstream?id=c04f1daf665ca4b6a8d1f6d552b2bffff1c839d3
 
-#EXTINF:-1 tvg-id="M+ Vamos 3" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ VAMOS 2 1080p **
+#EXTINF:-1 tvg-id="Movistar Vamos+ 2" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ VAMOS 2 1080p **
 http://127.0.0.1:6878/ace/getstream?id=22ed339fb4f878ab562a434d847dd7849736794f
 
-#EXTINF:-1 tvg-id="M+ Vamos 3" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ VAMOS 2 1080p **
+#EXTINF:-1 tvg-id="Movistar Vamos+ 2" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ VAMOS 2 1080p **
 http://127.0.0.1:6878/ace/getstream?id=bec179fcda0f5016821bcc97f34f407d86f128e6
 
 #EXTINF:-1 tvg-id="DAZN MotoGP" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20MotoGP.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Sky Sport MotoGP 1080p **
@@ -81,19 +81,19 @@ http://127.0.0.1:6878/ace/getstream?id=c349a1a8953a4f64c61a6614aec63e11dc7eff96
 #EXTINF:-1 tvg-id="M+ Baloncesto" tvg-logo="https://www.adslzone.net/app/uploads-adslzone.net/2026/04/baloncesto-movistar-plus-canales.jpg" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Baloncesto 1080p *
 http://127.0.0.1:6878/ace/getstream?id=28360e214f0cae450e9aaa8753c5be455109188f
 
-#EXTINF:-1 tvg-id="DAZN 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%201.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 720p **
+#EXTINF:-1 tvg-id="DAZN Baloncesto" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%201.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 720p **
 http://127.0.0.1:6878/ace/getstream?id=81726596472933c3dfc9b3cd31fef7d0716c8ba4
 
-#EXTINF:-1 tvg-id="DAZN 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%201.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 1080p **
+#EXTINF:-1 tvg-id="DAZN Baloncesto" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%201.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 1080p **
 http://127.0.0.1:6878/ace/getstream?id=e1e543b882178ea985f27285ec87c698d6553027
 
-#EXTINF:-1 tvg-id="DAZN 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%202.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 2 720p *
+#EXTINF:-1 tvg-id="DAZN Baloncesto 2" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%202.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 2 720p *
 http://127.0.0.1:6878/ace/getstream?id=99de2862eb671f858c7865c9cf5950e13e89eeba
 
-#EXTINF:-1 tvg-id="DAZN 3 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%203.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 3 720p *
+#EXTINF:-1 tvg-id="DAZN Baloncesto 3" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%203.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 3 720p *
 http://127.0.0.1:6878/ace/getstream?id=9a55697bb16e7b5352e7a82456e4e67a5690965e
 
-#EXTINF:-1 tvg-id="DAZN 3 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%203.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 3 1080p **
+#EXTINF:-1 tvg-id="DAZN Baloncesto 3" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%203.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 3 1080p **
 http://127.0.0.1:6878/ace/getstream?id=e4cc41e787e3f44bb766520a3b4b64e2baa5977c
 
 #EXTINF:-1 tvg-id="M+ Baloncesto 2" tvg-logo="https://www.adslzone.net/app/uploads-adslzone.net/2026/04/baloncesto-movistar-plus-canales.jpg" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Baloncesto 2 1080p *
@@ -137,6 +137,7 @@ http://127.0.0.1:6878/ace/getstream?id=5f09f7cae7b7d3fb9b7e492dbab3edfe1e70067c
 
 #EXTINF:-1 tvg-id="À Punt" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/%C3%80%20Punt.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",À Punt 1080p *
 http://127.0.0.1:6878/ace/getstream?id=ad7a52a05039e95e73a334e9d4518832ff84f448
+
 
 
 
