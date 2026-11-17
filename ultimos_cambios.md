@@ -1,7 +1,26 @@
-# Resumen de cambios ELCANO - 2026-11-17 00:48:20
+# Resumen de cambios ELCANO - 2026-11-17 02:19:24
 
-## Canales nuevos (0)
-- Ninguno.
+## Canales nuevos (20)
+- BEIN SPORTS 3 TR 720P *
+- BEIN SPORTS TR 720P *
+- DAZN LALIGA 1080P *
+- EUROSPORT 1 1080P *
+- EUROSPORT 2 1080P *
+- M+ DEPORTES 1080P *
+- M+ DEPORTES 3 720P *
+- M+ DEPORTES 4 720P *
+- M+ DEPORTES 5 1080P *
+- M+ DEPORTES 6 1080P *
+- M+ DEPORTES 720P *
+- M+ LALIGA 1080P *
+- M+ LALIGA 2 *
+- M+ LALIGA 720P *
+- M+ LIGA DE CAMPEONES 2 1080P *
+- M+ LIGA DE CAMPEONES 3 1080P *
+- M+ LIGA DE CAMPEONES 720P *
+- M+ VAMOS 3 1080P *
+- ONETORO TV 1080P *
+- TENNIS CHANNEL 1080P *
 
-## Canales eliminados (0)
-- Ninguno.
+## Canales eliminados (1)
+- DAZN 2 1080P *
