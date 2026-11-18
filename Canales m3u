@@ -67,10 +67,6 @@ http://100.90.204.66:6878/ace/getstream?id=00962019be1f34c24f29c9d1a7ec5c8241d2c
 http://100.90.204.66:6878/ace/getstream?id=d3396a08ea9f2ccc70ecc33e1ee2977b08c7f419
 #EXTINF:-1 tvg-logo="https://pbs.twimg.com/profile_images/1951065414118539266/9Go2oZlV_400x400.jpg" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Sky Sport Tennis 1080p **
 http://100.90.204.66:6878/ace/getstream?id=a0adfe52f8a9275067d559debe17523c655975e5
-#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]",A Punt 1080p **
-http://100.90.204.66:6878/ace/getstream?id=1e0e3067189ce19b341b9e809df2e059a5c6a85e
-#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]",À Punt 1080p *
-http://100.90.204.66:6878/ace/getstream?id=ad7a52a05039e95e73a334e9d4518832ff84f448
 #EXTINF:-1 tvg-id="Esport 3" tvg-logo="https://img.3cat.cat/multimedia/jpg/1/5/1697802708951.jpg" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Esport3 1080p *
 http://100.90.204.66:6878/ace/getstream?id=eb0a08dfb47f01b0d8a8f13ab11a1c062d9eebfb
 #EXTINF:-1 tvg-id="Esport 3" tvg-logo="https://img.3cat.cat/multimedia/jpg/1/5/1697802708951.jpg" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Esport3 1080p **
@@ -123,6 +119,7 @@ http://100.90.204.66:6878/ace/getstream?id=15d2fc44828d86ff128dd17c07523baf3f8d6
 http://100.90.204.66:6878/ace/getstream?id=c50472a723a9c8412dc51fc6ae2761e113014b00
 #EXTINF:-1 tvg-logo="https://www.vhv.rs/dpng/d/431-4310509_nba-league-pass-logo-png-transparent-nba-league.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA League Pass 1080p *
 http://100.90.204.66:6878/ace/getstream?id=cd7f8f210268b161f399c626cad5b02678f86f7f
+
 
 
 
