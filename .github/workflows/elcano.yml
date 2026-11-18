@@ -44,7 +44,7 @@ jobs:
               f"https://ipfs.io/ipns/{IPNS_HASH}/hashes_acestream.m3u",
               f"https://gateway.pinata.cloud/ipns/{IPNS_HASH}/hashes_acestream.m3u",
               f"https://cloudflare-ipfs.com/ipns/{IPNS_HASH}/hashes_acestream.m3u",
-              f"https://dweb.link/ipns/{IPNS_HASH}/hashes_acestream.m3u",
+              f"https://k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs.ipns.inbrowser.link/hashes_acestream.m3u",
               f"https://w3s.link/ipns/{IPNS_HASH}/hashes_acestream.m3u"
           ]
 
