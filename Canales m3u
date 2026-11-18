@@ -120,6 +120,10 @@ http://100.90.204.66:6878/ace/getstream?id=c50472a723a9c8412dc51fc6ae2761e113014
 #EXTINF:-1 tvg-logo="https://www.vhv.rs/dpng/d/431-4310509_nba-league-pass-logo-png-transparent-nba-league.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA League Pass 1080p *
 http://100.90.204.66:6878/ace/getstream?id=cd7f8f210268b161f399c626cad5b02678f86f7f
 
+#EXTINF:-1 tvg-id="À Punt" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/%C3%80_Punt_logo_2018.svg/1200px-%C3%80_Punt_logo_2018.svg.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",A Punt 1080p **
+http://100.90.204.66:6878/ace/getstream?id=1e0e3067189ce19b341b9e809df2e059a5c6a85e
+#EXTINF:-1 tvg-id="À Punt" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/%C3%80_Punt_logo_2018.svg/1200px-%C3%80_Punt_logo_2018.svg.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",À Punt 1080p *
+http://100.90.204.66:6878/ace/getstream?id=ad7a52a05039e95e73a334e9d4518832ff84f448
 
 
 
