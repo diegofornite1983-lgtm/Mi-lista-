@@ -11,8 +11,9 @@
 
 
 
-#EXTINF:-1 tvg-id="Movistar Plus+ HD" tvg-logo="https://i.ibb.co/hFYPWbpJ/plus.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",MOVISTAR PLUS 1080p **
+#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://i.ibb.co/hFYPWbpJ/plus.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",MOVISTAR PLUS 1080p **
 http://100.90.204.66:6878/ace/getstream?id=68b53041272592f4fbf00bf38cd91e54a4e16abf
+
 #EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Vamos 1080p **
 http://100.90.204.66:6878/ace/getstream?id=9b7fc5f95b281a9a3370f71a8fe5a375c4655abb
 #EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Vamos 720p **
