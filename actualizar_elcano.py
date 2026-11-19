@@ -9,14 +9,10 @@ from pathlib import Path
 # CONFIGURACION
 # ==========================================================
 
-# Carpeta donde estan tus listas en el PC.
-# Si guardas este .py dentro de la carpeta de tus listas, dejalo en Path(__file__).resolve().parent
-# o pon la ruta exacta entre comillas, por ejemplo: Path(r"C:\Users\diego\Desktop\Mi-lista-")
 CARPETA_LISTAS = Path(__file__).resolve().parent
 
 IPNS_HASH = "k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs"
 
-# Prioriza el nodo IPFS local (127.0.0.1:8080) y deja las demas como respaldo
 URLS_ELCANO = [
     f"http://127.0.0.1:8080/ipns/{IPNS_HASH}/hashes_acestream.m3u",
     f"http://127.0.0.1:8080/ipns/{IPNS_HASH}/hashes.json",
@@ -34,13 +30,27 @@ archivo_casa = CARPETA_LISTAS / "Mi lista acestream"
 archivo_tailscale = CARPETA_LISTAS / "Canales m3u"
 archivo_amigos = CARPETA_LISTAS / "lista-amigos"
 
-# TU LOGOTIPO PERSONALIZADO MODERNO
+# TU LOGOTIPO PERSONALIZADO MODERNO (MOVISTAR PLUS Y M+ 0)
 URL_LOGO_PERSONAL = "https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png"
-
-# UNIFICAMOS EL TVG-ID PARA QUE COJA LA MISMA EPG QUE TUS CANALES MANUALES
 TGV_ID_MOVISTAR_UNIFICADO = "Movistar Plus HD"
 
 GROUP_TITLE = "⭐ ELCANO [MÁXIMA CALIDAD]"
+
+DOMINIOS_SUCIOS = (
+    "adslzone.net",
+    "movistarplus.es/recorte",
+    "fandom.com",
+    "wikia.nocookie.net",
+    "pbs.twimg.com/profile_images",
+    "yt3.googleusercontent.com",
+    "hearstapps",
+    "vhv.rs",
+    "pngegg",
+    "bluestacks",
+    "arcpublishing",
+    "sincroguia",
+    "sportsvideo",
+)
 
 # ==========================================================
 # COMPROBAR ARCHIVO PRINCIPAL
@@ -133,7 +143,6 @@ if not fuente_elcano:
     sys.exit(
         "ERROR descargando Elcano desde todas las URLs disponibles:\n"
         + "\n".join(errores_descarga)
-        + "\nAsegurate de que tu IPFS local esta arrancado (127.0.0.1:8080)."
         + "\nNo se modifica ningun archivo."
     )
 
@@ -165,7 +174,7 @@ def poner_atributo(linea, atributo, valor):
     return linea.replace("#EXTINF:-1", f'#EXTINF:-1 {atributo}="{valor}"', 1)
 
 
-def limpiar_y_forzar_m0(linea):
+def limpiar_y_forzar_movistar(linea):
     linea = re.sub(r'tvg-id="[^"]*"', "", linea, flags=re.IGNORECASE)
     linea = re.sub(r'tvg-logo="[^"]*"', "", linea, flags=re.IGNORECASE)
     linea = re.sub(r"\s+", " ", linea)
@@ -177,30 +186,37 @@ def limpiar_y_forzar_m0(linea):
     return linea.replace("#EXTINF:-1", f"#EXTINF:-1 {nuevo_sufijo}", 1)
 
 
+def limpiar_logo_si_es_sucio(linea):
+    coincidencia = re.search(r'tvg-logo="([^"]*)"', linea, flags=re.IGNORECASE)
+    if not coincidencia:
+        return linea
+    logo_actual = coincidencia.group(1).lower()
+    if any(sucio in logo_actual for sucio in DOMINIOS_SUCIOS):
+        linea = re.sub(r'\s*tvg-logo="[^"]*"', "", linea, flags=re.IGNORECASE)
+        linea = re.sub(r"\s+", " ", linea)
+        linea = linea.replace("#EXTINF:-1 ", "#EXTINF:-1 ")
+    return linea
+
+
 def numero_canal(nombre):
     coincidencia = re.search(r"\b([1-9])\b", nombre)
-
     if coincidencia:
         return int(coincidencia.group(1))
-
     return 0
 
 
 def calidad_canal(nombre):
     if "4K" in nombre:
         return 0
-
     if "1080" in nombre:
         return 1
-
     if "720" in nombre:
         return 2
-
     return 3
 
 
 # ==========================================================
-# ORDEN ESTRICTO DE CANALES (M+ 0 BAJO LOS MOVISTAR PLUS)
+# ORDEN ESTRICTO DE CANALES
 # ==========================================================
 
 
@@ -229,7 +245,6 @@ def prioridad_canal(canal):
             suborden = 1
         else:
             suborden = 2
-
         return (2, suborden, numero, calidad, canal["indice"])
 
     # 4. Liga de Campeones, del 1 al 8.
@@ -318,8 +333,224 @@ def es_tdt_abierto(nombre):
         "ONETORO",
         "ONE TORO",
     )
-
     return any(canal in nombre for canal in canales_abiertos)
+
+
+def aplicar_logo_y_epg(linea, nombre_norm):
+    # M+ 0 y Movistar Plus clasico: logotipo moderno y EPG unificada
+    if re.search(r"\bM\+\s*0\b", nombre_norm) or (
+        nombre_norm.startswith("MOVISTAR PLUS") or nombre_norm.startswith("MOVISTAR+")
+    ):
+        return limpiar_y_forzar_movistar(linea)
+
+    # Primera Federacion / RFEF
+    if "RFEF" in nombre_norm or "PRIMERA FEDERACION" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "Primera Federación")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Primera%20Federaci%C3%B3n.png",
+        )
+
+    # DAZN F1 y MotoGP
+    if "F1" in nombre_norm or "FORMULA 1" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "DAZN F1 HD")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png",
+        )
+
+    if "SKY SPORT MOTOGP" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "Sky Sport MotoGP")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Sky%20Sport%20MotoGP.png",
+        )
+
+    if "MOTOGP" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "DAZN MotoGP")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20MotoGP.png",
+        )
+
+    # Deportes 6 y 7
+    if re.search(r"\bDEPORTES\s*6\b", nombre_norm):
+        linea = poner_atributo(linea, "tvg-id", "M+ Deportes 6")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes%206.png",
+        )
+
+    if re.search(r"\bDEPORTES\s*7\b", nombre_norm):
+        linea = poner_atributo(linea, "tvg-id", "M+ Deportes 7")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes%207.png",
+        )
+
+    # Golf
+    if re.search(r"\bGOLF\s*2\b", nombre_norm):
+        linea = poner_atributo(linea, "tvg-id", "M+ Golf 2 HD")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf%202.png",
+        )
+
+    if "GOLF" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "M+ Golf HD")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf.png",
+        )
+
+    # Baloncesto y NBA
+    if "DAZN BALONCESTO 3" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "DAZN Baloncesto 3")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20Baloncesto%203.png",
+        )
+
+    if "DAZN BALONCESTO 2" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "DAZN Baloncesto 2")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20Baloncesto%202.png",
+        )
+
+    if "DAZN BALONCESTO" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "DAZN Baloncesto")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20Baloncesto.png",
+        )
+
+    if re.search(r"\bBALONCESTO\s*3\b", nombre_norm):
+        linea = poner_atributo(linea, "tvg-id", "M+ Baloncesto 3")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto%203.png",
+        )
+
+    if re.search(r"\bBALONCESTO\s*2\b", nombre_norm):
+        linea = poner_atributo(linea, "tvg-id", "M+ Baloncesto 2")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto%202.png",
+        )
+
+    if "BALONCESTO" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "M+ Baloncesto")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png",
+        )
+
+    if nombre_norm.startswith("NBA"):
+        linea = poner_atributo(linea, "tvg-id", "NBA League Pass")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/NBA%20League%20Pass.png",
+        )
+
+    # Tenis
+    if "SKY SPORT TENNIS" in nombre_norm or "SKY SPORTS TENNIS" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "Sky Sports Tennis")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Sky%20Sports%20Tennis.png",
+        )
+
+    if "TENNIS CHANNEL" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "Tennis Channel")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Tennis%20Channel.png",
+        )
+
+    # TDT y abiertos
+    if "CUATRO" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "Cuatro HD")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/cuatro-es.png",
+        )
+
+    if "LA 2" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "La 2")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/la-2-es.png",
+        )
+
+    if "TELECINCO" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "Telecinco HD")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://i.ibb.co/81wJ3GH/telecinco.png",
+        )
+
+    if "REAL MADRID TV" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "Real Madrid TV")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/real-madrid-tv-es.png",
+        )
+
+    if "TELEDEPORTE" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "Teledeporte")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/teledeporte-es.png",
+        )
+
+    if "ESPORT3" in nombre_norm or "ESPORT 3" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "Esport 3")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/esport3-es.png",
+        )
+
+    if "A PUNT" in nombre_norm or "APUNT" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "À Punt")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/a-punt-es.png",
+        )
+
+    if "ONETORO" in nombre_norm or "ONE TORO" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "Onetoro TV")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/onetoro-es.png",
+        )
+
+    return limpiar_logo_si_es_sucio(linea)
 
 
 # ==========================================================
@@ -357,48 +588,8 @@ while indice < len(lineas_elcano):
     nombre = linea.rsplit(",", 1)[-1].strip()
     nombre_normalizado = normalizar(nombre)
 
-    extinf_mod = linea
-
-    # ------------------------------------------------------
-    # M+ 0: ID EPG UNIFICADO Y TU LOGOTIPO MODERNO
-    # ------------------------------------------------------
-
-    if re.search(r"\bM\+\s*0\b", nombre_normalizado):
-        extinf_mod = limpiar_y_forzar_m0(extinf_mod)
-
-    # ------------------------------------------------------
-    # MOVISTAR PLUS CLASICO: SU ID EPG Y TU LOGOTIPO MODERNO
-    # ------------------------------------------------------
-
-    elif nombre_normalizado.startswith("MOVISTAR PLUS") or nombre_normalizado.startswith(
-        "MOVISTAR+"
-    ):
-        extinf_mod = poner_atributo(
-            extinf_mod, "tvg-id", TGV_ID_MOVISTAR_UNIFICADO
-        )
-        extinf_mod = poner_atributo(extinf_mod, "tvg-logo", URL_LOGO_PERSONAL)
-
-    # ------------------------------------------------------
-    # ONETORO: FORZAR SU EPG Y LOGOTIPO PERSONALIZADO
-    # ------------------------------------------------------
-
-    elif "ONETORO" in nombre_normalizado or "ONE TORO" in nombre_normalizado:
-        extinf_mod = poner_atributo(extinf_mod, "tvg-id", "Onetoro")
-        extinf_mod = poner_atributo(
-            extinf_mod,
-            "tvg-logo",
-            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Onetoro.png",
-        )
-
-    # ------------------------------------------------------
-    # GROUP-TITLE DE LA ZONA AUTOMATICA
-    # ------------------------------------------------------
-
+    extinf_mod = aplicar_logo_y_epg(linea, nombre_normalizado)
     extinf_mod = poner_atributo(extinf_mod, "group-title", GROUP_TITLE)
-
-    # ------------------------------------------------------
-    # CONVERTIR HASH ACESTREAM A DIRECCION LOCAL
-    # ------------------------------------------------------
 
     coincidencia_hash = re.search(r"([0-9a-fA-F]{40})", url)
 
@@ -576,6 +767,7 @@ print(f"Canales procesados: {len(canales_ordenados)}")
 print(f"Canales nuevos: {len(agregados)}")
 print(f"Canales eliminados: {len(eliminados)}")
 print("M+ 0 y Movistar Plus unificados con logo moderno y EPG")
+print("Primera Federacion y logos limpios aplicados")
 print("Carpetas personales: adaptadas a Tailscale en Canales m3u")
 print("Casa, Tailscale y Amigos: actualizados")
 print("==========================================")
