@@ -29,7 +29,11 @@ if errorlevel 1 (
 )
 
 "%GIT_EXE%" add -A
-"%GIT_EXE%" commit -m "Subida automatica"
+"%GIT_EXE%" diff --cached --quiet
+if errorlevel 1 (
+    "%GIT_EXE%" commit -m "Subida automatica"
+)
+
 "%GIT_EXE%" push
 if errorlevel 1 (
     echo Error en git push.
@@ -37,5 +41,4 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo Todo actualizado y subido.
 exit /b 0
