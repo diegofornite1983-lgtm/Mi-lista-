@@ -174,12 +174,15 @@ def poner_atributo(linea, atributo, valor):
     return linea.replace("#EXTINF:-1", f'#EXTINF:-1 {atributo}="{valor}"', 1)
 
 
-def limpiar_y_forzar_movistar(linea):
-    linea = re.sub(r'tvg-id="[^"]*"', "", linea, flags=re.IGNORECASE)
-    linea = re.sub(r'tvg-logo="[^"]*"', "", linea, flags=re.IGNORECASE)
+def quitar_atributo(linea, atributo):
+    linea = re.sub(rf'\s*{re.escape(atributo)}="[^"]*"', "", linea, flags=re.IGNORECASE)
     linea = re.sub(r"\s+", " ", linea)
-    linea = linea.replace("#EXTINF:-1 ", "#EXTINF:-1 ")
+    return linea.replace("#EXTINF:-1 ", "#EXTINF:-1 ")
 
+
+def limpiar_y_forzar_movistar(linea):
+    linea = quitar_atributo(linea, "tvg-id")
+    linea = quitar_atributo(linea, "tvg-logo")
     nuevo_sufijo = (
         f'tvg-id="{TGV_ID_MOVISTAR_UNIFICADO}" tvg-logo="{URL_LOGO_PERSONAL}"'
     )
@@ -192,9 +195,7 @@ def limpiar_logo_si_es_sucio(linea):
         return linea
     logo_actual = coincidencia.group(1).lower()
     if any(sucio in logo_actual for sucio in DOMINIOS_SUCIOS):
-        linea = re.sub(r'\s*tvg-logo="[^"]*"', "", linea, flags=re.IGNORECASE)
-        linea = re.sub(r"\s+", " ", linea)
-        linea = linea.replace("#EXTINF:-1 ", "#EXTINF:-1 ")
+        return quitar_atributo(linea, "tvg-logo")
     return linea
 
 
@@ -343,6 +344,15 @@ def aplicar_logo_y_epg(linea, nombre_norm):
     ):
         return limpiar_y_forzar_movistar(linea)
 
+    # Onetoro: exactamente igual que en tu lista personal (tvg-id="Onetoro" + logo picons_dobleM)
+    if "ONETORO" in nombre_norm or "ONE TORO" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "Onetoro")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Onetoro.png",
+        )
+
     # Primera Federacion / RFEF
     if "RFEF" in nombre_norm or "PRIMERA FEDERACION" in nombre_norm:
         linea = poner_atributo(linea, "tvg-id", "Primera Federación")
@@ -361,15 +371,7 @@ def aplicar_logo_y_epg(linea, nombre_norm):
             "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png",
         )
 
-    if "SKY SPORT MOTOGP" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "Sky Sport MotoGP")
-        return poner_atributo(
-            linea,
-            "tvg-logo",
-            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Sky%20Sport%20MotoGP.png",
-        )
-
-    if "MOTOGP" in nombre_norm:
+    if "MOTOGP" in nombre_norm and "SKY" not in nombre_norm:
         linea = poner_atributo(linea, "tvg-id", "DAZN MotoGP")
         return poner_atributo(
             linea,
@@ -411,7 +413,7 @@ def aplicar_logo_y_epg(linea, nombre_norm):
             "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf.png",
         )
 
-    # Baloncesto y NBA
+    # Baloncesto (solo DAZN Baloncesto y M+ Baloncesto; NBA queda sin forzar logo roto)
     if "DAZN BALONCESTO 3" in nombre_norm:
         linea = poner_atributo(linea, "tvg-id", "DAZN Baloncesto 3")
         return poner_atributo(
@@ -460,23 +462,7 @@ def aplicar_logo_y_epg(linea, nombre_norm):
             "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png",
         )
 
-    if nombre_norm.startswith("NBA"):
-        linea = poner_atributo(linea, "tvg-id", "NBA League Pass")
-        return poner_atributo(
-            linea,
-            "tvg-logo",
-            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/NBA%20League%20Pass.png",
-        )
-
     # Tenis
-    if "SKY SPORT TENNIS" in nombre_norm or "SKY SPORTS TENNIS" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "Sky Sports Tennis")
-        return poner_atributo(
-            linea,
-            "tvg-logo",
-            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Sky%20Sports%20Tennis.png",
-        )
-
     if "TENNIS CHANNEL" in nombre_norm:
         linea = poner_atributo(linea, "tvg-id", "Tennis Channel")
         return poner_atributo(
@@ -485,21 +471,13 @@ def aplicar_logo_y_epg(linea, nombre_norm):
             "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Tennis%20Channel.png",
         )
 
-    # TDT y abiertos
+    # TDT y abiertos con logo verificado
     if "CUATRO" in nombre_norm:
         linea = poner_atributo(linea, "tvg-id", "Cuatro HD")
         return poner_atributo(
             linea,
             "tvg-logo",
             "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/cuatro-es.png",
-        )
-
-    if "LA 2" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "La 2")
-        return poner_atributo(
-            linea,
-            "tvg-logo",
-            "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/la-2-es.png",
         )
 
     if "TELECINCO" in nombre_norm:
@@ -518,14 +496,6 @@ def aplicar_logo_y_epg(linea, nombre_norm):
             "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/real-madrid-tv-es.png",
         )
 
-    if "TELEDEPORTE" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "Teledeporte")
-        return poner_atributo(
-            linea,
-            "tvg-logo",
-            "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/teledeporte-es.png",
-        )
-
     if "ESPORT3" in nombre_norm or "ESPORT 3" in nombre_norm:
         linea = poner_atributo(linea, "tvg-id", "Esport 3")
         return poner_atributo(
@@ -540,14 +510,6 @@ def aplicar_logo_y_epg(linea, nombre_norm):
             linea,
             "tvg-logo",
             "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/a-punt-es.png",
-        )
-
-    if "ONETORO" in nombre_norm or "ONE TORO" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "Onetoro TV")
-        return poner_atributo(
-            linea,
-            "tvg-logo",
-            "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/onetoro-es.png",
         )
 
     return limpiar_logo_si_es_sucio(linea)
@@ -767,7 +729,7 @@ print(f"Canales procesados: {len(canales_ordenados)}")
 print(f"Canales nuevos: {len(agregados)}")
 print(f"Canales eliminados: {len(eliminados)}")
 print("M+ 0 y Movistar Plus unificados con logo moderno y EPG")
-print("Primera Federacion y logos limpios aplicados")
+print("Onetoro y Primera Federacion configurados")
 print("Carpetas personales: adaptadas a Tailscale en Canales m3u")
 print("Casa, Tailscale y Amigos: actualizados")
 print("==========================================")
