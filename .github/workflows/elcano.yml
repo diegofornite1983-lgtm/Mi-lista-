@@ -442,6 +442,44 @@ jobs:
                   )
 
               # ------------------------------------------------------
+              # CORRECCIÓN DE LOGOTIPOS ESPECÍFICOS (ESTÁNDAR ELCANO)
+              # ------------------------------------------------------
+
+              elif "DEPORTES 7" in nombre_normalizado:
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes%207.png")
+
+              elif "GOLF" in nombre_normalizado:
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf.png")
+
+              elif "DAZN BALONCESTO 3" in nombre_normalizado:
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20Baloncesto%203.png")
+
+              elif "DAZN BALONCESTO 2" in nombre_normalizado:
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20Baloncesto%202.png")
+
+              elif "DAZN BALONCESTO" in nombre_normalizado:
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20Baloncesto.png")
+
+              elif "M+ BALONCESTO 2" in nombre_normalizado:
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto%202.png")
+
+              elif "M+ BALONCESTO 4" in nombre_normalizado:
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto%204.png")
+
+              elif "M+ BALONCESTO 5" in nombre_normalizado:
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto%205.png")
+
+              elif "M+ BALONCESTO" in nombre_normalizado:
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png")
+
+              elif "PRIMERA FEDERACION" in nombre_normalizado or "RFEF" in nombre_normalizado:
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Primera%20Federaci%C3%B3n.png")
+
+              elif "SKY SPORT TENNIS" in nombre_normalizado or "SKY SPORTS TENNIS" in nombre_normalizado:
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-id", "Sky Sports Tennis")
+                  extinf_mod = poner_atributo(extinf_mod, "tvg-logo", "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Sky%20Sports%20Tennis.png")
+
+              # ------------------------------------------------------
               # GROUP-TITLE DE LA ZONA AUTOMÁTICA
               # ------------------------------------------------------
 
