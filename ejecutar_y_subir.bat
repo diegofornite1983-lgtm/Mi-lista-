@@ -4,7 +4,6 @@ cd /d "%~dp0"
 "C:\Users\diego\AppData\Local\Programs\Python\Python314\python.exe" actualizar_elcano.py
 if errorlevel 1 (
     echo Error al actualizar las listas.
-    pause
     exit /b 1
 )
 
@@ -24,7 +23,6 @@ if errorlevel 1 (
 "%GIT_EXE%" pull --rebase --autostash
 if errorlevel 1 (
     echo Error en git pull.
-    pause
     exit /b 1
 )
 
@@ -37,7 +35,6 @@ if errorlevel 1 (
 "%GIT_EXE%" push
 if errorlevel 1 (
     echo Error en git push.
-    pause
     exit /b 1
 )
 
