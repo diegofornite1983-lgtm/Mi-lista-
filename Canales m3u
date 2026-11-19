@@ -6,7 +6,6 @@
 # ZONA AUTOMATICA: ⭐ ELCANO [MÁXIMA CALIDAD]
 # ==========================================
 
-
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://i.ibb.co/hFYPWbpJ/plus.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",MOVISTAR PLUS 1080p **
 http://100.90.204.66:6878/ace/getstream?id=68b53041272592f4fbf00bf38cd91e54a4e16abf
 #EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://i.ibb.co/CV4CLjz/deportes.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Deportes 1080p **
@@ -25,15 +24,15 @@ http://100.90.204.66:6878/ace/getstream?id=770c89e46a912758cfcc80ecd5a97c4dd0dfe
 http://100.90.204.66:6878/ace/getstream?id=718323ef5595bf0e6c4f71f4354fcdcaeb018c82
 #EXTINF:-1 tvg-id="M+ Deportes 7" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes%207.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Deportes 7 1080p *
 http://100.90.204.66:6878/ace/getstream?id=a9ad43cc44c582584feb87dea04179517a3d8460
-#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://i.ibb.co/2Ndmtbp/f1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN F1 1080p **
-http://100.90.204.66:6878/ace/getstream?id=70ebe42b14d792f74acf931da7d4eb649bb2df0e
-#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://i.ibb.co/2Ndmtbp/f1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN F1 1080p **
-http://100.90.204.66:6878/ace/getstream?id=9b1fa0be70ab0bcc78182631d2bff80ade31e940
-#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://i.ibb.co/2Ndmtbp/f1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN F1 1080p **
+#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN F1 1080p **
 http://100.90.204.66:6878/ace/getstream?id=8ddb70f5fe3c221d71803481368d4f0a2bbf3667
-#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://i.ibb.co/2Ndmtbp/f1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN F1 1080p *
+#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN F1 1080p **
+http://100.90.204.66:6878/ace/getstream?id=9b1fa0be70ab0bcc78182631d2bff80ade31e940
+#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN F1 1080p **
+http://100.90.204.66:6878/ace/getstream?id=70ebe42b14d792f74acf931da7d4eb649bb2df0e
+#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN F1 1080p *
 http://100.90.204.66:6878/ace/getstream?id=79587e4c7a6ae12905a6fc8b61147fc59aa38480
-#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://i.ibb.co/2Ndmtbp/f1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN F1 720p **
+#EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN F1 720p **
 http://100.90.204.66:6878/ace/getstream?id=6f02acfff801293b7b64b377533dc8676294c479
 #EXTINF:-1 tvg-id="DAZN 2 HD" tvg-logo="https://i.ibb.co/Kz0GXSX/dazn2.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN 2 1080p **
 http://100.90.204.66:6878/ace/getstream?id=55616eb11715c5ce83659f28e3aa191f95ff7cef
@@ -89,8 +88,6 @@ http://100.90.204.66:6878/ace/getstream?id=d889729516a30bb2ac9e0355a1fbda0d10281
 http://100.90.204.66:6878/ace/getstream?id=1e0e3067189ce19b341b9e809df2e059a5c6a85e
 #EXTINF:-1 tvg-id="À Punt" tvg-logo="https://www.apuntmedia.es/static/media/logo-apunt.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",À Punt 1080p *
 http://100.90.204.66:6878/ace/getstream?id=ad7a52a05039e95e73a334e9d4518832ff84f448
-
-
 
 
 
