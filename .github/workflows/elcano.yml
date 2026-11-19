@@ -52,8 +52,8 @@ jobs:
           archivo_tailscale = Path("Canales m3u")
           archivo_amigos = Path("lista-amigos")
 
-          # TU LOGOTIPO PERSONALIZADO MODERNO
-          URL_LOGO_PERSONAL = "https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png"
+          # LOGOTIPO OFICIAL ACORDADO PARA MOVISTAR PLUS Y M+ 0
+          URL_LOGO_PERSONAL = "https://i.ibb.co/hFYPWbpJ/plus.png"
 
           # UNIFICAMOS EL TVG-ID PARA QUE COJA LA MISMA EPG QUE TUS CANALES MANUALES
           TGV_ID_MOVISTAR_UNIFICADO = "Movistar Plus HD"
