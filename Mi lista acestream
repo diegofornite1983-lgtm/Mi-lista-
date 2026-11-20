@@ -5,13 +5,13 @@
 # ==========================================
 # ZONA AUTOMATICA: ⭐ ELCANO [MÁXIMA CALIDAD]
 # ==========================================
-#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Estrenos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",MOVISTAR PLUS 1080p *
+#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",MOVISTAR PLUS 1080p *
 http://127.0.0.1:6878/ace/getstream?id=96cc6b02a0ce66ed3a01d9904e7ee8db0f2da5d7
-#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Estrenos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",MOVISTAR PLUS 1080p **
+#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",MOVISTAR PLUS 1080p **
 http://127.0.0.1:6878/ace/getstream?id=68b53041272592f4fbf00bf38cd91e54a4e16abf
-#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Estrenos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",MOVISTAR PLUS 720p *
+#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",MOVISTAR PLUS 720p *
 http://127.0.0.1:6878/ace/getstream?id=d2b5299ed45cbaf35482bb0869b2c2f75fbed64a
-#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Estrenos.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ 0 1080p **
+#EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ 0 1080p **
 http://127.0.0.1:6878/ace/getstream?id=f10b032953cfa1da70dc5d6edf23a83ba5904ba8
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://i.ibb.co/yfV1Q8n/liga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 1080p *
 http://127.0.0.1:6878/ace/getstream?id=2c90acc97a9d80dbaa5c13efaff0967a57aa31bd
@@ -309,6 +309,7 @@ http://127.0.0.1:6878/ace/getstream?id=42d47a6acf224edeef29f89409ecc5e4cc1f52b1
 http://127.0.0.1:6878/ace/getstream?id=1d9e4ec1c78ae31da88a5f8582eb95d29d329d8d
 #EXTINF:-1 tvg-id="Teledeporte" tvg-logo="https://img2.rtve.es/n/15966755" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Teledeporte 720p **
 http://127.0.0.1:6878/ace/getstream?id=d889729516a30bb2ac9e0355a1fbda0d10281e9a
+
 
 
 
