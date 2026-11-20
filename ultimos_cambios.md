@@ -1,21 +1,7 @@
-# Resumen de cambios ELCANO - 2026-11-20 22:48:58
+# Resumen de cambios ELCANO - 2026-11-20 22:58:00
 
-## Canales nuevos (6)
-- BEIN SPORTS TR 720P *
-- M+ BALONCESTO 5 1080P *
-- M+ GOLF 720P *
-- M+ LIGA DE CAMPEONES 720P *
-- M+ VAMOS 1080P *
-- NBA ESPN 1080P *
+## Canales nuevos (0)
+- Ninguno.
 
-## Canales eliminados (10)
-- DAZN F1 720P *
-- M+ BALONCESTO 2 1080P **
-- M+ BALONCESTO 4 1080P *
-- M+ DEPORTES 2 720P *
-- M+ DEPORTES 5 1080P *
-- M+ DEPORTES 6 1080P *
-- M+ GOLF 2 1080P **
-- M+ LIGA DE CAMPEONES 3 720P **
-- M+ LIGA DE CAMPEONES 5 1080P **
-- SPORT TV3 720P **
+## Canales eliminados (1)
+- BEIN SPORTS 3 TR 720P *
