@@ -354,6 +354,13 @@ def aplicar_logo_y_epg(linea, nombre_norm):
             "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png",
         )
 
+    if "NBA LEAGUE PASS" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "NBA League Pass")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/united-states/nba-league-pass-hz-us.png",
+        )
 
     # Onetoro: exactamente igual que en tu lista personal (tvg-id="Onetoro" + logo picons_dobleM)
     if "ONETORO" in nombre_norm or "ONE TORO" in nombre_norm:
