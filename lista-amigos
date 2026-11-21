@@ -598,6 +598,17 @@ http://127.0.0.1:6878/ace/getstream?id=ff770f04b4d985193edf8dd02feec90ef8234282
 #EXTINF:-1 tvg-id="DAZN MotoGP" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20MotoGP.png" group-title="MotoGP",DAZN MotoGP 8b36
 http://127.0.0.1:6878/ace/getstream?id=2a05a020dfe97aaa0665bb7551022868b2a88b36
 
+
+#EXTINF:-1 tvg-id="DAZN MotoGP" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20MotoGP.png" group-title="MotoGP",DAZN MotoGP 86ef
+http://127.0.0.1:6878/ace/getstream?id=9ad6aa4ed4683e7ea58bf1de241516e1fcd886ef
+#EXTINF:-1 tvg-id="DAZN MotoGP" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20MotoGP.png" group-title="MotoGP",DAZN MotoGP ceb1
+http://127.0.0.1:6878/ace/getstream?id=4c5edd25e0b77512172aa1b06c55773ff0d8ceb1
+#EXTINF:-1 tvg-id="DAZN MotoGP" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20MotoGP.png" group-title="MotoGP",DAZN MotoGP 62df
+http://127.0.0.1:6878/ace/getstream?id=36e61c0f5bf9c83ef3bfe9777e3d2f7d9e8e62df
+#EXTINF:-1 tvg-id="DAZN MotoGP" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20MotoGP.png" group-title="MotoGP",DAZN MotoGP c3e4
+http://127.0.0.1:6878/ace/getstream?id=3104d58909f284e949844fb6a39e0baf1a6fc3e4
+
+
 # ==========================================
 # CARPETA: MOVISTAR DEP-VAMOS
 # ==========================================
