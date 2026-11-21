@@ -1,9 +1,11 @@
-# Resumen de cambios ELCANO - 2026-11-21 07:05:12
+# Resumen de cambios ELCANO - 2026-11-21 10:05:02
 
-## Canales nuevos (0)
-- Ninguno.
+## Canales nuevos (1)
+- M+ BALONCESTO 1080P **
 
-## Canales eliminados (3)
-- BEIN SPORTS TR 720P *
-- DAZN 4 1080P *
-- SKY SPORT TENNIS 1080P *
+## Canales eliminados (5)
+- LALIGA TV HYPERMOTION 720P **
+- M+ 0 1080P **
+- M+ BALONCESTO 4 1080P **
+- M+ DEPORTES 6 1080P **
+- SPORT TV3 1080P **
