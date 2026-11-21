@@ -31,7 +31,8 @@ archivo_tailscale = CARPETA_LISTAS / "Canales m3u"
 archivo_amigos = CARPETA_LISTAS / "lista-amigos"
 
 # LOGOTIPO LIMPIO SIN ESPACIOS NI PARENTESIS (MOVISTAR PLUS Y M+ 0)
-URL_LOGO_PERSONAL = "https://raw.githubusercontent.com/cristorodriguez13517-maker/p/refs/heads/main/plus%20(1).png"
+URL_LOGO_PERSONAL = "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%200.png"
+
 TGV_ID_MOVISTAR_UNIFICADO = "Movistar Plus HD"
 
 GROUP_TITLE = "⭐ ELCANO [MÁXIMA CALIDAD]"
