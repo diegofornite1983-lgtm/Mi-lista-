@@ -346,6 +346,15 @@ def aplicar_logo_y_epg(linea, nombre_norm):
     ):
         return limpiar_y_forzar_movistar(linea)
 
+    if "UFC" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "UFC")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png",
+        )
+
+
     # Onetoro: exactamente igual que en tu lista personal (tvg-id="Onetoro" + logo picons_dobleM)
     if "ONETORO" in nombre_norm or "ONE TORO" in nombre_norm:
         linea = poner_atributo(linea, "tvg-id", "Onetoro")
