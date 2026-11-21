@@ -483,6 +483,13 @@ def aplicar_logo_y_epg(linea, nombre_norm):
             "tvg-logo",
             "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20Baloncesto.png",
         )
+    if "NBA ESPN" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "NBA ESPN")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/united-states/espn-us.png",
+        )
 
     if re.search(r"\bBALONCESTO\s*3\b", nombre_norm):
         linea = poner_atributo(linea, "tvg-id", "M+ Baloncesto 3")
