@@ -353,6 +353,34 @@ def aplicar_logo_y_epg(linea, nombre_norm):
             "tvg-logo",
             "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png",
         )
+    if "SKY SPORT MOTOGP" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "Sky Sport MotoGP")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/hd/sky-sport-motogp-hd-it.png",
+        )
+    if "SKY SPORT TENNIS" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "Sky Sport Tennis")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/hd/sky-sport-tennis-hd-it.png",
+        )
+    if "ESPORT3" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "Esport3")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/spain/esport-3-es.png",
+        )
+    if "BEIN SPORTS TR" in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "Bein Sports TR")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/turkey/bein-sports-haber-tr.png",
+        )
 
     if "NBA LEAGUE PASS" in nombre_norm:
         linea = poner_atributo(linea, "tvg-id", "NBA League Pass")
