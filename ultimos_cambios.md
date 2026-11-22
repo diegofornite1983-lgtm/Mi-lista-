@@ -1,12 +1,7 @@
-# Resumen de cambios ELCANO - 2026-11-22 12:59:21
+# Resumen de cambios ELCANO - 2026-11-22 13:05:06
 
-## Canales nuevos (6)
-- DAZN BALONCESTO 1080P *
-- LALIGA TV HYPERMOTION *
-- M+ BALONCESTO 1080P *
-- M+ BALONCESTO 2 1080P **
-- M+ BALONCESTO 3 1080P **
-- M+ DEPORTES 7 1080P *
+## Canales nuevos (0)
+- Ninguno.
 
-## Canales eliminados (1)
-- M+ GOLF 2 1080P **
+## Canales eliminados (0)
+- Ninguno.
