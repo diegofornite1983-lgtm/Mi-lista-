@@ -213,7 +213,7 @@ http://100.90.204.66:6878/ace/getstream?id=add32bf660e6ebf7cfda710f2062109780099
 http://100.90.204.66:6878/ace/getstream?id=d04d68af86e33ddc4a5d83a6dffd14a473b30a6c
 #EXTINF:-1 tvg-logo="https://r2.thesportsdb.com/images/media/channel/logo/fjy5d31700902671.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",SPORT TV3 720p **
 http://100.90.204.66:6878/ace/getstream?id=3bbfbf4bd176ece16ee8e7e52a7ff52d03ce8478
-#EXTINF:-1 group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Bein Sports 3 TR 720p *
+#EXTINF:-1 tvg-id="Bein Sports 3 TR" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/turkey/bein-sports-haber-tr.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Bein Sports 3 TR 720p *
 http://100.90.204.66:6878/ace/getstream?id=a782c192e3b091ca9ecdd84a566ca06da4d6c1e1
 #EXTINF:-1 tvg-id="Bein Sports TR" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/turkey/bein-sports-haber-tr.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Bein Sports TR 720p *
 http://100.90.204.66:6878/ace/getstream?id=9bf4dabef22c116aa3e23536aabae6ad8f46a16a
@@ -279,6 +279,7 @@ http://100.90.204.66:6878/ace/getstream?id=c077065de8837b84c0caec11f67ee7ad7141e
 http://100.90.204.66:6878/ace/getstream?id=42d47a6acf224edeef29f89409ecc5e4cc1f52b1
 #EXTINF:-1 tvg-id="Teledeporte" tvg-logo="https://img2.rtve.es/n/15966755" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Teledeporte 720p **
 http://100.90.204.66:6878/ace/getstream?id=d889729516a30bb2ac9e0355a1fbda0d10281e9a
+
 
 
 

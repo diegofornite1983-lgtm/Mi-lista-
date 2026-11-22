@@ -416,6 +416,13 @@ def aplicar_logo_y_epg(linea, nombre_norm):
             "tvg-logo",
             "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png",
         )
+    if "BEIN SPORTS 3 TR" in nombre_norm or ("BEIN SPORTS 3" in nombre_norm and "TR" in nombre_norm):
+        linea = poner_atributo(linea, "tvg-id", "Bein Sports 3 TR")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/turkey/bein-sports-haber-tr.png",
+        )
 
     if "MOTOGP" in nombre_norm and "SKY" not in nombre_norm:
         linea = poner_atributo(linea, "tvg-id", "DAZN MotoGP")
