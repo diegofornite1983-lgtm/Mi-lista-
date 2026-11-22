@@ -1,27 +1,8 @@
-# Resumen de cambios ELCANO - 2026-11-22 22:05:09
+# Resumen de cambios ELCANO - 2026-11-22 23:05:07
 
-## Canales nuevos (8)
-- DAZN 1 720P *
-- DAZN 1 720P **
-- DAZN 3 1080P *
-- DAZN 4 **
-- DAZN 4 1080P *
-- DAZN LALIGA 3 1080P *
-- DAZN MOTOGP 720P *
-- EUROSPORT 2 1080P **
+## Canales nuevos (0)
+- Ninguno.
 
-## Canales eliminados (14)
-- A PUNT 1080P *
-- DAZN BALONCESTO 1080P *
-- ESPORT3 720P *
-- EUROSPORT 2 720P **
-- LA 1 TVE 4K *
-- LA 1 TVE 720P *
-- LALIGA TV HYPERMOTION 720P **
-- M+ BALONCESTO 4 1080P **
-- M+ LIGA DE CAMPEONES 5 1080P **
-- MOVISTAR PLUS 720P *
-- RALLY TV 1080P *
-- TELEDEPORTE 1080P *
-- TELEDEPORTE 1080P **
-- UFC *
+## Canales eliminados (2)
+- DAZN BALONCESTO 3 1080P **
+- M+ DEPORTES 5 1080P **
