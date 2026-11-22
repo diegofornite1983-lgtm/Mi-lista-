@@ -1,28 +1,11 @@
-# Resumen de cambios ELCANO - 2026-11-22 01:05:02
+# Resumen de cambios ELCANO - 2026-11-22 04:05:04
 
-## Canales nuevos (3)
-- DAZN LALIGA 2 720P *
-- M+ LALIGA 2 *
-- M+ LIGA DE CAMPEONES 4 1080P *
+## Canales nuevos (0)
+- Ninguno.
 
-## Canales eliminados (20)
-- BEIN SPORTS 3 TR 720P *
-- DAZN BALONCESTO 1080P *
-- DAZN BALONCESTO 3 720P *
-- LA 2 TVE 1080P *
-- M+ BALONCESTO 2 1080P *
-- M+ DEPORTES 2 720P *
-- M+ DEPORTES 4 720P *
-- M+ DEPORTES 5 1080P *
-- M+ DEPORTES 6 1080P *
-- M+ DEPORTES 7 1080P *
-- M+ DEPORTES 7 720P *
-- M+ DEPORTES 720P *
-- M+ GOLF 1080P *
-- M+ GOLF 2 1080P *
-- M+ GOLF 720P *
-- M+ LALIGA 1080P *
-- M+ LIGA DE CAMPEONES 720P *
-- M+ VAMOS 1080P *
-- NBA ESPN 1080P *
-- SPORT TV3 1080P *
+## Canales eliminados (5)
+- DAZN 4 1080P *
+- ESPORT3 1080P *
+- ESPORT3 720P *
+- LA 1 TVE 4K *
+- LA 1 TVE 720P *
