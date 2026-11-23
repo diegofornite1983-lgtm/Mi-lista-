@@ -1,19 +1,7 @@
-# Resumen de cambios ELCANO - 2026-11-23 19:39:55
+# Resumen de cambios ELCANO - 2026-11-23 19:41:13
 
-## Canales nuevos (13)
-- M+ LIGA DE CAMPEONES 1080P **
-- M+ LIGA DE CAMPEONES 2 1080P **
-- M+ LIGA DE CAMPEONES 2 720P **
-- M+ LIGA DE CAMPEONES 3 1080P **
-- M+ LIGA DE CAMPEONES 3 720P **
-- M+ LIGA DE CAMPEONES 4 1080P **
-- M+ LIGA DE CAMPEONES 4 720P **
-- M+ LIGA DE CAMPEONES 5 1080P **
-- M+ LIGA DE CAMPEONES 6 1080P **
-- M+ LIGA DE CAMPEONES 6 720P **
-- M+ LIGA DE CAMPEONES 7 1080P **
-- M+ LIGA DE CAMPEONES 720P **
-- M+ LIGA DE CAMPEONES 9 1080P **
+## Canales nuevos (0)
+- Ninguno.
 
-## Canales eliminados (1)
-- ESPORT3 720P **
+## Canales eliminados (0)
+- Ninguno.
