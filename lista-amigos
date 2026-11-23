@@ -462,27 +462,35 @@ http://127.0.0.1:6878/ace/getstream?id=90f7941c6bf7ca4b18084a1dca7bc15b9b179373
 #EXTINF:-1 tvg-id="M+ Liga de Campeones 4" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%204.png" group-title="CHAMPIONS",⭐️ M+ Liga de Campeones 4 b661
 http://127.0.0.1:6878/ace/getstream?id=6fbab1d8d6bf93c4bc7552714aa3bb54ebf7b661
 
-#EXTINF:-1 tvg-id="M+ Liga de Campeones 5" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%205.png" group-title="LIGA CAMPEONES",M+ Liga de Campeones 5 1080p **
+#EXTINF:-1 tvg-id="M+ Liga de Campeones 5" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%205.png" group-title="CHAMPIONS",M+ Liga de Campeones 5 1080p **
 http://127.0.0.1:6878/ace/getstream?id=c7959c396edfcc1654541572ed3cb39f7456bbd6
-#EXTINF:-1 tvg-id="M+ Liga de Campeones 5" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%205.png" group-title="LIGA CAMPEONES",M+ Liga de Campeones 5 1080p ** (2)
+
+#EXTINF:-1 tvg-id="M+ Liga de Campeones 5" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%205.png" group-title="CHAMPIONS",M+ Liga de Campeones 5 1080p **
 http://127.0.0.1:6878/ace/getstream?id=860392c455d7cd2b1664ed6c95a8aa22ee869023
-#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga de Campeones%205.png" group-title="LIGA CAMPEONES",M+ Liga de Campeones 6 1080p *
+
+#EXTINF:-1 tvg-logo="" group-title="CHAMPIONS",M+ Liga de Campeones 6 1080p *
 http://127.0.0.1:6878/ace/getstream?id=f305b4719cfe00b6bd2aeeb3e7265b119d4b687b
-#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga de Campeones%205.png" group-title="LIGA CAMPEONES",M+ Liga de Campeones 6 1080p **
+
+#EXTINF:-1 tvg-logo="" group-title="CHAMPIONS",M+ Liga de Campeones 6 1080p **
 http://127.0.0.1:6878/ace/getstream?id=95d4e79a6e558c14cae4c3fe1dd4c3ad8804fd3d
-#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga de Campeones%205.png" group-title="LIGA CAMPEONES",M+ Liga de Campeones 6 1080p ** (2)
+
+#EXTINF:-1 tvg-logo="" group-title="CHAMPIONS",M+ Liga de Campeones 6 1080p **
 http://127.0.0.1:6878/ace/getstream?id=08d75f7722acbe4a024a3bcadcea617504c4778c
-#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga de Campeones%205.png" group-title="LIGA CAMPEONES",M+ Liga de Campeones 7 1080p *
+
+#EXTINF:-1 tvg-logo="" group-title="CHAMPIONS",M+ Liga de Campeones 7 1080p *
 http://127.0.0.1:6878/ace/getstream?id=93402a76024868654e2c7ba5e7d2b376721767f4
-#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga de Campeones%205.png" group-title="LIGA CAMPEONES",M+ Liga de Campeones 7 1080p **
+
+#EXTINF:-1 tvg-logo="" group-title="CHAMPIONS",M+ Liga de Campeones 7 1080p **
 http://127.0.0.1:6878/ace/getstream?id=d3d4b18229abe086af08097a250615458a04e95e
-#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga de Campeones%205.png" group-title="LIGA CAMPEONES",M+ Liga de Campeones 8 1080p *
+
+#EXTINF:-1 tvg-logo="" group-title="CHAMPIONS",M+ Liga de Campeones 8 1080p *
 http://127.0.0.1:6878/ace/getstream?id=f57b01f2507e4ec4fad3cd81aece503d185120a7
-#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga de Campeones%205.png" group-title="LIGA CAMPEONES",M+ Liga de Campeones 8 1080p **
+
+#EXTINF:-1 tvg-logo="" group-title="CHAMPIONS",M+ Liga de Campeones 8 1080p **
 http://127.0.0.1:6878/ace/getstream?id=282c37d1583e43ea2970a5d85ecb616b0960d048
 
-#EXTINF:-1 tvg-id="M+ Liga de Campeones 6" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%206.png" group-title="CHAMPIONS",M+ Liga de Campeones 6 9874
-http://127.0.0.1:6878/ace/getstream?id=373b2ff67490d1ed560a33156b34686923159874
+
+
 
 # ==========================================
 # CARPETA: DAZN 1
