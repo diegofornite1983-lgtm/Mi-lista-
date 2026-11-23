@@ -38,7 +38,6 @@ jobs:
           IPNS_HASH = "k51qzi5uqu5dh5qej4b9wlcr5i6vhc7rcfkekhrxqek5c9lk6gdaiik820fecs"
 
           URLS_ELCANO = [
-              f"https://ipfs.bytokyo.dpdns.org/{IPNS_HASH}/hashes.json",
               f"https://ipfs.bytokyo.dpdns.org/{IPNS_HASH}/hashes_acestream.m3u",
               f"https://ipfs2.bytokyo.dpdns.org/{IPNS_HASH}/hashes_acestream.m3u",
               f"https://tokyo2.elcano-ipfs.workers.dev/{IPNS_HASH}/hashes_acestream.m3u",
@@ -136,11 +135,18 @@ jobs:
                   )
 
                   with urllib.request.urlopen(peticion, timeout=30) as respuesta:
-                      fuente_elcano = respuesta.read().decode(
+                      texto_leido = respuesta.read().decode(
                           "utf-8-sig",
                           errors="replace"
                       )
-                      break
+                      if "#EXTINF:" in texto_leido or "acestream://" in texto_leido:
+                          fuente_elcano = texto_leido
+                          print(f"Fuente cargada desde: {url_intento}")
+                          break
+                      else:
+                          errores_descarga.append(
+                              f"{url_intento} -> Respuesta sin formato M3U (#EXTINF:)"
+                          )
               except Exception as error:
                   errores_descarga.append(f"{url_intento} -> {error}")
 
