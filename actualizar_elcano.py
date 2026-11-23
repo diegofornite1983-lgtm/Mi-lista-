@@ -693,6 +693,65 @@ def aplicar_logo_y_epg(linea, nombre_norm):
             "tvg-logo",
             "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Eurosport.png",
         )
+    # M+ Vamos (mantiene vamos.png y asigna su tvg-id)
+    if "VAMOS" in nombre_norm:
+        for num in range(10, 1, -1):
+            if re.search(rf"\b{num}\b", nombre_norm):
+                linea = poner_atributo(linea, "tvg-id", f"M+ Vamos {num}")
+                return poner_atributo(
+                    linea, "tvg-logo", "https://i.ibb.co/gWMRpFB/vamos.png"
+                )
+        linea = poner_atributo(linea, "tvg-id", "M+ Vamos HD")
+        return poner_atributo(
+            linea, "tvg-logo", "https://i.ibb.co/gWMRpFB/vamos.png"
+        )
+
+    # Liga de Campeones del 5 al 9 (corrige el logo del 5 que trae el origen)
+    if "CAMPEONES" in nombre_norm or "CHAMPIONS" in nombre_norm:
+        for num in range(5, 10):
+            if re.search(rf"\b{num}\b", nombre_norm):
+                linea = poner_atributo(
+                    linea, "tvg-id", f"M+ Liga de Campeones {num}"
+                )
+                return poner_atributo(
+                    linea,
+                    "tvg-logo",
+                    f"https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%20{num}.png",
+                )
+
+    # M+ Baloncesto 4 a 10 (evita que 4 o 5 caigan en el 1)
+    if "BALONCESTO" in nombre_norm and "DAZN" not in nombre_norm:
+        for num in range(10, 3, -1):
+            if re.search(rf"\b{num}\b", nombre_norm):
+                linea = poner_atributo(
+                    linea, "tvg-id", f"M+ Baloncesto {num}"
+                )
+                return poner_atributo(
+                    linea,
+                    "tvg-logo",
+                    f"https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto%20{num}.png",
+                )
+
+    # M+ Baloncesto 3 sin tvg-id en origen
+    if re.search(r"\bBALONCESTO\s*3\b", nombre_norm) and "DAZN" not in nombre_norm:
+        linea = poner_atributo(linea, "tvg-id", "M+ Baloncesto 3")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto%203.png",
+        )
+
+    # SKY Sports LaLiga sin tvg-id en origen
+    if "SKY SPORTS LALIGA" in nombre_norm or "SKY SPORTS LA LIGA" in nombre_norm:
+        return poner_atributo(linea, "tvg-id", "SKY Sports LaLiga")
+
+    # SPORT TV sin tvg-id en origen
+    if "SPORT TV" in nombre_norm:
+        if "3" in nombre_norm:
+            return poner_atributo(linea, "tvg-id", "Sport TV 3")
+        if "+" in nombre_norm or "PLUS" in nombre_norm:
+            return poner_atributo(linea, "tvg-id", "Sport TV+")
+        return poner_atributo(linea, "tvg-id", "Sport TV")
 
     return limpiar_logo_si_es_sucio(linea)
 
