@@ -163,11 +163,12 @@ jobs:
                   errores_descarga.append(f"{url_intento} -> {error}")
 
           if not fuente_elcano:
-              sys.exit(
-                  "ERROR descargando Elcano desde todas las URLs disponibles:\n"
+              print(
+                  "AVISO: No se pudo descargar Elcano desde ninguna URL en GitHub Actions:\n"
                   + "\n".join(errores_descarga)
-                  + "\nNo se modifica ningun archivo."
+                  + "\nNo se modifica ningun archivo. Saliendo sin error."
               )
+              sys.exit(0)
 
           # ==========================================================
           # FUNCIONES AUXILIARES
@@ -601,10 +602,11 @@ jobs:
               indice = siguiente + 1
 
           if not canales:
-              sys.exit(
-                  "ERROR: Elcano no ha proporcionado canales validos. "
-                  "No se modifica ningun archivo."
+              print(
+                  "AVISO: Elcano no ha proporcionado canales validos. "
+                  "No se modifica ningun archivo. Saliendo sin error."
               )
+              sys.exit(0)
 
           # ==========================================================
           # ORDEN SIN ELIMINAR CANALES NI DUPLICADOS
@@ -737,7 +739,7 @@ jobs:
 
           if f'tvg-id="{TGV_ID_MOVISTAR_UNIFICADO}"' not in texto_final:
               sys.exit(
-                  "ERROR: No se ha aplicado el tvg-id unificado a Movistar. "
+                  'ERROR: No se ha aplicado el tvg-id unificado a Movistar. '
                   "No se guardan los archivos."
               )
 
