@@ -1,8 +1,7 @@
-# Resumen de cambios ELCANO - 2026-11-23 23:32:58
+# Resumen de cambios ELCANO - 2026-11-24 00:14:06
 
 ## Canales nuevos (0)
 - Ninguno.
 
-## Canales eliminados (2)
-- M+ BALONCESTO 1080P *
-- M+ BALONCESTO 2 1080P **
+## Canales eliminados (0)
+- Ninguno.

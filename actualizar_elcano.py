@@ -521,6 +521,18 @@ def aplicar_logo_y_epg(linea, nombre_norm):
             "tvg-logo",
             "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png",
         )
+    # Liga de Campeones del 5 al 9
+    if "CAMPEONES" in nombre_norm or "CHAMPIONS" in nombre_norm:
+        for num in range(5, 10):
+            if re.search(rf"\b{num}\b", nombre_norm):
+                linea = poner_atributo(
+                    linea, "tvg-id", f"M+ Liga de Campeones {num}"
+                )
+                return poner_atributo(
+                    linea,
+                    "tvg-logo",
+                    f"https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%20{num}.png",
+                )
 
     # Tenis
     if "TENNIS CHANNEL" in nombre_norm:
