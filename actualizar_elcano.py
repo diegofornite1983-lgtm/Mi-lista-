@@ -1077,7 +1077,7 @@ else:
 # ==========================================================
 cabecera_m3u = (
     '#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
-    'https://epgshare01.online/epgshare01/epg_ripper_US_SPORTS1.xml.gz,https://epgshare01.online/epgshare01/epg_ripper_US1.xml.gz,'
+    'https://epgshare01.online/epgshare01/epg_ripper_US_SPORTS1.xml.gz,'
     'https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,'
     'https://epgshare01.online/epgshare01/epg_ripper_PT1.xml.gz,'
     'https://epgshare01.online/epgshare01/epg_ripper_TR1.xml.gz,'
@@ -1091,6 +1091,8 @@ cabecera_m3u = (
     + salto
     + salto
 )
+
+
 
 # ==========================================================
 # MONTAR ARCHIVO CASA (Mantiene IP local 127.0.0.1 abajo)
