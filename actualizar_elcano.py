@@ -148,7 +148,7 @@ if not fuente_elcano:
     )
 
 # ==========================================================
-# FUNCIONES AUXILIARES
+# FUNCIONES AUXILIARES Y REFERENCIA DE CARPETAS PERSONALES
 # ==========================================================
 
 
@@ -158,6 +158,41 @@ def normalizar(texto):
         caracter for caracter in texto if unicodedata.category(caracter) != "Mn"
     )
     return texto.upper().strip()
+
+
+def clave_canal(texto):
+    n = normalizar(texto)
+    n = re.sub(r"[⭐⭐️*]", "", n)
+    n = re.sub(
+        r"\b(1080P|720P|4K|FHD|HD|SD|SHICKAT|ELCANO|CANO|SOLO EVENTOS)\b",
+        "",
+        n,
+    )
+    n = re.sub(r"\[.*?\]|\(.*?\)", "", n)
+    n = re.sub(r"\s+[0-9A-F]{3,5}\b", "", n)
+    n = re.sub(r"#\d+", "", n)
+    n = n.replace("MOVISTAR+", "M+")
+    n = n.replace("LA LIGA", "LALIGA").replace("FORMULA 1", "F1")
+    n = re.sub(r"\s+", " ", n).strip()
+    return n
+
+
+def extraer_mapa_personal(texto_personal):
+    mapa = {}
+    for linea in texto_personal.splitlines():
+        if not linea.startswith("#EXTINF:") or "," not in linea:
+            continue
+        m_id = re.search(r'tvg-id="([^"]+)"', linea, flags=re.IGNORECASE)
+        if not m_id:
+            continue
+        nombre_c = linea.rsplit(",", 1)[-1].strip()
+        k = clave_canal(nombre_c)
+        if k and k not in mapa:
+            mapa[k] = m_id.group(1)
+    return mapa
+
+
+MAPA_PERSONAL_ID = extraer_mapa_personal(cuerpo_personal)
 
 
 def poner_atributo(linea, atributo, valor):
@@ -331,6 +366,13 @@ TV_LOGOS_IT = "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries
 TV_LOGOS_TR = "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/turkey"
 
 
+def resolver_tvg_id(nombre_norm, nombre_original, id_por_defecto):
+    clave = clave_canal(nombre_original or nombre_norm)
+    if clave and clave in MAPA_PERSONAL_ID:
+        return MAPA_PERSONAL_ID[clave]
+    return id_por_defecto
+
+
 def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
     linea = limpiar_logo_si_es_sucio(linea)
 
@@ -344,13 +386,19 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
     if "CAMPEONES" in nombre_norm or "CHAMPIONS" in nombre_norm:
         for num in range(9, 1, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
-                linea = poner_atributo(linea, "tvg-id", f"M+ Liga de Campeones {num}")
+                tvg_id = resolver_tvg_id(
+                    nombre_norm, nombre_original, f"M+ Liga de Campeones {num}"
+                )
+                linea = poner_atributo(linea, "tvg-id", tvg_id)
                 return poner_atributo(
                     linea,
                     "tvg-logo",
                     f"{PICONS_BASE}/M%2B%20Liga%20de%20Campeones%20{num}.png",
                 )
-        linea = poner_atributo(linea, "tvg-id", "M+ Liga de Campeones HD")
+        tvg_id = resolver_tvg_id(
+            nombre_norm, nombre_original, "M+ Liga de Campeones HD"
+        )
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea,
             "tvg-logo",
@@ -361,13 +409,19 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
     if "HYPERMOTION" in nombre_norm:
         for num in range(10, 1, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
-                linea = poner_atributo(linea, "tvg-id", f"LaLiga TV Hypermotion {num}")
+                tvg_id = resolver_tvg_id(
+                    nombre_norm, nombre_original, f"LaLiga TV Hypermotion {num}"
+                )
+                linea = poner_atributo(linea, "tvg-id", tvg_id)
                 return poner_atributo(
                     linea,
                     "tvg-logo",
                     f"{PICONS_BASE}/LaLiga%20TV%20Hypermotion%20{num}.png",
                 )
-        linea = poner_atributo(linea, "tvg-id", "LaLiga TV Hypermotion HD")
+        tvg_id = resolver_tvg_id(
+            nombre_norm, nombre_original, "LaLiga TV Hypermotion HD"
+        )
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea,
             "tvg-logo",
@@ -378,13 +432,16 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
     if "DAZN LALIGA" in nombre_norm or "DAZN LA LIGA" in nombre_norm:
         for num in range(10, 1, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
-                linea = poner_atributo(linea, "tvg-id", f"DAZN LaLiga {num}")
+                defecto = f"DAZN LaLiga {num} HD" if num == 2 else f"DAZN LaLiga {num}"
+                tvg_id = resolver_tvg_id(nombre_norm, nombre_original, defecto)
+                linea = poner_atributo(linea, "tvg-id", tvg_id)
                 return poner_atributo(
                     linea,
                     "tvg-logo",
                     f"{PICONS_BASE}/DAZN%20LaLiga%20{num}.png",
                 )
-        linea = poner_atributo(linea, "tvg-id", "DAZN LaLiga HD")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "DAZN LaLiga HD")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea,
             "tvg-logo",
@@ -400,13 +457,16 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
     ):
         for num in range(10, 1, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
-                linea = poner_atributo(linea, "tvg-id", f"M+ LaLiga {num}")
+                defecto = f"M+ LaLiga {num} HD" if num == 2 else f"M+ LaLiga {num}"
+                tvg_id = resolver_tvg_id(nombre_norm, nombre_original, defecto)
+                linea = poner_atributo(linea, "tvg-id", tvg_id)
                 return poner_atributo(
                     linea,
                     "tvg-logo",
                     f"{PICONS_BASE}/M%2B%20LaLiga%20{num}.png",
                 )
-        linea = poner_atributo(linea, "tvg-id", "M+ LaLiga HD")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "M+ LaLiga HD")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea,
             "tvg-logo",
@@ -417,13 +477,17 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
     if "VAMOS" in nombre_norm:
         for num in range(10, 1, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
-                linea = poner_atributo(linea, "tvg-id", f"M+ Vamos {num}")
+                tvg_id = resolver_tvg_id(
+                    nombre_norm, nombre_original, f"M+ Vamos {num}"
+                )
+                linea = poner_atributo(linea, "tvg-id", tvg_id)
                 return poner_atributo(
                     linea,
                     "tvg-logo",
                     f"{PICONS_BASE}/M%2B%20Vamos%20{num}.png",
                 )
-        linea = poner_atributo(linea, "tvg-id", "M+ Vamos HD")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "M+ Vamos HD")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea,
             "tvg-logo",
@@ -444,7 +508,10 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
     ):
         for num in range(10, 0, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
-                linea = poner_atributo(linea, "tvg-id", f"DAZN {num} HD")
+                tvg_id = resolver_tvg_id(
+                    nombre_norm, nombre_original, f"DAZN {num} HD"
+                )
+                linea = poner_atributo(linea, "tvg-id", tvg_id)
                 return poner_atributo(
                     linea,
                     "tvg-logo",
@@ -455,13 +522,16 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
     if "EUROSPORT" in nombre_norm:
         for num in range(10, 0, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
-                linea = poner_atributo(linea, "tvg-id", f"Eurosport {num}")
+                defecto = f"Eurosport {num} HD" if num == 1 else f"Eurosport {num}"
+                tvg_id = resolver_tvg_id(nombre_norm, nombre_original, defecto)
+                linea = poner_atributo(linea, "tvg-id", tvg_id)
                 return poner_atributo(
                     linea,
                     "tvg-logo",
                     f"{PICONS_BASE}/Eurosport%20{num}.png",
                 )
-        linea = poner_atributo(linea, "tvg-id", "Eurosport")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Eurosport")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea,
             "tvg-logo",
@@ -472,7 +542,11 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
     if "DEPORTES" in nombre_norm:
         for num in range(7, 0, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
-                linea = poner_atributo(linea, "tvg-id", f"M+ Deportes {num}")
+                defecto = (
+                    f"M+ Deportes {num} HD" if num == 2 else f"M+ Deportes {num}"
+                )
+                tvg_id = resolver_tvg_id(nombre_norm, nombre_original, defecto)
+                linea = poner_atributo(linea, "tvg-id", tvg_id)
                 return poner_atributo(
                     linea,
                     "tvg-logo",
@@ -481,127 +555,180 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
 
     # 10. Golf
     if re.search(r"\bGOLF\s*2\b", nombre_norm):
-        linea = poner_atributo(linea, "tvg-id", "M+ Golf 2 HD")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "M+ Golf 2 HD")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(linea, "tvg-logo", f"{PICONS_BASE}/M%2B%20Golf%202.png")
     if "GOLF" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "M+ Golf HD")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "M+ Golf HD")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(linea, "tvg-logo", f"{PICONS_BASE}/M%2B%20Golf.png")
 
     # 11. Baloncesto (DAZN Baloncesto y M+ Baloncesto)
     if "DAZN BALONCESTO 3" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "DAZN Baloncesto 3")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "DAZN Baloncesto 3")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea, "tvg-logo", f"{PICONS_BASE}/DAZN%20Baloncesto%203.png"
         )
     if "DAZN BALONCESTO 2" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "DAZN Baloncesto 2")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "DAZN Baloncesto 2")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea, "tvg-logo", f"{PICONS_BASE}/DAZN%20Baloncesto%202.png"
         )
     if "DAZN BALONCESTO" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "DAZN Baloncesto")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "DAZN Baloncesto")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea, "tvg-logo", f"{PICONS_BASE}/DAZN%20Baloncesto.png"
         )
     if "BALONCESTO" in nombre_norm and "DAZN" not in nombre_norm:
         for num in range(10, 1, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
-                linea = poner_atributo(linea, "tvg-id", f"M+ Baloncesto {num}")
+                tvg_id = resolver_tvg_id(
+                    nombre_norm, nombre_original, f"M+ Baloncesto {num}"
+                )
+                linea = poner_atributo(linea, "tvg-id", tvg_id)
                 return poner_atributo(
                     linea,
                     "tvg-logo",
                     f"{PICONS_BASE}/M%2B%20Baloncesto%20{num}.png",
                 )
-        linea = poner_atributo(linea, "tvg-id", "M+ Baloncesto")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "M+ Baloncesto")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea, "tvg-logo", f"{PICONS_BASE}/M%2B%20Baloncesto.png"
         )
 
     # 12. Motor, NBA, Tenis, UFC, RFEF, Onetoro y Bein TR
     if "UFC" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "UFC")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "UFC")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(linea, "tvg-logo", f"{TV_LOGOS_US}/ufc-us.png")
     if "SKY SPORT MOTOGP" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "Sky Sport MotoGP")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Sky Sport MotoGP")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea, "tvg-logo", f"{TV_LOGOS_IT}/sky-sport-motogp-hd-it.png"
         )
     if "SKY SPORT TENNIS" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "Sky Sport Tennis")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Sky Sport Tennis")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea, "tvg-logo", f"{TV_LOGOS_IT}/sky-sport-tennis-hd-it.png"
         )
     if "NBA LEAGUE PASS" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "NBA League Pass")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "NBA League Pass")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea, "tvg-logo", f"{TV_LOGOS_US}/nba-league-pass-hz-us.png"
         )
     if "NBA ESPN" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "NBA ESPN")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "NBA ESPN")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(linea, "tvg-logo", f"{TV_LOGOS_US}/espn-us.png")
     if "ONETORO" in nombre_norm or "ONE TORO" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "Onetoro")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Onetoro")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(linea, "tvg-logo", f"{PICONS_BASE}/Onetoro.png")
     if "RFEF" in nombre_norm or "PRIMERA FEDERACION" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "Primera Federación")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Primera Federación")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea, "tvg-logo", f"{PICONS_BASE}/Primera%20Federaci%C3%B3n.png"
         )
     if re.search(r"\bF1\b", nombre_norm) or "FORMULA 1" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "DAZN F1 HD")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "DAZN F1 HD")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(linea, "tvg-logo", f"{PICONS_BASE}/DAZN%20F1.png")
     if "MOTOGP" in nombre_norm and "SKY" not in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "DAZN MotoGP")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "DAZN MotoGP")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(linea, "tvg-logo", f"{PICONS_BASE}/DAZN%20MotoGP.png")
     if "BEIN SPORTS 3 TR" in nombre_norm or (
         "BEIN SPORTS 3" in nombre_norm and "TR" in nombre_norm
     ):
-        linea = poner_atributo(linea, "tvg-id", "Bein Sports 3 TR")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Bein Sports 3 TR")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea, "tvg-logo", f"{TV_LOGOS_TR}/bein-sports-haber-tr.png"
         )
     if "BEIN SPORTS TR" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "Bein Sports TR")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Bein Sports TR")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea, "tvg-logo", f"{TV_LOGOS_TR}/bein-sports-haber-tr.png"
         )
     if "TENNIS CHANNEL" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "Tennis Channel")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Tennis Channel")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea, "tvg-logo", f"{PICONS_BASE}/Tennis%20Channel.png"
         )
     if "SKY SPORTS LALIGA" in nombre_norm or "SKY SPORTS LA LIGA" in nombre_norm:
-        return poner_atributo(linea, "tvg-id", "SKY Sports LaLiga")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "SKY Sports LaLiga")
+        return poner_atributo(linea, "tvg-id", tvg_id)
     if "SPORT TV" in nombre_norm:
-        if re.search(r"\bSPORT\s*TV\s*3\b", nombre_norm):
-            return poner_atributo(linea, "tvg-id", "Sport TV 3")
+        if "3" in nombre_norm:
+            tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Sport TV 3")
+            return poner_atributo(linea, "tvg-id", tvg_id)
         if "+" in nombre_norm or "PLUS" in nombre_norm:
-            return poner_atributo(linea, "tvg-id", "Sport TV+")
-        return poner_atributo(linea, "tvg-id", "Sport TV")
+            tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Sport TV+")
+            return poner_atributo(linea, "tvg-id", tvg_id)
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Sport TV")
+        return poner_atributo(linea, "tvg-id", tvg_id)
 
     # 13. TDT y abiertos
     if "TELEDEPORTE" in nombre_norm or re.search(r"\bTDP\b", nombre_norm):
-        linea = poner_atributo(linea, "tvg-id", "Teledeporte")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Teledeporte")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(linea, "tvg-logo", f"{PICONS_BASE}/Teledeporte.png")
     if "CUATRO" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "Cuatro HD")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Cuatro HD")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(linea, "tvg-logo", f"{TV_LOGOS_ES}/cuatro-es.png")
     if "TELECINCO" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "Telecinco HD")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Telecinco HD")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(linea, "tvg-logo", f"{TV_LOGOS_ES}/telecinco-es.png")
     if "REAL MADRID TV" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "Real Madrid TV")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Real Madrid TV")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
             linea, "tvg-logo", f"{TV_LOGOS_ES}/real-madrid-tv-es.png"
         )
     if "ESPORT3" in nombre_norm or "ESPORT 3" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "Esport3")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Esport3")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(linea, "tvg-logo", f"{TV_LOGOS_ES}/esport-3-es.png")
     if "A PUNT" in nombre_norm or "APUNT" in nombre_norm:
-        linea = poner_atributo(linea, "tvg-id", "À Punt")
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "À Punt")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(linea, "tvg-logo", f"{TV_LOGOS_ES}/a-punt-es.png")
 
+    k = clave_canal(nombre_original or nombre_norm)
+    if k in MAPA_PERSONAL_ID:
+        return poner_atributo(linea, "tvg-id", MAPA_PERSONAL_ID[k])
+
     return linea
+
+
+def normalizar_linea_personal(linea):
+    if not linea.startswith("#EXTINF:") or "," not in linea:
+        return linea
+    nombre = linea.rsplit(",", 1)[-1].strip()
+    nombre_norm = normalizar(nombre)
+    sin_sucio = limpiar_logo_si_es_sucio(linea)
+    logo_match = re.search(r'tvg-logo="([^"]+)"', sin_sucio, flags=re.IGNORECASE)
+    id_match = re.search(r'tvg-id="([^"]+)"', sin_sucio, flags=re.IGNORECASE)
+    if logo_match and id_match:
+        return sin_sucio
+    aplicada = aplicar_logo_y_epg(sin_sucio, nombre_norm, nombre)
+    if logo_match:
+        aplicada = poner_atributo(aplicada, "tvg-logo", logo_match.group(1))
+    if id_match:
+        aplicada = poner_atributo(aplicada, "tvg-id", id_match.group(1))
+    return aplicada
 
 
 # ==========================================================
@@ -737,13 +864,14 @@ else:
 )
 
 # ==========================================================
-# CABECERA M3U (SIN EPG DUPLICADO)
+# CABECERA M3U
 # ==========================================================
 
 cabecera_m3u = (
     "#EXTM3U url-tvg="
     '"https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
-    'https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz" '
+    "https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,"
+    'https://raw.githubusercontent.com/davidmuma/EPG_dobleM/master/guiatv.xml" '
     'refresh="3600"'
     + salto
     + "#EXTVLCOPT:network-caching=1000"
@@ -758,9 +886,16 @@ cabecera_m3u = (
 # MONTAR ARCHIVO CASA (Mantiene IP local 127.0.0.1 abajo)
 # ==========================================================
 
+cuerpo_personal_limpio = "".join(
+    normalizar_linea_personal(linea)
+    for linea in cuerpo_personal.splitlines(keepends=True)
+)
+
 separador = salto + salto
 
-texto_final = cabecera_m3u + texto_nuevo_elcano + separador + cuerpo_personal
+texto_final = (
+    cabecera_m3u + texto_nuevo_elcano + separador + cuerpo_personal_limpio
+)
 
 # ==========================================================
 # MONTAR ARCHIVO TAILSCALE (CAMBIA LA IP ARRIBA Y ABAJO)
@@ -770,7 +905,7 @@ bloque_tailscale_elcano = texto_nuevo_elcano.replace(
     "127.0.0.1:6878", "100.90.204.66:6878"
 )
 
-cuerpo_tailscale_personal = cuerpo_personal.replace(
+cuerpo_tailscale_personal = cuerpo_personal_limpio.replace(
     "127.0.0.1:6878", "100.90.204.66:6878"
 )
 
@@ -784,7 +919,7 @@ texto_amigos = texto_final
 # COMPROBACIONES FINALES ANTES DE ESCRIBIR
 # ==========================================================
 
-if cuerpo_personal not in texto_final:
+if cuerpo_personal_limpio not in texto_final:
     sys.exit(
         "ERROR: La comprobacion de la zona personal ha fallado. "
         "No se guardan los archivos."
