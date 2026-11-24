@@ -870,17 +870,17 @@ else:
 cabecera_m3u = (
     "#EXTM3U url-tvg="
     '"https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
-    "https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz"
-  
+    'https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz" '
     'refresh="3600"'
     + salto
     + "#EXTVLCOPT:network-caching=1000"
     + salto
-    + '#EXTGRP: group-title="⭐ ELCANO [MÁXIMA CALIDAD]" '
+    + '#EXTGRP: group-title=" ELCANO [MÁXIMA CALIDAD]" '
     'group-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png"'
     + salto
     + salto
 )
+
 
 # ==========================================================
 # MONTAR ARCHIVO CASA (Mantiene IP local 127.0.0.1 abajo)
