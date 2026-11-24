@@ -312,6 +312,19 @@ def buscar_id_epg(nombre):
         if id_real:
             return id_real
 
+    # NBA League Pass y UFC pueden aparecer en XMLTV con sufijos HD,
+    # resolución, idioma o número.
+    if clave in ("NBA LEAGUE PASS", "UFC"):
+        tokens = clave.split()
+        candidatos = []
+        for k, v in MAPA_EPG_NOMBRE.items():
+            palabras = k.split()
+            if len(palabras) >= len(tokens) and palabras[:len(tokens)] == tokens:
+                candidatos.append((k, v))
+        candidatos.sort(key=lambda item: (len(item[0]), item[0]))
+        if candidatos:
+            return candidatos[0][1]
+
     if clave not in ("UFC", "NBA ESPN"):
         prefijos = (clave + " ",)
         candidatos = sorted(
@@ -338,6 +351,16 @@ def ajustar_id_con_epg(linea, nombre):
         linea,
         flags=re.IGNORECASE,
     )
+
+    clave = clave_canal(nombre)
+
+    # Para NBA League Pass y UFC, priorizar el nombre frente a un tvg-id
+    # antiguo o genérico.
+    if clave in ("NBA LEAGUE PASS", "UFC"):
+        id_real = buscar_id_epg(nombre)
+        if id_real:
+            linea = poner_atributo(linea, "tvg-id", id_real)
+            return poner_atributo(linea, "tvg-name", nombre)
 
     if actual and actual.group(1) in IDS_EPG_DISPONIBLES:
         return poner_atributo(linea, "tvg-name", nombre)

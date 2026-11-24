@@ -267,15 +267,15 @@ http://127.0.0.1:6878/ace/getstream?id=a06c48306a97a6e16bffa4866a3d0f065e93e670
 http://127.0.0.1:6878/ace/getstream?id=85fa14c8e1431b78e18cc4b0104b96b21851cff0
 #EXTINF:-1 tvg-name="RALLY TV 1080p *" tvg-id="DE | Rally TV" tvg-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTExzu7xibD1sz89l8PlnxvB8oUMOOhDLKywQ&s" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",RALLY TV 1080p *
 http://127.0.0.1:6878/ace/getstream?id=ce3fc726a200327d9a2ced8b79fad47557881cb7
-#EXTINF:-1 tvg-name="UFC *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",UFC *
+#EXTINF:-1 tvg-name="UFC *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png" tvg-id="MMA-UFC.us" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",UFC *
 http://127.0.0.1:6878/ace/getstream?id=a5a1d20e36cf6bdad0f549606d283690d639a5b9
-#EXTINF:-1 tvg-name="UFC *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",UFC *
+#EXTINF:-1 tvg-name="UFC *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png" tvg-id="MMA-UFC.us" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",UFC *
 http://127.0.0.1:6878/ace/getstream?id=b6da3c2260401aebfc57fe1873eb19b82972546f
-#EXTINF:-1 tvg-name="UFC *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",UFC *
+#EXTINF:-1 tvg-name="UFC *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png" tvg-id="MMA-UFC.us" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",UFC *
 http://127.0.0.1:6878/ace/getstream?id=0aa6f665d462d8b6f3f184bfdfe1d0fc0c8b8f31
-#EXTINF:-1 tvg-name="UFC *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",UFC *
+#EXTINF:-1 tvg-name="UFC *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png" tvg-id="MMA-UFC.us" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",UFC *
 http://127.0.0.1:6878/ace/getstream?id=e1a3a1427d7211b5cc8f1110878bfd61388eaa8c
-#EXTINF:-1 tvg-name="UFC **" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",UFC **
+#EXTINF:-1 tvg-name="UFC **" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png" tvg-id="MMA-UFC.us" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",UFC **
 http://127.0.0.1:6878/ace/getstream?id=a5135a883f4b579a0509da7e8a40aa854d2ca6ea
 #EXTINF:-1 tvg-name="DAZN Baloncesto 1080p **" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20Baloncesto.png" tvg-id="DAZN Baloncesto" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN Baloncesto 1080p **
 http://127.0.0.1:6878/ace/getstream?id=c6cc8cba09cf8aa2d5938320a1ebcfd89ac22d47
@@ -351,6 +351,7 @@ http://127.0.0.1:6878/ace/getstream?id=81aead134bb63a51291d23e793fcddca981ee834
 http://127.0.0.1:6878/ace/getstream?id=e2764331e372ba2b3fd65be11eace463405864da
 #EXTINF:-1 tvg-name="Teledeporte 720p **" tvg-id="Teledeporte" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Teledeporte 720p **
 http://127.0.0.1:6878/ace/getstream?id=530c4fe68f46f7eeb168ddb07026f40d96a0b6ce
+
 
 
 
