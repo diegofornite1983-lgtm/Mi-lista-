@@ -1,8 +1,13 @@
 import datetime
+import gzip
+import io
+import json
 import re
 import sys
+import time
 import unicodedata
 import urllib.request
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 # ==========================================================
@@ -36,6 +41,16 @@ URL_LOGO_PERSONAL = "https://raw.githubusercontent.com/davidmuma/picons_dobleM/m
 TGV_ID_MOVISTAR_UNIFICADO = "Movistar Plus HD"
 
 GROUP_TITLE = "⭐ ELCANO [MÁXIMA CALIDAD]"
+
+URLS_EPG = [
+    "https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml",
+    "https://epgshare01.online/epgshare01/epg_ripper_US_SPORTS1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_PT1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_TR1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_IT1.xml.gz",
+]
+CACHE_EPG = CARPETA_LISTAS / "cache_ids_epg.json"
 
 DOMINIOS_SUCIOS = (
     "adslzone.net",
@@ -192,6 +207,72 @@ def extraer_mapa_personal(texto_personal):
     return mapa
 
 
+def cargar_ids_epg():
+    """Lee IDs reales de XMLTV para completar tvg-id antes de escribir la M3U."""
+    ahora = time.time()
+    try:
+        cache = json.loads(CACHE_EPG.read_text(encoding="utf-8"))
+        if ahora - float(cache.get("timestamp", 0)) < 6 * 3600:
+            return set(cache.get("ids", [])), dict(cache.get("nombres", {}))
+    except Exception:
+        pass
+
+    ids = set()
+    nombres = {}
+    for url in URLS_EPG:
+        try:
+            req = urllib.request.Request(
+                url,
+                headers={"User-Agent": "Mozilla/5.0", "Accept": "application/xml,text/xml,*/*"},
+            )
+            with urllib.request.urlopen(req, timeout=35) as respuesta:
+                datos = respuesta.read()
+            if datos[:2] == b"\x1f\x8b":
+                datos = gzip.decompress(datos)
+            for _, elemento in ET.iterparse(io.BytesIO(datos), events=("end",)):
+                if elemento.tag.rsplit("}", 1)[-1] == "channel":
+                    canal_id = (elemento.attrib.get("id") or "").strip()
+                    if canal_id:
+                        ids.add(canal_id)
+                        for display in list(elemento):
+                            if display.tag.rsplit("}", 1)[-1] == "display-name":
+                                nombre_epg = " ".join("".join(display.itertext()).split())
+                                clave = clave_canal(nombre_epg)
+                                if clave:
+                                    nombres.setdefault(clave, canal_id)
+                    elemento.clear()
+        except Exception:
+            pass
+
+    if ids:
+        try:
+            CACHE_EPG.write_text(
+                json.dumps({"timestamp": ahora, "ids": sorted(ids), "nombres": nombres}, ensure_ascii=False),
+                encoding="utf-8",
+            )
+        except Exception:
+            pass
+    return ids, nombres
+
+
+def ajustar_id_con_epg(linea, nombre):
+    """Completa tvg-id si falta o si hay coincidencia real, sin borrar el ID existente."""
+    linea = poner_atributo(linea, "tvg-name", nombre)
+    actual = re.search(r'tvg-id="([^"]*)"', linea, flags=re.IGNORECASE)
+    if not IDS_EPG_DISPONIBLES:
+        return linea
+    if actual and actual.group(1).strip():
+        if actual.group(1).strip() in IDS_EPG_DISPONIBLES:
+            return linea
+        id_real = MAPA_EPG_NOMBRE.get(clave_canal(nombre))
+        return poner_atributo(linea, "tvg-id", id_real) if id_real else linea
+    id_real = MAPA_EPG_NOMBRE.get(clave_canal(nombre))
+    if id_real:
+        return poner_atributo(linea, "tvg-id", id_real)
+    return linea
+
+
+IDS_EPG_DISPONIBLES, MAPA_EPG_NOMBRE = cargar_ids_epg()
 MAPA_PERSONAL_ID = extraer_mapa_personal(cuerpo_personal)
 
 
@@ -767,6 +848,7 @@ while indice < len(lineas_elcano):
     nombre_normalizado = normalizar(nombre)
 
     extinf_mod = aplicar_logo_y_epg(linea, nombre_normalizado, nombre)
+    extinf_mod = ajustar_id_con_epg(extinf_mod, nombre)
     extinf_mod = poner_atributo(extinf_mod, "group-title", GROUP_TITLE)
 
     coincidencia_hash = re.search(r"([0-9a-fA-F]{40})", url)
@@ -882,11 +964,6 @@ cabecera_m3u = (
     + salto
     + salto
 )
-
-
-
-
-
 
 # ==========================================================
 # MONTAR ARCHIVO CASA (Mantiene IP local 127.0.0.1 abajo)
