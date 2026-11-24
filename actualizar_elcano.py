@@ -30,11 +30,8 @@ archivo_casa = CARPETA_LISTAS / "Mi lista acestream"
 archivo_tailscale = CARPETA_LISTAS / "Canales m3u"
 archivo_amigos = CARPETA_LISTAS / "lista-amigos"
 
-# LOGOTIPO LIMPIO SIN ESPACIOS NI PARENTESIS (MOVISTAR PLUS Y M+ 0)
 URL_LOGO_PERSONAL = "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Movistar%20Plus.png"
-
 TGV_ID_MOVISTAR_UNIFICADO = "Movistar Plus HD"
-
 GROUP_TITLE = "⭐ ELCANO [MÁXIMA CALIDAD]"
 
 DOMINIOS_SUCIOS = (
@@ -148,7 +145,7 @@ if not fuente_elcano:
     )
 
 # ==========================================================
-# FUNCIONES AUXILIARES
+# FUNCIONES AUXILIARES Y EXTRACCION DE TUS CARPETAS
 # ==========================================================
 
 
@@ -158,6 +155,41 @@ def normalizar(texto):
         caracter for caracter in texto if unicodedata.category(caracter) != "Mn"
     )
     return texto.upper().strip()
+
+
+def limpiar_clave_canal(nombre):
+    n = normalizar(nombre)
+    n = re.sub(r"[⭐⭐️*]", "", n)
+    n = re.sub(r"\b(1080P|720P|4K|FHD|HD|SD|SHICKAT|ELCANO|CANO|SOLO EVENTOS)\b", "", n)
+    n = re.sub(r"\[.*?\]|\(.*?\)", "", n)
+    n = re.sub(r"\s+[0-9A-F]{3,5}\b", "", n)
+    n = re.sub(r"#\d+", "", n)
+    n = n.replace("MOVISTAR+", "M+").replace("MOVISTAR PLUS", "MOVISTAR PLUS")
+    n = n.replace("LA LIGA", "LALIGA").replace("FORMULA 1", "F1")
+    n = re.sub(r"\s+", " ", n).strip()
+    return n
+
+
+def extraer_diccionario_personal(texto_personal):
+    mapa_personal = {}
+    for linea in texto_personal.splitlines():
+        if not linea.startswith("#EXTINF:") or "," not in linea:
+            continue
+        id_m = re.search(r'tvg-id="([^"]+)"', linea, flags=re.IGNORECASE)
+        logo_m = re.search(r'tvg-logo="([^"]+)"', linea, flags=re.IGNORECASE)
+        if not id_m:
+            continue
+        nombre_canal = linea.rsplit(",", 1)[-1].strip()
+        clave = limpiar_clave_canal(nombre_canal)
+        if clave and clave not in mapa_personal:
+            mapa_personal[clave] = {
+                "tvg-id": id_m.group(1),
+                "tvg-logo": logo_m.group(1) if logo_m else None,
+            }
+    return mapa_personal
+
+
+MAPA_PERSONAL = extraer_diccionario_personal(cuerpo_personal)
 
 
 def poner_atributo(linea, atributo, valor):
@@ -345,8 +377,17 @@ TV_LOGOS_IT = "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries
 TV_LOGOS_TR = "https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/turkey"
 
 
-def aplicar_logo_y_epg(linea, nombre_norm):
+def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
     linea = limpiar_logo_si_es_sucio(linea)
+
+    # 0. Si el canal existe en tus carpetas personales, copia exactamente tu tvg-id y logo
+    clave_busqueda = limpiar_clave_canal(nombre_original or nombre_norm)
+    if clave_busqueda in MAPA_PERSONAL:
+        datos = MAPA_PERSONAL[clave_busqueda]
+        linea = poner_atributo(linea, "tvg-id", datos["tvg-id"])
+        if datos["tvg-logo"]:
+            linea = poner_atributo(linea, "tvg-logo", datos["tvg-logo"])
+        return linea
 
     # 1. M+ 0 y Movistar Plus clasico
     if re.search(r"\bM\+\s*0\b", nombre_norm) or (
@@ -358,7 +399,8 @@ def aplicar_logo_y_epg(linea, nombre_norm):
     if "CAMPEONES" in nombre_norm or "CHAMPIONS" in nombre_norm:
         for num in range(9, 1, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
-                linea = poner_atributo(linea, "tvg-id", f"M+ Liga de Campeones {num}")
+                tvg = f"M+ Liga de Campeones {num} HD" if num in (2, 3) else f"M+ Liga de Campeones {num}"
+                linea = poner_atributo(linea, "tvg-id", tvg)
                 return poner_atributo(
                     linea,
                     "tvg-logo",
@@ -392,7 +434,8 @@ def aplicar_logo_y_epg(linea, nombre_norm):
     if "DAZN LALIGA" in nombre_norm or "DAZN LA LIGA" in nombre_norm:
         for num in range(10, 1, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
-                linea = poner_atributo(linea, "tvg-id", f"DAZN LaLiga {num}")
+                tvg = "DAZN LaLiga 2 HD" if num == 2 else f"DAZN LaLiga {num}"
+                linea = poner_atributo(linea, "tvg-id", tvg)
                 return poner_atributo(
                     linea,
                     "tvg-logo",
@@ -414,7 +457,7 @@ def aplicar_logo_y_epg(linea, nombre_norm):
     ):
         for num in range(10, 1, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
-                linea = poner_atributo(linea, "tvg-id", f"M+ LaLiga {num}")
+                linea = poner_atributo(linea, "tvg-id", f"M+ LaLiga {num} HD")
                 return poner_atributo(
                     linea,
                     "tvg-logo",
@@ -469,13 +512,14 @@ def aplicar_logo_y_epg(linea, nombre_norm):
     if "EUROSPORT" in nombre_norm:
         for num in range(10, 0, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
-                linea = poner_atributo(linea, "tvg-id", f"Eurosport {num}")
+                tvg = "Eurosport 1 HD" if num == 1 else f"Eurosport {num}"
+                linea = poner_atributo(linea, "tvg-id", tvg)
                 return poner_atributo(
                     linea,
                     "tvg-logo",
                     f"{PICONS_BASE}/Eurosport%20{num}.png",
                 )
-        linea = poner_atributo(linea, "tvg-id", "Eurosport")
+        linea = poner_atributo(linea, "tvg-id", "Eurosport 1 HD")
         return poner_atributo(
             linea,
             "tvg-logo",
@@ -484,14 +528,21 @@ def aplicar_logo_y_epg(linea, nombre_norm):
 
     # 9. M+ Deportes (numerados del 7 al 1)
     if "DEPORTES" in nombre_norm:
-        for num in range(7, 0, -1):
+        for num in range(7, 1, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
-                linea = poner_atributo(linea, "tvg-id", f"M+ Deportes {num}")
+                tvg = "M+ Deportes 2 HD" if num == 2 else f"M+ Deportes {num}"
+                linea = poner_atributo(linea, "tvg-id", tvg)
                 return poner_atributo(
                     linea,
                     "tvg-logo",
                     f"{PICONS_BASE}/M%2B%20Deportes%20{num}.png",
                 )
+        linea = poner_atributo(linea, "tvg-id", "M+ Deportes HD")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            f"{PICONS_BASE}/M%2B%20Deportes.png",
+        )
 
     # 10. Golf
     if re.search(r"\bGOLF\s*2\b", nombre_norm):
@@ -628,7 +679,7 @@ def normalizar_linea_personal(linea):
     id_match = re.search(r'tvg-id="([^"]+)"', sin_sucio, flags=re.IGNORECASE)
     if logo_match and id_match:
         return sin_sucio
-    aplicada = aplicar_logo_y_epg(sin_sucio, nombre_norm)
+    aplicada = aplicar_logo_y_epg(sin_sucio, nombre_norm, nombre)
     if logo_match:
         aplicada = poner_atributo(aplicada, "tvg-logo", logo_match.group(1))
     if id_match:
@@ -671,7 +722,7 @@ while indice < len(lineas_elcano):
     nombre = linea.rsplit(",", 1)[-1].strip()
     nombre_normalizado = normalizar(nombre)
 
-    extinf_mod = aplicar_logo_y_epg(linea, nombre_normalizado)
+    extinf_mod = aplicar_logo_y_epg(linea, nombre_normalizado, nombre)
     extinf_mod = poner_atributo(extinf_mod, "group-title", GROUP_TITLE)
 
     coincidencia_hash = re.search(r"([0-9a-fA-F]{40})", url)
