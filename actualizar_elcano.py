@@ -699,6 +699,22 @@ def aplicar_logo_y_epg(linea, nombre_norm):
             "tvg-logo",
             "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos.png",
         )
+    # 6. M+ Vamos (todos con el picon moderno de picons_dobleM y su tvg-id individual)
+    if "VAMOS" in nombre_norm:
+        for num in range(10, 1, -1):
+            if re.search(rf"\b{num}\b", nombre_norm):
+                linea = poner_atributo(linea, "tvg-id", f"M+ Vamos {num}")
+                return poner_atributo(
+                    linea,
+                    "tvg-logo",
+                    "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos.png",
+                )
+        linea = poner_atributo(linea, "tvg-id", "M+ Vamos HD")
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Vamos.png",
+        )
 
     return limpiar_logo_si_es_sucio(linea)
 
