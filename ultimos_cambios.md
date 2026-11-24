@@ -1,25 +1,7 @@
-# Resumen de cambios ELCANO - 2026-11-24 22:40:45
+# Resumen de cambios ELCANO - 2026-11-24 23:40:55
 
-## Canales nuevos (19)
-- DAZN BALONCESTO 1080P *
-- DAZN BALONCESTO 2 1080P **
-- DAZN BALONCESTO 2 720P *
-- DAZN BALONCESTO 3 1080P **
-- DAZN BALONCESTO 3 720P *
-- M+ BALONCESTO 1080P *
-- M+ BALONCESTO 1080P **
-- M+ BALONCESTO 2 1080P *
-- M+ BALONCESTO 2 1080P **
-- M+ BALONCESTO 3 1080P *
-- M+ BALONCESTO 5 1080P *
-- M+ BALONCESTO 5 1080P **
-- M+ VAMOS 2 1080P *
-- M+ VAMOS 2 1080P **
-- M+ VAMOS 2 720P *
-- M+ VAMOS 3 1080P *
-- M+ VAMOS 3 1080P **
-- M+ VAMOS 720P **
-- MOVISTAR PLUS 1080P **
-
-## Canales eliminados (0)
+## Canales nuevos (0)
 - Ninguno.
+
+## Canales eliminados (1)
+- M+ VAMOS 3 1080P **
