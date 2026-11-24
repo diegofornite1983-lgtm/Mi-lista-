@@ -867,14 +867,13 @@ else:
 # CABECERA M3U
 # ==========================================================
 cabecera_m3u = (
-    "#EXTM3U url-tvg="
-    '"https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
+    '#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
     'https://epgshare01.online/epgshare01/epg_ripper_US_SPORTS1.xml.gz,'
     'https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,'
     'https://epgshare01.online/epgshare01/epg_ripper_PT1.xml.gz,'
     'https://epgshare01.online/epgshare01/epg_ripper_TR1.xml.gz,'
     'https://epgshare01.online/epgshare01/epg_ripper_IT1.xml.gz" '
-    'refresh="3600"'
+    'tvg-shift="0" refresh="3600"'
     + salto
     + "#EXTVLCOPT:network-caching=1000"
     + salto
