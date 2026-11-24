@@ -410,7 +410,7 @@ http://127.0.0.1:6878/ace/getstream?id=530c4fe68f46f7eeb168ddb07026f40d96a0b6ce
 # ZONA PERSONAL: TUS CATEGORÍAS Y LISTAS
 # ==========================================
 
-# CARPETA: LA LIGA Y DAZN LIGA
+# CARPETA: ⚽ LA LIGA Y DAZN LIGA
 # ==========================================
 
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="LA LIGA Y DAZN LIGA",⭐️ M+ LaLiga 9e38
@@ -461,7 +461,7 @@ http://127.0.0.1:6878/ace/getstream?id=fd869f34346154ca7cd78d46cbf7a6b8671beab5
 
 
 # ==========================================
-# CARPETA: MOVISTAR (CINE, SERIES Y DOCUMENTALES)
+# CARPETA: 🎬 MOVISTAR (CINE, SERIES Y DOCUMENTALES)
 # ==========================================
 
 #EXTINF:-1 tvg-id="Movistar Plus HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Movistar%20Plus.png" group-title="MOVISTAR",MOVISTAR PLUS 4ec9 shickat
@@ -573,7 +573,7 @@ http://127.0.0.1:6878/ace/getstream?id=9a84a44833e4b8dc39a296584d4f587b7ae3163c
 http://127.0.0.1:6878/ace/getstream?id=d865b49d6ec5844e0bcf8e596ab90a7be8bb28fb
 
 # ==========================================
-# CARPETA: CHAMPIONS
+# CARPETA: 🏆 CHAMPIONS
 # ==========================================
 
 #EXTINF:-1 tvg-id="M+ Liga de Campeones HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones.png" group-title="CHAMPIONS",M+ Liga de Campeones cano
@@ -629,7 +629,7 @@ http://127.0.0.1:6878/ace/getstream?id=282c37d1583e43ea2970a5d85ecb616b0960d048
 
 
 # ==========================================
-# CARPETA: DAZN 1
+# CARPETA: 📺 DAZN 1
 # ==========================================
 
 #EXTINF:-1 tvg-id="DAZN 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%201.png" group-title="DAZN",⭐️ Dazn 1 b151
@@ -645,14 +645,14 @@ http://127.0.0.1:6878/ace/getstream?id=d1d9ec2361a6ac8edc0b2841866383768cc28df9
 http://127.0.0.1:6878/ace/getstream?id=7e90956539f4e1318a63f3960e4f75c7c7c5a3b8
 
 # ==========================================
-# CARPETA: HYPERMOTION
+# CARPETA: ⚽ HYPERMOTION
 # ==========================================
 
 #EXTINF:-1 tvg-id="LaLiga TV Hypermotion HD" tvg-logo="https://i.ibb.co/CBdGc9f/hypermotion1.png" group-title="HYPERMOTION",LaLiga TV Hypermotion 127c
 http://127.0.0.1:6878/ace/getstream?id=135c420f704d717b8913b2a66b2722fd6b2c127c
 
 # ==========================================
-# CARPETA: F1
+# CARPETA: 🏎️ F1
 # ==========================================
 
 #EXTINF:-1 tvg-id="DAZN F1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20F1.png" group-title="F1",Dazn formula 1 shickat
@@ -667,7 +667,7 @@ http://127.0.0.1:6878/ace/getstream?id=91823ce98b319e417da089e4b977eaa6a90a2218
 http://127.0.0.1:6878/ace/getstream?id=ff770f04b4d985193edf8dd02feec90ef8234282
 
 # ==========================================
-# CARPETA: MotoGP
+# CARPETA: 🏍️ MotoGP
 # ==========================================
 
 #EXTINF:-1 tvg-id="DAZN MotoGP" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20MotoGP.png" group-title="MotoGP",DAZN MotoGP 8b36
@@ -685,7 +685,7 @@ http://127.0.0.1:6878/ace/getstream?id=3104d58909f284e949844fb6a39e0baf1a6fc3e4
 
 
 # ==========================================
-# CARPETA: MOVISTAR DEP-VAMOS
+# CARPETA: 🏅 MOVISTAR DEP-VAMOS
 # ==========================================
 
 #EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="MOVISTAR DEP-VAMOS",⭐️ M+ Deportes 3d44
@@ -784,14 +784,14 @@ http://127.0.0.1:6878/ace/getstream?id=cb5a1f48efe2c30db178955bdc2fddf89d547ab4
 
 
 # ==========================================
-# PRIMERA FEDERACIÓN (RFEF)
+# ⚽ PRIMERA FEDERACIÓN (RFEF)
 # ==========================================
 
 #EXTINF:-1 tvg-id="Primera Federación" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Primera%20Federaci%C3%B3n.png" group-title="PRIMERA FEDERACIÓN",RFEF TV 7988f
 http://127.0.0.1:6878/ace/getstream?id=2042a3df45db52568fb629ca10b8b62b16c4f9d6
 
 # ==========================================
-# CARPETA: EUROSPORT
+# CARPETA: 🚴 EUROSPORT
 # ==========================================
 
 #EXTINF:-1 tvg-id="Eurosport 1 HD" tvg-logo="https://i.ibb.co/r2Yd7xD/euro1.png" group-title="EUROSPORT",Eurosport 1 1080p 52b
