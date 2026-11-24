@@ -873,14 +873,7 @@ cabecera_m3u = (
     'https://epgshare01.online/epgshare01/epg_ripper_PT1.xml.gz,'
     'https://epgshare01.online/epgshare01/epg_ripper_TR1.xml.gz,'
     'https://epgshare01.online/epgshare01/epg_ripper_IT1.xml.gz,'
-    'https://epgshare01.online/epgshare01/epg_ripper_US_SPORTS1.xml.gz,'
-    'https://epgshare01.online/epgshare01/epg_ripper_UK1.xml.gz,'
-    'https://epgshare01.online/epgshare01/epg_ripper_DE1.xml.gz,'
-    'https://epgshare01.online/epgshare01/epg_ripper_FR1.xml.gz,'
-    'https://epgshare01.online/epgshare01/epg_ripper_US2.xml.gz,'
-    'https://epgshare01.online/epgshare01/epg_ripper_BR1.xml.gz,'
-    'https://epgshare01.online/epgshare01/epg_ripper_MX1.xml.gz,'
-    'https://epgshare01.online/epgshare01/epg_ripper_AR1.xml.gz" '
+    'https://epgshare01.online/epgshare01/epg_ripper_US_SPORTS1.xml.gz" '
     'refresh="3600"'
     + salto
     + "#EXTVLCOPT:network-caching=1000"
@@ -890,6 +883,7 @@ cabecera_m3u = (
     + salto
     + salto
 )
+
 
 
 
