@@ -864,14 +864,13 @@ else:
 )
 
 # ==========================================================
-# CABECERA M3U
+# CABECERA M3U (SIN EPG DUPLICADO)
 # ==========================================================
 
 cabecera_m3u = (
     "#EXTM3U url-tvg="
-    '"https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
-    "https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,"
-    'https://raw.githubusercontent.com/davidmuma/EPG_dobleM/master/guiatv.xml" '
+    '"https://raw.githubusercontent.com/davidmuma/EPG_dobleM/master/guiatv.xml,'
+    'https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz" '
     'refresh="3600"'
     + salto
     + "#EXTVLCOPT:network-caching=1000"
@@ -940,19 +939,3 @@ if f'tvg-id="{TGV_ID_MOVISTAR_UNIFICADO}"' not in texto_final:
 # ==========================================================
 # GUARDAR ARCHIVOS
 # ==========================================================
-
-archivo_casa.write_bytes(texto_final.encode("utf-8"))
-archivo_tailscale.write_bytes(texto_tailscale.encode("utf-8"))
-archivo_amigos.write_bytes(texto_amigos.encode("utf-8"))
-
-print("==========================================")
-print("SINCRONIZACION COMPLETADA CON TAILSCALE")
-print("==========================================")
-print(f"Canales procesados: {len(canales_ordenados)}")
-print(f"Canales nuevos: {len(agregados)}")
-print(f"Canales eliminados: {len(eliminados)}")
-print("M+ 0 y Movistar Plus unificados con logo moderno y EPG")
-print("Onetoro y Primera Federacion configurados")
-print("Carpetas personales: adaptadas a Tailscale en Canales m3u")
-print("Casa, Tailscale y Amigos: actualizados")
-print("==========================================")
