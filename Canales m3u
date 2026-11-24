@@ -727,6 +727,34 @@ http://100.90.204.66:6878/ace/getstream?id=872608e734992db636eb79426802cd08f4029
 #EXTINF:-1 tvg-id="M+ Golf HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf.png" group-title="MOVISTAR DEP-VAMOS",M+ Golf 66eb
 http://100.90.204.66:6878/ace/getstream?id=8121478d3d3e563ad6b98018bc1c0aeb2f6166eb
 
+
+
+# ==========================================
+# CARPETA: 🏀 BALONCESTO Y NBA
+# ==========================================
+
+#EXTINF:-1 tvg-id="DAZN Baloncesto" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20Baloncesto.png" group-title="🏀 BALONCESTO Y NBA",DAZN Baloncesto 1080p **
+http://100.90.204.66:6878/ace/getstream?id=c6cc8cba09cf8aa2d5938320a1ebcfd89ac22d47
+
+#EXTINF:-1 tvg-id="M+ Baloncesto 3" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto%203.png" group-title="🏀 BALONCESTO Y NBA",M+ Baloncesto 3 1080p **
+http://100.90.204.66:6878/ace/getstream?id=ae561eef41780388e1a69280027b79a9027eabe5
+
+#EXTINF:-1 tvg-id="M+ Baloncesto 4" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto%204.png" group-title="🏀 BALONCESTO Y NBA",M+ Baloncesto 4 1080p *
+http://100.90.204.66:6878/ace/getstream?id=067c48855642547ddac789239aec60c5910821c0
+
+#EXTINF:-1 tvg-id="NBA League Pass" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-league-pass-hz-us.png" group-title="🏀 BALONCESTO Y NBA",NBA League Pass 1080p *
+http://100.90.204.66:6878/ace/getstream?id=181701bdaa643087bf99bf9916ede42df6eaf543
+
+#EXTINF:-1 tvg-id="NBA League Pass" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-league-pass-hz-us.png" group-title="🏀 BALONCESTO Y NBA",NBA League Pass 1080p *
+http://100.90.204.66:6878/ace/getstream?id=9821bfd262dd41a791b9cb5175314fa227dc139e
+
+#EXTINF:-1 tvg-id="NBA League Pass" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-league-pass-hz-us.png" group-title="🏀 BALONCESTO Y NBA",NBA League Pass 1080p **
+http://100.90.204.66:6878/ace/getstream?id=8a54321894a268fbc5a8622da77f8d2eed7b8c4d
+
+#EXTINF:-1 tvg-id="ESPN" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-us.png" group-title="🏀 BALONCESTO Y NBA",NBA ESPN 720p *
+http://100.90.204.66:6878/ace/getstream?id=cb5a1f48efe2c30db178955bdc2fddf89d547ab4
+
+
 # ==========================================
 # PRIMERA FEDERACIÓN (RFEF)
 # ==========================================
