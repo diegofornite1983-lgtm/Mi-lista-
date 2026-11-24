@@ -255,21 +255,158 @@ def cargar_ids_epg():
     return ids, nombres
 
 
+def buscar_id_epg(nombre):
+    """Busca el ID XMLTV por nombre exacto y después por alias controlados."""
+    clave = clave_canal(nombre)
+
+    if clave in MAPA_EPG_NOMBRE:
+        return MAPA_EPG_NOMBRE[clave]
+
+    alias = {
+        "ESPORT3": (
+            "ESPORT 3",
+            "TV3 ESPORTS",
+            "ESPORT3 HD",
+        ),
+        "NBA LEAGUE PASS": (
+            "NBA LEAGUE PASS 1",
+            "NBA LEAGUE PASS 2",
+            "NBA LEAGUE PASS HD",
+        ),
+        "NBA ESPN": (
+            "ESPN NBA",
+            "NBA ON ESPN",
+            "ESPN",
+        ),
+        "UFC": (
+            "UFC FIGHT PASS",
+            "UFC TV",
+            "UFC NETWORK",
+        ),
+        "BEIN SPORTS 3 TR": (
+            "BEIN SPORTS 3",
+            "BEIN SPORTS 3 HD",
+            "BEIN SPORTS 3 TURKEY",
+        ),
+        "BEIN SPORTS TR": (
+            "BEIN SPORTS HABER",
+            "BEIN SPORTS TR HD",
+            "BEIN SPORTS TURKEY",
+        ),
+        "DAZN LALIGA 3": (
+            "DAZN LALIGA 3 HD",
+            "DAZN LALIGA 3",
+        ),
+    }
+
+    for candidato in alias.get(clave, ()):
+        id_real = MAPA_EPG_NOMBRE.get(clave_canal(candidato))
+        if id_real:
+            return id_real
+
+    if clave not in ("UFC", "NBA ESPN"):
+        prefijos = (clave + " ",)
+        candidatos = sorted(
+            (
+                (k, v)
+                for k, v in MAPA_EPG_NOMBRE.items()
+                if any(k.startswith(prefijo) for prefijo in prefijos)
+            ),
+            key=lambda item: (len(item[0]), item[0]),
+        )
+        if candidatos:
+            return candidatos[0][1]
+
+    return None
+
+
+def buscar_id_epg(nombre):
+    """Busca el ID XMLTV por nombre exacto y después por alias controlados."""
+    clave = clave_canal(nombre)
+
+    if clave in MAPA_EPG_NOMBRE:
+        return MAPA_EPG_NOMBRE[clave]
+
+    alias = {
+        "ESPORT3": (
+            "ESPORT 3",
+            "TV3 ESPORTS",
+            "ESPORT3 HD",
+        ),
+        "NBA LEAGUE PASS": (
+            "NBA LEAGUE PASS 1",
+            "NBA LEAGUE PASS 2",
+            "NBA LEAGUE PASS HD",
+        ),
+        "NBA ESPN": (
+            "ESPN NBA",
+            "NBA ON ESPN",
+            "ESPN",
+        ),
+        "UFC": (
+            "UFC FIGHT PASS",
+            "UFC TV",
+            "UFC NETWORK",
+        ),
+        "BEIN SPORTS 3 TR": (
+            "BEIN SPORTS 3",
+            "BEIN SPORTS 3 HD",
+            "BEIN SPORTS 3 TURKEY",
+        ),
+        "BEIN SPORTS TR": (
+            "BEIN SPORTS HABER",
+            "BEIN SPORTS TR HD",
+            "BEIN SPORTS TURKEY",
+        ),
+        "DAZN LALIGA 3": (
+            "DAZN LALIGA 3 HD",
+            "DAZN LALIGA 3",
+        ),
+    }
+
+    for candidato in alias.get(clave, ()):
+        id_real = MAPA_EPG_NOMBRE.get(clave_canal(candidato))
+        if id_real:
+            return id_real
+
+    if clave not in ("UFC", "NBA ESPN"):
+        prefijos = (clave + " ",)
+        candidatos = sorted(
+            (
+                (k, v)
+                for k, v in MAPA_EPG_NOMBRE.items()
+                if any(k.startswith(prefijo) for prefijo in prefijos)
+            ),
+            key=lambda item: (len(item[0]), item[0]),
+        )
+        if candidatos:
+            return candidatos[0][1]
+
+    return None
+
+
 def ajustar_id_con_epg(linea, nombre):
-    """Completa tvg-id si falta o si hay coincidencia real, sin borrar el ID existente."""
-    linea = poner_atributo(linea, "tvg-name", nombre)
-    actual = re.search(r'tvg-id="([^"]*)"', linea, flags=re.IGNORECASE)
+    """Asegura que tvg-id coincida con un channel id real de XMLTV."""
     if not IDS_EPG_DISPONIBLES:
         return linea
-    if actual and actual.group(1).strip():
-        if actual.group(1).strip() in IDS_EPG_DISPONIBLES:
-            return linea
-        id_real = MAPA_EPG_NOMBRE.get(clave_canal(nombre))
-        return poner_atributo(linea, "tvg-id", id_real) if id_real else linea
-    id_real = MAPA_EPG_NOMBRE.get(clave_canal(nombre))
+
+    actual = re.search(
+        r'tvg-id="([^"]*)"',
+        linea,
+        flags=re.IGNORECASE,
+    )
+
+    if actual and actual.group(1) in IDS_EPG_DISPONIBLES:
+        return poner_atributo(linea, "tvg-name", nombre)
+
+    id_real = buscar_id_epg(nombre)
+
     if id_real:
-        return poner_atributo(linea, "tvg-id", id_real)
-    return linea
+        linea = poner_atributo(linea, "tvg-id", id_real)
+        return poner_atributo(linea, "tvg-name", nombre)
+
+    linea = quitar_atributo(linea, "tvg-id")
+    return poner_atributo(linea, "tvg-name", nombre)
 
 
 IDS_EPG_DISPONIBLES, MAPA_EPG_NOMBRE = cargar_ids_epg()
