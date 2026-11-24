@@ -1,7 +1,18 @@
-# Resumen de cambios ELCANO - 2026-11-24 15:43:41
+# Resumen de cambios ELCANO - 2026-11-24 15:56:56
 
-## Canales nuevos (0)
-- Ninguno.
+## Canales nuevos (11)
+- DAZN 2 720P **
+- DAZN F1 720P *
+- DAZN LALIGA 3 1080P *
+- M+ 0 1080P **
+- M+ DEPORTES 5 1080P *
+- M+ LALIGA 2 720P **
+- M+ LIGA DE CAMPEONES 3 720P **
+- M+ LIGA DE CAMPEONES 4 720P **
+- M+ LIGA DE CAMPEONES 6 720P **
+- MOVISTAR PLUS 1080P **
+- MOVISTAR PLUS 720P *
 
-## Canales eliminados (0)
-- Ninguno.
+## Canales eliminados (2)
+- DAZN BALONCESTO 2 1080P **
+- M+ LALIGA 2 *
