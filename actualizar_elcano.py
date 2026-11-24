@@ -45,6 +45,7 @@ GROUP_TITLE = "⭐ ELCANO [MÁXIMA CALIDAD]"
 URLS_EPG = [
     "https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml",
     "https://epgshare01.online/epgshare01/epg_ripper_US_SPORTS1.xml.gz",
+    "https://epgshare01.online/epgshare01/epg_ripper_US1.xml.gz",
     "https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz",
     "https://epgshare01.online/epgshare01/epg_ripper_PT1.xml.gz",
     "https://epgshare01.online/epgshare01/epg_ripper_TR1.xml.gz",
@@ -312,6 +313,29 @@ def buscar_id_epg(nombre):
         if id_real:
             return id_real
 
+    # Priorizar los identificadores turcos reales de beIN Sports 3.
+    if clave == "BEIN SPORTS 3 TR":
+        for id_candidato in (
+            "beIN.SPORTS.3.tr",
+            "Beinsports.3.tr",
+        ):
+            if id_candidato in IDS_EPG_DISPONIBLES:
+                return id_candidato
+
+    # NBA League Pass: buscar nombres e IDs reales de US1.
+    if clave == "NBA LEAGUE PASS":
+        candidatos_nba = sorted(
+            (
+                (nombre_epg, id_epg)
+                for nombre_epg, id_epg in MAPA_EPG_NOMBRE.items()
+                if nombre_epg.startswith("NBA LEAGUE PASS ")
+                and id_epg in IDS_EPG_DISPONIBLES
+            ),
+            key=lambda item: item[0],
+        )
+        if candidatos_nba:
+            return candidatos_nba[0][1]
+
     # NBA League Pass y UFC pueden aparecer en XMLTV con sufijos HD,
     # resolución, idioma o número.
     if clave in ("NBA LEAGUE PASS", "UFC"):
@@ -354,9 +378,9 @@ def ajustar_id_con_epg(linea, nombre):
 
     clave = clave_canal(nombre)
 
-    # Para NBA League Pass y UFC, priorizar el nombre frente a un tvg-id
+    # Para NBA League Pass, UFC y beIN Sports 3 TR, priorizar el nombre frente a un tvg-id
     # antiguo o genérico.
-    if clave in ("NBA LEAGUE PASS", "UFC"):
+    if clave in ("NBA LEAGUE PASS", "UFC", "BEIN SPORTS 3 TR"):
         id_real = buscar_id_epg(nombre)
         if id_real:
             linea = poner_atributo(linea, "tvg-id", id_real)
@@ -1053,7 +1077,7 @@ else:
 # ==========================================================
 cabecera_m3u = (
     '#EXTM3U url-tvg="https://raw.githubusercontent.com/davidmuma/EPG_dobleM/refs/heads/master/guiatv.xml,'
-    'https://epgshare01.online/epgshare01/epg_ripper_US_SPORTS1.xml.gz,'
+    'https://epgshare01.online/epgshare01/epg_ripper_US_SPORTS1.xml.gz,https://epgshare01.online/epgshare01/epg_ripper_US1.xml.gz,'
     'https://epgshare01.online/epgshare01/epg_ripper_NL1.xml.gz,'
     'https://epgshare01.online/epgshare01/epg_ripper_PT1.xml.gz,'
     'https://epgshare01.online/epgshare01/epg_ripper_TR1.xml.gz,'
