@@ -1,8 +1,7 @@
-# Resumen de cambios ELCANO - 2026-11-24 19:40:17
+# Resumen de cambios ELCANO - 2026-11-24 20:05:19
 
 ## Canales nuevos (0)
 - Ninguno.
 
-## Canales eliminados (2)
-- DAZN 4 **
-- MOVISTAR PLUS 720P *
+## Canales eliminados (0)
+- Ninguno.

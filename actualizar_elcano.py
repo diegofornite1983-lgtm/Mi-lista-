@@ -269,9 +269,12 @@ def buscar_id_epg(nombre):
             "ESPORT3 HD",
         ),
         "NBA LEAGUE PASS": (
+            "NBA LEAGUE PASS",
             "NBA LEAGUE PASS 1",
             "NBA LEAGUE PASS 2",
+            "NBA LEAGUE PASS 3",
             "NBA LEAGUE PASS HD",
+            "NBA LEAGUE PASS 1080P",
         ),
         "NBA ESPN": (
             "ESPN NBA",
@@ -279,74 +282,14 @@ def buscar_id_epg(nombre):
             "ESPN",
         ),
         "UFC": (
-            "UFC FIGHT PASS",
+            "UFC",
+            "UFC HD",
             "UFC TV",
-            "UFC NETWORK",
-        ),
-        "BEIN SPORTS 3 TR": (
-            "BEIN SPORTS 3",
-            "BEIN SPORTS 3 HD",
-            "BEIN SPORTS 3 TURKEY",
-        ),
-        "BEIN SPORTS TR": (
-            "BEIN SPORTS HABER",
-            "BEIN SPORTS TR HD",
-            "BEIN SPORTS TURKEY",
-        ),
-        "DAZN LALIGA 3": (
-            "DAZN LALIGA 3 HD",
-            "DAZN LALIGA 3",
-        ),
-    }
-
-    for candidato in alias.get(clave, ()):
-        id_real = MAPA_EPG_NOMBRE.get(clave_canal(candidato))
-        if id_real:
-            return id_real
-
-    if clave not in ("UFC", "NBA ESPN"):
-        prefijos = (clave + " ",)
-        candidatos = sorted(
-            (
-                (k, v)
-                for k, v in MAPA_EPG_NOMBRE.items()
-                if any(k.startswith(prefijo) for prefijo in prefijos)
-            ),
-            key=lambda item: (len(item[0]), item[0]),
-        )
-        if candidatos:
-            return candidatos[0][1]
-
-    return None
-
-
-def buscar_id_epg(nombre):
-    """Busca el ID XMLTV por nombre exacto y después por alias controlados."""
-    clave = clave_canal(nombre)
-
-    if clave in MAPA_EPG_NOMBRE:
-        return MAPA_EPG_NOMBRE[clave]
-
-    alias = {
-        "ESPORT3": (
-            "ESPORT 3",
-            "TV3 ESPORTS",
-            "ESPORT3 HD",
-        ),
-        "NBA LEAGUE PASS": (
-            "NBA LEAGUE PASS 1",
-            "NBA LEAGUE PASS 2",
-            "NBA LEAGUE PASS HD",
-        ),
-        "NBA ESPN": (
-            "ESPN NBA",
-            "NBA ON ESPN",
-            "ESPN",
-        ),
-        "UFC": (
+            "UFC TV HD",
             "UFC FIGHT PASS",
-            "UFC TV",
+            "UFC FIGHT PASS HD",
             "UFC NETWORK",
+            "UFC NETWORK HD",
         ),
         "BEIN SPORTS 3 TR": (
             "BEIN SPORTS 3",
