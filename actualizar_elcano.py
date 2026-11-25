@@ -925,6 +925,9 @@ def normalizar_linea_personal(linea):
     if not linea.startswith("#EXTINF:") or "," not in linea:
         return linea
     nombre = linea.rsplit(",", 1)[-1].strip()
+    if clave_canal(nombre) in ("NAVIDAD POR M+", "M+ NAVIDAD"):
+        return linea
+
     nombre_norm = normalizar(nombre)
     sin_sucio = limpiar_logo_si_es_sucio(linea)
     logo_match = re.search(r'tvg-logo="([^"]+)"', sin_sucio, flags=re.IGNORECASE)
