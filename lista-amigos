@@ -595,14 +595,15 @@ http://127.0.0.1:6878/ace/getstream?id=71892f06a6186573476b2fb4ef543b1a44a1c78e
 #EXTINF:-1 tvg-id="M+ Baloncesto 5" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto%205.png" group-title="🏀 BALONCESTO Y NBA",M+ Baloncesto 5 1080p **
 http://127.0.0.1:6878/ace/getstream?id=a42e875cf6809d8995aeff48f5f10e9ab31b2a9a
 
-#EXTINF:-1 tvg-id="NBA League Pass" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-league-pass-hz-us.png" group-title="🏀 BALONCESTO Y NBA",NBA League Pass 1080p *
+#EXTINF:-1 tvg-name="NBA League Pass 1080p *" tvg-id="NBA League Pass" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-league-pass-hz-us.png" group-title="🏀 BALONCESTO Y NBA",NBA League Pass 1080p *
 http://127.0.0.1:6878/ace/getstream?id=181701bdaa643087bf99bf9916ede42df6eaf543
 
-#EXTINF:-1 tvg-id="NBA League Pass" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-league-pass-hz-us.png" group-title="🏀 BALONCESTO Y NBA",NBA League Pass 1080p *
+#EXTINF:-1 tvg-name="NBA League Pass 1080p *" tvg-id="NBA League Pass" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-league-pass-hz-us.png" group-title="🏀 BALONCESTO Y NBA",NBA League Pass 1080p *
 http://127.0.0.1:6878/ace/getstream?id=9821bfd262dd41a791b9cb5175314fa227dc139e
 
-#EXTINF:-1 tvg-id="NBA League Pass" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-league-pass-hz-us.png" group-title="🏀 BALONCESTO Y NBA",NBA League Pass 1080p **
+#EXTINF:-1 tvg-name="NBA League Pass 1080p **" tvg-id="NBA League Pass" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-league-pass-hz-us.png" group-title="🏀 BALONCESTO Y NBA",NBA League Pass 1080p **
 http://127.0.0.1:6878/ace/getstream?id=8a54321894a268fbc5a8622da77f8d2eed7b8c4d
+
 
 #EXTINF:-1 tvg-name="NBA ESPN 720p *" tvg-id="ESPN" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-us.png" group-title="🏀 BALONCESTO Y NBA",NBA ESPN 720p *
 http://127.0.0.1:6878/ace/getstream?id=cb5a1f48efe2c30db178955bdc2fddf89d547ab4
