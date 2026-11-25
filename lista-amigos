@@ -370,6 +370,8 @@ http://127.0.0.1:6878/ace/getstream?id=9083f6411d8c6f41546d01f8fbeefb812e8ae1a9
 
 #EXTINF:-1 tvg-id="La Sexta HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/La%20Sexta.png" group-title="🎬 MOVISTAR",La Sexta 7ecf
 http://127.0.0.1:6878/ace/getstream?id=6fa8e5288e9b91c926134362f7c01320f3eb7ecf
+#EXTINF:-1 tvg-id="Teledeporte" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="🎬 MOVISTAR",Teledeporte 1080p *
+http://127.0.0.1:6878/ace/getstream?id=81aead134bb63a51291d23e793fcddca981ee834
 
 #EXTINF:-1 tvg-id="MTV España" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/MTV%20Espa%C3%B1a.png" group-title="🎬 MOVISTAR",MTV Spain 163c
 http://127.0.0.1:6878/ace/getstream?id=9a84a44833e4b8dc39a296584d4f587b7ae3163c
