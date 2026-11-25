@@ -392,8 +392,9 @@ http://100.90.204.66:6878/ace/getstream?id=b331dcd389eaf6d4af356245cc0a02a3c478d
 #EXTINF:-1 tvg-id="Movistar Terror" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Terror.png" group-title="🎬 MOVISTAR",M+ Terror #1
 http://100.90.204.66:6878/ace/getstream?id=887ac58d9ede35d19364c1959d9e78a78f288c36
 
-#EXTINF:-1 tvg-id="Navidad por M+" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Navidad%20por%20M%2B.png" group-title="🎬 MOVISTAR",Navidad por M+
+#EXTINF:-1 tvg-id="Navidad por M+" tvg-logo="https://jungle-team.com/nuevo-canal-pop-up-navidad-por-m/navidad-2/" group-title="🎬 MOVISTAR",Navidad por M+
 http://100.90.204.66:6878/ace/getstream?id=22178d72e0f255dedd7e56f9474fea879289a6f1
+
 
 
 #EXTINF:-1 tvg-id="AXN Movies HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AXN%20Movies.png" group-title="🎬 MOVISTAR",AXN Movies 457c
