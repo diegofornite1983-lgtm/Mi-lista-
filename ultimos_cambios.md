@@ -1,9 +1,7 @@
-# Resumen de cambios ELCANO - 2026-11-25 02:41:42
+# Resumen de cambios ELCANO - 2026-11-25 02:57:15
 
-## Canales nuevos (3)
-- M+ DEPORTES 2 720P *
-- M+ DEPORTES 3 720P *
-- M+ LIGA DE CAMPEONES 5 1080P *
+## Canales nuevos (0)
+- Ninguno.
 
 ## Canales eliminados (0)
 - Ninguno.
