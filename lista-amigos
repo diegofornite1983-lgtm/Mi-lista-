@@ -482,8 +482,9 @@ http://127.0.0.1:6878/ace/getstream?id=147635d4205d3be55c67d10e9f25ad6d093e5264
 http://127.0.0.1:6878/ace/getstream?id=db26cad444717c262dddb5ea37301ee779d4f5b9
 #EXTINF:-1 tvg-id="M+ LaLiga 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%202.png" group-title="⚽ LA LIGA Y DAZN LIGA",⭐️ M+ LaLiga 2 33fe
 http://127.0.0.1:6878/ace/getstream?id=b8eb9c9868d487402569bba2d97a8af113d033fe
-#EXTINF:-1 tvg-id="DAZN LaLiga 3" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%203.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",DAZN LaLiga 3
+#EXTINF:-1 tvg-id="DAZN LaLiga 3" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga%203.png" group-title="⚽ LA LIGA Y DAZN LIGA",DAZN LaLiga 3
 http://127.0.0.1:6878/ace/getstream?id=a9fa209700bbd1e4572fdf68272480ad101b7a3e
+
 
 #EXTINF:-1 tvg-id="M+ LaLiga 4 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%204.png" group-title="⚽ LA LIGA Y DAZN LIGA",⭐️ M+ LaLiga 4 a6f1
 http://127.0.0.1:6878/ace/getstream?id=22178d72e0f255dedd7e56f9474fea879289a6f1
