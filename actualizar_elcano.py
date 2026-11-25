@@ -976,7 +976,17 @@ while indice < len(lineas_elcano):
         continue
 
     nombre = linea.rsplit(",", 1)[-1].strip()
+    nombre = re.sub(r"\s*\b720p?\b\s*", " ", nombre, flags=re.IGNORECASE)
+    nombre = re.sub(r"\s{2,}", " ", nombre).strip()
+
+    if "," in linea:
+        prefijo_extinf, _ = linea.rsplit(",", 1)
+        linea = f"{prefijo_extinf},{nombre}"
+        if re.search(r'tvg-name="[^"]*"', linea, flags=re.IGNORECASE):
+            linea = poner_atributo(linea, "tvg-name", nombre)
+
     nombre_normalizado = normalizar(nombre)
+
 
     extinf_mod = aplicar_logo_y_epg(linea, nombre_normalizado, nombre)
     extinf_mod = ajustar_id_con_epg(extinf_mod, nombre)
