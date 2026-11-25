@@ -7,9 +7,9 @@ if errorlevel 1 (
     exit /b 1
 )
 
-"C:\Users\diego\AppData\Local\Programs\Python\Python314\python.exe" -c "import datetime, pathlib, re; stamp = f'# Ultima sincronizacion: {datetime.datetime.now().strftime(\"%%Y-%%m-%%d %%H:%%M:%%S\")}'; archivos = ['Canales m3u', 'Mi lista acestream', 'lista-amigos']; [p.write_text(re.sub(r'(?:\r?\n)?# Ultima sincronizacion:[^\r\n]*', '', re.sub(r'^(?:<<<<<<<|=======|>>>>>>>).*(\r?\n)?', '', p.read_text(encoding='utf-8', errors='replace'), flags=re.M)).rstrip('\r\n') + '\n' + stamp + '\n', encoding='utf-8') for nombre in archivos if (p := pathlib.Path(nombre)).exists()]"
+"C:\Users\diego\AppData\Local\Programs\Python\Python314\python.exe" quitar_lineas_vacias.py
 if errorlevel 1 (
-    echo Error al poner la marca de ultima sincronizacion.
+    echo Error al limpiar las lineas vacias.
     exit /b 1
 )
 
