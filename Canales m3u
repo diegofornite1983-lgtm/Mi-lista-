@@ -604,7 +604,7 @@ http://100.90.204.66:6878/ace/getstream?id=9821bfd262dd41a791b9cb5175314fa227dc1
 #EXTINF:-1 tvg-id="NBA League Pass" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-league-pass-hz-us.png" group-title="🏀 BALONCESTO Y NBA",NBA League Pass 1080p **
 http://100.90.204.66:6878/ace/getstream?id=8a54321894a268fbc5a8622da77f8d2eed7b8c4d
 
-#EXTINF:-1 tvg-id="ESPN" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-us.png" group-title="🏀 BALONCESTO Y NBA",NBA ESPN 720p *
+#EXTINF:-1 tvg-name="NBA ESPN 720p *" tvg-id="ESPN" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-us.png" group-title="🏀 BALONCESTO Y NBA",NBA ESPN 720p *
 http://100.90.204.66:6878/ace/getstream?id=cb5a1f48efe2c30db178955bdc2fddf89d547ab4
 
 
