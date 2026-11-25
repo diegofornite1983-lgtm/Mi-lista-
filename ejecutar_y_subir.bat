@@ -19,7 +19,7 @@ if errorlevel 1 (
 
 "%GIT_EXE%" pull --rebase
 if errorlevel 1 (
-    echo Conflicto al traer cambios de la web. Abortando rebase para no dejarlo colgado...
+    echo Conflicto al traer cambios de la web. Abortando rebase...
     "%GIT_EXE%" rebase --abort >nul 2>nul
     exit /b 1
 )
@@ -30,10 +30,12 @@ if errorlevel 1 (
     exit /b 1
 )
 
-"C:\Users\diego\AppData\Local\Programs\Python\Python314\python.exe" -c "import datetime, pathlib, re; stamp = f'# Ultima sincronizacion: {datetime.datetime.now().strftime(\"%%Y-%%m-%%d %%H:%%M:%%S\")}'; archivos = ['Canales m3u', 'Mi lista acestream', 'lista-amigos']; [p.write_text(re.sub(r'(?:\r?\n)?# Ultima sincronizacion:[^\r\n]*', '', re.sub(r'^(?:<<<<<<<|=======|>>>>>>>).*(\r?\n)?', '', p.read_text(encoding='utf-8', errors='replace'), flags=re.M)).rstrip('\r\n') + '\n' + stamp + '\n', encoding='utf-8') for nombre in archivos if (p := pathlib.Path(nombre)).exists()]"
-if errorlevel 1 (
-    echo Error al poner la marca de ultima sincronizacion.
-    exit /b 1
+if exist "limpiar_hora.py" (
+    "C:\Users\diego\AppData\Local\Programs\Python\Python314\python.exe" limpiar_hora.py
+    if errorlevel 1 (
+        echo Error en limpiar_hora.py.
+        exit /b 1
+    )
 )
 
 "%GIT_EXE%" add -A
@@ -59,4 +61,6 @@ if errorlevel 1 (
 )
 
 exit /b 0
+
+
 
