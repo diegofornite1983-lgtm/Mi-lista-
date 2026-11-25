@@ -746,9 +746,9 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
             f"{PICONS_BASE}/Eurosport.png",
         )
 
-    # 9. M+ Deportes (numerados del 7 al 1)
+      # 9. M+ Deportes (numerados del 8 al 1)
     if "DEPORTES" in nombre_norm:
-        for num in range(7, 0, -1):
+        for num in range(8, 0, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
                 defecto = (
                     f"M+ Deportes {num} HD" if num == 2 else f"M+ Deportes {num}"
@@ -760,6 +760,7 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
                     "tvg-logo",
                     f"{PICONS_BASE}/M%2B%20Deportes%20{num}.png",
                 )
+
 
     # 10. Golf
     if re.search(r"\bGOLF\s*2\b", nombre_norm):
