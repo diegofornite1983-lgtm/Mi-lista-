@@ -14,15 +14,15 @@ http://100.90.204.66:6878/ace/getstream?id=cf9186902e798bf1256dab57127a2c6390af1
 #EXTINF:-1 tvg-name="M+ LaLiga 1080p *" tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 1080p *
 http://100.90.204.66:6878/ace/getstream?id=ecafc760a1818e11a39fe4a537d5d19c4feeb843
 #EXTINF:-1 tvg-name="M+ LaLiga 1080p **" tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 1080p **
-http://100.90.204.66:6878/ace/getstream?id=f896237afb70f83ac1f0ca64b538aa1c0c1f9718
+http://100.90.204.66:6878/ace/getstream?id=cd2a4796a4bf76bb8b61dd4eddc63eb7395e218b
 #EXTINF:-1 tvg-name="M+ LaLiga 1080p **" tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 1080p **
 http://100.90.204.66:6878/ace/getstream?id=a4fe8090a393f0c441d252bdabbddffeb5d0d326
 #EXTINF:-1 tvg-name="M+ LaLiga 1080p **" tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 1080p **
-http://100.90.204.66:6878/ace/getstream?id=cd2a4796a4bf76bb8b61dd4eddc63eb7395e218b
-#EXTINF:-1 tvg-name="M+ LaLiga 720p *" tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 720p *
-http://100.90.204.66:6878/ace/getstream?id=c1445e7e0ca9f1e59e7b57a9ce4b21ee5769cf60
+http://100.90.204.66:6878/ace/getstream?id=f896237afb70f83ac1f0ca64b538aa1c0c1f9718
 #EXTINF:-1 tvg-name="M+ LaLiga 720p *" tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 720p *
 http://100.90.204.66:6878/ace/getstream?id=7edf0f41f687da726d45d5b08f1bf670f18f5063
+#EXTINF:-1 tvg-name="M+ LaLiga 720p *" tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 720p *
+http://100.90.204.66:6878/ace/getstream?id=c1445e7e0ca9f1e59e7b57a9ce4b21ee5769cf60
 #EXTINF:-1 tvg-name="M+ LaLiga 720p **" tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 720p **
 http://100.90.204.66:6878/ace/getstream?id=e8f4f54350dcb173f01140295230bc24472718ea
 #EXTINF:-1 tvg-name="M+ LaLiga 3 1080p *" tvg-id="M+ LaLiga 3 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%203.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ LaLiga 3 1080p *
@@ -48,9 +48,9 @@ http://100.90.204.66:6878/ace/getstream?id=8308bca81e6e712089b1b42b4a4cc29f7cb2c
 #EXTINF:-1 tvg-name="M+ Liga de Campeones 3 1080p *" tvg-id="M+ Liga de Campeones 3 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%203.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Liga de Campeones 3 1080p *
 http://100.90.204.66:6878/ace/getstream?id=ad312a4e135c1a2e9f5ca0e65a382dda794eb5f4
 #EXTINF:-1 tvg-name="M+ Liga de Campeones 3 1080p **" tvg-id="M+ Liga de Campeones 3 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%203.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Liga de Campeones 3 1080p **
-http://100.90.204.66:6878/ace/getstream?id=9ecf7d06c6ed24a6b4a7a76f7ff4951bd89e9f7a
-#EXTINF:-1 tvg-name="M+ Liga de Campeones 3 1080p **" tvg-id="M+ Liga de Campeones 3 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%203.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Liga de Campeones 3 1080p **
 http://100.90.204.66:6878/ace/getstream?id=6791c61745373ccba7bc7d97798a3a1399401067
+#EXTINF:-1 tvg-name="M+ Liga de Campeones 3 1080p **" tvg-id="M+ Liga de Campeones 3 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%203.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Liga de Campeones 3 1080p **
+http://100.90.204.66:6878/ace/getstream?id=9ecf7d06c6ed24a6b4a7a76f7ff4951bd89e9f7a
 #EXTINF:-1 tvg-name="M+ Liga de Campeones 3 720p **" tvg-id="M+ Liga de Campeones 3 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%203.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Liga de Campeones 3 720p **
 http://100.90.204.66:6878/ace/getstream?id=0f456a24bd967d963f3023dcaf9b85fc18c60b32
 #EXTINF:-1 tvg-name="M+ Liga de Campeones 4 1080p *" tvg-id="M+ Liga de Campeones 4" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%204.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Liga de Campeones 4 1080p *
@@ -148,9 +148,9 @@ http://100.90.204.66:6878/ace/getstream?id=4930f5fc0f4cc2a5b5320c0d2c0e7be36009f
 #EXTINF:-1 tvg-name="LaLiga TV Hypermotion 3 1080p **" tvg-id="LaLiga TV Hypermotion 3" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/LaLiga%20TV%20Hypermotion%203.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",LaLiga TV Hypermotion 3 1080p **
 http://100.90.204.66:6878/ace/getstream?id=78f301dbeaaeb51a8650e80ace3eef6dc5d32f25
 #EXTINF:-1 tvg-name="RFEF TV 1080p *" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Primera%20Federaci%C3%B3n.png" tvg-id="Primera Federación" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",RFEF TV 1080p *
-http://100.90.204.66:6878/ace/getstream?id=60211a036da2a61a1367874d76ad8195749e229a
-#EXTINF:-1 tvg-name="RFEF TV 1080p *" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Primera%20Federaci%C3%B3n.png" tvg-id="Primera Federación" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",RFEF TV 1080p *
 http://100.90.204.66:6878/ace/getstream?id=00e604434e1785d8c630f742bac6717d634ee3d6
+#EXTINF:-1 tvg-name="RFEF TV 1080p *" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Primera%20Federaci%C3%B3n.png" tvg-id="Primera Federación" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",RFEF TV 1080p *
+http://100.90.204.66:6878/ace/getstream?id=60211a036da2a61a1367874d76ad8195749e229a
 #EXTINF:-1 tvg-name="M+ Golf 1080p *" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf.png" tvg-id="M+ Golf HD" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Golf 1080p *
 http://100.90.204.66:6878/ace/getstream?id=ae4f7fc836e02b39b1bf19eb91887ea0896493e4
 #EXTINF:-1 tvg-name="Eurosport 1 1080p *" tvg-id="Eurosport 1 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Eurosport%201.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Eurosport 1 1080p *
@@ -182,9 +182,9 @@ http://100.90.204.66:6878/ace/getstream?id=85fa14c8e1431b78e18cc4b0104b96b21851c
 #EXTINF:-1 tvg-name="RALLY TV 1080p *" tvg-id="DE | Rally TV" tvg-logo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTExzu7xibD1sz89l8PlnxvB8oUMOOhDLKywQ&s" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",RALLY TV 1080p *
 http://100.90.204.66:6878/ace/getstream?id=ce3fc726a200327d9a2ced8b79fad47557881cb7
 #EXTINF:-1 tvg-name="UFC *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png" tvg-id="MMA-UFC.us" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",UFC *
-http://100.90.204.66:6878/ace/getstream?id=0aa6f665d462d8b6f3f184bfdfe1d0fc0c8b8f31
-#EXTINF:-1 tvg-name="UFC *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png" tvg-id="MMA-UFC.us" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",UFC *
 http://100.90.204.66:6878/ace/getstream?id=b6da3c2260401aebfc57fe1873eb19b82972546f
+#EXTINF:-1 tvg-name="UFC *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png" tvg-id="MMA-UFC.us" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",UFC *
+http://100.90.204.66:6878/ace/getstream?id=0aa6f665d462d8b6f3f184bfdfe1d0fc0c8b8f31
 #EXTINF:-1 tvg-name="UFC *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png" tvg-id="MMA-UFC.us" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",UFC *
 http://100.90.204.66:6878/ace/getstream?id=e1a3a1427d7211b5cc8f1110878bfd61388eaa8c
 #EXTINF:-1 tvg-name="UFC *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/ufc-us.png" tvg-id="MMA-UFC.us" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",UFC *
@@ -200,9 +200,9 @@ http://100.90.204.66:6878/ace/getstream?id=b6f59d236c44a331fe435c00f2e4d4b222647
 #EXTINF:-1 tvg-name="M+ Baloncesto 1080p **" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Baloncesto.png" tvg-id="M+ Baloncesto" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",M+ Baloncesto 1080p **
 http://100.90.204.66:6878/ace/getstream?id=7d69b0c14741cacc0e851604cf34da0ca35b98d2
 #EXTINF:-1 tvg-name="NBA League Pass 1080p *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-league-pass-hz-us.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA League Pass 1080p *
-http://100.90.204.66:6878/ace/getstream?id=181701bdaa643087bf99bf9916ede42df6eaf543
-#EXTINF:-1 tvg-name="NBA League Pass 1080p *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-league-pass-hz-us.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA League Pass 1080p *
 http://100.90.204.66:6878/ace/getstream?id=9821bfd262dd41a791b9cb5175314fa227dc139e
+#EXTINF:-1 tvg-name="NBA League Pass 1080p *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-league-pass-hz-us.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA League Pass 1080p *
+http://100.90.204.66:6878/ace/getstream?id=181701bdaa643087bf99bf9916ede42df6eaf543
 #EXTINF:-1 tvg-name="NBA League Pass 1080p **" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/nba-league-pass-hz-us.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA League Pass 1080p **
 http://100.90.204.66:6878/ace/getstream?id=8a54321894a268fbc5a8622da77f8d2eed7b8c4d
 #EXTINF:-1 tvg-name="NBA ESPN 720p *" tvg-id="ESPN" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/united-states/espn-us.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",NBA ESPN 720p *
@@ -228,9 +228,9 @@ http://100.90.204.66:6878/ace/getstream?id=7d7df6d636f90879b3585b0314249896e80d8
 #EXTINF:-1 tvg-name="A Punt 1080p *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/a-punt-es.png" tvg-id="À Punt" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",A Punt 1080p *
 http://100.90.204.66:6878/ace/getstream?id=52732c9aa21dcbf8602b354bbc09274ed7b89878
 #EXTINF:-1 tvg-name="A Punt 1080p **" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/a-punt-es.png" tvg-id="À Punt" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",A Punt 1080p **
-http://100.90.204.66:6878/ace/getstream?id=c6c151ad643e1c04287ffb39205bbb40032c196a
-#EXTINF:-1 tvg-name="A Punt 1080p **" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/a-punt-es.png" tvg-id="À Punt" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",A Punt 1080p **
 http://100.90.204.66:6878/ace/getstream?id=86598061ee84d3eda0026f04f9f7cc55fb4f895a
+#EXTINF:-1 tvg-name="A Punt 1080p **" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/a-punt-es.png" tvg-id="À Punt" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",A Punt 1080p **
+http://100.90.204.66:6878/ace/getstream?id=c6c151ad643e1c04287ffb39205bbb40032c196a
 #EXTINF:-1 tvg-name="CUATRO 1080p **" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/cuatro-es.png" tvg-id="Cuatro HD" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",CUATRO 1080p **
 http://100.90.204.66:6878/ace/getstream?id=f053eef7ff36bd5111a75b7b04164afc126ea197
 #EXTINF:-1 tvg-name="Esport3 1080p *" tvg-id="Esport 3" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/esport-3-es.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Esport3 1080p *
@@ -240,9 +240,9 @@ http://100.90.204.66:6878/ace/getstream?id=72166569359b9e691cb69c368e5fa406f56d0
 #EXTINF:-1 tvg-name="Esport3 720p *" tvg-id="Esport 3" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/esport-3-es.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Esport3 720p *
 http://100.90.204.66:6878/ace/getstream?id=af29bd066eab597e8c8e61070c85dc7d35b2678f
 #EXTINF:-1 tvg-name="La 1 TVE 1080p **" tvg-id="La 1 HD" tvg-logo="https://i.ibb.co/Vf2GT70/la1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",La 1 TVE 1080p **
-http://100.90.204.66:6878/ace/getstream?id=ca91df96685977ccd96d2813eec3d2624a0d1bf7
-#EXTINF:-1 tvg-name="La 1 TVE 1080p **" tvg-id="La 1 HD" tvg-logo="https://i.ibb.co/Vf2GT70/la1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",La 1 TVE 1080p **
 http://100.90.204.66:6878/ace/getstream?id=37e00ac50993ec2a5c6bc56f4220b6bbfa9b3728
+#EXTINF:-1 tvg-name="La 1 TVE 1080p **" tvg-id="La 1 HD" tvg-logo="https://i.ibb.co/Vf2GT70/la1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",La 1 TVE 1080p **
+http://100.90.204.66:6878/ace/getstream?id=ca91df96685977ccd96d2813eec3d2624a0d1bf7
 #EXTINF:-1 tvg-name="La 1 TVE 4K *" tvg-id="La 1 HD" tvg-logo="https://i.ibb.co/Vf2GT70/la1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",La 1 TVE 4K *
 http://100.90.204.66:6878/ace/getstream?id=af2443ecb57d667056becc5acd0c6c2962756f35
 #EXTINF:-1 tvg-name="La 1 TVE 4K **" tvg-id="La 1 HD" tvg-logo="https://i.ibb.co/Vf2GT70/la1.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",La 1 TVE 4K **
@@ -267,6 +267,7 @@ http://100.90.204.66:6878/ace/getstream?id=81aead134bb63a51291d23e793fcddca981ee
 http://100.90.204.66:6878/ace/getstream?id=e2764331e372ba2b3fd65be11eace463405864da
 #EXTINF:-1 tvg-name="Teledeporte 720p **" tvg-id="Teledeporte" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Teledeporte 720p **
 http://100.90.204.66:6878/ace/getstream?id=530c4fe68f46f7eeb168ddb07026f40d96a0b6ce
+
 
 
 
