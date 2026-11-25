@@ -546,8 +546,10 @@ http://100.90.204.66:6878/ace/getstream?id=8121478d3d3e563ad6b98018bc1c0aeb2f616
 
 
 
-#EXTINF:-1 tvg-id="TC.us" tvg-logo="https://www.sportsvideo.org/wp-content/uploads/2016/01/tennis-channel-logo-e1518530950839.jpg" group-title="🏅 MOVISTAR DEP-VAMOS",⭐️ Tennis Channel 1080p * a1f2
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Tennis%20Channel.png" tvg-id="Tennis Channel" group-title="🏅 MOVISTAR DEP-VAMOS",Tennis Channel 1080p *
 http://100.90.204.66:6878/ace/getstream?id=039fae21c9e7e5214d3d898cba80863e37e623ac
+
+
 
 
 
