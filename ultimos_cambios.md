@@ -1,13 +1,11 @@
-# Resumen de cambios ELCANO - 2026-11-25 11:43:34
+# Resumen de cambios ELCANO - 2026-11-25 12:43:41
 
-## Canales nuevos (5)
-- DAZN MOTOGP 1080P *
-- DAZN MOTOGP 1080P **
-- DAZN MOTOGP 720P *
-- DAZN MOTOGP 720P **
-- SKY SPORT MOTOGP 1080P **
+## Canales nuevos (0)
+- Ninguno.
 
-## Canales eliminados (3)
-- DAZN BALONCESTO 2 1080P **
-- DAZN BALONCESTO 720P **
-- M+ GOLF 720P *
+## Canales eliminados (5)
+- DAZN BALONCESTO 3 1080P **
+- M+ DEPORTES 5 1080P *
+- M+ DEPORTES 7 720P *
+- M+ GOLF 1080P *
+- M+ GOLF 2 1080P *
