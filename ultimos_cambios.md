@@ -1,7 +1,7 @@
-# Resumen de cambios ELCANO - 2026-11-25 18:59:39
+# Resumen de cambios ELCANO - 2026-11-25 19:05:09
 
 ## Canales nuevos (0)
 - Ninguno.
 
-## Canales eliminados (1)
-- DAZN 2 720P **
+## Canales eliminados (0)
+- Ninguno.
