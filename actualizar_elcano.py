@@ -1106,13 +1106,31 @@ cabecera_m3u = (
 cuerpo_personal_limpio = "".join(
     normalizar_linea_personal(linea)
     for linea in cuerpo_personal.splitlines(keepends=True)
-)
+    if not re.match(r"^\s*#\s*Ultima sincronizacion:", linea, flags=re.IGNORECASE)
+).rstrip("\r\n")
+
+linea_sync = f"{salto}# Ultima sincronizacion: {timestamp_actual}"
+cuerpo_personal_con_fecha = cuerpo_personal_limpio + linea_sync
 
 separador = salto + salto
 
 texto_final = (
-    cabecera_m3u + texto_nuevo_elcano + separador + cuerpo_personal_limpio
+    cabecera_m3u + texto_nuevo_elcano + separador + cuerpo_personal_con_fecha
 )
+
+bloque_tailscale_elcano = texto_nuevo_elcano.replace(
+    "127.0.0.1:6878", "100.90.204.66:6878"
+)
+
+cuerpo_tailscale_personal = cuerpo_personal_con_fecha.replace(
+    "127.0.0.1:6878", "100.90.204.66:6878"
+)
+
+texto_tailscale = (
+    cabecera_m3u + bloque_tailscale_elcano + separador + cuerpo_tailscale_personal
+)
+
+texto_amigos = texto_final
 
 # ==========================================================
 # MONTAR ARCHIVO TAILSCALE (CAMBIA LA IP ARRIBA Y ABAJO)
