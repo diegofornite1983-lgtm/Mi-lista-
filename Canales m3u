@@ -399,8 +399,6 @@ http://100.90.204.66:6878/ace/getstream?id=6b4acf7cab48967eccea5c3e89b1e945ceab4
 #EXTINF:-1 tvg-id="M+ Originales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Originales.png" group-title="🎬 MOVISTAR",M+ Originales f8bc
 http://100.90.204.66:6878/ace/getstream?id=0364449064d322a1bc0f97d568452053810ef8bc
 
-#EXTINF:-1 tvg-id="AMC HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AMC.png" group-title="🎬 MOVISTAR",AMC
-http://100.90.204.66:6878/ace/getstream?id=8269d72f3338c6b4ef7752732adaa9f62d4c09e4
 
 
 
