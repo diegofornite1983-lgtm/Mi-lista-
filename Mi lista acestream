@@ -364,8 +364,9 @@ http://127.0.0.1:6878/ace/getstream?id=dc044c79fcde8ed69ed4c878643b09f09e7ccb72
 #EXTINF:-1 tvg-id="M+ Comedia HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Comedia.png" group-title="🎬 MOVISTAR",M+ Comedia ffcb
 http://127.0.0.1:6878/ace/getstream?id=e8cd9088fee41413df360e4539c9e7184a63ffcb
 
-#EXTINF:-1 tvg-id="M+ Navidad" tvg-name="M+ Navidad" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Estrenos.png" group-title="🎬 MOVISTAR",Navidad por M+
+#EXTINF:-1 tvg-id="M+ Navidad" tvg-name="M+ Navidad" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Movistar%20Plus.png" group-title="🎬 MOVISTAR",Navidad por M+
 http://127.0.0.1:6878/ace/getstream?id=b331dcd389eaf6d4af356245cc0a02a3c478d3ed
+
 
 
 
