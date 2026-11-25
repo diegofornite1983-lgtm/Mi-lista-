@@ -20,22 +20,29 @@ if errorlevel 1 (
 "%GIT_EXE%" config user.name >nul 2>nul || "%GIT_EXE%" config user.name "Auto Bot"
 "%GIT_EXE%" config user.email >nul 2>nul || "%GIT_EXE%" config user.email "bot@local.invalid"
 
+"%GIT_EXE%" pull --rebase --autostash
+if errorlevel 1 (
+    echo Conflicto o fallo al hacer pull --rebase. Abortando rebase para no dejarlo colgado...
+    "%GIT_EXE%" rebase --abort >nul 2>nul
+    exit /b 1
+)
+
 "%GIT_EXE%" add -A
 "%GIT_EXE%" diff --cached --quiet
 if errorlevel 1 (
     "%GIT_EXE%" commit -m "Subida automatica"
-)
-
-"%GIT_EXE%" pull --rebase --autostash
-if errorlevel 1 (
-    echo Error en git pull.
-    exit /b 1
-)
-
-"%GIT_EXE%" push
-if errorlevel 1 (
-    echo Error en git push.
-    exit /b 1
+    "%GIT_EXE%" push
+    if errorlevel 1 (
+        echo Error en git push.
+        exit /b 1
+    )
+) else (
+    "%GIT_EXE%" push
+    if errorlevel 1 (
+        echo Error en git push.
+        exit /b 1
+    )
 )
 
 exit /b 0
+
