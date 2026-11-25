@@ -198,9 +198,6 @@ http://100.90.204.66:6878/ace/getstream?id=81aead134bb63a51291d23e793fcddca981ee
 #EXTINF:-1 tvg-name="Teledeporte 1080p **" tvg-id="Teledeporte" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Teledeporte 1080p **
 http://100.90.204.66:6878/ace/getstream?id=e2764331e372ba2b3fd65be11eace463405864da
 
-
-
-
 # ==========================================
 # ZONA PERSONAL: TUS CATEGORÍAS Y LISTAS
 # ==========================================
@@ -242,8 +239,6 @@ http://100.90.204.66:6878/ace/getstream?id=b8eb9c9868d487402569bba2d97a8af113d03
 #EXTINF:-1 tvg-id="beIN SPORTS XTRA ñ" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/beIN%20SPORTS%20XTRA%20%C3%B1.png" group-title="⚽ LA LIGA Y DAZN LIGA",beIN SPORTS XTRA HD
 http://100.90.204.66:6878/ace/getstream?id=fd869f34346154ca7cd78d46cbf7a6b8671beab5
 
-
-
 # ==========================================
 # CARPETA: 🎬 MOVISTAR (CINE, SERIES Y DOCUMENTALES)
 # ==========================================
@@ -283,10 +278,6 @@ http://100.90.204.66:6878/ace/getstream?id=e8cd9088fee41413df360e4539c9e7184a63f
 #EXTINF:-1 tvg-id="M+ Navidad" tvg-name="M+ Navidad" tvg-logo="https://www.movistarplus.es/recorte/m-DP/canal/MNAVID.png" group-title="🎬 MOVISTAR",Navidad por M+
 http://100.90.204.66:6878/ace/getstream?id=b331dcd389eaf6d4af356245cc0a02a3c478d3ed
 
-
-
-
-
 #EXTINF:-1 tvg-id="M+ Hits HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Hits.png" group-title="🎬 MOVISTAR",M+ Hits
 http://100.90.204.66:6878/ace/getstream?id=0bb012ac0e815b413831687a4a9b61777b3338f4
 
@@ -294,17 +285,11 @@ http://100.90.204.66:6878/ace/getstream?id=0bb012ac0e815b413831687a4a9b61777b333
 http://100.90.204.66:6878/ace/getstream?id=fc469b1e22f9a75bf7079995876955b9b293ef7e
 
 
-
 #EXTINF:-1 tvg-id="M+ Indie HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Indie.png" group-title="🎬 MOVISTAR",M+ Indie
 http://100.90.204.66:6878/ace/getstream?id=205cf36437bf4e0643398f62f212832d4b8e271f
 
-
-
-
 #EXTINF:-1 tvg-id="SkyShowtime" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/SkyShowtime.png" group-title="🎬 MOVISTAR",SkyShowtime 1
 http://100.90.204.66:6878/ace/getstream?id=d98f8926ec3c7c403cec32530f2ab7725cf88bcf
-
-
 
 
 #EXTINF:-1 tvg-id="AXN Movies HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/AXN%20Movies.png" group-title="🎬 MOVISTAR",AXN Movies
@@ -312,8 +297,6 @@ http://100.90.204.66:6878/ace/getstream?id=6b4acf7cab48967eccea5c3e89b1e945ceab4
 
 #EXTINF:-1 tvg-id="M+ Originales HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Originales.png" group-title="🎬 MOVISTAR",M+ Originales
 http://100.90.204.66:6878/ace/getstream?id=0364449064d322a1bc0f97d568452053810ef8bc
-
-
 
 
 #EXTINF:-1 tvg-id="HBO Max Avances" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/HBO%20Max%20Avances.png" group-title="🎬 MOVISTAR",HBO Max Avances
@@ -413,11 +396,6 @@ http://100.90.204.66:6878/ace/getstream?id=f57b01f2507e4ec4fad3cd81aece503d18512
 
 #EXTINF:-1 tvg-id="M+ Liga de Campeones 8" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Liga%20de%20Campeones%208.png" group-title="🏆 CHAMPIONS",M+ Liga de Campeones 8 1080p Op. 2
 http://100.90.204.66:6878/ace/getstream?id=282c37d1583e43ea2970a5d85ecb616b0960d048
-
-
-
-
-
 
 # ==========================================
 # CARPETA: 📺 DAZN 1
@@ -523,15 +501,6 @@ http://100.90.204.66:6878/ace/getstream?id=8121478d3d3e563ad6b98018bc1c0aeb2f616
 
 #EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Tennis%20Channel.png" tvg-id="Tennis Channel" group-title="DEPORTES+VAMOS🎾⛳",Tennis Channel 1080p
 http://100.90.204.66:6878/ace/getstream?id=039fae21c9e7e5214d3d898cba80863e37e623ac
-
-
-
-
-
-
-
-
-
 
 
 # ==========================================
