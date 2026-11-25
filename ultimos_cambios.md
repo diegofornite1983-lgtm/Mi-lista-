@@ -1,7 +1,20 @@
-# Resumen de cambios ELCANO - 2026-11-25 21:45:44
+# Resumen de cambios ELCANO - 2026-11-25 22:09:04
 
-## Canales nuevos (0)
-- Ninguno.
+## Canales nuevos (11)
+- DAZN 1 **
+- DAZN 1 1080P **
+- DAZN 2 **
+- DAZN BALONCESTO **
+- DAZN BALONCESTO 2 1080P **
+- DAZN BALONCESTO 3 1080P **
+- LUZ **
+- M+ BALONCESTO 3 1080P *
+- M+ BALONCESTO 3 1080P **
+- M+ BALONCESTO 4 1080P *
+- M+ LIGA DE CAMPEONES 4 **
 
-## Canales eliminados (0)
-- Ninguno.
+## Canales eliminados (4)
+- M+ DEPORTES 2 *
+- M+ DEPORTES 4 1080P **
+- M+ LIGA DE CAMPEONES 3 **
+- M+ LIGA DE CAMPEONES 6 1080P *
