@@ -198,12 +198,6 @@ http://100.90.204.66:6878/ace/getstream?id=81aead134bb63a51291d23e793fcddca981ee
 #EXTINF:-1 tvg-name="Teledeporte 1080p **" tvg-id="Teledeporte" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Teledeporte.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Teledeporte 1080p **
 http://100.90.204.66:6878/ace/getstream?id=e2764331e372ba2b3fd65be11eace463405864da
 
-
-
-
-
-
-
 # ==========================================
 # ZONA PERSONAL: TUS CATEGORÍAS Y LISTAS
 # ==========================================
@@ -289,8 +283,6 @@ http://100.90.204.66:6878/ace/getstream?id=0bb012ac0e815b413831687a4a9b61777b333
 
 #EXTINF:-1 tvg-id="M+ Drama HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Drama.png" group-title="🎬 MOVISTAR",M+ Drama
 http://100.90.204.66:6878/ace/getstream?id=fc469b1e22f9a75bf7079995876955b9b293ef7e
-
-
 
 #EXTINF:-1 tvg-id="M+ Indie HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Indie.png" group-title="🎬 MOVISTAR",M+ Indie
 http://100.90.204.66:6878/ace/getstream?id=205cf36437bf4e0643398f62f212832d4b8e271f
