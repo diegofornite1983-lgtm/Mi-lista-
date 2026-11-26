@@ -393,7 +393,7 @@ def ajustar_id_con_epg(linea, nombre):
 
     clave = clave_canal(nombre)
 
-    if clave in ("NBA LEAGUE PASS", "UFC", "BEIN SPORTS 3 TR"):
+    if clave in ("NBA LEAGUE PASS", "UFC", "BEIN SPORTS 3 TR", "BEIN SPORTS 2 TR"):
         id_real = buscar_id_epg(nombre)
         if id_real:
             linea = poner_atributo(linea, "tvg-id", id_real)
