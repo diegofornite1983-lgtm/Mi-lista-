@@ -298,7 +298,7 @@ def buscar_id_epg(nombre):
             "UFC NETWORK",
             "UFC NETWORK HD",
         ),
-        "BEIN SPORTS 3 TR": (
+          "BEIN SPORTS 3 TR": (
             "BEIN SPORTS 3",
             "BEIN SPORTS 3 HD",
             "BEIN SPORTS 3 TURKEY",
@@ -307,6 +307,11 @@ def buscar_id_epg(nombre):
             "BEIN SPORTS HABER",
             "BEIN SPORTS TR HD",
             "BEIN SPORTS TURKEY",
+        ),
+        "BEIN SPORTS 2 TR": (
+            "BEIN SPORTS 2",
+            "BEIN SPORTS 2 HD",
+            "BEIN SPORTS 2 TURKEY",
         ),
         "DAZN LALIGA 3": (
             "DAZN LALIGA 3 HD",
