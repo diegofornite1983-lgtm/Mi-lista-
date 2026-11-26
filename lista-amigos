@@ -557,6 +557,10 @@ http://127.0.0.1:6878/ace/getstream?id=cb5a1f48efe2c30db178955bdc2fddf89d547ab4
 # ==========================================
 #EXTINF:-1 tvg-id="Primera Federación" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Primera%20Federaci%C3%B3n.png" group-title="⚽ PRIMERA FEDERACIÓN",RFEF TV
 http://127.0.0.1:6878/ace/getstream?id=2042a3df45db52568fb629ca10b8b62b16c4f9d6
+#EXTINF:-1 tvg-id="Primera Federación" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Primera%20Federaci%C3%B3n.png" group-title="⚽ PRIMERA FEDERACIÓN",RFEF TV 1080p Op. 2
+http://127.0.0.1:6878/ace/getstream?id=208790a77fe517fa2e1a482c6cccc2dc1cdbe14c
+#EXTINF:-1 tvg-id="Primera Federación" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Primera%20Federaci%C3%B3n.png" group-title="⚽ PRIMERA FEDERACIÓN",RFEF TV 1080p Op. 3
+http://127.0.0.1:6878/ace/getstream?id=a7b5c04af991db5dfd102070a7aee75778240977
 # ==========================================
 # CARPETA: 🚴 EUROSPORT
 # ==========================================
