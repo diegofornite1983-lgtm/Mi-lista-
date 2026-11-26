@@ -1,7 +1,22 @@
-# Resumen de cambios ELCANO - 2026-11-26 10:47:43
+# Resumen de cambios ELCANO - 2026-11-26 11:48:22
 
-## Canales nuevos (0)
-- Ninguno.
+## Canales nuevos (3)
+- BEIN SPORTS 2 TR 1080P *
+- BEIN SPORTS 3 TR *
+- BEIN SPORTS TR 1080P *
 
-## Canales eliminados (1)
-- M+ LIGA DE CAMPEONES 2 1080P *
+## Canales eliminados (14)
+- DAZN 2 1080P *
+- DAZN LALIGA 2 1080P *
+- EUROSPORT 2 1080P *
+- LALIGA TV HYPERMOTION 1080P **
+- M+ BALONCESTO 2 1080P **
+- M+ DEPORTES 1080P *
+- M+ DEPORTES 3 *
+- M+ DEPORTES 4 *
+- M+ LALIGA *
+- M+ LALIGA 1080P *
+- M+ LIGA DE CAMPEONES 1080P *
+- M+ LIGA DE CAMPEONES 2 *
+- RFEF TV 1080P **
+- SPORT TV3 1080P **
