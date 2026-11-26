@@ -128,7 +128,6 @@ echo       ACTUALIZACION COMPLETADA
 echo =====================================
 echo.
 
-pause
 exit /b 0
 
 
