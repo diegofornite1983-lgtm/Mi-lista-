@@ -381,6 +381,11 @@ http://100.90.204.66:6878/ace/getstream?id=3104d58909f284e949844fb6a39e0baf1a6fc
 # ==========================================
 #EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="DEPORTES+VAMOS🎾⛳",⭐️ M+ Deportes
 http://100.90.204.66:6878/ace/getstream?id=3d44884484303f51879f93ddaff6e4c267df2e3e
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="DEPORTES+VAMOS🎾⛳",M+ Deportes 1080p **
+http://100.90.204.66:6878/ace/getstream?id=f31322f8487cffce5b77a00d11f9be76a968f465
+#EXTINF:-1 tvg-id="M+ Deportes HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes.png" group-title="DEPORTES+VAMOS🎾⛳",M+ Deportes *
+http://100.90.204.66:6878/ace/getstream?id=3d225a957a38de94dcc6801538bbe6d1d185d8cc
+
 #EXTINF:-1 tvg-id="M+ Deportes 2 HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes%202.png" group-title="DEPORTES+VAMOS🎾⛳",⭐️ M+ Deportes 2
 http://100.90.204.66:6878/ace/getstream?id=3afe1af18f8ff78e9946856911b00c67477052b5
 #EXTINF:-1 tvg-id="M+ Deportes 3" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Deportes%203.png" group-title="DEPORTES+VAMOS🎾⛳",⭐️ M+ Deportes 3
@@ -399,8 +404,7 @@ http://100.90.204.66:6878/ace/getstream?id=765f6a743bcfde948418aaf0de6e66de6a9fb
 http://100.90.204.66:6878/ace/getstream?id=2d549bbcd898b09c4b736e6e3e83e8e8c19fcbda
 #EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="DEPORTES+VAMOS🎾⛳",M+ Vamos
 http://100.90.204.66:6878/ace/getstream?id=f35418bcdbdf47c2d88adef411e9ed15cb2ccc38
-#EXTINF:-1 tvg-id="M+ Vamos HD" tvg-logo="https://i.ibb.co/gWMRpFB/vamos.png" group-title="DEPORTES+VAMOS🎾⛳",M+ Vamos 4
-http://100.90.204.66:6878/ace/getstream?id=854f71a248771aa8c64f36d3dfd820caa2e76f2f
+
 #EXTINF:-1 tvg-id="M+ Golf HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf.png" group-title="DEPORTES+VAMOS🎾⛳",⭐️ M+ Golf
 http://100.90.204.66:6878/ace/getstream?id=872608e734992db636eb79426802cd08f4029afb
 #EXTINF:-1 tvg-id="M+ Golf HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20Golf.png" group-title="DEPORTES+VAMOS🎾⛳",M+ Golf Op. 2
