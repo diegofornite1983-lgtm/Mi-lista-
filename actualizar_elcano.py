@@ -224,7 +224,10 @@ def cargar_ids_epg():
         try:
             req = urllib.request.Request(
                 url,
-                headers={"User-Agent": "Mozilla/5.0", "Accept": "application/xml,text/xml,*/*"},
+                headers={
+                    "User-Agent": "Mozilla/5.0",
+                    "Accept": "application/xml,text/xml,*/*",
+                },
             )
             with urllib.request.urlopen(req, timeout=35) as respuesta:
                 datos = respuesta.read()
@@ -248,7 +251,10 @@ def cargar_ids_epg():
     if ids:
         try:
             CACHE_EPG.write_text(
-                json.dumps({"timestamp": ahora, "ids": sorted(ids), "nombres": nombres}, ensure_ascii=False),
+                json.dumps(
+                    {"timestamp": ahora, "ids": sorted(ids), "nombres": nombres},
+                    ensure_ascii=False,
+                ),
                 encoding="utf-8",
             )
         except Exception:
@@ -313,7 +319,6 @@ def buscar_id_epg(nombre):
         if id_real:
             return id_real
 
-    # Priorizar los identificadores turcos reales de beIN Sports 3.
     if clave == "BEIN SPORTS 3 TR":
         for id_candidato in (
             "beIN.SPORTS.3.tr",
@@ -322,7 +327,6 @@ def buscar_id_epg(nombre):
             if id_candidato in IDS_EPG_DISPONIBLES:
                 return id_candidato
 
-    # NBA League Pass: buscar nombres e IDs reales de US1.
     if clave == "NBA LEAGUE PASS":
         candidatos_nba = sorted(
             (
@@ -336,14 +340,12 @@ def buscar_id_epg(nombre):
         if candidatos_nba:
             return candidatos_nba[0][1]
 
-    # NBA League Pass y UFC pueden aparecer en XMLTV con sufijos HD,
-    # resolución, idioma o número.
     if clave in ("NBA LEAGUE PASS", "UFC"):
         tokens = clave.split()
         candidatos = []
         for k, v in MAPA_EPG_NOMBRE.items():
             palabras = k.split()
-            if len(palabras) >= len(tokens) and palabras[:len(tokens)] == tokens:
+            if len(palabras) >= len(tokens) and palabras[: len(tokens)] == tokens:
                 candidatos.append((k, v))
         candidatos.sort(key=lambda item: (len(item[0]), item[0]))
         if candidatos:
@@ -378,8 +380,6 @@ def ajustar_id_con_epg(linea, nombre):
 
     clave = clave_canal(nombre)
 
-    # Para NBA League Pass, UFC y beIN Sports 3 TR, priorizar el nombre frente a un tvg-id
-    # antiguo o genérico.
     if clave in ("NBA LEAGUE PASS", "UFC", "BEIN SPORTS 3 TR"):
         id_real = buscar_id_epg(nombre)
         if id_real:
@@ -584,13 +584,11 @@ def resolver_tvg_id(nombre_norm, nombre_original, id_por_defecto):
 def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
     linea = limpiar_logo_si_es_sucio(linea)
 
-    # 1. M+ 0 y Movistar Plus clasico
     if re.search(r"\bM\+\s*0\b", nombre_norm) or (
         nombre_norm.startswith("MOVISTAR PLUS") or nombre_norm.startswith("MOVISTAR+")
     ):
         return limpiar_y_forzar_movistar(linea)
 
-    # 2. Campeones / Champions (del 9 al 2 y principal)
     if "CAMPEONES" in nombre_norm or "CHAMPIONS" in nombre_norm:
         for num in range(9, 1, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
@@ -613,7 +611,6 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
             f"{PICONS_BASE}/M%2B%20Liga%20de%20Campeones.png",
         )
 
-    # 3. LaLiga Hypermotion (numerados del 10 al 2 y principal)
     if "HYPERMOTION" in nombre_norm:
         for num in range(10, 1, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
@@ -636,7 +633,6 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
             f"{PICONS_BASE}/LaLiga%20TV%20Hypermotion.png",
         )
 
-    # 4. DAZN LaLiga (numerados del 10 al 2 y principal)
     if "DAZN LALIGA" in nombre_norm or "DAZN LA LIGA" in nombre_norm:
         for num in range(10, 1, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
@@ -656,7 +652,6 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
             f"{PICONS_BASE}/DAZN%20LaLiga.png",
         )
 
-    # 5. M+ LaLiga / LaLiga (excluyendo Hypermotion y DAZN)
     if (
         ("LALIGA" in nombre_norm or "LA LIGA" in nombre_norm)
         and "HYPERMOTION" not in nombre_norm
@@ -681,7 +676,6 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
             f"{PICONS_BASE}/M%2B%20LaLiga.png",
         )
 
-    # 6. M+ Vamos (numerados del 10 al 2 y principal)
     if "VAMOS" in nombre_norm:
         for num in range(10, 1, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
@@ -702,7 +696,6 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
             f"{PICONS_BASE}/M%2B%20Vamos.png",
         )
 
-    # 7. DAZN generales (numerados del 10 al 1)
     if "DAZN" in nombre_norm and not any(
         palabra in nombre_norm
         for palabra in (
@@ -726,7 +719,6 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
                     f"{PICONS_BASE}/DAZN%20{num}.png",
                 )
 
-    # 8. Eurosport (numerados del 10 al 1 y principal)
     if "EUROSPORT" in nombre_norm:
         for num in range(10, 0, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
@@ -746,7 +738,6 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
             f"{PICONS_BASE}/Eurosport.png",
         )
 
-      # 9. M+ Deportes (numerados del 8 al 1)
     if "DEPORTES" in nombre_norm:
         for num in range(8, 0, -1):
             if re.search(rf"\b{num}\b", nombre_norm):
@@ -761,18 +752,17 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
                     f"{PICONS_BASE}/M%2B%20Deportes%20{num}.png",
                 )
 
-
-    # 10. Golf
     if re.search(r"\bGOLF\s*2\b", nombre_norm):
         tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "M+ Golf 2 HD")
         linea = poner_atributo(linea, "tvg-id", tvg_id)
-        return poner_atributo(linea, "tvg-logo", f"{PICONS_BASE}/M%2B%20Golf%202.png")
+        return poner_atributo(
+            linea, "tvg-logo", f"{PICONS_BASE}/M%2B%20Golf%202.png"
+        )
     if "GOLF" in nombre_norm:
         tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "M+ Golf HD")
         linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(linea, "tvg-logo", f"{PICONS_BASE}/M%2B%20Golf.png")
 
-    # 11. Baloncesto (DAZN Baloncesto y M+ Baloncesto)
     if "DAZN BALONCESTO 3" in nombre_norm:
         tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "DAZN Baloncesto 3")
         linea = poner_atributo(linea, "tvg-id", tvg_id)
@@ -809,7 +799,6 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
             linea, "tvg-logo", f"{PICONS_BASE}/M%2B%20Baloncesto.png"
         )
 
-    # 12. Motor, NBA, Tenis, UFC, RFEF, Onetoro y Bein TR
     if "UFC" in nombre_norm:
         tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "UFC")
         linea = poner_atributo(linea, "tvg-id", tvg_id)
@@ -887,7 +876,6 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
         tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Sport TV")
         return poner_atributo(linea, "tvg-id", tvg_id)
 
-    # 13. TDT y abiertos
     if "TELEDEPORTE" in nombre_norm or re.search(r"\bTDP\b", nombre_norm):
         tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Teledeporte")
         linea = poner_atributo(linea, "tvg-id", tvg_id)
@@ -986,7 +974,6 @@ while indice < len(lineas_elcano):
             linea = poner_atributo(linea, "tvg-name", nombre)
 
     nombre_normalizado = normalizar(nombre)
-
 
     extinf_mod = aplicar_logo_y_epg(linea, nombre_normalizado, nombre)
     extinf_mod = ajustar_id_con_epg(extinf_mod, nombre)
@@ -1107,10 +1094,8 @@ cabecera_m3u = (
     + salto
 )
 
-
-
 # ==========================================================
-# MONTAR ARCHIVO CASA (Mantiene IP local 127.0.0.1 abajo)
+# MONTAR ARCHIVO CASA Y TAILSCALE
 # ==========================================================
 
 cuerpo_personal_limpio = "".join(
@@ -1133,24 +1118,6 @@ bloque_tailscale_elcano = texto_nuevo_elcano.replace(
 )
 
 cuerpo_tailscale_personal = cuerpo_personal_con_fecha.replace(
-    "127.0.0.1:6878", "100.90.204.66:6878"
-)
-
-texto_tailscale = (
-    cabecera_m3u + bloque_tailscale_elcano + separador + cuerpo_tailscale_personal
-)
-
-texto_amigos = texto_final
-
-# ==========================================================
-# MONTAR ARCHIVO TAILSCALE (CAMBIA LA IP ARRIBA Y ABAJO)
-# ==========================================================
-
-bloque_tailscale_elcano = texto_nuevo_elcano.replace(
-    "127.0.0.1:6878", "100.90.204.66:6878"
-)
-
-cuerpo_tailscale_personal = cuerpo_personal_limpio.replace(
     "127.0.0.1:6878", "100.90.204.66:6878"
 )
 
@@ -1201,4 +1168,3 @@ print("Onetoro y Primera Federacion configurados")
 print("Carpetas personales: adaptadas a Tailscale en Canales m3u")
 print("Casa, Tailscale y Amigos: actualizados")
 print("==========================================")
-    i
