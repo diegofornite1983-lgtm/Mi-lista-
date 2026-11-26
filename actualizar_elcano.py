@@ -331,6 +331,14 @@ def buscar_id_epg(nombre):
         ):
             if id_candidato in IDS_EPG_DISPONIBLES:
                 return id_candidato
+    if clave == "BEIN SPORTS 2 TR":
+        for id_candidato in (
+            "beIN.SPORTS.2.tr",
+            "Beinsports.2.tr",
+            "bein-sports-2-tr",
+        ):
+            if id_candidato in IDS_EPG_DISPONIBLES:
+                return id_candidato
 
     if clave == "NBA LEAGUE PASS":
         candidatos_nba = sorted(
