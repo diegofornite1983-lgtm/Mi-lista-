@@ -178,7 +178,7 @@ http://127.0.0.1:6878/ace/getstream?id=12cea50e2a6b37e82705387bc845067565f60e85
 http://127.0.0.1:6878/ace/getstream?id=70519255b522ad2a48887fcf50f6c4e843910426
 #EXTINF:-1 tvg-name="Tennis Channel 1080p **" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/Tennis%20Channel.png" tvg-id="Tennis Channel" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Tennis Channel 1080p **
 http://127.0.0.1:6878/ace/getstream?id=1e6f2808b5604164736b8cf597744e8ddd4c4faf
-#EXTINF:-1 tvg-name="Bein Sports 2 TR 1080p *" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Bein Sports 2 TR 1080p *
+#EXTINF:-1 tvg-name="Bein Sports 2 TR 1080p *" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/7/78/Logo_beIN_SPORTS_2.png" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Bein Sports 2 TR 1080p *
 http://127.0.0.1:6878/ace/getstream?id=a7184e0b4ce5484ede13841e119aedebcfd106c8
 #EXTINF:-1 tvg-name="Bein Sports 3 TR *" tvg-logo="https://raw.githubusercontent.com/tv-logo/tv-logos/refs/heads/main/countries/turkey/bein-sports-haber-tr.png" tvg-id="beIN.SPORTS.3.tr" group-title="⭐ ELCANO [MÁXIMA CALIDAD]",Bein Sports 3 TR *
 http://127.0.0.1:6878/ace/getstream?id=83cf8863e352cb2b98d556ca655ad1ec34296e94
@@ -557,4 +557,4 @@ http://127.0.0.1:6878/ace/getstream?id=6b1fae4ad99474bd8dde2113c9a0d36bf6717aa3
 #EXTINF:-1 tvg-id="Eurosport 2" tvg-logo="https://i.ibb.co/M6h4Qyd/euro2.png" group-title="🚴 EUROSPORT",Eurosport 2 HD (Sport TV)
 http://127.0.0.1:6878/ace/getstream?id=6176281b9c46a5621a0e88524f8dc621f173b8e0
  (Subida automatica)
-# Ultima sincronizacion: 2026-11-26 20:49:11
+# Ultima sincronizacion: 2026-11-26 20:56:02
