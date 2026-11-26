@@ -1,10 +1,7 @@
-# Resumen de cambios ELCANO - 2026-11-26 02:29:28
+# Resumen de cambios ELCANO - 2026-11-26 02:46:24
 
 ## Canales nuevos (0)
 - Ninguno.
 
-## Canales eliminados (4)
-- ESPORT3 *
-- ESPORT3 1080P *
-- M+ BALONCESTO 1080P *
-- M+ VAMOS 2 1080P *
+## Canales eliminados (1)
+- M+ VAMOS 3 1080P **
