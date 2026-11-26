@@ -307,7 +307,16 @@ def buscar_id_epg(nombre):
             "DAZN LALIGA 3",
         ),
     }
-
+    if "BEIN SPORTS 2 TR" in nombre_norm or (
+        "BEIN SPORTS 2" in nombre_norm and "TR" in nombre_norm
+    ):
+        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Bein Sports 2 TR")
+        linea = poner_atributo(linea, "tvg-id", tvg_id)
+        return poner_atributo(
+            linea,
+            "tvg-logo",
+            "https://upload.wikimedia.org/wikipedia/commons/7/78/Logo_beIN_SPORTS_2.png",
+        )
     for candidato in alias.get(clave, ()):
         id_real = MAPA_EPG_NOMBRE.get(clave_canal(candidato))
         if id_real:
