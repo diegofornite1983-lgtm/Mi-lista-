@@ -307,16 +307,7 @@ def buscar_id_epg(nombre):
             "DAZN LALIGA 3",
         ),
     }
-    if "BEIN SPORTS 2 TR" in nombre_norm or (
-        "BEIN SPORTS 2" in nombre_norm and "TR" in nombre_norm
-    ):
-        tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Bein Sports 2 TR")
-        linea = poner_atributo(linea, "tvg-id", tvg_id)
-        return poner_atributo(
-            linea,
-            "tvg-logo",
-            "https://upload.wikimedia.org/wikipedia/commons/7/78/Logo_beIN_SPORTS_2.png",
-        )
+
     for candidato in alias.get(clave, ()):
         id_real = MAPA_EPG_NOMBRE.get(clave_canal(candidato))
         if id_real:
@@ -664,7 +655,7 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
             "tvg-logo",
             f"{PICONS_BASE}/DAZN%20LaLiga.png",
         )
-   
+
     # 5. M+ LaLiga / LaLiga (excluyendo Hypermotion y DAZN)
     if (
         ("LALIGA" in nombre_norm or "LA LIGA" in nombre_norm)
@@ -1210,3 +1201,4 @@ print("Onetoro y Primera Federacion configurados")
 print("Carpetas personales: adaptadas a Tailscale en Canales m3u")
 print("Casa, Tailscale y Amigos: actualizados")
 print("==========================================")
+    i
