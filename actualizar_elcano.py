@@ -862,13 +862,14 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
         tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Bein Sports 3 TR")
         linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
-            linea, "tvg-logo", f"{TV_LOGOS_TR}/bein-sports-haber-tr.png"
+            linea, "tvg-logo", "https://i.ibb.co/GkX99sd/Bein3.png"
         )
+
     if "BEIN SPORTS TR" in nombre_norm:
         tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Bein Sports TR")
         linea = poner_atributo(linea, "tvg-id", tvg_id)
         return poner_atributo(
-            linea, "tvg-logo", f"{TV_LOGOS_TR}/bein-sports-haber-tr.png"
+            linea, "tvg-logo", "https://i.ibb.co/3fPVPLL/Bein1.png"
         )
     if "BEIN SPORTS 2 TR" in nombre_norm or (
         "BEIN SPORTS 2" in nombre_norm and "TR" in nombre_norm
