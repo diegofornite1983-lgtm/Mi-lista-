@@ -878,7 +878,7 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
         return poner_atributo(
             linea,
             "tvg-logo",
-            "https://upload.wikimedia.org/wikipedia/commons/7/78/Logo_beIN_SPORTS_2.png",
+            "https://cdn.bein.com/mena/wp-content/uploads/sites/3/2020/06/HD2-1.png",
         )
     if "TENNIS CHANNEL" in nombre_norm:
         tvg_id = resolver_tvg_id(nombre_norm, nombre_original, "Tennis Channel")
