@@ -988,9 +988,12 @@ while indice < len(lineas_elcano):
         indice += 1
         continue
 
+
     nombre = linea.rsplit(",", 1)[-1].strip()
     nombre = re.sub(r"\s*\b720p?\b\s*", " ", nombre, flags=re.IGNORECASE)
     nombre = re.sub(r"\s{2,}", " ", nombre).strip()
+    nombre = nombre.upper()
+
 
     if "," in linea:
         prefijo_extinf, _ = linea.rsplit(",", 1)
