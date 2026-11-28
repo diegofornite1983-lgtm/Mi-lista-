@@ -331,10 +331,7 @@ http://100.90.204.66:6878/ace/getstream?id=623f9ce3c4adfcd9771da41a6cc433632cf2c
 http://100.90.204.66:6878/ace/getstream?id=8fea6e58c59d3c01bd842d30a9211a51ef48ae38
 #EXTINF:-1 tvg-id="M+ LaLiga HDR" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga%20HDR.png" group-title="⚽ LA LIGA Y DAZN LIGA",M+ LALIGA HDR (SOLO EVENTOS)
 http://100.90.204.66:6878/ace/getstream?id=79c9dbec46dfa7de3acea6e5e05118e17dc0f065
-#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="⚽ LA LIGA Y DAZN LIGA",M+ LALIGA BAR 1080P *
-http://100.90.204.66:6878/ace/getstream?id=870b4b4d88a409d99f42f55fff09521e17eb8def
-#EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="⚽ LA LIGA Y DAZN LIGA",M+ LALIGA BAR 1080P **
-http://100.90.204.66:6878/ace/getstream?id=3c49188ac3b8fa1f6661ee49213387b1a12e0502
+
 #EXTINF:-1 tvg-id="LaLiga TV BAR HD" tvg-name="LaLiga TV BAR" tvg-logo="https://i.ibb.co/pLPmnGg/liga-TVbar.png" group-title="⚽ LA LIGA Y DAZN LIGA",M+ LALIGA BAR 1080P *
 http://100.90.204.66:6878/ace/getstream?id=870b4b4d88a409d99f42f55fff09521e17eb8def
 #EXTINF:-1 tvg-id="LaLiga TV BAR HD" tvg-name="LaLiga TV BAR" tvg-logo="https://i.ibb.co/pLPmnGg/liga-TVbar.png" group-title="⚽ LA LIGA Y DAZN LIGA",M+ LALIGA BAR 1080P **
