@@ -1,8 +1,7 @@
-# Resumen de cambios ELCANO - 2026-11-28 10:52:35
+# Resumen de cambios ELCANO - 2026-11-28 11:52:45
 
-## Canales nuevos (2)
-- M+ LALIGA BAR 1080P *
-- M+ LALIGA BAR 1080P **
+## Canales nuevos (0)
+- Ninguno.
 
 ## Canales eliminados (0)
 - Ninguno.
