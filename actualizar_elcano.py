@@ -937,21 +937,22 @@ def aplicar_logo_y_epg(linea, nombre_norm, nombre_original=""):
 def normalizar_linea_personal(linea):
     if not linea.startswith("#EXTINF:") or "," not in linea:
         return linea
-    nombre = linea.rsplit(",", 1)[-1].strip()
-    if clave_canal(nombre) in ("NAVIDAD POR M+", "M+ NAVIDAD"):
+
+    logo_puesto = re.search(r'tvg-logo="([^"]+)"', linea, flags=re.IGNORECASE)
+    id_puesto = re.search(r'tvg-id="([^"]+)"', linea, flags=re.IGNORECASE)
+
+    if logo_puesto and id_puesto:
         return linea
 
+    nombre = linea.rsplit(",", 1)[-1].strip()
     nombre_norm = normalizar(nombre)
     sin_sucio = limpiar_logo_si_es_sucio(linea)
-    logo_match = re.search(r'tvg-logo="([^"]+)"', sin_sucio, flags=re.IGNORECASE)
-    id_match = re.search(r'tvg-id="([^"]+)"', sin_sucio, flags=re.IGNORECASE)
-    if logo_match and id_match:
-        return sin_sucio
     aplicada = aplicar_logo_y_epg(sin_sucio, nombre_norm, nombre)
-    if logo_match:
-        aplicada = poner_atributo(aplicada, "tvg-logo", logo_match.group(1))
-    if id_match:
-        aplicada = poner_atributo(aplicada, "tvg-id", id_match.group(1))
+
+    if logo_puesto:
+        aplicada = poner_atributo(aplicada, "tvg-logo", logo_puesto.group(1))
+    if id_puesto:
+        aplicada = poner_atributo(aplicada, "tvg-id", id_puesto.group(1))
     return aplicada
 
 
