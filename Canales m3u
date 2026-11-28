@@ -335,6 +335,13 @@ http://100.90.204.66:6878/ace/getstream?id=79c9dbec46dfa7de3acea6e5e05118e17dc0f
 http://100.90.204.66:6878/ace/getstream?id=870b4b4d88a409d99f42f55fff09521e17eb8def
 #EXTINF:-1 tvg-id="M+ LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/M%2B%20LaLiga.png" group-title="⚽ LA LIGA Y DAZN LIGA",M+ LALIGA BAR 1080P **
 http://100.90.204.66:6878/ace/getstream?id=3c49188ac3b8fa1f6661ee49213387b1a12e0502
+
+#EXTINF:-1 tvg-id="LaLiga TV BAR HD" tvg-name="LaLiga TV BAR" tvg-logo="https://i.ibb.co/pLPmnGg/liga-TVbar.png" group-title="⚽ LA LIGA Y DAZN LIGA",M+ LALIGA BAR 1080P *
+http://100.90.204.66:6878/ace/getstream?id=870b4b4d88a409d99f42f55fff09521e17eb8def
+
+#EXTINF:-1 tvg-id="LaLiga TV BAR HD" tvg-name="LaLiga TV BAR" tvg-logo="https://i.ibb.co/pLPmnGg/liga-TVbar.png" group-title="⚽ LA LIGA Y DAZN LIGA",M+ LALIGA BAR 1080P **
+http://100.90.204.66:6878/ace/getstream?id=3c49188ac3b8fa1f6661ee49213387b1a12e0502
+
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="⚽ LA LIGA Y DAZN LIGA",DAZN LALIGA
 http://100.90.204.66:6878/ace/getstream?id=3097d7e7ff0fe414711ee067a841168b6f5671cb
 #EXTINF:-1 tvg-id="DAZN LaLiga HD" tvg-logo="https://raw.githubusercontent.com/davidmuma/picons_dobleM/master/icon/DAZN%20LaLiga.png" group-title="⚽ LA LIGA Y DAZN LIGA",DAZN LALIGA 1080P OP. 2
